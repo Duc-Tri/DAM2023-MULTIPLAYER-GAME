@@ -249,6 +249,10 @@ public class Player implements Entity{
 
     public void setFindRegion(String findRegion) {
         this.findRegion = findRegion;
+        textureRegion = textureAtlas.findRegion(this.findRegion);
+        getSprite().setRegion(textureRegion);
+
+
     }
 
     public String getTextureAtlasPath() {
