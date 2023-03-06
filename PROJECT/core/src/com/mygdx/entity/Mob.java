@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Mob implements Entity{
-
     private static TextureAtlas textureAtlas;
     private TextureRegion textureRegion;
     public Sprite sprite;
@@ -43,26 +42,18 @@ public class Mob implements Entity{
 
     @Override
     public void initializeSprite() {
-       // box = new Rectangle(0, 0, 0, 0);
-//        batch = new SpriteBatch();
-
-        if (textureAtlas == null)
+        if (textureAtlas == null){
             textureAtlas = new TextureAtlas(Gdx.files.internal("tiny_16x16.atlas"));
-
+        }
         textureRegion = textureAtlas.findRegion("UP_1");
         sprite = new Sprite(textureRegion);
         sprite.scale(2.0f);
         sprite.setColor(spriteTint);
     }
-
     @Override
     public void animate(String string) {
     }
-
-
     public String getMobID(){
         return mobID;
     }
-
-
 }

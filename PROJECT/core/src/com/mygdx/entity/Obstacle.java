@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Obstacle implements Entity {
-
     private static TextureAtlas textureAtlas;
     private float x;
     private float y;
@@ -19,19 +18,13 @@ public class Obstacle implements Entity {
     private Color spriteTint;
     private Rectangle rect;
 
-
-    public Obstacle() {
-    }
-
     public Obstacle(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         rect = new Rectangle(x,y,width,height);
-
     }
-
 
     @Override
     public void initializeSprite() {
@@ -121,8 +114,5 @@ public class Obstacle implements Entity {
     public void setRect(Rectangle rect) {
         this.rect = rect;
     }
-
-
-
 
 }

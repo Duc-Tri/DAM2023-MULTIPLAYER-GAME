@@ -11,7 +11,6 @@ public class Mate extends Player implements Runnable{
     public Mate(Game game) {
         super(game);
     }
-
     @Override
     public void run() {
         int random  = (int) (Math.random()*100);
@@ -24,12 +23,7 @@ public class Mate extends Player implements Runnable{
                 e.printStackTrace();
             }
         }
-
-
-
-        System.out.println("fin tache");
     }
-
 
     public boolean isStarted() {
         return started;

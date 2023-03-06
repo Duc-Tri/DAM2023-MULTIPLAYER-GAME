@@ -17,22 +17,16 @@ public class Item implements Entity{
 
     public Item() {
     }
-
     public Item(float x, float y, float width, float height) {
 
     }
-
     public Item(Rectangle rect) {
 
     }
-
     @Override
     public void initializeSprite() {
-
     }
-
     @Override
     public void animate(String string) {
-
     }
 }

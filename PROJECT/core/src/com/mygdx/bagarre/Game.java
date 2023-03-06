@@ -18,7 +18,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-//import com.libgdx.entitygestion.Player;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
 import com.mygdx.client.RetrievePlayer;
@@ -32,6 +31,7 @@ import com.mygdx.map.Map;
 
 
 public class Game extends ApplicationAdapter implements InputProcessor {
+    String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
     boolean display = false;
     int refreshValue = 0;
     int speedOfSprite = 3;//Plus c'est grand plus c'est lent
@@ -50,10 +50,12 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     int calculatedHeight = 0;
     Joystick joystick;
     ShapeRenderer shapeRenderer;
-
+    String URLServer = "http://172.16.200.104:8080/DAMCorp/";
     public static boolean lockOnListReadFromDB = false;
 
     private Mate[] mates = new Mate[0];
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -63,7 +65,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     @Override
     public void create() {
 
-        Firebase firebase = new Firebase("https://damcorp-bc7bc-default-rtdb.firebaseio.com/", "json/key.json");
+        Firebase firebase = new Firebase(getFirebaseURL(), "json/key.json");
         firebase.displayJson();
         firebase.connect();
         firebase.updateUser();
@@ -117,43 +119,29 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void render() {
-
         displayJoystick();
         if (Gdx.input.isTouched(0)) {
             refreshValue++;
             if (refreshValue == speedOfSprite) {
-
                 refreshValue = 0;
                 movePlayer(joystick.getDirectionInput());
             }
         } else {
-
             display = false;
         }
-
         UpdatePlayer.requestServer(player);
         String[] tempMates = RetrieveMate.requestServer(player);
         createMates(tempMates);
-
-
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         map.getTiledMapRenderer().setView(camera);
         map.getTiledMapRenderer().render();
         batch.begin();
 
-
-
-
         for(int i =0 ; i < mates.length ; i ++){
-//            if(!mates[i].isStarted()){
-//                mates[i].run();
-//            }
             RetrieveUpdatePlayer.requestServer(mates[i]);
-
             mates[i].getSprite().draw(batch);
         }
-
 
         myPlayerSprite.draw(batch);
         batch.end();
@@ -184,7 +172,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
             }
             display = true;
         }
-
         update();
     }
 
@@ -211,9 +198,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                     }
                 } else {
                     player.setX(player.getX() + sizeOfStep);
-
                     camera.position.x -= sizeOfStep;
-
                 }
             }
         }
@@ -459,5 +444,22 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     public static void setLockOnListReadFromDB(boolean lockOnListReadFromDB) {
         Game.lockOnListReadFromDB = lockOnListReadFromDB;
+    }
+
+    public String getFirebaseURL() {
+        return firebaseURL;
+    }
+
+    public void setFirebaseURL(String firebaseURL) {
+        this.firebaseURL = firebaseURL;
+    }
+
+
+    public String getURLServer() {
+        return URLServer;
+    }
+
+    public void setURLServer(String URLServer) {
+        this.URLServer = URLServer;
     }
 }

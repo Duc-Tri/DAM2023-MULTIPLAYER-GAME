@@ -33,44 +33,20 @@ public class Player implements Entity{
     float scale  = 2.0f;
     String serverUniqueID;
 
-    public Player(Game game) {
 
+    public Player(Game game) {
         this.game  = game;
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
         uniqueID = "player" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
-
-        System.out.println(uniqueID + " ■■■■■■■■■■■");
     }
-
-    public Player(Vector2 xy) {
-
-        uniqueID = genID();
-        int R = Integer.parseInt(uniqueID.substring(6, 8));
-        int V = Integer.parseInt(uniqueID.substring(8, 10));
-        int B = Integer.parseInt(uniqueID.substring(10, 12));
-
-        spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
-
-        initializeSprite(); // HERE
-        setX(xy.x);
-        setY(xy.y);
-
-    }
-
-    private String genID() {
-        return "0";
-    }
-
     public void initializeSprite() {
         box = new Rectangle(0, 0, 0, 0);
-//        batch = new SpriteBatch();
-
-        if (textureAtlas == null)
+        if (textureAtlas == null){
             textureAtlas = new TextureAtlas(Gdx.files.internal(this.textureAtlasPath));
-
+        }
         textureRegion = textureAtlas.findRegion(findRegion);
         sprite = new Sprite(textureRegion);
         sprite.scale(scale);
@@ -80,19 +56,12 @@ public class Player implements Entity{
     public Sprite getSprite() {
         return sprite;
     }
-
-//    public SpriteBatch getBatch() {
-//        return batch;
-//    }
-
     public TextureAtlas getTextureAtlas() {
         return textureAtlas;
     }
-
     public TextureRegion getTextureRegion() {
         return textureRegion;
     }
-
     public void setX(float x) {
         this.x = x;
         box.setX(x);
@@ -122,7 +91,6 @@ public class Player implements Entity{
         float tempSpriteY = sprite.getY();
 
         if (string.contentEquals("LEFT")) {
-        //    System.out.println("SWITCH LEFT " + compteurLeft);
             if (compteurLeft == 12) {
                 compteurLeft = 0;
             }
@@ -133,9 +101,7 @@ public class Player implements Entity{
             findRegion = "LEFT_" + compteurLeft;
             textureRegion = textureAtlas.findRegion(findRegion);
         }
-
         if (string.contentEquals("RIGHT")) {
-       //     System.out.println("SWITCH RIGHT " + compteurRight);
             if (compteurRight == 12) {
                 compteurRight = 0;
             }
@@ -146,9 +112,7 @@ public class Player implements Entity{
             findRegion = "RIGHT_" + compteurRight;
             textureRegion = textureAtlas.findRegion("RIGHT_" + compteurRight);
         }
-
         if (string.contentEquals("UP")) {
-       //     System.out.println("SWITCH UP " + compteurUp);
             if (compteurUp == 12) {
                 compteurUp = 0;
             }
@@ -159,9 +123,7 @@ public class Player implements Entity{
             findRegion = "UP_" + compteurUp;
             textureRegion = textureAtlas.findRegion("UP_" + compteurUp);
         }
-
         if (string.contentEquals("DOWN")) {
-      //      System.out.println("SWITCH DOWN " + compteurDown);
             if (compteurDown == 12) {
                 compteurDown = 0;
             }
@@ -172,14 +134,11 @@ public class Player implements Entity{
             findRegion = "DOWN_" + compteurDown;
             textureRegion = textureAtlas.findRegion("DOWN_" + compteurDown);
         }
-
-        Sprite tempSprite = new Sprite(textureRegion);
-        tempSprite.setX(tempSpriteX);
-        tempSprite.setY(tempSpriteY);
-        tempSprite.scale(2.0f);
-        tempSprite.setColor(spriteTint);
-        this.setSprite(tempSprite);
-//        playerSprite = player.getSprite();
+        getSprite().setRegion(textureRegion);
+        getSprite().setX(tempSpriteX);
+        getSprite().setY(tempSpriteY);
+        getSprite().scale(2.0f);
+        getSprite().setColor(spriteTint);
     }
 
     public int getCompteurUp() {
@@ -254,8 +213,6 @@ public class Player implements Entity{
         this.findRegion = findRegion;
         textureRegion = textureAtlas.findRegion(this.findRegion);
         getSprite().setRegion(textureRegion);
-
-
     }
 
     public String getTextureAtlasPath() {
@@ -290,45 +247,26 @@ public class Player implements Entity{
     public void setGame(Game game) {
         this.game = game;
     }
-
-
-
     public float getRealX() {
-//        System.out.println("game.getSCREEN_WIDTH()  " + game.getSCREEN_WIDTH());
-//        System.out.println("game.getCamera().position.x  " + game.getCamera().position.x);
-//        System.out.println("x  " + x);
-//        System.out.println("game.getSCREEN_WIDTH()  " + game.getSCREEN_WIDTH());
         float relativePlayerX = x - game.getSCREEN_WIDTH()/2.0f+game.getCamera().position.x;
-
-////
-//        System.out.println("x  " + x);
-//        System.out.println("relativePlayerX  " + relativePlayerX  + " from   " +x);
-        return relativePlayerX;//game.getCamera().position.x+relativePlayerX;
+        return relativePlayerX;
     }
 
     public float getRealY() {
-//        System.out.println("game.getSCREEN_HEIGHT()  " + game.getSCREEN_HEIGHT());
-//
-//        System.out.println("game.getCamera().position.y  " + game.getCamera().position.y);
-//        System.out.println("y  " + y);
         float relativePlayerY = y-game.getSCREEN_HEIGHT()/2.0f+game.getCamera().position.y+10;
-//        System.out.println("y  " + y);
-//        System.out.println("relativePlayerY  " + relativePlayerY + " from   " +y);
-        return relativePlayerY;//game.getCamera().position.y+relativePlayerY;
+        return relativePlayerY;
     }
 
     public void setXFromRealX(float parseFloat) {
 
         float temp = parseFloat-game.getCamera().position.x+game.getSCREEN_WIDTH()/2.0f+10;
-//        System.out.println("tempX " + temp + " from  " +parseFloat);
-
         setX(temp);
     }
 
     public void setYFromRealY(float parseFloat) {
 
         float temp = parseFloat-game.getCamera().position.y+game.getSCREEN_HEIGHT()/2.0f;
-//        System.out.println("tempY " + temp);
         setY(temp);
     }
+
 }

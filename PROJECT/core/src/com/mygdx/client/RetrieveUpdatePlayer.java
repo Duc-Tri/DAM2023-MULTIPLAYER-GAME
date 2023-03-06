@@ -12,9 +12,9 @@ import java.net.URL;
 
 public class RetrieveUpdatePlayer {
     public static void requestServer(Player player) {
-
-        String GET_URL = "http://172.16.200.104:8080/DAMCorp/RetrieveUpdatePlayer";
+        String GET_URL = player.getGame().getURLServer()+"RetrieveUpdatePlayer";
         String paramString = buildParam(player);
+
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
         URL url = null;
@@ -31,57 +31,33 @@ public class RetrieveUpdatePlayer {
 
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
-//                    System.out.println("inputLine " + inputLine);
                 }
                 in.close();
-
-                // print result
-//                System.out.println("RetrievePlayer ===" + response.toString());
-
                 String [] tempString = String.valueOf(response).split(";");
-
                 updatePlayer(player, tempString);
-
-//                return result;
-
             } else {
                 System.out.println("GET request did not work.");
             }
-
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-//        return null;
     }
 
     private static void updatePlayer(Player player, String[] tempString) {
-
         if(tempString[0]!=null  && !tempString[0].isEmpty()){
-//            player.setBox(new Rectangle());
-//            player.initializeSprite();
-
             float tempX = Float.parseFloat(tempString[0]);
             float tempY = Float.parseFloat(tempString[1]);
             player.setXFromRealX(tempX);
-
             player.setYFromRealY(tempY);
-
-//            player.setX(tempX);
-//            player.setY(tempY);
             player.setFindRegion(tempString[2]);
-
         }
-
     }
 
     private static String buildParam(Player player) {
         String param = "?";
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
-
-
         return param;
     }
 }

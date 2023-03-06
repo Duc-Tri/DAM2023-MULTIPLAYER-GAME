@@ -1,25 +1,17 @@
 package com.mygdx.component;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 
 public class Joystick {
-
-
     Circle circle0, circle1;
     boolean positionFixe = false;
-
-
     int directionInput = -1;
-
-
     public Joystick(float x, float y, float radius ){
         circle0 = new Circle(x,y,radius);
         circle1 = new Circle(x,y,radius/5.0f);
     }
-
     public void update(float x, float y){
         float deltaX0 = x-circle0.x;
         float deltaY0 = y-circle0.y;
@@ -30,13 +22,10 @@ public class Joystick {
             x = (float) (circle0.x+deltaX0*ratio);
             y = (float) (circle0.y+deltaY0*ratio);
         }
-
             circle1.setPosition(x,y);
             double deltaX = circle1.x-circle0.x;
             double deltaY = circle1.y-circle0.y;
             double angle = Math.toDegrees(Math.atan2(deltaY,deltaX));
-
-
             if(-45<angle && angle<45){
                 directionInput = Input.Keys.RIGHT;
             }
@@ -49,12 +38,7 @@ public class Joystick {
             if(-135<angle && angle<-45){
                 directionInput = Input.Keys.DOWN;
             }
-
         }
-
-
-
-
     public void render(ShapeRenderer renderer){
         renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.circle(circle0.x, circle0.y, circle0.radius);
