@@ -57,6 +57,7 @@ public class Mob implements Entity{
 
     @Override
     public void animate(String string) {
+
     }
 
 

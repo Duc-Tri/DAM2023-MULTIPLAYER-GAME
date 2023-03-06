@@ -19,7 +19,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 //import com.libgdx.entitygestion.Player;
+import com.mygdx.client.ClientNewPlayer;
+import com.mygdx.client.ClientRetrieveMates;
+import com.mygdx.client.ClientRetrievePlayer;
+import com.mygdx.client.ClientRetrieveUpdatePlayer;
+import com.mygdx.client.ClientUpdatePlayer;
 import com.mygdx.component.Joystick;
+
+import entitygestion.Mates;
 import entitygestion.Player;
 import com.mygdx.firebase.Firebase;
 import com.mygdx.map.Map;
@@ -46,7 +53,8 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     ShapeRenderer shapeRenderer;
 
     public static boolean lockOnListReadFromDB = false;
-
+    private Mates[] mates;
+//    private Player player2;
 
 
     @Override
@@ -56,6 +64,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void create() {
+
         Firebase firebase = new Firebase("https://damcorp-bc7bc-default-rtdb.firebaseio.com/","json/key.json");
         firebase.displayJson();
         firebase.connect();
@@ -73,6 +82,19 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         calculatedHeight();
         calculatedWidth();
         Gdx.input.setInputProcessor(this);
+
+
+        //communication avec les serveur pour enrgistrer le joueur
+        ClientNewPlayer.newPlayer(myPlayer);
+
+        mates = new Mates[0];
+
+//        this.player2  = ClientRetrievePlayer.retrievePlayer(myPlayer);
+//        player2.setY(800f);
+//        player2.initializeSprite();
+
+
+
     }
 
     private Map createGameMap(String s) {
@@ -98,12 +120,12 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void initializeCharacter() {
-        myPlayer = new Player();
+        myPlayer = new Player(this);
         myPlayer.initializeSprite();
         myPlayerSprite = myPlayer.getSprite();
         textureAtlas = myPlayer.getTextureAtlas();
         textureRegion = myPlayer.getTextureRegion();
-        myPlayerSprite.setPosition(50, 50);
+        myPlayerSprite.setPosition(0, 0);
     }
 
 
@@ -115,6 +137,11 @@ public class Game extends ApplicationAdapter implements InputProcessor {
             refreshValue++;
               if(refreshValue==speedOfSprite){
 
+
+//                  System.out.print("myPlayer x " + myPlayer.getX());
+//                  System.out.println("       y " + myPlayer.getY());
+//                  System.out.print("player2  x  " + player2.getX());
+//                  System.out.println("       y  " + player2.getY());
                 refreshValue=0;
                 movePlayer(joystick.getDirectionInput());
             }
@@ -128,6 +155,25 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         map.getTiledMapRenderer().setView(camera);
         map.getTiledMapRenderer().render();
         batch.begin();
+
+     //   System.out.println("player2.getServerUniqueID() " +player2.getServerUniqueID());
+//        System.out.println("myPlayer.getFindRegion()"  + myPlayer.getFindRegion());
+        ClientUpdatePlayer.updatePlayer(myPlayer);
+
+//        ClientRetrieveUpdatePlayer.updatePlayer(player2);
+//            player2.getSprite().draw(batch);
+
+        ClientRetrieveMates.retrieveMate(myPlayer);
+        for(int i = 0 ; i < mates.length; i++){
+            System.out.println("player getServerUniqueID = "+  myPlayer.getServerUniqueID());
+            System.out.println("player X = "+ myPlayer.getX());
+            System.out.println("player Y = "+ myPlayer.getY());
+            System.out.println("mates["+i+"] getServerUniqueID = "+  mates[i].getServerUniqueID());
+            System.out.println("mates["+i+"] X = "+ mates[i].getX());
+            System.out.println("mates["+i+"] Y = "+ mates[i].getY());
+            ClientRetrieveUpdatePlayer.updatePlayer(mates[i]);
+            mates[i].getSprite().draw(batch);
+        }
         myPlayerSprite.draw(batch);
         batch.end();
         if(display){
@@ -416,5 +462,12 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     public static void setLockOnListReadFromDB(boolean lockOnListReadFromDB) {
         Game.lockOnListReadFromDB = lockOnListReadFromDB;
+    }
+    public Mates[] getMates() {
+        return mates;
+    }
+
+    public void setMates(Mates[] mates) {
+        this.mates = mates;
     }
 }
