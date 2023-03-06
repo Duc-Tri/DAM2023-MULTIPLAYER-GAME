@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.bagarre.Game;
 
 
 public class Player implements Entity{
+    Game game;
     int compteurUp = 0;
     int compteurDown = 0;
     int compteurLeft = 0;
@@ -31,8 +33,9 @@ public class Player implements Entity{
     float scale  = 2.0f;
     String serverUniqueID;
 
-    public Player() {
+    public Player(Game game) {
 
+        this.game  = game;
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
@@ -277,5 +280,55 @@ public class Player implements Entity{
 
     public void setServerUniqueID(String serverUniqueID) {
         this.serverUniqueID = serverUniqueID;
+    }
+
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+
+
+    public float getRealX() {
+//        System.out.println("game.getSCREEN_WIDTH()  " + game.getSCREEN_WIDTH());
+//        System.out.println("game.getCamera().position.x  " + game.getCamera().position.x);
+//        System.out.println("x  " + x);
+//        System.out.println("game.getSCREEN_WIDTH()  " + game.getSCREEN_WIDTH());
+        float relativePlayerX = x - game.getSCREEN_WIDTH()/2.0f+game.getCamera().position.x;
+
+////
+//        System.out.println("x  " + x);
+//        System.out.println("relativePlayerX  " + relativePlayerX  + " from   " +x);
+        return relativePlayerX;//game.getCamera().position.x+relativePlayerX;
+    }
+
+    public float getRealY() {
+//        System.out.println("game.getSCREEN_HEIGHT()  " + game.getSCREEN_HEIGHT());
+//
+//        System.out.println("game.getCamera().position.y  " + game.getCamera().position.y);
+//        System.out.println("y  " + y);
+        float relativePlayerY = y-game.getSCREEN_HEIGHT()/2.0f+game.getCamera().position.y+10;
+//        System.out.println("y  " + y);
+//        System.out.println("relativePlayerY  " + relativePlayerY + " from   " +y);
+        return relativePlayerY;//game.getCamera().position.y+relativePlayerY;
+    }
+
+    public void setXFromRealX(float parseFloat) {
+
+        float temp = parseFloat-game.getCamera().position.x+game.getSCREEN_WIDTH()/2.0f+10;
+//        System.out.println("tempX " + temp + " from  " +parseFloat);
+
+        setX(temp);
+    }
+
+    public void setYFromRealY(float parseFloat) {
+
+        float temp = parseFloat-game.getCamera().position.y+game.getSCREEN_HEIGHT()/2.0f;
+//        System.out.println("tempY " + temp);
+        setY(temp);
     }
 }

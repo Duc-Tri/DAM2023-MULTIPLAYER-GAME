@@ -105,7 +105,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void initializeCharacter() {
-        player = new Player();
+        player = new Player(this);
         player.initializeSprite();
         myPlayerSprite = player.getSprite();
         textureAtlas = player.getTextureAtlas();
@@ -167,7 +167,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
             mates = new Mate[tempMates.length];
             for (int i = 0; i < tempMates.length; i++) {
                 if (!tempMates[i].isEmpty()) {
-                    mates[i] = new Mate();
+                    mates[i] = new Mate(this);
                     mates[i].setServerUniqueID(tempMates[i]);
                     RetrievePlayer.requestServer(mates[i]);
                 }

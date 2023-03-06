@@ -53,9 +53,16 @@ public class UpdatePlayer {
     private static String buildParam(Player player) {
 //x
         //y
+
+        float realX = player.getRealX();
+        float realY = player.getRealY();
+
+
         String param = "?";
-        param = param + "x="+player.getX();
-        param = param + "&y="+player.getY();
+//        param = param + "x="+player.getX();
+        param = param + "x="+realX;
+//        param = param + "&y="+player.getY();
+        param = param + "&y="+realY;
 //        param = param + "&boxWidth="+player.getBox().getWidth();
 //        param = param + "&boxHeight="+player.getBox().getHeight();
         param = param + "&serverUniqueID="+player.getServerUniqueID();
