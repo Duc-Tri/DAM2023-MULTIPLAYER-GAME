@@ -71,6 +71,10 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         firebase.updateUser();
         setSCREEN_WIDTH(Gdx.graphics.getWidth());
         setSCREEN_HEIGHT(Gdx.graphics.getHeight());
+//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getWidth());
+//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getHeight());
+
+
         createCamera();
         setViewport(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera));
         setJoystick(new Joystick(100, 100, 200));

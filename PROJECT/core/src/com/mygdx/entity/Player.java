@@ -135,10 +135,7 @@ public class Player implements Entity{
             textureRegion = textureAtlas.findRegion("DOWN_" + compteurDown);
         }
         getSprite().setRegion(textureRegion);
-        getSprite().setX(tempSpriteX);
-        getSprite().setY(tempSpriteY);
-        getSprite().scale(2.0f);
-        getSprite().setColor(spriteTint);
+
     }
 
     public int getCompteurUp() {
