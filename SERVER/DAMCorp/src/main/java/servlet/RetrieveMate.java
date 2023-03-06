@@ -1,4 +1,4 @@
-
+package servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,16 +7,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import game.Game;
+import game.entity.Player;
+
 /**
- * Servlet implementation class Hello
+ * Servlet implementation class RetrieveMate
  */
-public class Hello extends HttpServlet {
+public class RetrieveMate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Game game = new Game();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Hello() {
+    public RetrieveMate() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,8 +30,16 @@ public class Hello extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		System.out.println("Test");
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		
+		if( request.getParameter("serverUniqueID")!=null) {
+//			System.out.println("RetrieveMate  " );
+			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"));
+//			System.out.println("RetrieveMate  "+player );
+			response.getWriter().append(game.retrieveMate(player));
+//		System.out.println("response " + response.toString());
+		}
 	}
 
 	/**
