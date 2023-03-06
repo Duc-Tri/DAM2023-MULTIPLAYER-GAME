@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class Firebase {
 
@@ -27,29 +28,29 @@ public class Firebase {
         filehandle= Gdx.files.internal(jsonPath);
         byteArray = filehandle.readBytes();
     }
-    public boolean connect(){
+    public boolean connect(){ try {
+        InputStream inputStream = new ByteArrayInputStream(byteArray);
         try {
-            InputStream inputStream = new ByteArrayInputStream(byteArray);
-            try {
-                options = new FirebaseOptions.Builder()
-                        .setCredentials(GoogleCredentials.fromStream(inputStream))
-                        .setDatabaseUrl(url)
-                        .build();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            firebaseApp = FirebaseApp.initializeApp(options);
-        } catch (RuntimeException e) {
+            options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(inputStream))
+                    .setDatabaseUrl(url)
+                    .build();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        firebaseApp = FirebaseApp.initializeApp(options);
+    } catch (RuntimeException e) {
+        throw new RuntimeException(e);
+    }
         if(firebaseApp!= null){
             firebaseDatabase = FirebaseDatabase.getInstance(FirebaseApp.getInstance());
 
             return true;
         }else{
             return false;
-         }
+        }
+
 
     }
     public void updateUser() {

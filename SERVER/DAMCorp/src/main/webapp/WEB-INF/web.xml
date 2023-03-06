@@ -11,22 +11,52 @@
   </welcome-file-list>
   <servlet>
     <description></description>
-    <display-name>Hello</display-name>
-    <servlet-name>Hello</servlet-name>
-    <servlet-class>Hello</servlet-class>
+    <display-name>NewPlayer</display-name>
+    <servlet-name>NewPlayer</servlet-name>
+    <servlet-class>servlet.NewPlayer</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Hello</servlet-name>
-    <url-pattern>/Hello</url-pattern>
+    <servlet-name>NewPlayer</servlet-name>
+    <url-pattern>/NewPlayer</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>PlayerPosition</display-name>
-    <servlet-name>PlayerPosition</servlet-name>
-    <servlet-class>PlayerPosition</servlet-class>
+    <display-name>RetrievePlayer</display-name>
+    <servlet-name>RetrievePlayer</servlet-name>
+    <servlet-class>servlet.RetrievePlayer</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>PlayerPosition</servlet-name>
-    <url-pattern>/PlayerPosition</url-pattern>
+    <servlet-name>RetrievePlayer</servlet-name>
+    <url-pattern>/RetrievePlayer</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RetrieveUpdatePlayer</display-name>
+    <servlet-name>RetrieveUpdatePlayer</servlet-name>
+    <servlet-class>servlet.RetrieveUpdatePlayer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RetrieveUpdatePlayer</servlet-name>
+    <url-pattern>/RetrieveUpdatePlayer</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UpdatePlayer</display-name>
+    <servlet-name>UpdatePlayer</servlet-name>
+    <servlet-class>servlet.UpdatePlayer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdatePlayer</servlet-name>
+    <url-pattern>/UpdatePlayer</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RetrieveMate</display-name>
+    <servlet-name>RetrieveMate</servlet-name>
+    <servlet-class>servlet.RetrieveMate</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RetrieveMate</servlet-name>
+    <url-pattern>/RetrieveMate</url-pattern>
   </servlet-mapping>
 </web-app>
