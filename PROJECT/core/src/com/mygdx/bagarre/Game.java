@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
 import com.mygdx.client.RetrievePlayer;
+import com.mygdx.client.RetrieveUpdatePlayer;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.component.Joystick;
 import com.mygdx.entity.Mate;
@@ -129,6 +130,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
             display = false;
         }
+
         UpdatePlayer.requestServer(player);
         String[] tempMates = RetrieveMate.requestServer(player);
         createMates(tempMates);
@@ -139,6 +141,20 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         map.getTiledMapRenderer().setView(camera);
         map.getTiledMapRenderer().render();
         batch.begin();
+
+
+
+
+        for(int i =0 ; i < mates.length ; i ++){
+//            if(!mates[i].isStarted()){
+//                mates[i].run();
+//            }
+            RetrieveUpdatePlayer.requestServer(mates[i]);
+
+            mates[i].getSprite().draw(batch);
+        }
+
+
         myPlayerSprite.draw(batch);
         batch.end();
         if (display) {
@@ -147,7 +163,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void createMates(String[] tempMates) {
-        if (mates.length == 0) {
+        if (tempMates !=  null && tempMates.length>0 &&  mates.length == 0) {
             mates = new Mate[tempMates.length];
             for (int i = 0; i < tempMates.length; i++) {
                 if (!tempMates[i].isEmpty()) {

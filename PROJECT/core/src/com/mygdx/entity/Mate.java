@@ -2,6 +2,8 @@ package com.mygdx.entity;
 
 public class Mate extends Player implements Runnable{
 
+
+    boolean started;
     int timeout = 99999999;
     @Override
     public void run() {
@@ -10,7 +12,7 @@ public class Mate extends Player implements Runnable{
         for(int i = 0  ; i < 50; i++){
             System.out.println("Hello  thread numéro random -> " + random );
             try {
-                Thread.sleep(2000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -19,5 +21,22 @@ public class Mate extends Player implements Runnable{
 
 
         System.out.println("fin tache");
+    }
+
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

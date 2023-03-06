@@ -42,7 +42,7 @@ public class Game {
 //		System.out.println("parameter " + parameter);
 //		System.out.println("parameter " + parameter);
 		
-		if(parameter!= null) {
+		if(parameter!= null && !parameter.isEmpty()) {
 			int serverId = Integer.parseInt(parameter);
 			
 			return players[serverId];	

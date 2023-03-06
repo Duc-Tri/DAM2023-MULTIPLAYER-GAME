@@ -1,5 +1,7 @@
 package com.mygdx.client;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.entity.Player;
 
 import java.io.BufferedReader;
@@ -14,7 +16,7 @@ public class RetrievePlayer {
 
     public static void requestServer(Player player) {
 
-        String GET_URL = "http://172.16.200.237:8080/DAMCorp/RetrievePlayer";
+        String GET_URL = "http://172.16.200.104:8080/DAMCorp/RetrievePlayer";
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
@@ -32,12 +34,16 @@ public class RetrievePlayer {
 
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
-                    System.out.println("inputLine " + inputLine);
+//                    System.out.println("inputLine " + inputLine);
                 }
                 in.close();
 
                 // print result
-                System.out.println("RetrievePlayer ===" + response.toString());
+//                System.out.println("RetrievePlayer ===" + response.toString());
+
+                String [] tempString = String.valueOf(response).split(";");
+
+                updatePlayer(player, tempString);
 
 //                return result;
 
@@ -52,6 +58,69 @@ public class RetrievePlayer {
         }
 
 //        return null;
+    }
+
+    private static void updatePlayer(Player player, String[] tempString) {
+
+        if(tempString[0]!=null  && !tempString[0].isEmpty()){
+            player.setBox(new Rectangle());
+            player.initializeSprite();
+            player.setX(Float.parseFloat(tempString[0]));
+            player.setY(Float.parseFloat(tempString[1]));
+            player.getBox().setWidth(Float.parseFloat(tempString[2]));
+            player.getBox().setHeight(Float.parseFloat(tempString[3]));
+            player.setUniqueID(tempString[4]);
+            player.setServerUniqueID(tempString[5]);
+//            player.setSpriteTint(  new Color(  (int) Long.parseLong(tempString[6]) ) );//, 16);). Integer.parseInt());
+            player.setFindRegion(tempString[6]);
+            player.setTextureAtlasPath(tempString[7]);
+            player.setScale(Float.parseFloat(tempString[8]));
+//            System.out.println();
+//            System.out.println(player.getServerUniqueID());
+//            System.out.println(player.getX());
+//            System.out.println(player.getY());
+//            System.out.println(player.getBox().getWidth());
+//            System.out.println(player.getBox().getHeight());
+//            System.out.println(player.getUniqueID());
+//            System.out.println(player.getSpriteTint());
+//            System.out.println(player.getFindRegion());
+//            System.out.println(player.getTextureAtlasPath());
+//            System.out.println(player.getScale());
+//            System.out.println();
+//            System.out.println(player.getServerUniqueID());
+//            System.out.println(player.getX());
+//            System.out.println(player.getY());
+//            System.out.println(player.getBox().getWidth());
+//            System.out.println(player.getBox().getHeight());
+//            System.out.println(player.getUniqueID());
+//            System.out.println(player.getSpriteTint());
+//            System.out.println(player.getFindRegion());
+//            System.out.println(player.getTextureAtlasPath());
+//            System.out.println(player.getScale());
+//            System.out.println();
+//            System.out.println(player.getServerUniqueID());
+//            System.out.println(player.getX());
+//            System.out.println(player.getY());
+//            System.out.println(player.getBox().getWidth());
+//            System.out.println(player.getBox().getHeight());
+//            System.out.println(player.getUniqueID());
+//            System.out.println(player.getSpriteTint());
+//            System.out.println(player.getFindRegion());
+//            System.out.println(player.getTextureAtlasPath());
+//            System.out.println(player.getScale());
+//            System.out.println();
+//            System.out.println(player.getServerUniqueID());
+//            System.out.println(player.getX());
+//            System.out.println(player.getY());
+//            System.out.println(player.getBox().getWidth());
+//            System.out.println(player.getBox().getHeight());
+//            System.out.println(player.getUniqueID());
+//            System.out.println(player.getSpriteTint());
+//            System.out.println(player.getFindRegion());
+//            System.out.println(player.getTextureAtlasPath());
+//            System.out.println(player.getScale());
+        }
+
     }
 
     private static String buildParam(Player player) {

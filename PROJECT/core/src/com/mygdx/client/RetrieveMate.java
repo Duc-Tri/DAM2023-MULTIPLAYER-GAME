@@ -12,7 +12,7 @@ import java.net.URL;
 public class RetrieveMate {
     public static String[] requestServer(Player player) {
 
-        String GET_URL = "http://172.16.200.237:8080/DAMCorp/RetrieveMate";
+        String GET_URL = "http://172.16.200.104:8080/DAMCorp/RetrieveMate";
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
@@ -30,23 +30,24 @@ public class RetrieveMate {
 
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
-                    System.out.println("inputLine " + inputLine);
+//                    System.out.println("inputLine " + inputLine);
                 }
                 in.close();
 
                 // print result
-                System.out.println(response.toString());
+//                System.out.println(response.toString());
+
 
                 String[] mates = String.valueOf(response).split(";");
-                for (int i = 0; i < mates.length; i++) {
-                    System.out.println(i + " mate == " + mates[i]);
-                }
+//                for (int i = 0; i < mates.length; i++) {
+//                    System.out.println(i + " mate == " + mates[i]);
+//                }
                 return mates;
 
             } else {
                 System.out.println("GET request did not work.");
             }
-
+//            con.disconnect();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

@@ -40,7 +40,7 @@ public class RetrievePlayer extends HttpServlet {
 			 response.getWriter().append(";"+player.getBoxHeight());
 			 response.getWriter().append(";"+player.getUniqueID());
 			 response.getWriter().append(";"+player.getServerUniqueID());
-			 response.getWriter().append(";"+player.getSpriteColorInt());
+//			 response.getWriter().append(";"+player.getSpriteColorInt());
 			 response.getWriter().append(";"+player.getFindRegion());
 			 response.getWriter().append(";"+player.getTextureAtlasPath());
 			 response.getWriter().append(";"+player.getScale());
