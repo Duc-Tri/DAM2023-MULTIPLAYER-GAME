@@ -1,4 +1,4 @@
-package entitygestion;
+package com.mygdx.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -24,6 +24,12 @@ public class Player implements Entity{
 
     public String uniqueID;
     public Color spriteTint; // from unique ID
+
+    String findRegion = "UP_1";
+    private String textureAtlasPath = "tiny_16x16.atlas";
+
+    float scale  = 2.0f;
+    String serverUniqueID;
 
     public Player() {
 
@@ -60,11 +66,11 @@ public class Player implements Entity{
 //        batch = new SpriteBatch();
 
         if (textureAtlas == null)
-            textureAtlas = new TextureAtlas(Gdx.files.internal("tiny_16x16.atlas"));
+            textureAtlas = new TextureAtlas(Gdx.files.internal(this.textureAtlasPath));
 
-        textureRegion = textureAtlas.findRegion("UP_1");
+        textureRegion = textureAtlas.findRegion(findRegion);
         sprite = new Sprite(textureRegion);
-        sprite.scale(2.0f);
+        sprite.scale(scale);
         sprite.setColor(spriteTint);
     }
 
@@ -121,7 +127,8 @@ public class Player implements Entity{
             compteurUp = 0;
             compteurRight = 0;
             compteurLeft++;
-            textureRegion = textureAtlas.findRegion("LEFT_" + compteurLeft);
+            findRegion = "LEFT_" + compteurLeft;
+            textureRegion = textureAtlas.findRegion(findRegion);
         }
 
         if (string.contentEquals("RIGHT")) {
@@ -133,6 +140,7 @@ public class Player implements Entity{
             compteurUp = 0;
             compteurLeft = 0;
             compteurRight++;
+            findRegion = "RIGHT_" + compteurRight;
             textureRegion = textureAtlas.findRegion("RIGHT_" + compteurRight);
         }
 
@@ -145,6 +153,7 @@ public class Player implements Entity{
             compteurRight = 0;
             compteurLeft = 0;
             compteurUp++;
+            findRegion = "UP_" + compteurUp;
             textureRegion = textureAtlas.findRegion("UP_" + compteurUp);
         }
 
@@ -157,6 +166,7 @@ public class Player implements Entity{
             compteurRight = 0;
             compteurLeft = 0;
             compteurDown++;
+            findRegion = "DOWN_" + compteurDown;
             textureRegion = textureAtlas.findRegion("DOWN_" + compteurDown);
         }
 
@@ -169,4 +179,99 @@ public class Player implements Entity{
 //        playerSprite = player.getSprite();
     }
 
+    public int getCompteurUp() {
+        return compteurUp;
+    }
+
+    public void setCompteurUp(int compteurUp) {
+        this.compteurUp = compteurUp;
+    }
+
+    public int getCompteurDown() {
+        return compteurDown;
+    }
+
+    public void setCompteurDown(int compteurDown) {
+        this.compteurDown = compteurDown;
+    }
+
+    public int getCompteurLeft() {
+        return compteurLeft;
+    }
+
+    public void setCompteurLeft(int compteurLeft) {
+        this.compteurLeft = compteurLeft;
+    }
+
+    public int getCompteurRight() {
+        return compteurRight;
+    }
+
+    public void setCompteurRight(int compteurRight) {
+        this.compteurRight = compteurRight;
+    }
+
+    public Rectangle getBox() {
+        return box;
+    }
+
+    public void setBox(Rectangle box) {
+        this.box = box;
+    }
+
+    public static void setTextureAtlas(TextureAtlas textureAtlas) {
+        Player.textureAtlas = textureAtlas;
+    }
+
+    public void setTextureRegion(TextureRegion textureRegion) {
+        this.textureRegion = textureRegion;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
+    }
+
+    public Color getSpriteTint() {
+        return spriteTint;
+    }
+
+    public void setSpriteTint(Color spriteTint) {
+        this.spriteTint = spriteTint;
+    }
+
+    public String getFindRegion() {
+        return findRegion;
+    }
+
+    public void setFindRegion(String findRegion) {
+        this.findRegion = findRegion;
+    }
+
+    public String getTextureAtlasPath() {
+        return textureAtlasPath;
+    }
+
+    public void setTextureAtlasPath(String textureAtlasPath) {
+        this.textureAtlasPath = textureAtlasPath;
+    }
+
+    public float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
+
+    public String getServerUniqueID() {
+        return serverUniqueID;
+    }
+
+    public void setServerUniqueID(String serverUniqueID) {
+        this.serverUniqueID = serverUniqueID;
+    }
 }

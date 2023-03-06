@@ -19,14 +19,19 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 //import com.libgdx.entitygestion.Player;
+import com.mygdx.client.NewPlayer;
+import com.mygdx.client.RetrieveMate;
+import com.mygdx.client.RetrievePlayer;
+import com.mygdx.client.UpdatePlayer;
 import com.mygdx.component.Joystick;
-import entitygestion.Player;
+import com.mygdx.entity.Mate;
+import com.mygdx.entity.Player;
 import com.mygdx.firebase.Firebase;
 import com.mygdx.map.Map;
 
 
 public class Game extends ApplicationAdapter implements InputProcessor {
-    boolean display=false;
+    boolean display = false;
     int refreshValue = 0;
     int speedOfSprite = 3;//Plus c'est grand plus c'est lent
     Map map;
@@ -37,7 +42,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     SpriteBatch batch;
     TextureAtlas textureAtlas;
     Sprite myPlayerSprite;
-    Player myPlayer;
+    Player player;
     TextureRegion textureRegion;
     int sizeOfStep = 40;
     int calculatedWidth = 0;
@@ -47,7 +52,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     public static boolean lockOnListReadFromDB = false;
 
-
+    private Mate[] mates = new Mate[0];
 
     @Override
     public void resize(int width, int height) {
@@ -56,7 +61,8 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void create() {
-        Firebase firebase = new Firebase("https://damcorp-bc7bc-default-rtdb.firebaseio.com/","json/key.json");
+
+        Firebase firebase = new Firebase("https://damcorp-bc7bc-default-rtdb.firebaseio.com/", "json/key.json");
         firebase.displayJson();
         firebase.connect();
         firebase.updateUser();
@@ -64,7 +70,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         setSCREEN_HEIGHT(Gdx.graphics.getHeight());
         createCamera();
         setViewport(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera));
-        setJoystick(new Joystick(100,100,200));
+        setJoystick(new Joystick(100, 100, 200));
         setShapeRenderer(new ShapeRenderer());
         setMap(createGameMap("sampleMap.tmx"));
         map.render();
@@ -77,7 +83,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     private Map createGameMap(String s) {
         TiledMap tempTiledMap = new TmxMapLoader().load(s);
-        return new Map(tempTiledMap,new OrthogonalTiledMapRenderer(tempTiledMap));
+        return new Map(tempTiledMap, new OrthogonalTiledMapRenderer(tempTiledMap));
     }
 
     private void createCamera() {
@@ -98,31 +104,36 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void initializeCharacter() {
-        myPlayer = new Player();
-        myPlayer.initializeSprite();
-        myPlayerSprite = myPlayer.getSprite();
-        textureAtlas = myPlayer.getTextureAtlas();
-        textureRegion = myPlayer.getTextureRegion();
-        myPlayerSprite.setPosition(50, 50);
+        player = new Player();
+        player.initializeSprite();
+        myPlayerSprite = player.getSprite();
+        textureAtlas = player.getTextureAtlas();
+        textureRegion = player.getTextureRegion();
+        myPlayerSprite.setPosition(player.getX(), player.getY());
+        NewPlayer.requestServer(player);
     }
-
 
 
     @Override
     public void render() {
-        displayJoystick();
-        if(Gdx.input.isTouched(0) ) {
-            refreshValue++;
-              if(refreshValue==speedOfSprite){
 
-                refreshValue=0;
+        displayJoystick();
+        if (Gdx.input.isTouched(0)) {
+            refreshValue++;
+            if (refreshValue == speedOfSprite) {
+
+                refreshValue = 0;
                 movePlayer(joystick.getDirectionInput());
             }
-        }
-        else{
+        } else {
 
             display = false;
         }
+        UpdatePlayer.requestServer(player);
+        String[] tempMates = RetrieveMate.requestServer(player);
+        createMates(tempMates);
+
+
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         map.getTiledMapRenderer().setView(camera);
@@ -130,15 +141,29 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         batch.begin();
         myPlayerSprite.draw(batch);
         batch.end();
-        if(display){
-           joystick.render(shapeRenderer);
+        if (display) {
+            joystick.render(shapeRenderer);
         }
     }
+
+    private void createMates(String[] tempMates) {
+        if (mates.length == 0) {
+            mates = new Mate[tempMates.length];
+            for (int i = 0; i < tempMates.length; i++) {
+                if (!tempMates[i].isEmpty()) {
+                    mates[i] = new Mate();
+                    mates[i].setServerUniqueID(tempMates[i]);
+                    RetrievePlayer.requestServer(mates[i]);
+                }
+            }
+        }
+    }
+
     private void displayJoystick() {
-        if(Gdx.input.isTouched(0)){
-            if(!display){
-                if(!joystick.isPositionFixe()){
-                    joystick.setPosition(Gdx.input.getX(),SCREEN_HEIGHT-Gdx.input.getY());
+        if (Gdx.input.isTouched(0)) {
+            if (!display) {
+                if (!joystick.isPositionFixe()) {
+                    joystick.setPosition(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY());
                 }
             }
             display = true;
@@ -151,23 +176,25 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     public boolean keyUp(int keycode) {
         return false;
     }
+
     @Override
     public boolean keyDown(int keycode) {
-        display =true;
+        display = true;
         movePlayer(keycode);
         return false;
     }
+
     private void movePlayer(int keycode) {
         if (keycode == Input.Keys.LEFT) {
-           myPlayer.animate("LEFT");
-             myPlayer.setX(myPlayer.getX() - sizeOfStep);
-            if (myPlayer.getX() < SCREEN_WIDTH * 1.0 / 4.0) {
+            player.animate("LEFT");
+            player.setX(player.getX() - sizeOfStep);
+            if (player.getX() < SCREEN_WIDTH * 1.0 / 4.0) {
                 if (camera.position.x < SCREEN_WIDTH * 1.0 / 4.0) {
-                    if (myPlayer.getX() > 0) {
-                        myPlayer.setX(myPlayer.getX() + sizeOfStep);
+                    if (player.getX() > 0) {
+                        player.setX(player.getX() + sizeOfStep);
                     }
                 } else {
-                    myPlayer.setX(myPlayer.getX() + sizeOfStep);
+                    player.setX(player.getX() + sizeOfStep);
 
                     camera.position.x -= sizeOfStep;
 
@@ -175,49 +202,49 @@ public class Game extends ApplicationAdapter implements InputProcessor {
             }
         }
         if (keycode == Input.Keys.RIGHT) {
-            myPlayer.animate("RIGHT");
-            myPlayer.setX(myPlayer.getX() + sizeOfStep);
-            if (myPlayer.getX() > SCREEN_WIDTH * 3.0 / 4.0) {
+            player.animate("RIGHT");
+            player.setX(player.getX() + sizeOfStep);
+            if (player.getX() > SCREEN_WIDTH * 3.0 / 4.0) {
                 if (camera.position.x > calculatedWidth - SCREEN_WIDTH * 1.0 / 4.0) {
-                    if (myPlayer.getX() < SCREEN_WIDTH) {
-                        myPlayer.setX(myPlayer.getX() - sizeOfStep);
+                    if (player.getX() < SCREEN_WIDTH) {
+                        player.setX(player.getX() - sizeOfStep);
                     }
                 } else {
-                    myPlayer.setX(myPlayer.getX() - sizeOfStep);
+                    player.setX(player.getX() - sizeOfStep);
                     camera.position.x += sizeOfStep;
                 }
             }
         }
         if (keycode == Input.Keys.UP) {
-            myPlayer.animate("UP");
-            myPlayer.setY(myPlayer.getY() + sizeOfStep);
-            if (myPlayer.getY() > SCREEN_HEIGHT * 3.0 / 4.0) {
+            player.animate("UP");
+            player.setY(player.getY() + sizeOfStep);
+            if (player.getY() > SCREEN_HEIGHT * 3.0 / 4.0) {
                 if (camera.position.y > calculatedHeight - SCREEN_HEIGHT * 1.0 / 4.0) {
-                    if (myPlayer.getY() < SCREEN_HEIGHT) {
-                        myPlayer.setY(myPlayer.getY() - sizeOfStep);
+                    if (player.getY() < SCREEN_HEIGHT) {
+                        player.setY(player.getY() - sizeOfStep);
                     }
                 } else {
-                    myPlayer.setY(myPlayer.getY() - sizeOfStep);
+                    player.setY(player.getY() - sizeOfStep);
                     camera.position.y += sizeOfStep;
                 }
             }
         }
         if (keycode == Input.Keys.DOWN) {
-            myPlayer.animate("DOWN");
-            myPlayer.setY(myPlayer.getY() - sizeOfStep);
-            if (myPlayer.getY() < SCREEN_HEIGHT * 1.0 / 4.0) {
+            player.animate("DOWN");
+            player.setY(player.getY() - sizeOfStep);
+            if (player.getY() < SCREEN_HEIGHT * 1.0 / 4.0) {
                 if (camera.position.y < SCREEN_HEIGHT * 1.0 / 4.0) {
-                    if (myPlayer.getY() > 0) {
-                        myPlayer.setY(myPlayer.getY() + sizeOfStep);
+                    if (player.getY() > 0) {
+                        player.setY(player.getY() + sizeOfStep);
                     }
                 } else {
-                    myPlayer.setY(myPlayer.getY() + sizeOfStep);
+                    player.setY(player.getY() + sizeOfStep);
                     camera.position.y -= sizeOfStep;
                 }
             }
         }
         batch.begin();
-        myPlayerSprite = myPlayer.getSprite();
+        myPlayerSprite = player.getSprite();
         myPlayerSprite.draw(batch);
         batch.end();
         camera.update(false);
@@ -254,12 +281,12 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
         batch.dispose();
         shapeRenderer.dispose();
     }
 
-    public void update(){
+    public void update() {
         Vector3 vector = new Vector3();
         camera.unproject(vector.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         joystick.update(vector.x, vector.y);
@@ -354,12 +381,12 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         this.myPlayerSprite = myPlayerSprite;
     }
 
-    public Player getMyPlayer() {
-        return myPlayer;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setMyPlayer(Player myPlayer) {
-        this.myPlayer = myPlayer;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public TextureRegion getTextureRegion() {

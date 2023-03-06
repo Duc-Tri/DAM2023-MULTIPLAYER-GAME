@@ -1,6 +1,6 @@
-package entitygestion;
+package com.mygdx.entity;
 
-public class Mates extends Player implements Runnable{
+public class Mate extends Player implements Runnable{
 
     int timeout = 99999999;
     @Override

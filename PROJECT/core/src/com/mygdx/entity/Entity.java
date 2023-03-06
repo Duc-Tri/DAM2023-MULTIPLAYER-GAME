@@ -1,4 +1,4 @@
-package entitygestion;
+package com.mygdx.entity;
 
 
 public interface Entity {
