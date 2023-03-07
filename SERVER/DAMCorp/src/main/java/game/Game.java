@@ -55,16 +55,18 @@ public class Game {
 	public String retrieveMate(Player player) {
 		// TODO Auto-generated method stub
 		String tempString ="";
+		int cpt=0;
 //		System.out.println("players.length " + players.length);
 		for(int i =  0  ; i < players.length; i++){
 //			System.out.println("i " + i);
 			if( player!= null && !player.getServerUniqueID().equalsIgnoreCase(i+"") &&  (players[i]!=null)){
 //				System.out.println("Fine i " + i);
-				if(i==0) {
+				if(cpt==0) {
 					tempString=""+i;	
 				}else {
 					tempString= tempString+";"+i;	
 				}	
+				cpt++;
 //				System.out.println("tempString  " + tempString);
 			}
 			

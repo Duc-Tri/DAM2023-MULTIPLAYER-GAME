@@ -29,6 +29,8 @@ import com.mygdx.entity.Player;
 import com.mygdx.firebase.Firebase;
 import com.mygdx.map.Map;
 
+import java.util.ArrayList;
+
 
 public class Game extends ApplicationAdapter implements InputProcessor {
     String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
@@ -50,17 +52,13 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     int calculatedHeight = 0;
     Joystick joystick;
     ShapeRenderer shapeRenderer;
-    String URLServer = // "http://192.168.42.21:8080/DAMCorp/"; // TRI maison mobile
-
-            "http://192.168.1.101:8080/DAMCorp/"; // TRI maison box
-
-    // "http://91.161.85.206:49153/DAMCorp/"; // PHILIPPE maison
-
-    //"http://172.16.200.104:8080/DAMCorp/"; // MATHIAS greta
-
+//    String URLServer = "http://172.16.200.104:8080/DAMCorp/";
+    String URLServer = "http://91.161.85.206:49153/DAMCorp/";
     public static boolean lockOnListReadFromDB = false;
 
-    private Mate[] mates = new Mate[0];
+    private ArrayList<Mate> mates = new ArrayList<>();
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -70,15 +68,15 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     @Override
     public void create() {
 
-//        Firebase firebase = new Firebase(getFirebaseURL(), "json/key.json");
-//        firebase.displayJson();
-//        firebase.connect();
-//        firebase.updateUser();
-
+        Firebase firebase = new Firebase(getFirebaseURL(), "json/key.json");
+        firebase.displayJson();
+        firebase.connect();
+        firebase.updateUser();
         setSCREEN_WIDTH(Gdx.graphics.getWidth());
         setSCREEN_HEIGHT(Gdx.graphics.getHeight());
 //        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getWidth());
 //        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getHeight());
+
 
         createCamera();
         setViewport(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera));
@@ -125,6 +123,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         NewPlayer.requestServer(player);
     }
 
+
     @Override
     public void render() {
         displayJoystick();
@@ -146,9 +145,13 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         map.getTiledMapRenderer().render();
         batch.begin();
 
-        for (int i = 0; i < mates.length; i++) {
-            RetrieveUpdatePlayer.requestServer(mates[i]);
-            mates[i].getSprite().draw(batch);
+        for(int i =0 ; i < mates.size() ; i ++){
+            if(mates.get(i)!= null){
+                RetrieveUpdatePlayer.requestServer(mates.get(i));
+
+                mates.get(i).getSprite().draw(batch);
+            }
+
         }
 
         myPlayerSprite.draw(batch);
@@ -159,16 +162,28 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void createMates(String[] tempMates) {
-        if (tempMates != null && tempMates.length > 0 && mates.length == 0) {
-            mates = new Mate[tempMates.length];
-            for (int i = 0; i < tempMates.length; i++) {
-                if (!tempMates[i].isEmpty()) {
-                    mates[i] = new Mate(this);
-                    mates[i].setServerUniqueID(tempMates[i]);
-                    RetrievePlayer.requestServer(mates[i]);
+        //                    mates[i] = new Mate(this);
+//                    mates[i].setServerUniqueID(tempMates[i]);
+//                    RetrievePlayer.requestServer(mates[i]);
+        if(tempMates !=  null){
+
+
+        for (int i0 = 0; i0 < tempMates.length; i0++) {
+            boolean finded = false;
+            for(int i1 = 0; i1 < mates.size(); i1++){
+                if(tempMates[i0] != null && tempMates[i0].equalsIgnoreCase(mates.get(i1).getServerUniqueID())   ){
+                    finded = true;
                 }
             }
+            if(!finded){
+                mates.add(new Mate(this));
+                mates.get(mates.size()-1).setServerUniqueID(tempMates[i0]);
+                RetrievePlayer.requestServer(mates.get(mates.size()-1));
+                mates.get(mates.size()-1).initializeSprite();
+            }
         }
+        }
+
     }
 
     private void displayJoystick() {
@@ -210,7 +225,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
-
         if (keycode == Input.Keys.RIGHT) {
             player.animate("RIGHT");
             player.setX(player.getX() + sizeOfStep);
@@ -225,7 +239,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
-
         if (keycode == Input.Keys.UP) {
             player.animate("UP");
             player.setY(player.getY() + sizeOfStep);
@@ -240,7 +253,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
-
         if (keycode == Input.Keys.DOWN) {
             player.animate("DOWN");
             player.setY(player.getY() - sizeOfStep);
@@ -255,12 +267,10 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
-
         batch.begin();
         myPlayerSprite = player.getSprite();
         myPlayerSprite.draw(batch);
         batch.end();
-
         camera.update(false);
     }
 
