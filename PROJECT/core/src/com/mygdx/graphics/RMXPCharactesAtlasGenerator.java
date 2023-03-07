@@ -34,7 +34,7 @@ public class RMXPCharactesAtlasGenerator {
     static final String PNG_FILENAME = "PC Computer - RPG Maker XP - Human Characters.png";
 
     // public pour lecture du testeur
-    public static final int MAX_CHARACTERS = 96; // nb. personnages "valides" selon notre format défini
+    public static final int MAX_CHARACTERS = 98; // nb. personnages "valides" selon notre format défini
     static final int FRAME_WIDTH = 32;
     static final int FRAME_HEIGHT = 48;
     static final int HORI_PAD = 2; // marge et padding horizontal
@@ -79,7 +79,7 @@ public class RMXPCharactesAtlasGenerator {
 
             for (int xchar = 0; xchar < CHAR_HORI; xchar++) {
 
-                if (nChar > MAX_CHARACTERS)
+                if (nChar >= MAX_CHARACTERS)
                     break;
 
                 for (int iDir = 0; iDir < DIRS.length; iDir++) {
@@ -112,7 +112,6 @@ public class RMXPCharactesAtlasGenerator {
 
         System.out.println(sbAtlas);
     }
-
 
 }
 

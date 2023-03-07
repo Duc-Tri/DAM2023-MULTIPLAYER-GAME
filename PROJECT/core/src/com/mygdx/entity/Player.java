@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.bagarre.Game;
+import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
 
 
 public class Player implements Entity {
@@ -27,31 +28,42 @@ public class Player implements Entity {
     public String uniqueID;
     public Color spriteTint; // from unique ID
 
-    String findRegion = "UP_1";
-    private String textureAtlasPath = "tiny_16x16.atlas";
+    String findRegion = "";
+
+    private String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
+
 
     float scale = 2.0f;
     String serverUniqueID;
 
+    String RMXP_CHARACTER; // le personnage dans la feuille de sprites
 
     public Player(Game game) {
         this.game = game;
+
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
         uniqueID = "player" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
+
+        RMXP_CHARACTER = (int)(Math.random() * RMXPCharactesAtlasGenerator.MAX_CHARACTERS) + "_";
+        findRegion = RMXP_CHARACTER + "UP_0";
     }
 
     public void initializeSprite() {
         box = new Rectangle(0, 0, 0, 0);
+
         if (textureAtlas == null) {
             textureAtlas = new TextureAtlas(Gdx.files.internal(this.textureAtlasPath));
         }
+
+        System.out.println(" === " + findRegion);
         textureRegion = textureAtlas.findRegion(findRegion);
+
         sprite = new Sprite(textureRegion);
         sprite.scale(scale);
-        sprite.setColor(spriteTint);
+        //sprite.setColor(spriteTint);
     }
 
     public Sprite getSprite() {
@@ -95,48 +107,48 @@ public class Player implements Entity {
         float tempSpriteY = sprite.getY();
 
         if (string.contentEquals("LEFT")) {
-            if (compteurLeft == 12) {
-                compteurLeft = 0;
-            }
             compteurDown = 0;
             compteurUp = 0;
             compteurRight = 0;
             compteurLeft++;
-            findRegion = "LEFT_" + compteurLeft;
+            if (compteurLeft == RMXPCharactesAtlasGenerator.ANIM_FRAMES) {
+                compteurLeft = 0;
+            }
+            findRegion = RMXP_CHARACTER + "LEFT_" + compteurLeft;
             textureRegion = textureAtlas.findRegion(findRegion);
         }
         if (string.contentEquals("RIGHT")) {
-            if (compteurRight == 12) {
-                compteurRight = 0;
-            }
             compteurDown = 0;
             compteurUp = 0;
             compteurLeft = 0;
             compteurRight++;
-            findRegion = "RIGHT_" + compteurRight;
-            textureRegion = textureAtlas.findRegion("RIGHT_" + compteurRight);
+            if (compteurRight == RMXPCharactesAtlasGenerator.ANIM_FRAMES) {
+                compteurRight = 0;
+            }
+            findRegion = RMXP_CHARACTER + "RIGHT_" + compteurRight;
+            textureRegion = textureAtlas.findRegion(findRegion);
         }
         if (string.contentEquals("UP")) {
-            if (compteurUp == 12) {
-                compteurUp = 0;
-            }
             compteurDown = 0;
             compteurRight = 0;
             compteurLeft = 0;
             compteurUp++;
-            findRegion = "UP_" + compteurUp;
-            textureRegion = textureAtlas.findRegion("UP_" + compteurUp);
+            if (compteurUp == RMXPCharactesAtlasGenerator.ANIM_FRAMES) {
+                compteurUp = 0;
+            }
+            findRegion = RMXP_CHARACTER + "UP_" + compteurUp;
+            textureRegion = textureAtlas.findRegion(findRegion);
         }
         if (string.contentEquals("DOWN")) {
-            if (compteurDown == 12) {
-                compteurDown = 0;
-            }
             compteurUp = 0;
             compteurRight = 0;
             compteurLeft = 0;
             compteurDown++;
-            findRegion = "DOWN_" + compteurDown;
-            textureRegion = textureAtlas.findRegion("DOWN_" + compteurDown);
+            if (compteurDown == RMXPCharactesAtlasGenerator.ANIM_FRAMES) {
+                compteurDown = 0;
+            }
+            findRegion = RMXP_CHARACTER + "DOWN_" + compteurDown;
+            textureRegion = textureAtlas.findRegion(findRegion);
         }
         getSprite().setRegion(textureRegion);
 

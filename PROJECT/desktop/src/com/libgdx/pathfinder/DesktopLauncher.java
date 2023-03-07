@@ -15,14 +15,24 @@ public class DesktopLauncher {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
         config.setTitle("PATHFINDER");
-//        config.setWindowedMode(1500, 1000);
+        config.setWindowedMode(1500, 1000);
 
-        RMXPCharactesAtlasGenerator.printlnAtlas();
-        new Lwjgl3Application(new TestCharactersAtlas(), config); // TEST CHARACTERS
 
+        // CLIENT + SERVEUR ---------------------------------------------------
+        new Lwjgl3Application(new Game(), config);
+
+
+        // TEST PATHFINDING ---------------------------------------------------
 //        new Lwjgl3Application(new PathFinder(), config); // TEST A*
+
+
+        // TEST LABYRINTHE ----------------------------------------------------
 //        new Lwjgl3Application(new LabyTest(), config); // MERGE LABYRINTHE + PATH FINDING
-//        new Lwjgl3Application(new Game(), config); // CLIENT + SERVEUR
+
+
+        // TESTS ATLAS PERSONNAGES---------------------------------------------
+//        RMXPCharactesAtlasGenerator.printlnAtlas();
+//        new Lwjgl3Application(new TestCharactersAtlas(), config);
 
     }
 

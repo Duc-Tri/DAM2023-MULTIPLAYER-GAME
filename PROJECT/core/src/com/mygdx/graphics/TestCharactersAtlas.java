@@ -13,7 +13,7 @@ public class TestCharactersAtlas extends ApplicationAdapter implements InputProc
     SpriteBatch batch;
 
     TextureAtlas textureAtlas;
-    private String textureAtlasPath = "charactersRMXP.atlas";
+    private String textureAtlasPath = "characters/RMXP_humans.atlas";
 
     int SCREEN_WIDTH, SCREEN_HEIGHT;
 
@@ -71,7 +71,6 @@ public class TestCharactersAtlas extends ApplicationAdapter implements InputProc
     @Override
     public void dispose() {
         batch.dispose();
-//        img.dispose();
     }
 
     @Override

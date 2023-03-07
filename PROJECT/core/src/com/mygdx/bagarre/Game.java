@@ -50,19 +50,17 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     int calculatedHeight = 0;
     Joystick joystick;
     ShapeRenderer shapeRenderer;
-    String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison 2
+    String URLServer = // "http://192.168.42.21:8080/DAMCorp/"; // TRI maison mobile
 
-        // "http://192.168.1.100:8080/DAMCorp/"; // tri maison 1
+            "http://192.168.1.101:8080/DAMCorp/"; // TRI maison box
 
-        // "http://91.161.85.206:49153/DAMCorp/"; // PHILIPPE maison
+    // "http://91.161.85.206:49153/DAMCorp/"; // PHILIPPE maison
 
-        //"http://172.16.200.104:8080/DAMCorp/"; // MATHIAS
+    //"http://172.16.200.104:8080/DAMCorp/"; // MATHIAS greta
 
     public static boolean lockOnListReadFromDB = false;
 
     private Mate[] mates = new Mate[0];
-
-
 
     @Override
     public void resize(int width, int height) {
@@ -81,7 +79,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         setSCREEN_HEIGHT(Gdx.graphics.getHeight());
 //        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getWidth());
 //        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getHeight());
-
 
         createCamera();
         setViewport(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera));
@@ -128,7 +125,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         NewPlayer.requestServer(player);
     }
 
-
     @Override
     public void render() {
         displayJoystick();
@@ -150,7 +146,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         map.getTiledMapRenderer().render();
         batch.begin();
 
-        for(int i =0 ; i < mates.length ; i ++){
+        for (int i = 0; i < mates.length; i++) {
             RetrieveUpdatePlayer.requestServer(mates[i]);
             mates[i].getSprite().draw(batch);
         }
@@ -163,7 +159,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void createMates(String[] tempMates) {
-        if (tempMates !=  null && tempMates.length>0 &&  mates.length == 0) {
+        if (tempMates != null && tempMates.length > 0 && mates.length == 0) {
             mates = new Mate[tempMates.length];
             for (int i = 0; i < tempMates.length; i++) {
                 if (!tempMates[i].isEmpty()) {
@@ -214,6 +210,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
+
         if (keycode == Input.Keys.RIGHT) {
             player.animate("RIGHT");
             player.setX(player.getX() + sizeOfStep);
@@ -228,6 +225,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
+
         if (keycode == Input.Keys.UP) {
             player.animate("UP");
             player.setY(player.getY() + sizeOfStep);
@@ -242,6 +240,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
+
         if (keycode == Input.Keys.DOWN) {
             player.animate("DOWN");
             player.setY(player.getY() - sizeOfStep);
@@ -256,10 +255,12 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
+
         batch.begin();
         myPlayerSprite = player.getSprite();
         myPlayerSprite.draw(batch);
         batch.end();
+
         camera.update(false);
     }
 
