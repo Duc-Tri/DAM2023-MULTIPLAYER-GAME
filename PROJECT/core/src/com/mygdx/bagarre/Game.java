@@ -50,7 +50,8 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     int calculatedHeight = 0;
     Joystick joystick;
     ShapeRenderer shapeRenderer;
-    String URLServer = "http://172.16.200.104:8080/DAMCorp/";
+//    String URLServer = "http://172.16.200.104:8080/DAMCorp/";
+    String URLServer = "http://91.161.85.206:49153/DAMCorp/";
     public static boolean lockOnListReadFromDB = false;
 
     private Mate[] mates = new Mate[0];
@@ -143,8 +144,11 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         batch.begin();
 
         for(int i =0 ; i < mates.length ; i ++){
-            RetrieveUpdatePlayer.requestServer(mates[i]);
-            mates[i].getSprite().draw(batch);
+            if(mates[i]!= null){
+                RetrieveUpdatePlayer.requestServer(mates[i]);
+                mates[i].getSprite().draw(batch);
+            }
+
         }
 
         myPlayerSprite.draw(batch);
