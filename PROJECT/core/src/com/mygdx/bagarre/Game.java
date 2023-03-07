@@ -29,6 +29,8 @@ import com.mygdx.entity.Player;
 import com.mygdx.firebase.Firebase;
 import com.mygdx.map.Map;
 
+import java.util.ArrayList;
+
 
 public class Game extends ApplicationAdapter implements InputProcessor {
     String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
@@ -54,7 +56,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     String URLServer = "http://91.161.85.206:49153/DAMCorp/";
     public static boolean lockOnListReadFromDB = false;
 
-    private Mate[] mates = new Mate[0];
+    private ArrayList<Mate> mates = new ArrayList<>();
 
 
 
@@ -143,11 +145,11 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         map.getTiledMapRenderer().render();
         batch.begin();
 
-        for(int i =0 ; i < mates.length ; i ++){
-            if(mates[i]!= null){
-                RetrieveUpdatePlayer.requestServer(mates[i]);
+        for(int i =0 ; i < mates.size() ; i ++){
+            if(mates.get(i)!= null){
+                RetrieveUpdatePlayer.requestServer(mates.get(i));
 
-                mates[i].getSprite().draw(batch);
+                mates.get(i).getSprite().draw(batch);
             }
 
         }
@@ -160,16 +162,24 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void createMates(String[] tempMates) {
-        if (tempMates !=  null && tempMates.length>0 &&  mates.length == 0) {
-            mates = new Mate[tempMates.length];
-            for (int i = 0; i < tempMates.length; i++) {
-                if (!tempMates[i].isEmpty()) {
-                    mates[i] = new Mate(this);
-                    mates[i].setServerUniqueID(tempMates[i]);
-                    RetrievePlayer.requestServer(mates[i]);
+        //                    mates[i] = new Mate(this);
+//                    mates[i].setServerUniqueID(tempMates[i]);
+//                    RetrievePlayer.requestServer(mates[i]);
+        for (int i0 = 0; i0 < tempMates.length; i0++) {
+            boolean finded = false;
+            for(int i1 = 0; i1 < mates.size(); i1++){
+                if(tempMates[i0] != null && tempMates[i0].equalsIgnoreCase(mates.get(i1).getServerUniqueID())   ){
+                    finded = true;
                 }
             }
+            if(!finded){
+                mates.add(new Mate(this));
+                mates.get(mates.size()-1).setServerUniqueID(tempMates[i0]);
+                RetrievePlayer.requestServer(mates.get(mates.size()-1));
+                mates.get(mates.size()-1).initializeSprite();
+            }
         }
+
     }
 
     private void displayJoystick() {

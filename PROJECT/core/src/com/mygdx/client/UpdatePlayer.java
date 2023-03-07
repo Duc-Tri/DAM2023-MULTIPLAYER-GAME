@@ -34,9 +34,11 @@ public class UpdatePlayer {
                 System.out.println("GET request did not work.");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            e.printStackTrace();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
