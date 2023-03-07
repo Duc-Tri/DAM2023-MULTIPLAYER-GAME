@@ -33,7 +33,7 @@ public class Player implements Entity {
     private String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
 
 
-    float scale = 2.0f;
+    //////////float scale = 2.0f;
     String serverUniqueID;
 
     String RMXP_CHARACTER; // le personnage dans la feuille de sprites
@@ -62,7 +62,7 @@ public class Player implements Entity {
         textureRegion = textureAtlas.findRegion(findRegion);
 
         sprite = new Sprite(textureRegion);
-        sprite.scale(scale);
+        //sprite.scale(scale);
         //sprite.setColor(spriteTint);
     }
 
@@ -236,13 +236,13 @@ public class Player implements Entity {
         this.textureAtlasPath = textureAtlasPath;
     }
 
-    public float getScale() {
-        return scale;
-    }
+//    public float getScale() {
+//        return scale;
+//    }
 
-    public void setScale(float scale) {
-        this.scale = scale;
-    }
+//    public void setScale(float scale) {
+//        this.scale = scale;
+//    }
 
     public String getServerUniqueID() {
         return serverUniqueID;

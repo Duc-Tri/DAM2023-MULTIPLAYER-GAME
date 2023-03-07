@@ -47,7 +47,7 @@ public class Mob implements Entity{
         }
         textureRegion = textureAtlas.findRegion("UP_1");
         sprite = new Sprite(textureRegion);
-        sprite.scale(2.0f);
+        /////////////sprite.scale(2.0f);
         sprite.setColor(spriteTint);
     }
     @Override
