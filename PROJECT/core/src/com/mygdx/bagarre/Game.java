@@ -50,7 +50,14 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     int calculatedHeight = 0;
     Joystick joystick;
     ShapeRenderer shapeRenderer;
-    String URLServer = "http://172.16.200.104:8080/DAMCorp/";
+    String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison 2
+
+        // "http://192.168.1.100:8080/DAMCorp/"; // tri maison 1
+
+        // "http://91.161.85.206:49153/DAMCorp/"; // PHILIPPE maison
+
+        //"http://172.16.200.104:8080/DAMCorp/"; // MATHIAS
+
     public static boolean lockOnListReadFromDB = false;
 
     private Mate[] mates = new Mate[0];
@@ -65,10 +72,11 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     @Override
     public void create() {
 
-        Firebase firebase = new Firebase(getFirebaseURL(), "json/key.json");
-        firebase.displayJson();
-        firebase.connect();
-        firebase.updateUser();
+//        Firebase firebase = new Firebase(getFirebaseURL(), "json/key.json");
+//        firebase.displayJson();
+//        firebase.connect();
+//        firebase.updateUser();
+
         setSCREEN_WIDTH(Gdx.graphics.getWidth());
         setSCREEN_HEIGHT(Gdx.graphics.getHeight());
 //        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getWidth());
