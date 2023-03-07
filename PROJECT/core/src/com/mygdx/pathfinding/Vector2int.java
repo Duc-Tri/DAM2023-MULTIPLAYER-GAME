@@ -1,4 +1,4 @@
-package com.libgdx.pathfinder;
+package com.mygdx.pathfinding;
 
 public class Vector2int {
     int myX, myY;

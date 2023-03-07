@@ -3,25 +3,28 @@ package com.mygdx.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.mygdx.bagarre.Game;
+import com.mygdx.bagarre.GameScreen;
+import com.mygdx.bagarre.MainGame;
+import com.mygdx.client.NewPlayer;
+import com.mygdx.client.UpdatePlayer;
 import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
 
 
 public class Player implements Entity {
-    Game game;
-    int compteurUp = 0;
-    int compteurDown = 0;
-    int compteurLeft = 0;
-    int compteurRight = 0;
+    private MainGame mainGame;
+    private int compteurUp = 0;
+    private int compteurDown = 0;
+    private int compteurLeft = 0;
+    private int compteurRight = 0;
     private Rectangle box;
     //    private SpriteBatch batch;
     private static TextureAtlas textureAtlas;
     private TextureRegion textureRegion;
-    public Sprite sprite;
+    private Sprite sprite;
     private float x = 0;
     private float y = 0;
 
@@ -32,14 +35,12 @@ public class Player implements Entity {
 
     private String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
 
-
     //////////float scale = 2.0f;
     String serverUniqueID;
 
     String RMXP_CHARACTER; // le personnage dans la feuille de sprites
 
-    public Player(Game game) {
-        this.game = game;
+    public Player() {
 
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
@@ -47,8 +48,18 @@ public class Player implements Entity {
         uniqueID = "player" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
-        RMXP_CHARACTER = (int)(Math.random() * RMXPCharactesAtlasGenerator.MAX_CHARACTERS) + "_";
+        RMXP_CHARACTER = (int) (Math.random() * RMXPCharactesAtlasGenerator.MAX_CHARACTERS) + "_";
         findRegion = RMXP_CHARACTER + "UP_0";
+
+        //----------------------------
+        initializeSprite();
+
+//        myPlayerSprite = getSprite();
+//        textureAtlas = getTextureAtlas();
+//        textureRegion = getTextureRegion();
+
+        sprite.setPosition(getX(), getY());
+        NewPlayer.requestServer(this);
     }
 
     public void initializeSprite() {
@@ -66,7 +77,7 @@ public class Player implements Entity {
         //sprite.setColor(spriteTint);
     }
 
-    public Sprite getSprite() {
+    private Sprite getSprite() {
         return sprite;
     }
 
@@ -252,35 +263,38 @@ public class Player implements Entity {
         this.serverUniqueID = serverUniqueID;
     }
 
-
-    public Game getGame() {
-        return game;
+    public MainGame getGame() {
+        return mainGame;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setGame(MainGame mainGame) {
+        this.mainGame = mainGame;
     }
 
     public float getRealX() {
-        float relativePlayerX = x - game.getSCREEN_WIDTH() / 2.0f + game.getCamera().position.x;
+        float relativePlayerX = x - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
         return relativePlayerX;
     }
 
     public float getRealY() {
-        float relativePlayerY = y - game.getSCREEN_HEIGHT() / 2.0f + game.getCamera().position.y + 10;
+        float relativePlayerY = y - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y + 10;
         return relativePlayerY;
     }
 
     public void setXFromRealX(float parseFloat) {
 
-        float temp = parseFloat - game.getCamera().position.x + game.getSCREEN_WIDTH() / 2.0f + 10;
+        float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f + 10;
         setX(temp);
     }
 
     public void setYFromRealY(float parseFloat) {
 
-        float temp = parseFloat - game.getCamera().position.y + game.getSCREEN_HEIGHT() / 2.0f;
+        float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
         setY(temp);
     }
 
+    public void drawAndUpdate(SpriteBatch batch) {
+        sprite.draw(batch);
+        UpdatePlayer.requestServer(this);
+    }
 }

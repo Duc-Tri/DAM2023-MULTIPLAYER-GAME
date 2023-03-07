@@ -1,4 +1,4 @@
-package com.libgdx.pathfinder;
+package com.mygdx.pathfinding;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.map.MyTiledMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class LabyTest extends ApplicationAdapter {
     @Override
     public void create() {
 
-        tiles = new Texture(Gdx.files.internal("assets/tiny_16x16.png"));
+        tiles = new Texture("test/tiny_16x16.png");
         splitTiles = TextureRegion.split(tiles, 16, 16);
 
         createHolderMap();
@@ -49,11 +50,11 @@ public class LabyTest extends ApplicationAdapter {
 
         batch = new SpriteBatch();
 
-        myBloc = new TmxMapLoader().load("BlocMap/Bloc1.tmx");
+        myBloc = new TmxMapLoader().load("test/BlocMap/Bloc1.tmx");
 
         blocRenderer = new OrthogonalTiledMapRenderer(myBloc);
 
-        Gdx.input.setInputProcessor(new InputMazePathfinding(myTiledMap));
+
 
 //		img = new Texture("tiny_16x16.png");
 
@@ -107,15 +108,15 @@ public class LabyTest extends ApplicationAdapter {
     public void createMyTiledMap() {
         List<String> blocFileNames = new ArrayList<String>() {
             {
-                add("BlocMap/Bloc1.tmx");
-                add("BlocMap/Bloc2.tmx");
-                add("BlocMap/Bloc3.tmx");
-                add("BlocMap/Bloc4.tmx");
-                add("BlocMap/Bloc5.tmx");
-                add("BlocMap/Bloc6.tmx");
-                add("BlocMap/Bloc7.tmx");
-                add("BlocMap/Bloc8.tmx");
-                add("BlocMap/Bloc9.tmx");
+                add("test/BlocMap/Bloc1.tmx");
+                add("test/BlocMap/Bloc2.tmx");
+                add("test/BlocMap/Bloc3.tmx");
+                add("test/BlocMap/Bloc4.tmx");
+                add("test/BlocMap/Bloc5.tmx");
+                add("test/BlocMap/Bloc6.tmx");
+                add("test/BlocMap/Bloc7.tmx");
+                add("test/BlocMap/Bloc8.tmx");
+                add("test/BlocMap/Bloc9.tmx");
             }
         };
 

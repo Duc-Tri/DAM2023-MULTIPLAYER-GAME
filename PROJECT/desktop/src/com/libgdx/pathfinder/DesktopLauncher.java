@@ -2,10 +2,7 @@ package com.libgdx.pathfinder;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.libgdx.pathfinder.PathFinder;
-import com.mygdx.bagarre.Game;
-import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
-import com.mygdx.graphics.TestCharactersAtlas;
+import com.mygdx.bagarre.MainGame;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -15,12 +12,12 @@ public class DesktopLauncher {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(30);
         config.setTitle("PATHFINDER");
-        config.setWindowedMode(1500, 1000);
-
+        config.setWindowedMode(640, 480);
 
         // CLIENT + SERVEUR ---------------------------------------------------
-        new Lwjgl3Application(new Game(), config);
+        new Lwjgl3Application(MainGame.getInstance(), config);
 
+        com.badlogic.gdx.Game g;
 
         // TEST PATHFINDING ---------------------------------------------------
 //        new Lwjgl3Application(new PathFinder(), config); // TEST A*

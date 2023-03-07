@@ -1,4 +1,4 @@
-package com.libgdx.pathfinder;
+package com.mygdx.pathfinding;
 
 import java.util.Comparator;
 

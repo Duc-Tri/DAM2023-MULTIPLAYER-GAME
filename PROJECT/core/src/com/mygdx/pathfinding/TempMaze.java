@@ -1,4 +1,4 @@
-package com.libgdx.pathfinder;
+package com.mygdx.pathfinding;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,13 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 public class TempMaze {
+    private final static Texture tiles = new Texture("test/tiny_16x16.png");
 
     public static final int MAZE_WIDTH = 40;
     public static final int MAZE_HEIGHT = 30;
-
     public static final int TILE_SIZE = 16;
-    private final static Texture tiles = new Texture("tiny_16x16.png");
-
     private final static TextureRegion trWall = new TextureRegion(tiles, 80, 48, TILE_SIZE, TILE_SIZE);
     private final static TextureRegion trFloor = new TextureRegion(tiles, 16, 64, TILE_SIZE, TILE_SIZE);
     private final static TextureRegion trStart = new TextureRegion(tiles, 16, 112, TILE_SIZE, TILE_SIZE);

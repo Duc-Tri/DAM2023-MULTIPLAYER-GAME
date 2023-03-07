@@ -1,11 +1,11 @@
-package com.mygdx.component;
+package com.mygdx.input;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Cursor {
-    static final Texture spriteCursor = new Texture("cursor.png");
+    static final Texture spriteCursor = new Texture("test/cursor.png");
     private int framesCursorVisible;
     public int x, y;
     public Cursor(Color spriteTint) {

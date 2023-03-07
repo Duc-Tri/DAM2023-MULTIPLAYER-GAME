@@ -1,7 +1,7 @@
-package com.libgdx.pathfinder;
+package com.mygdx.pathfinding;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.mygdx.map.MyTiledMap;
 
 public class InputMazePathfinding implements InputProcessor {
 

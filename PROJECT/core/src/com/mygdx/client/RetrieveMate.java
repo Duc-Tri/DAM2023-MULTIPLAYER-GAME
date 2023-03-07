@@ -1,5 +1,6 @@
 package com.mygdx.client;
 
+import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Player;
 
 import java.io.BufferedReader;
@@ -11,7 +12,7 @@ import java.net.URL;
 
 public class RetrieveMate {
     public static String[] requestServer(Player player) {
-        String GET_URL = player.getGame().getURLServer()+"RetrieveMate";//
+        String GET_URL = MainGame.URLServer + "RetrieveMate";//
         String paramString = buildParam(player);
 
         GET_URL = GET_URL + paramString;
@@ -45,6 +46,7 @@ public class RetrieveMate {
         }
         return null;
     }
+
     private static String buildParam(Player player) {
         String param = "?";
         param = param + "&serverUniqueID=" + player.getServerUniqueID();

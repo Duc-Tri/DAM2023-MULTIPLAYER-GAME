@@ -1,10 +1,15 @@
-package com.libgdx.pathfinder;
+package com.mygdx.pathfinding;
+
+import com.mygdx.pathfinding.Node;
+import com.mygdx.pathfinding.NodeComparator;
+import com.mygdx.pathfinding.TempMaze;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AStarTiledMap {
+public class AStarTempMaze {
 
     /* La première liste, appelée liste ouverte, va contenir tous les noeuds étudiés. Dès que l'algorithme va se pencher sur
     un noeud du graphe, il passera dans la liste ouverte (sauf s'il y est déjà).
@@ -16,10 +21,11 @@ public class AStarTiledMap {
     liste ouverte, en effet, il doit d'abord être étudié avant d'être jugé comme bon.
     */
     private List<Node> close;
-    private MyTiledMap myTiledMap;
+    private TempMaze myMaze;
 
-    public AStarTiledMap(MyTiledMap tiledMap) {
-        this.myTiledMap = tiledMap;
+    public AStarTempMaze(TempMaze maze) {
+        this.myMaze = maze;
+
     }
 
     /*Fonction cheminPlusCourt(g:Graphe, objectif:Nœud, depart:Nœud)
@@ -120,15 +126,15 @@ public class AStarTiledMap {
 
     private boolean isValidNode(Node node) {
 
-        boolean isXValide = node.point.myX < myTiledMap.myLabyrinthLayer.getWidth() && node.point.myX >= 0;
+        boolean isXValide = node.point.myX < myMaze.array[0].length && node.point.myX >= 0;
 
-        boolean isYValide = node.point.myY < myTiledMap.myLabyrinthLayer.getHeight() && node.point.myY >= 0;
+        boolean isYValide = node.point.myY < myMaze.array.length && node.point.myY >= 0;
 
         if (!isXValide || !isYValide) {
             return false;
         }
 
-        int val = (myTiledMap.myLabyrinthLayer.getCell(node.point.myX, node.point.myY) == null) ? 0 : 1; // TEMP
+        int val = myMaze.array[node.point.myY][node.point.myX];
 
         return (val == 0);
     }

@@ -3,11 +3,9 @@ package com.mygdx.graphics;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.libgdx.pathfinder.TempMaze;
 
 public class TestCharactersAtlas extends ApplicationAdapter implements InputProcessor {
     SpriteBatch batch;

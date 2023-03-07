@@ -1,4 +1,4 @@
-package com.libgdx.pathfinder;
+package com.mygdx.map;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
@@ -7,6 +7,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.mygdx.pathfinding.AStarTiledMap;
+import com.mygdx.pathfinding.Node;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
 import java.util.List;

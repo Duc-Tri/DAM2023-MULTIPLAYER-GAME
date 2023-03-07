@@ -1,5 +1,6 @@
 package com.mygdx.client;
 
+import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Player;
 
 import java.io.BufferedReader;
@@ -12,7 +13,7 @@ import java.net.URL;
 public class NewPlayer {
 
     public static void requestServer(Player player) {
-        String GET_URL = player.getGame().getURLServer() + "NewPlayer";//
+        String GET_URL = MainGame.URLServer + "NewPlayer";//
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";

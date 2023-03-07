@@ -2,6 +2,7 @@ package com.mygdx.client;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Player;
 
 import java.io.BufferedReader;
@@ -13,7 +14,7 @@ import java.net.URL;
 
 public class RetrievePlayer {
     public static void requestServer(Player player) {
-        String GET_URL = player.getGame().getURLServer()+"RetrievePlayer";
+        String GET_URL = MainGame.URLServer + "RetrievePlayer";
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
@@ -32,7 +33,7 @@ public class RetrievePlayer {
                     response.append(inputLine);
                 }
                 in.close();
-                String [] tempString = String.valueOf(response).split(";");
+                String[] tempString = String.valueOf(response).split(";");
                 updatePlayer(player, tempString);
 
             } else {
@@ -48,7 +49,7 @@ public class RetrievePlayer {
     }
 
     private static void updatePlayer(Player player, String[] tempString) {
-        if(tempString[0]!=null  && !tempString[0].isEmpty()){
+        if (tempString[0] != null && !tempString[0].isEmpty()) {
             player.setBox(new Rectangle());
             player.initializeSprite();
             player.setX(Float.parseFloat(tempString[0]));
