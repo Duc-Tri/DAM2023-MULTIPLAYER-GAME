@@ -165,6 +165,9 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         //                    mates[i] = new Mate(this);
 //                    mates[i].setServerUniqueID(tempMates[i]);
 //                    RetrievePlayer.requestServer(mates[i]);
+        if(tempMates !=  null){
+
+
         for (int i0 = 0; i0 < tempMates.length; i0++) {
             boolean finded = false;
             for(int i1 = 0; i1 < mates.size(); i1++){
@@ -178,6 +181,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 RetrievePlayer.requestServer(mates.get(mates.size()-1));
                 mates.get(mates.size()-1).initializeSprite();
             }
+        }
         }
 
     }
