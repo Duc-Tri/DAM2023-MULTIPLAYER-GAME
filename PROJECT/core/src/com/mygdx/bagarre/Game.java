@@ -146,6 +146,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         for(int i =0 ; i < mates.length ; i ++){
             if(mates[i]!= null){
                 RetrieveUpdatePlayer.requestServer(mates[i]);
+
                 mates[i].getSprite().draw(batch);
             }
 
