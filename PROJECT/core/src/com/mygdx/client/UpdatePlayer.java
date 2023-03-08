@@ -52,7 +52,7 @@ public class UpdatePlayer {
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
         param = param + "&findRegion=" + player.getFindRegion();
 
-        System.out.println("UpdatePlayer ///// buildParam : " + param);
+//        System.out.println("UpdatePlayer ///// buildParam : " + param);
 
         return param;
     }

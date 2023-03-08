@@ -17,7 +17,6 @@ public class DesktopLauncher {
         // CLIENT + SERVEUR ---------------------------------------------------
         new Lwjgl3Application(MainGame.getInstance(), config);
 
-        com.badlogic.gdx.Game g;
 
         // TEST PATHFINDING ---------------------------------------------------
 //        new Lwjgl3Application(new PathFinder(), config); // TEST A*

@@ -13,6 +13,9 @@ import java.net.URL;
 public class NewPlayer {
 
     public static void requestServer(Player player) {
+
+        System.out.println("Player >>>>>>>>" + player.uniqueID + "<<<<<<<< NewPlayer.requestServer...");
+
         String GET_URL = MainGame.URLServer + "NewPlayer";//
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
@@ -63,7 +66,7 @@ public class NewPlayer {
         param = param + "&textureAtlasPath=" + player.getTextureAtlasPath();
         param = param + "&scale=" + 1;//+player.getScale();
 
-        System.out.println("NewPlayer ///// buildParam : " + param);
+        System.out.println("NewPlayer _____________________ buildParam : " + param);
 
         return param;
     }

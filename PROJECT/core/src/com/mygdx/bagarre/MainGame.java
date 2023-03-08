@@ -2,6 +2,7 @@ package com.mygdx.bagarre;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Player;
 
 public class MainGame extends Game {
@@ -38,6 +39,8 @@ public class MainGame extends Game {
     @Override
     public void create() {
         player = new Player();
+        NewPlayer.requestServer(player);
+
         gameScreen = new GameScreen(mapFilename, player);
         setScreen(gameScreen);
 

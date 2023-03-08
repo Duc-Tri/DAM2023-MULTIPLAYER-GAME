@@ -25,8 +25,8 @@ public class Player implements Entity {
     private static TextureAtlas textureAtlas;
     private TextureRegion textureRegion;
     private Sprite sprite;
-    private float x = 0;
-    private float y = 0;
+    private float x = 100;
+    private float y = 100;
 
     public String uniqueID;
     public Color spriteTint; // from unique ID
@@ -59,7 +59,6 @@ public class Player implements Entity {
 //        textureRegion = getTextureRegion();
 
         sprite.setPosition(getX(), getY());
-        NewPlayer.requestServer(this);
     }
 
     public void initializeSprite() {
@@ -69,7 +68,7 @@ public class Player implements Entity {
             textureAtlas = new TextureAtlas(Gdx.files.internal(this.textureAtlasPath));
         }
 
-        System.out.println(uniqueID+ " findRegion ***** " + findRegion);
+        System.out.println(uniqueID + " findRegion ***** " + findRegion);
 
         textureRegion = textureAtlas.findRegion(findRegion);
 
