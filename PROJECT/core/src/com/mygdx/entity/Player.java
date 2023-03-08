@@ -36,9 +36,9 @@ public class Player implements Entity {
     private final static String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
 
     //////////float scale = 2.0f;
-    String serverUniqueID;
+    private String serverUniqueID;
 
-    String RMXP_CHARACTER; // le personnage dans la feuille de sprites
+    private String RMXP_CHARACTER; // le personnage dans la feuille de sprites
 
     public Player() {
 
@@ -79,14 +79,6 @@ public class Player implements Entity {
 
     private Sprite getSprite() {
         return sprite;
-    }
-
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
-    }
-
-    public TextureRegion getTextureRegion() {
-        return textureRegion;
     }
 
     public void setX(float x) {
@@ -165,38 +157,6 @@ public class Player implements Entity {
 
     }
 
-    public int getCompteurUp() {
-        return compteurUp;
-    }
-
-    public void setCompteurUp(int compteurUp) {
-        this.compteurUp = compteurUp;
-    }
-
-    public int getCompteurDown() {
-        return compteurDown;
-    }
-
-    public void setCompteurDown(int compteurDown) {
-        this.compteurDown = compteurDown;
-    }
-
-    public int getCompteurLeft() {
-        return compteurLeft;
-    }
-
-    public void setCompteurLeft(int compteurLeft) {
-        this.compteurLeft = compteurLeft;
-    }
-
-    public int getCompteurRight() {
-        return compteurRight;
-    }
-
-    public void setCompteurRight(int compteurRight) {
-        this.compteurRight = compteurRight;
-    }
-
     public Rectangle getBox() {
         return box;
     }
@@ -243,6 +203,86 @@ public class Player implements Entity {
         return textureAtlasPath;
     }
 
+    public String getServerUniqueID() {
+        return serverUniqueID;
+    }
+
+    public void setServerUniqueID(String serverUniqueID) {
+        this.serverUniqueID = serverUniqueID;
+    }
+
+    public void drawAndUpdate(SpriteBatch batch) {
+        sprite.draw(batch);
+        UpdatePlayer.requestServer(this);
+    }
+
+    public int getCompteurUp() {
+        return compteurUp;
+    }
+
+    public void setCompteurUp(int compteurUp) {
+        this.compteurUp = compteurUp;
+    }
+
+    public int getCompteurDown() {
+        return compteurDown;
+    }
+
+    public void setCompteurDown(int compteurDown) {
+        this.compteurDown = compteurDown;
+    }
+
+    public int getCompteurLeft() {
+        return compteurLeft;
+    }
+
+    public void setCompteurLeft(int compteurLeft) {
+        this.compteurLeft = compteurLeft;
+    }
+
+    public int getCompteurRight() {
+        return compteurRight;
+    }
+
+    public void setCompteurRight(int compteurRight) {
+        this.compteurRight = compteurRight;
+    }
+
+    public TextureAtlas getTextureAtlas() {
+        return textureAtlas;
+    }
+
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
+    }
+
+    private float getRealX() {
+        float relativePlayerX = x - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
+        return relativePlayerX;
+    }
+
+    private float getRealY() {
+        float relativePlayerY = y - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
+        return relativePlayerY;
+    }
+
+    private void setYFromRealY(float parseFloat) {
+        float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
+        setY(temp);
+    }
+
+    private void setXFromRealX(float parseFloat) {
+        float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
+        setX(temp);
+    }
+
+    private MainGame getGame() {
+        return mainGame;
+    }
+
+    private void setGame(MainGame mainGame) {
+        this.mainGame = mainGame;
+    }
 
 //    public float getScale() {
 //        return scale;
@@ -252,48 +292,4 @@ public class Player implements Entity {
 //        this.scale = scale;
 //    }
 
-    public String getServerUniqueID() {
-        return serverUniqueID;
-    }
-
-    public void setServerUniqueID(String serverUniqueID) {
-        this.serverUniqueID = serverUniqueID;
-    }
-
-    public MainGame getGame() {
-        return mainGame;
-    }
-
-    public void setGame(MainGame mainGame) {
-        this.mainGame = mainGame;
-    }
-
-    public float getRealX() {
-//        float relativePlayerX = x - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
-//        return relativePlayerX;
-        return x;
-    }
-
-    public float getRealY() {
-//        float relativePlayerY = y - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
-//        return relativePlayerY;
-        return y;
-    }
-
-    public void setXFromRealX(float parseFloat) {
-//        float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
-//        setX(temp);
-//        setX(parseFloat);
-    }
-
-    public void setYFromRealY(float parseFloat) {
-//        float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
-//        setY(temp);
-//        setY(parseFloat);
-    }
-
-    public void drawAndUpdate(SpriteBatch batch) {
-        sprite.draw(batch);
-        UpdatePlayer.requestServer(this);
-    }
 }

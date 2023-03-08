@@ -49,11 +49,9 @@ public class NewPlayer extends HttpServlet {
 
 			Player player = new Player(request.getParameter("uniqueID"), "" + game.getNextId());
 
-			System.out.println(game + " # NewPlayer =================== " + player.getServerUniqueID());
+			System.out.println("NewPlayer "+game+" =================== " + player.getServerUniqueID());
 
 			response.getWriter().append(player.getServerUniqueID());
-
-			// response.sendError(200);
 
 			if (request.getParameter("x") != null) {
 				player.setX(request.getParameter("x"));

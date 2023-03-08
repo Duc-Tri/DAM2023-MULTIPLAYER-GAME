@@ -50,6 +50,9 @@ public class RetrievePlayer {
 
     private static void updatePlayer(Player player, String[] tempString) {
         if (tempString[0] != null && !tempString[0].isEmpty()) {
+
+            System.out.println("RetrievePlayer : updatePlayer ############# " + tempString[0] + " / " + tempString[1]);
+
             player.setBox(new Rectangle());
             player.initializeSprite();
             player.setX(Float.parseFloat(tempString[0]));

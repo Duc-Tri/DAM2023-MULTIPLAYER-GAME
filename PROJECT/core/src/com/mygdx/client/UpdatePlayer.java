@@ -44,8 +44,8 @@ public class UpdatePlayer {
     }
 
     private static String buildParam(Player player) {
-        float realX = player.getRealX();
-        float realY = player.getRealY();
+        float realX = player.getX();
+        float realY = player.getY();
 
         String param = "?";
         param = param + "x=" + realX;
@@ -54,7 +54,7 @@ public class UpdatePlayer {
         param = param + "&findRegion=" + player.getFindRegion();
 
         // FLOOD !!!
-//        System.out.println(player.uniqueID + " # UpdatePlayer ### buildParam : " + param);
+        //System.out.println(player.uniqueID + " # UpdatePlayer ### buildParam : " + param);
 
         return param;
     }

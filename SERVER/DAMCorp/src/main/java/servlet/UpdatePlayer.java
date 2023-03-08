@@ -16,36 +16,38 @@ import game.entity.Player;
 public class UpdatePlayer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Game game = new Game();
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UpdatePlayer() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public UpdatePlayer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		String serverUniqueID = request.getParameter("serverUniqueID");
-		//System.out.println("UpdatePlayer =================== "+ serverUniqueID);
-		
-		if( serverUniqueID!=null &&  !serverUniqueID.isEmpty() && !serverUniqueID.equals("null") ) {
 
-		Player player =game.retrievePlayer(request.getParameter("serverUniqueID"));
-		
-		if( request.getParameter("x")!=null) {
-			player.setX( request.getParameter("x"));	
-		}
-		if( request.getParameter("y")!=null) {
-			player.setY(request.getParameter("y"));	
-		}
-		
+		String serverUniqueID = request.getParameter("serverUniqueID");
+//		System.out.println("UpdatePlayer =================== " + serverUniqueID);
+
+		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
+
+			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"));
+
+			if (request.getParameter("x") != null) {
+				player.setX(request.getParameter("x"));
+			}
+			if (request.getParameter("y") != null) {
+				player.setY(request.getParameter("y"));
+			}
+
 //		if( request.getParameter("boxWidth")!=null) {
 //			player.setBoxWidth(request.getParameter("boxWidth"));	
 //		}
@@ -62,16 +64,15 @@ public class UpdatePlayer extends HttpServlet {
 //			player.setSpriteColorInt(request.getParameter("spriteColorInt"));	
 //		}
 //		
-		if( request.getParameter("findRegion")!=null) {
-			player.setFindRegion(request.getParameter("findRegion"));	
-		}
-		
-//		System.out.println();
-//		System.out.println("player.getX() " +player.getX());
-//		System.out.println("player.getX() " +player.getY());
-//		System.out.println("player.getX() " +player.getFindRegion());
-//		System.out.println();
-		
+			if (request.getParameter("findRegion") != null) {
+				player.setFindRegion(request.getParameter("findRegion"));
+			}
+
+			
+//			System.out.println("UpdatePlayer ##### " + player.getServerUniqueID() + " * x=" + player.getX() + " * y="
+//					+ player.getY() + " * " + player.getFindRegion());
+			
+
 //		if( request.getParameter("textureAtlasPath")!=null) {
 //			player.setTextureAtlasPath(request.getParameter("textureAtlasPath"));	
 //		}
@@ -82,9 +83,11 @@ public class UpdatePlayer extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

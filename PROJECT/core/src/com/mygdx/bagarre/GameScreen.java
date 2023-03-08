@@ -29,7 +29,7 @@ public class GameScreen implements Screen, InputProcessor {
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
     private SpriteBatch batch;
-    private int sizeOfStep = 20;
+    private int sizeOfStep = 7;
 
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
@@ -52,7 +52,9 @@ public class GameScreen implements Screen, InputProcessor {
         mates = new Mates(player);
 
         camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
-        camera.zoom = MainGame.runOnDesktop() ? 0.75f : 0.25f; //cameraZoom;
+        camera.zoom = MainGame.runOnDesktop() ? 0.5f : 0.25f; //cameraZoom;
+        camera.position.set(player.getX(), player.getY(), 0);
+        camera.update();
 
         shapeRenderer = new ShapeRenderer();
 
@@ -65,6 +67,9 @@ public class GameScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
+    }
+
+    private void updateCameraOnPlayer() {
     }
 
     @Override
@@ -86,7 +91,6 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-        camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin(); //======================================================
@@ -99,7 +103,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         // dessine le player et les mates -------
         player.drawAndUpdate(batch);
-
         mates.drawAndUpdate(batch);
 
         batch.end(); //========================================================

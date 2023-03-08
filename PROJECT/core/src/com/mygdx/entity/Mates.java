@@ -16,7 +16,6 @@ public class Mates {
             player = pl;
     }
 
-
     public void drawAndUpdate(SpriteBatch batch) {
         createNewMates(RetrieveMate.requestServer(player));
         for (Mate m : mates) {
@@ -31,7 +30,7 @@ public class Mates {
         String[] uids = new String[mates.size()];
 
         for (int i = 0; i < mates.size(); i++) {
-            uids[i] = mates.get(i).serverUniqueID;
+            uids[i] = mates.get(i).getServerUniqueID();
         }
 
         return uids;
