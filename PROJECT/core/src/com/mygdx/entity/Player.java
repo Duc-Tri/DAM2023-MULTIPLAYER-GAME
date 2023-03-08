@@ -35,8 +35,8 @@ public class Player implements Entity {
 
     private TextureRegion textureRegion;
     private Sprite sprite;
-    private float playerX = 100;
-    private float playerY = 100;
+    private float playerX = -1;
+    private float playerY = -1;
 
     public String uniqueID;
     public Color spriteTint; // from unique ID

@@ -54,6 +54,8 @@ public class MainGame extends Game {
     @Override
     public void create() {
         player = new Player();
+        player.setPlayerX(100); // temp
+        player.setPlayerY(100); // temp
         NewPlayer.requestServer(player);
 
         gameScreen = new GameScreen(mapFilename, player);
