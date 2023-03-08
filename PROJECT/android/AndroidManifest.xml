@@ -13,20 +13,22 @@
     <application
         android:allowBackup="true"
         android:appCategory="game"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="true"
         android:icon="@drawable/ic_launcher"
         android:isGame="true"
         android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.DayNight"
         android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name=".login"
-            android:exported="false" />
+            android:name=".GameMode"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
         <activity
-            android:name=".AndroidLauncher"
-            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:name=".LoginPage"
             android:exported="true"
-            android:label="@string/app_name"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AndroidLauncher"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:exported="true"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
