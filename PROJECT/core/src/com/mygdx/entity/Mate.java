@@ -8,9 +8,7 @@ public class Mate extends Player implements Runnable{
     int timeout = 99999999;
 
     public Mate() {
-
-        //super();
-
+        // super(); // NO !
     }
     @Override
     public void run() {

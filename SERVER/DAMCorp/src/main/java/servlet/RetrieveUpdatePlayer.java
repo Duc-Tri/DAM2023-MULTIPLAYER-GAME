@@ -32,7 +32,7 @@ public class RetrieveUpdatePlayer extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		String serverUniqueID = request.getParameter("serverUniqueID");
-		System.out.println("RetrieveUpdatePlayer =================== "+ serverUniqueID);
+		//System.out.println("RetrieveUpdatePlayer =================== "+ serverUniqueID);
 		
 		if( serverUniqueID!=null &&  !serverUniqueID.isEmpty() && !serverUniqueID.equals("null") ) {
 

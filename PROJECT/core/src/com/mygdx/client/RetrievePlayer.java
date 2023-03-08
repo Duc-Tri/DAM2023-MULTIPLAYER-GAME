@@ -59,7 +59,7 @@ public class RetrievePlayer {
             player.setUniqueID(tempString[4]);
             player.setServerUniqueID(tempString[5]);
             player.setFindRegion(tempString[6]);
-            player.setTextureAtlasPath(tempString[7]);
+            ////// player.setTextureAtlasPath(tempString[7]); // NON ! static final
             ///////////player.setScale(Float.parseFloat(tempString[8]));
         }
     }

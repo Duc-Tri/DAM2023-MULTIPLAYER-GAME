@@ -34,7 +34,7 @@ public class RetrieveMate extends HttpServlet {
 		
 		
 		String serverUniqueID = request.getParameter("serverUniqueID");
-		System.out.println("RetrieveMate =================== "+ serverUniqueID);
+		//System.out.println("RetrieveMate =================== "+ serverUniqueID);
 
 		if( serverUniqueID!=null &&  !serverUniqueID.isEmpty() && !serverUniqueID.equals("null") ) {
 

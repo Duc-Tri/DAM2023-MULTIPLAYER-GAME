@@ -5,7 +5,7 @@ import game.entity.Player;
 public class Game {
 
 //	PLayer[][] PoolList = new PLayer[100][10];
-	final static int poolSize = 10;
+	final static int poolSize = 100; // 100 ça fait BEAUCOUP, juste pour test
 	static int staticIdCpt;
 	 static Player[] players =  new Player[poolSize]; 
 	
@@ -30,7 +30,7 @@ public class Game {
 	public void addPlayer(Player player) {
 		// TODO Auto-generated method stub
 		
-		System.out.println("Game ■■■■■■ addPlayer ■ "+player.getServerUniqueID());
+		System.out.println("Game ========== addPlayer ■ "+player.getServerUniqueID());
 		
 		int serverId = Integer.parseInt(player.getServerUniqueID());
 		 players[serverId] = player;

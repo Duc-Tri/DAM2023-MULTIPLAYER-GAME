@@ -16,11 +16,9 @@ public class Mates {
             player = pl;
     }
 
-    String[] tempMates;
 
     public void drawAndUpdate(SpriteBatch batch) {
-        tempMates = RetrieveMate.requestServer(player);
-        createMates(tempMates);
+        createNewMates(RetrieveMate.requestServer(player));
         for (Mate m : mates) {
             if (m != null) {
                 RetrieveUpdatePlayer.requestServer(m);
@@ -39,12 +37,10 @@ public class Mates {
         return uids;
     }
 
-    private void createMates(String[] tempMates) {
-        //                    mates[i] = new Mate(this);
-        //                    mates[i].setServerUniqueID(tempMates[i]);
-        //                    RetrievePlayer.requestServer(mates[i]);
+    private void createNewMates(String[] tempMates) {
 
-        System.out.println("createMates >>>>> tempMates{" + tempMates.length + "}=" + String.join("_@_", tempMates) + " >>>>> mates{" + mates.size() + "}=" + String.join("_@_", ids()));
+        // FLOOD !!!
+//        System.out.println("createNewMates >>>>> tempMates{" + tempMates.length + "}=" + String.join("_@_", tempMates) + " >>>>> mates{" + mates.size() + "}=" + String.join("_@_", ids()));
 
         if (tempMates != null && tempMates.length != 0) {
 

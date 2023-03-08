@@ -49,7 +49,7 @@ public class NewPlayer extends HttpServlet {
 
 			Player player = new Player(request.getParameter("uniqueID"), "" + game.getNextId());
 
-			System.out.println(game + " ■ NewPlayer =================== " + player.getServerUniqueID());
+			System.out.println(game + " # NewPlayer =================== " + player.getServerUniqueID());
 
 			response.getWriter().append(player.getServerUniqueID());
 
@@ -91,7 +91,7 @@ public class NewPlayer extends HttpServlet {
 
 			game.addPlayer(player);
 
-			System.out.println("NewPlayer ■■■■■ " + player.getServerUniqueID() + " * " + player.getX() + " * "
+			System.out.println("NewPlayer ========== " + player.getServerUniqueID() + " * " + player.getX() + " * "
 					+ player.getY() + " * " + player.getBoxWidth() + " * " + player.getBoxHeight() + " * "
 					+ player.getUniqueID() + " * " + player.getSpriteColorInt() + " * " + player.getFindRegion() + " * "
 					+ player.getTextureAtlasPath() + " * " + player.getScale());

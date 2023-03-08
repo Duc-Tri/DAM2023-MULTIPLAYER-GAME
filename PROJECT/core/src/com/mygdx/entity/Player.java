@@ -33,7 +33,7 @@ public class Player implements Entity {
 
     String findRegion = "";
 
-    private String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
+    private final static String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
 
     //////////float scale = 2.0f;
     String serverUniqueID;
@@ -49,7 +49,7 @@ public class Player implements Entity {
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
         RMXP_CHARACTER = (int) (Math.random() * RMXPCharactesAtlasGenerator.MAX_CHARACTERS) + "_";
-        findRegion = RMXP_CHARACTER + "UP_0";
+        findRegion = RMXP_CHARACTER + "DOWN_0";
 
         //----------------------------
         initializeSprite();
@@ -68,7 +68,7 @@ public class Player implements Entity {
             textureAtlas = new TextureAtlas(Gdx.files.internal(this.textureAtlasPath));
         }
 
-        System.out.println(uniqueID + " findRegion ***** " + findRegion);
+        // System.out.println(uniqueID + " findRegion ***** " + findRegion);
 
         textureRegion = textureAtlas.findRegion(findRegion);
 
@@ -243,9 +243,6 @@ public class Player implements Entity {
         return textureAtlasPath;
     }
 
-    public void setTextureAtlasPath(String textureAtlasPath) {
-        this.textureAtlasPath = textureAtlasPath;
-    }
 
 //    public float getScale() {
 //        return scale;
@@ -272,25 +269,27 @@ public class Player implements Entity {
     }
 
     public float getRealX() {
-        float relativePlayerX = x - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
-        return relativePlayerX;
+//        float relativePlayerX = x - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
+//        return relativePlayerX;
+        return x;
     }
 
     public float getRealY() {
-        float relativePlayerY = y - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y + 10;
-        return relativePlayerY;
+//        float relativePlayerY = y - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
+//        return relativePlayerY;
+        return y;
     }
 
     public void setXFromRealX(float parseFloat) {
-
-        float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f + 10;
-        setX(temp);
+//        float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
+//        setX(temp);
+//        setX(parseFloat);
     }
 
     public void setYFromRealY(float parseFloat) {
-
-        float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
-        setY(temp);
+//        float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
+//        setY(temp);
+//        setY(parseFloat);
     }
 
     public void drawAndUpdate(SpriteBatch batch) {

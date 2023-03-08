@@ -33,8 +33,7 @@ public class UpdatePlayer extends HttpServlet {
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		String serverUniqueID = request.getParameter("serverUniqueID");
-		
-		System.out.println("UpdatePlayer =================== "+ serverUniqueID);
+		//System.out.println("UpdatePlayer =================== "+ serverUniqueID);
 		
 		if( serverUniqueID!=null &&  !serverUniqueID.isEmpty() && !serverUniqueID.equals("null") ) {
 

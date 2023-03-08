@@ -17,7 +17,7 @@ public class TestCharactersAtlas extends ApplicationAdapter implements InputProc
 
     @Override
     public void create() {
-        Gdx.graphics.setWindowedMode(1800, 1000 );
+        Gdx.graphics.setWindowedMode(1800, 1000);
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
@@ -37,25 +37,24 @@ public class TestCharactersAtlas extends ApplicationAdapter implements InputProc
 
             for (int dir = 0; dir < RMXPCharactesAtlasGenerator.DIRS.length; dir++) {
 
-                for (int frame = 0; frame < RMXPCharactesAtlasGenerator.ANIM_FRAMES + 1; frame++) {
+                for (int frame = 0; frame < RMXPCharactesAtlasGenerator.ANIM_FRAMES; frame++) {
 
-                    if(frame!=2) // on saute la frame 2
-                    {
-                        TextureAtlas.AtlasRegion textureRegion = textureAtlas.findRegion(nchar + "_" +
+                    if (frame == 0 || frame == 2)
+                        continue; // on saute les iddles pour en afficher moins ...
 
-                                RMXPCharactesAtlasGenerator.DIRS[dir] + "_" +
+                    String region = nchar + "_" + RMXPCharactesAtlasGenerator.DIRS[dir] + "_" + frame;
+                    TextureAtlas.AtlasRegion textureRegion = textureAtlas.findRegion(region);
 
-                                // frame==0 : IDDLE
-                                ((frame == 0) ? "IDDLE" : (frame - 1)));
+                    // frame==0 : IDDLE
+                    //((frame == 0) ? "IDDLE" : (frame - 1)));
 
-                        //batch.draw(textureRegion, (nchar + dir + frame) * 16, (nchar + dir + frame) * 24);
-                        batch.draw(textureRegion, posX, posY);
+                    //batch.draw(textureRegion, (nchar + dir + frame) * 16, (nchar + dir + frame) * 24);
+                    batch.draw(textureRegion, posX, posY);
 
-                        posX += RMXPCharactesAtlasGenerator.FRAME_WIDTH;
-                        if (posX > SCREEN_WIDTH) {
-                            posX = 0;
-                            posY += RMXPCharactesAtlasGenerator.FRAME_HEIGHT;
-                        }
+                    posX += RMXPCharactesAtlasGenerator.FRAME_WIDTH;
+                    if (posX > SCREEN_WIDTH) {
+                        posX = 0;
+                        posY += RMXPCharactesAtlasGenerator.FRAME_HEIGHT;
                     }
                 }
 
