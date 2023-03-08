@@ -71,7 +71,7 @@ public class Game {
 			}
 			
 		}
-		System.out.println("tempString  " + tempString);
+//		System.out.println("tempString  " + tempString);
 		return tempString;
 		
 	}

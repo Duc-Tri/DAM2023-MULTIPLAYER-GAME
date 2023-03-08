@@ -39,10 +39,10 @@ public class NewPlayer {
 
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
     private static String buildParam(Player player) {

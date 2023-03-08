@@ -41,8 +41,8 @@ public class UpdatePlayer extends HttpServlet {
 			if( request.getParameter("findRegion")!=null ) {
 				player.setFindRegion(request.getParameter("findRegion"));	
 			}
-			System.out.println("player.x " + player.getX());
-			System.out.println("player.y " + player.getY());
+//			System.out.println("player.x " + player.getX());
+//			System.out.println("player.y " + player.getY());
 		}
 
 	}

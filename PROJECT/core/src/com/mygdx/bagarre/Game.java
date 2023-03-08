@@ -64,6 +64,9 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     private ArrayList<Mate> mates = new ArrayList<>();
 
     UpdatePlayer updatePlayer;
+    RetrieveMate retrieveMate;
+
+    RetrieveUpdatePlayer retrieveUpdatePlayer;
 //    UpdatePlayer.requestServer(player);
 
 
@@ -100,10 +103,15 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
 
         updatePlayer = new UpdatePlayer(player);
-
-
         threadPoolExecutor.submit(updatePlayer);
 
+
+        retrieveMate = new RetrieveMate(player);
+        threadPoolExecutor.submit(retrieveMate);
+
+
+        retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
+        threadPoolExecutor.submit(retrieveUpdatePlayer);
 
     }
 
@@ -152,9 +160,9 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         } else {
             display = false;
         }
-
-        String[] tempMates = RetrieveMate.requestServer(player);
-        createMates(tempMates);
+//
+//        String[] tempMates = RetrieveMate.requestServer(player);
+//        createMates(tempMates);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         map.getTiledMapRenderer().setView(camera);
@@ -162,8 +170,8 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         batch.begin();
 
         for(int i =0 ; i < mates.size() ; i ++){
-            if(mates.get(i)!= null){
-                RetrieveUpdatePlayer.requestServer(mates.get(i));
+            if(mates.get(i)!= null && mates.get(i).getSprite()!=null  ){
+//                RetrieveUpdatePlayer.requestServer(mates.get(i));
 
                 mates.get(i).getSprite().draw(batch);
             }
@@ -177,25 +185,25 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         }
     }
 
-    private void createMates(String[] tempMates) {
-        if(tempMates !=  null){
-        for (int i0 = 0; i0 < tempMates.length; i0++) {
-            boolean finded = false;
-            for(int i1 = 0; i1 < mates.size(); i1++){
-                if(tempMates[i0] != null && tempMates[i0].equalsIgnoreCase(mates.get(i1).getServerUniqueID())   ){
-                    finded = true;
-                }
-            }
-            if(!finded){
-                mates.add(new Mate(this));
-                mates.get(mates.size()-1).setServerUniqueID(tempMates[i0]);
-                RetrievePlayer.requestServer(mates.get(mates.size()-1));
-                mates.get(mates.size()-1).initializeSprite();
-            }
-         }
-       }
-
-    }
+//    private void createMates(String[] tempMates) {
+//        if(tempMates !=  null){
+//        for (int i0 = 0; i0 < tempMates.length; i0++) {
+//            boolean finded = false;
+//            for(int i1 = 0; i1 < mates.size(); i1++){
+//                if(tempMates[i0] != null && tempMates[i0].equalsIgnoreCase(mates.get(i1).getServerUniqueID())   ){
+//                    finded = true;
+//                }
+//            }
+//            if(!finded){
+//                mates.add(new Mate(this));
+//                mates.get(mates.size()-1).setServerUniqueID(tempMates[i0]);
+//                RetrievePlayer.requestServer(mates.get(mates.size()-1));
+//                mates.get(mates.size()-1).initializeSprite();
+//            }
+//         }
+//       }
+//
+//    }
 
     private void displayJoystick() {
         if (Gdx.input.isTouched(0)) {
@@ -495,5 +503,14 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     public void setURLServer(String URLServer) {
         this.URLServer = URLServer;
+    }
+
+
+    public ArrayList<Mate> getMates() {
+        return mates;
+    }
+
+    public void setMates(ArrayList<Mate> mates) {
+        this.mates = mates;
     }
 }
