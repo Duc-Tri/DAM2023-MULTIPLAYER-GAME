@@ -29,10 +29,15 @@ import com.mygdx.entity.Player;
 import com.mygdx.firebase.Firebase;
 import com.mygdx.map.Map;
 
+
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 
 public class Game extends ApplicationAdapter implements InputProcessor {
+    int threadPoolSize = 15;
+    ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadPoolSize);
     String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
     boolean display = false;
     int refreshValue = 0;
@@ -57,6 +62,9 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     public static boolean lockOnListReadFromDB = false;
 
     private ArrayList<Mate> mates = new ArrayList<>();
+
+    UpdatePlayer updatePlayer;
+//    UpdatePlayer.requestServer(player);
 
 
 
@@ -89,6 +97,14 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         calculatedHeight();
         calculatedWidth();
         Gdx.input.setInputProcessor(this);
+
+
+        updatePlayer = new UpdatePlayer(player);
+
+
+        threadPoolExecutor.submit(updatePlayer);
+
+
     }
 
     private Map createGameMap(String s) {
@@ -136,7 +152,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         } else {
             display = false;
         }
-        UpdatePlayer.requestServer(player);
+
         String[] tempMates = RetrieveMate.requestServer(player);
         createMates(tempMates);
         Gdx.gl.glClearColor(0, 0, 0, 0);
@@ -162,12 +178,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     }
 
     private void createMates(String[] tempMates) {
-        //                    mates[i] = new Mate(this);
-//                    mates[i].setServerUniqueID(tempMates[i]);
-//                    RetrievePlayer.requestServer(mates[i]);
         if(tempMates !=  null){
-
-
         for (int i0 = 0; i0 < tempMates.length; i0++) {
             boolean finded = false;
             for(int i1 = 0; i1 < mates.size(); i1++){
@@ -181,8 +192,8 @@ public class Game extends ApplicationAdapter implements InputProcessor {
                 RetrievePlayer.requestServer(mates.get(mates.size()-1));
                 mates.get(mates.size()-1).initializeSprite();
             }
-        }
-        }
+         }
+       }
 
     }
 

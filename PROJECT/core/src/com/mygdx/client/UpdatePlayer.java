@@ -9,7 +9,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class UpdatePlayer {
+public class UpdatePlayer implements Runnable {
+    Player player;
+    public UpdatePlayer(Player player) {
+        this.player = player;
+    }
+
+    @Override
+    public void run() {
+        long initialTime  = System.currentTimeMillis();
+        long runningTime  = 100000000L;
+        while(System.currentTimeMillis() < initialTime+runningTime){
+            requestServer(player);
+        }
+    }
+
     public static void requestServer(Player player) {
         String GET_URL = player.getGame().getURLServer()+"UpdatePlayer";
         String paramString  = buildParam(player);
@@ -53,5 +67,6 @@ public class UpdatePlayer {
 
         return param;
     }
+
 
 }

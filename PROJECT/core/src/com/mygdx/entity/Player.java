@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.bagarre.Game;
 
 
-public class Player implements Entity{
+public class Player  implements Entity{
     Game game;
     int compteurUp = 0;
     int compteurDown = 0;

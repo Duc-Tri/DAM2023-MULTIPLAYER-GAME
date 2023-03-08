@@ -31,8 +31,11 @@ public class RetrieveMate {
                     response.append(inputLine);
                 }
                 in.close();
-                String[] mates = String.valueOf(response).split(";");
-                return mates;
+                if(!String.valueOf(response).isEmpty()){
+                    String[] mates = String.valueOf(response).split(";");
+                    return mates;
+                }
+
             } else {
                 System.out.println("GET request did not work.");
             }

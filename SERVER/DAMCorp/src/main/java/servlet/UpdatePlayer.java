@@ -30,50 +30,21 @@ public class UpdatePlayer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
 		Player player =game.retrievePlayer(request.getParameter("serverUniqueID"));
+		if(player != null) {
+			if( request.getParameter("x")!=null) {
+				player.setX( request.getParameter("x"));	
+			}
+			if( request.getParameter("y")!=null) {
+				player.setY(request.getParameter("y"));	
+			}
+			if( request.getParameter("findRegion")!=null ) {
+				player.setFindRegion(request.getParameter("findRegion"));	
+			}
+			System.out.println("player.x " + player.getX());
+			System.out.println("player.y " + player.getY());
+		}
 
-		
-		
-		if( request.getParameter("x")!=null) {
-			player.setX( request.getParameter("x"));	
-		}
-		if( request.getParameter("y")!=null) {
-			player.setY(request.getParameter("y"));	
-		}
-		
-//		if( request.getParameter("boxWidth")!=null) {
-//			player.setBoxWidth(request.getParameter("boxWidth"));	
-//		}
-//		
-//		if( request.getParameter("boxHeight")!=null) {
-//			player.setBoxHeight(request.getParameter("boxHeight"));	
-//		}
-//		
-//		if( request.getParameter("uniqueID")!=null) {
-//			player.setUniqueID(request.getParameter("uniqueID"));	
-//		}
-//		
-//		if( request.getParameter("spriteColorInt")!=null) {
-//			player.setSpriteColorInt(request.getParameter("spriteColorInt"));	
-//		}
-//		
-		if( request.getParameter("findRegion")!=null) {
-			player.setFindRegion(request.getParameter("findRegion"));	
-		}
-		
-//		System.out.println();
-//		System.out.println("player.getX() " +player.getX());
-//		System.out.println("player.getX() " +player.getY());
-//		System.out.println("player.getX() " +player.getFindRegion());
-//		System.out.println();
-		
-//		if( request.getParameter("textureAtlasPath")!=null) {
-//			player.setTextureAtlasPath(request.getParameter("textureAtlasPath"));	
-//		}
-//		if( request.getParameter("scale")!=null) {
-//			player.setScale(request.getParameter("scale"));	
-//		}
 	}
 
 	/**
