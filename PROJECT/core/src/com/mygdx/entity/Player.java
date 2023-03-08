@@ -20,10 +20,12 @@ public class Player implements Entity {
     private static TextureAtlas textureAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
-    private static final int HITBOX_WIDTH = 20;
-    private static final int HITBOX_HEIGHT = 16;
-    private static final int HITBOX_XOFFSET = (32 - HITBOX_WIDTH) / 2; // (32-24)/2
-    private static final int HITBOX_YOFFSET = 0; // aux pieds du sprite
+    private static final int CHAR_WIDTH = 32;
+    private static final int HITBOX_WIDTH = 8;
+    private static final int HITBOX_HEIGHT = 8;
+    private static final int HITBOX_YOFFSET = 0; // Y : aux pieds du sprite
+    private static final int HITBOX_XOFFSET = (CHAR_WIDTH - HITBOX_WIDTH) / 2; // X :au mileu
+
     private Rectangle hitbox;
     private MainGame mainGame;
     private int compteurUp = 0;

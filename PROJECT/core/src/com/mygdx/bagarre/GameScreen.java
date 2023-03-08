@@ -21,7 +21,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Mates mates;
     private boolean showJoystick = false;
     private int refreshValue = 0;
-    private int speedOfSprite = 1;//Plus c'est grand plus c'est lent
+    private int speedOfSprite = 3; //Plus c'est grand plus c'est lent
     private static Map map;
     private static OrthographicCamera camera;
     private Viewport viewport;
