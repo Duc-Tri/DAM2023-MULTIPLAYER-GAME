@@ -34,8 +34,11 @@ public class NewPlayer {
                 }
                 in.close();
                 player.setServerUniqueID(String.valueOf(response));
+
+                System.out.println(" NewPlayer/GET setServerUniqueID ---_" + String.valueOf(response) + "_--- " + player.getServerUniqueID());
+
             } else {
-                System.out.println(responseCode + " GET request did not work.");
+                System.out.println(responseCode + " NewPlayer/GET request did not work.");
             }
 
         } catch (MalformedURLException e) {
@@ -59,6 +62,8 @@ public class NewPlayer {
         param = param + "&findRegion=" + player.getFindRegion();
         param = param + "&textureAtlasPath=" + player.getTextureAtlasPath();
         param = param + "&scale=" + 1;//+player.getScale();
+
+        System.out.println("NewPlayer ///// buildParam : " + param);
 
         return param;
     }

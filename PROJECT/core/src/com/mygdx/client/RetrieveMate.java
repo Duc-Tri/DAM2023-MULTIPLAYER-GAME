@@ -35,7 +35,7 @@ public class RetrieveMate {
                 String[] mates = String.valueOf(response).split(";");
                 return mates;
             } else {
-                System.out.println("GET request did not work.");
+                System.out.println(responseCode + " RetrieveMate/GET request did not work.");
             }
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);

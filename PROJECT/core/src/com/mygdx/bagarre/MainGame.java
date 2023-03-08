@@ -7,8 +7,13 @@ import com.mygdx.entity.Player;
 public class MainGame extends Game {
 
     // CONSTANTES DU JEU ==========================================================================
-    //    static String URLServer = "http://172.16.200.104:8080/DAMCorp/";
-    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/";
+//    public final static String URLServer = "http://172.16.200.104:8080/DAMCorp/"; // mathias greta
+
+    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison
+
+//    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
+
+    //---------------------------------------------------------------------------------------------
     private final static String mapFilename = "map/DAMCorp_test.tmx";
 
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";

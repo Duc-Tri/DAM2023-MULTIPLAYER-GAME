@@ -69,7 +69,8 @@ public class Player implements Entity {
             textureAtlas = new TextureAtlas(Gdx.files.internal(this.textureAtlasPath));
         }
 
-        System.out.println(" === " + findRegion);
+        System.out.println(uniqueID+ " findRegion ***** " + findRegion);
+
         textureRegion = textureAtlas.findRegion(findRegion);
 
         sprite = new Sprite(textureRegion);

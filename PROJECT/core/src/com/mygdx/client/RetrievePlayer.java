@@ -37,7 +37,7 @@ public class RetrievePlayer {
                 updatePlayer(player, tempString);
 
             } else {
-                System.out.println("GET request did not work.");
+                System.out.println(responseCode + " RetrievePlayer/GET request did not work.");
             }
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);

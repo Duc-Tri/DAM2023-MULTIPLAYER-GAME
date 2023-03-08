@@ -32,7 +32,7 @@ public class UpdatePlayer {
                 }
                 in.close();
             } else {
-                System.out.println("GET request did not work.");
+                System.out.println(responseCode + " UpdatePlayer/GET request did not work.");
             }
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);
@@ -51,6 +51,8 @@ public class UpdatePlayer {
         param = param + "&y=" + realY;
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
         param = param + "&findRegion=" + player.getFindRegion();
+
+        System.out.println("UpdatePlayer ///// buildParam : " + param);
 
         return param;
     }

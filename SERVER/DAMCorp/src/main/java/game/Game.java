@@ -29,8 +29,12 @@ public class Game {
 
 	public void addPlayer(Player player) {
 		// TODO Auto-generated method stub
+		
+		System.out.println("Game ■■■■■■ addPlayer ■ "+player.getServerUniqueID());
+		
 		int serverId = Integer.parseInt(player.getServerUniqueID());
 		 players[serverId] = player;
+
 	}
 
 

@@ -31,9 +31,14 @@ public class UpdatePlayer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
-		Player player =game.retrievePlayer(request.getParameter("serverUniqueID"));
-
 		
+		String serverUniqueID = request.getParameter("serverUniqueID");
+		
+		System.out.println("UpdatePlayer =================== "+ serverUniqueID);
+		
+		if( serverUniqueID!=null &&  !serverUniqueID.isEmpty() && !serverUniqueID.equals("null") ) {
+
+		Player player =game.retrievePlayer(request.getParameter("serverUniqueID"));
 		
 		if( request.getParameter("x")!=null) {
 			player.setX( request.getParameter("x"));	
@@ -74,6 +79,7 @@ public class UpdatePlayer extends HttpServlet {
 //		if( request.getParameter("scale")!=null) {
 //			player.setScale(request.getParameter("scale"));	
 //		}
+		}
 	}
 
 	/**
