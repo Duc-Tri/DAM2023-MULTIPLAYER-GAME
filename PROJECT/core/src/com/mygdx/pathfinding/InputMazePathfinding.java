@@ -1,14 +1,14 @@
 package com.mygdx.pathfinding;
 
 import com.badlogic.gdx.InputProcessor;
-import com.mygdx.map.MyTiledMap;
+import com.mygdx.map.CustomTiledMap;
 
 public class InputMazePathfinding implements InputProcessor {
 
-    MyTiledMap myTiledMap;
+    CustomTiledMap customTiledMap;
 
-    public InputMazePathfinding(MyTiledMap tiledMap) {
-        myTiledMap = tiledMap;
+    public InputMazePathfinding(CustomTiledMap tiledMap) {
+        customTiledMap = tiledMap;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class InputMazePathfinding implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         System.out.println("touchDown ***** " + screenX + "/" + screenY + " b:" + button);
 
-        myTiledMap.mouseClicked(screenX, screenY, button);
+        customTiledMap.mouseClicked(screenX, screenY, button);
 
         return false;
     }

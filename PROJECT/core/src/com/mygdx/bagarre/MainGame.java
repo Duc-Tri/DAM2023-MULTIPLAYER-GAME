@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Player;
+import com.mygdx.map.Map;
 
 public class MainGame extends Game {
 
@@ -79,6 +80,11 @@ public class MainGame extends Game {
     @Override
     public void resize(int width, int height) {
         gameScreen.resize(width, height);
+    }
+
+    public static Map getMap()
+    {
+        return GameScreen.getMap();
     }
 
 }

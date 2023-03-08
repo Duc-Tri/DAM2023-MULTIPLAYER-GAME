@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Player;
@@ -23,19 +22,19 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean showJoystick = false;
     private int refreshValue = 0;
     private int speedOfSprite = 1;//Plus c'est grand plus c'est lent
-    private Map map;
+    private static Map map;
     private static OrthographicCamera camera;
     private Viewport viewport;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
     private SpriteBatch batch;
-    private int sizeOfStep = 7;
+    private int sizeOfStep = 8;
 
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
 
-    int calculatedWidth = 0;
-    int calculatedHeight = 0;
+    int mapPixelsWidth = 0;
+    int mapPixelsHeight = 0;
 
     public static boolean lockOnListReadFromDB = false;
 
@@ -53,15 +52,16 @@ public class GameScreen implements Screen, InputProcessor {
 
         camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
         camera.zoom = MainGame.runOnDesktop() ? 0.5f : 0.25f; //cameraZoom;
-        camera.position.set(player.getX(), player.getY(), 0);
+        camera.position.set(player.getPlayerX(), player.getPlayerY(), 0);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
 
         map = new Map(mapFilename);
+        map.setView(camera);
         map.render();
-        calculatedHeight = map.calculatedHeight();
-        calculatedWidth = map.calculatedWidth();
+        mapPixelsHeight = map.mapPixelsHeight();
+        mapPixelsWidth = map.mapPixelsWidth();
 
         joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
@@ -69,7 +69,8 @@ public class GameScreen implements Screen, InputProcessor {
         batch.setProjectionMatrix(camera.combined);
     }
 
-    private void updateCameraOnPlayer() {
+    public static Map getMap() {
+        return map;
     }
 
     @Override
@@ -98,14 +99,16 @@ public class GameScreen implements Screen, InputProcessor {
         // une image test pour situer le 0/0
         //batch.draw(testImage, 0, 0);
 
-        map.getTiledMapRenderer().setView(camera);
-        map.getTiledMapRenderer().render();
+        map.setView(camera);
+        map.render();
 
         // dessine le player et les mates -------
+
         player.drawAndUpdate(batch);
         mates.drawAndUpdate(batch);
 
         batch.end(); //========================================================
+        // player.debug(shapeRenderer);
 
 
         if (showJoystick) {
@@ -175,15 +178,20 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void movePlayer(String dirKeyword, int deltaX, int deltaY) {
 
+        if (MainGame.getMap().checkObstacle(player, deltaX, deltaY))
+            return; // OBSTACLE ! on ne bouge pas !
+
         player.animate(dirKeyword);
         if (deltaX != 0) {
-            player.setX(player.getX() + deltaX);
-            camera.position.x = player.getX();
+
+            player.setPlayerX(player.getPlayerX() + deltaX);
+            camera.position.x = player.getPlayerX();
+
         }
 
         if (deltaY != 0) {
-            player.setY(player.getY() + deltaY);
-            camera.position.y = player.getY();
+            player.setPlayerY(player.getPlayerY() + deltaY);
+            camera.position.y = player.getPlayerY();
         }
 
         camera.update();

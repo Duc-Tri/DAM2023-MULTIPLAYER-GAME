@@ -1,6 +1,5 @@
 package com.mygdx.client;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Player;
 
@@ -52,8 +51,8 @@ public class RetrieveUpdatePlayer {
         if (tempString[0] != null && !tempString[0].isEmpty()) {
             float tempX = Float.parseFloat(tempString[0]);
             float tempY = Float.parseFloat(tempString[1]);
-            player.setX(tempX);
-            player.setY(tempY);
+            player.setPlayerX(tempX);
+            player.setPlayerY(tempY);
             player.setFindRegion(tempString[2]);
         }
     }

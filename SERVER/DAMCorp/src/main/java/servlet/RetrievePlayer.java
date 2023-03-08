@@ -35,7 +35,7 @@ public class RetrievePlayer extends HttpServlet {
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		String serverUniqueID = request.getParameter("serverUniqueID");
-		System.out.println("RetrievePlayer =================== " + serverUniqueID);
+//		System.out.println("RetrievePlayer =================== " + serverUniqueID);
 
 		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
 
@@ -52,10 +52,10 @@ public class RetrievePlayer extends HttpServlet {
 			response.getWriter().append(";" + player.getTextureAtlasPath());
 			response.getWriter().append(";" + player.getScale());
 
-			System.out.println("RetrievePlayer ----- " + player.getServerUniqueID() + " * " + player.getX() + " * "
-					+ player.getY() + " * " + player.getBoxWidth() + " * " + player.getBoxHeight() + " * "
-					+ player.getUniqueID() + " * " + player.getSpriteColorInt() + " * " + player.getFindRegion() + " * "
-					+ player.getTextureAtlasPath() + " * " + player.getScale());
+//			System.out.println("RetrievePlayer ----- " + player.getServerUniqueID() + " * " + player.getX() + " * "
+//					+ player.getY() + " * " + player.getBoxWidth() + " * " + player.getBoxHeight() + " * "
+//					+ player.getUniqueID() + " * " + player.getSpriteColorInt() + " * " + player.getFindRegion() + " * "
+//					+ player.getTextureAtlasPath() + " * " + player.getScale());
 		}
 
 	}

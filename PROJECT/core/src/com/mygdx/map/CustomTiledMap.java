@@ -14,7 +14,7 @@ import com.mygdx.pathfinding.Vector2int;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyTiledMap {
+public class CustomTiledMap {
     private AStarTiledMap myAStarTiledMap;
 
     // MAP QUI CONTIENT TOUS LES BLOCS DU LABYRINTHE
@@ -41,7 +41,7 @@ public class MyTiledMap {
 
     public List<Vector2int> solution; // public for the moment ...
 
-    public MyTiledMap(List<String> blocFileNames, int nBlocWidth, int nBlocHeight) {
+    public CustomTiledMap(List<String> blocFileNames, int nBlocWidth, int nBlocHeight) {
 
         if (blocFileNames.size() != nBlocHeight * nBlocWidth) {
             System.err.println("LE NOMBRE DE BLOCS NE CORRESPOND PAS AUX DIMENSIONS FINALES DU LABYRINTHE !!! " +
@@ -52,7 +52,7 @@ public class MyTiledMap {
         nbBlocHeight = nBlocHeight;
         nbBlocWidth = nBlocWidth;
 
-        // 1] CRETION DE LISTE DES MAPS AVEC LES BLOCS =======================================
+        // 1] CREATION DE LISTE DES MAPS AVEC LES BLOCS =======================================
         //Création d'une liste pour stocker les bloc de type TiledMap
         List<TiledMap> blocMapList = new ArrayList<>();
 

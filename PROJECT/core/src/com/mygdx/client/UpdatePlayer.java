@@ -44,8 +44,8 @@ public class UpdatePlayer {
     }
 
     private static String buildParam(Player player) {
-        float realX = player.getX();
-        float realY = player.getY();
+        float realX = player.getPlayerX();
+        float realY = player.getPlayerY();
 
         String param = "?";
         param = param + "x=" + realX;

@@ -56,10 +56,10 @@ public class NewPlayer {
     private static String buildParam(Player player) {
 
         String param = "?";
-        param = param + "x=" + player.getX();
-        param = param + "&y=" + player.getY();
-        param = param + "&boxWidth=" + player.getBox().getWidth();
-        param = param + "&boxHeight=" + player.getBox().getHeight();
+        param = param + "x=" + player.getPlayerX();
+        param = param + "&y=" + player.getPlayerY();
+        param = param + "&boxWidth=" + player.getHitbox().getWidth();
+        param = param + "&boxHeight=" + player.getHitbox().getHeight();
         param = param + "&uniqueID=" + player.getUniqueID();
         param = param + "&spriteColorInt=" + player.getSpriteTint();
         param = param + "&findRegion=" + player.getFindRegion();

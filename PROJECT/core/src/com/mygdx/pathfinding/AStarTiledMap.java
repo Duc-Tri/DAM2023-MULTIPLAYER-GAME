@@ -1,9 +1,6 @@
 package com.mygdx.pathfinding;
 
-import com.mygdx.map.MyTiledMap;
-import com.mygdx.pathfinding.Node;
-import com.mygdx.pathfinding.NodeComparator;
-import com.mygdx.pathfinding.Vector2int;
+import com.mygdx.map.CustomTiledMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,10 +18,10 @@ public class AStarTiledMap {
     liste ouverte, en effet, il doit d'abord être étudié avant d'être jugé comme bon.
     */
     private List<Node> close;
-    private MyTiledMap myTiledMap;
+    private CustomTiledMap customTiledMap;
 
-    public AStarTiledMap(MyTiledMap tiledMap) {
-        this.myTiledMap = tiledMap;
+    public AStarTiledMap(CustomTiledMap tiledMap) {
+        this.customTiledMap = tiledMap;
     }
 
     /*Fonction cheminPlusCourt(g:Graphe, objectif:Nœud, depart:Nœud)
@@ -125,15 +122,15 @@ public class AStarTiledMap {
 
     private boolean isValidNode(Node node) {
 
-        boolean isXValide = node.point.myX < myTiledMap.myLabyrinthLayer.getWidth() && node.point.myX >= 0;
+        boolean isXValide = node.point.myX < customTiledMap.myLabyrinthLayer.getWidth() && node.point.myX >= 0;
 
-        boolean isYValide = node.point.myY < myTiledMap.myLabyrinthLayer.getHeight() && node.point.myY >= 0;
+        boolean isYValide = node.point.myY < customTiledMap.myLabyrinthLayer.getHeight() && node.point.myY >= 0;
 
         if (!isXValide || !isYValide) {
             return false;
         }
 
-        int val = (myTiledMap.myLabyrinthLayer.getCell(node.point.myX, node.point.myY) == null) ? 0 : 1; // TEMP
+        int val = (customTiledMap.myLabyrinthLayer.getCell(node.point.myX, node.point.myY) == null) ? 0 : 1; // TEMP
 
         return (val == 0);
     }

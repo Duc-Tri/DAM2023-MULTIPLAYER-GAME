@@ -15,7 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.map.MyTiledMap;
+import com.mygdx.map.CustomTiledMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class LabyTest extends ApplicationAdapter {
     TiledMapRenderer blocRenderer;
     TiledMapRenderer testMapRenderer;
     OrthographicCamera camera;
-    private MyTiledMap myTiledMap;
+    private CustomTiledMap customTiledMap;
     TextureRegion[][] splitTiles;
 
     @Override
@@ -53,8 +53,6 @@ public class LabyTest extends ApplicationAdapter {
         myBloc = new TmxMapLoader().load("test/BlocMap/Bloc1.tmx");
 
         blocRenderer = new OrthogonalTiledMapRenderer(myBloc);
-
-
 
 //		img = new Texture("tiny_16x16.png");
 
@@ -84,7 +82,7 @@ public class LabyTest extends ApplicationAdapter {
         testMapRenderer.setView(camera);
         testMapRenderer.render();
 
-        if (myTiledMap.solution != null) {
+        if (customTiledMap.solution != null) {
             drawSolutionInPixels(batch);
         }
 
@@ -93,7 +91,7 @@ public class LabyTest extends ApplicationAdapter {
 
     public void drawSolutionInPixels(SpriteBatch batch) {
 
-        for (Vector2int v : myTiledMap.solution) {
+        for (Vector2int v : customTiledMap.solution) {
             batch.draw(splitTiles[5][0], v.myX * 16, v.myY * 16);
         }
     }
@@ -120,9 +118,9 @@ public class LabyTest extends ApplicationAdapter {
             }
         };
 
-        myTiledMap = new MyTiledMap(blocFileNames, 3, 3);
+        customTiledMap = new CustomTiledMap(blocFileNames, 3, 3);
 
-        testMapRenderer = new OrthogonalTiledMapRenderer(myTiledMap.getTiledMap());
+        testMapRenderer = new OrthogonalTiledMapRenderer(customTiledMap.getTiledMap());
     }
 
 //    ArrayList<String> gfg = new ArrayList<String>() {

@@ -1,6 +1,5 @@
 package com.mygdx.client;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Player;
@@ -51,14 +50,15 @@ public class RetrievePlayer {
     private static void updatePlayer(Player player, String[] tempString) {
         if (tempString[0] != null && !tempString[0].isEmpty()) {
 
-            System.out.println("RetrievePlayer : updatePlayer ############# " + tempString[0] + " / " + tempString[1]);
+            // FLOOD !
+            //System.out.println("RetrievePlayer : updatePlayer ############# " + tempString[0] + " / " + tempString[1]);
 
-            player.setBox(new Rectangle());
+            player.setHitbox(new Rectangle());
             player.initializeSprite();
-            player.setX(Float.parseFloat(tempString[0]));
-            player.setY(Float.parseFloat(tempString[1]));
-            player.getBox().setWidth(Float.parseFloat(tempString[2]));
-            player.getBox().setHeight(Float.parseFloat(tempString[3]));
+            player.setPlayerX(Float.parseFloat(tempString[0]));
+            player.setPlayerY(Float.parseFloat(tempString[1]));
+            player.getHitbox().setWidth(Float.parseFloat(tempString[2]));
+            player.getHitbox().setHeight(Float.parseFloat(tempString[3]));
             player.setUniqueID(tempString[4]);
             player.setServerUniqueID(tempString[5]);
             player.setFindRegion(tempString[6]);

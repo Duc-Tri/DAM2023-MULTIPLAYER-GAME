@@ -6,34 +6,40 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.client.NewPlayer;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
 
 
 public class Player implements Entity {
+
+    private final static String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
+    private static TextureAtlas textureAtlas;
+
+    // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
+    private static final int HITBOX_WIDTH = 20;
+    private static final int HITBOX_HEIGHT = 16;
+    private static final int HITBOX_XOFFSET = (32 - HITBOX_WIDTH) / 2; // (32-24)/2
+    private static final int HITBOX_YOFFSET = 0; // aux pieds du sprite
+    private Rectangle hitbox;
     private MainGame mainGame;
     private int compteurUp = 0;
     private int compteurDown = 0;
     private int compteurLeft = 0;
     private int compteurRight = 0;
-    private Rectangle box;
-    //    private SpriteBatch batch;
-    private static TextureAtlas textureAtlas;
+
     private TextureRegion textureRegion;
     private Sprite sprite;
-    private float x = 100;
-    private float y = 100;
+    private float playerX = 100;
+    private float playerY = 100;
 
     public String uniqueID;
     public Color spriteTint; // from unique ID
 
     String findRegion = "";
-
-    private final static String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
 
     //////////float scale = 2.0f;
     private String serverUniqueID;
@@ -51,26 +57,20 @@ public class Player implements Entity {
         RMXP_CHARACTER = (int) (Math.random() * RMXPCharactesAtlasGenerator.MAX_CHARACTERS) + "_";
         findRegion = RMXP_CHARACTER + "DOWN_0";
 
-        //----------------------------
         initializeSprite();
 
-//        myPlayerSprite = getSprite();
-//        textureAtlas = getTextureAtlas();
-//        textureRegion = getTextureRegion();
-
-        sprite.setPosition(getX(), getY());
+        // to position everything well ----------
+        setPlayerX(getPlayerX());
+        setPlayerY(getPlayerY());
     }
 
     public void initializeSprite() {
-        box = new Rectangle(0, 0, 0, 0);
-
         if (textureAtlas == null) {
             textureAtlas = new TextureAtlas(Gdx.files.internal(this.textureAtlasPath));
         }
-
-        // System.out.println(uniqueID + " findRegion ***** " + findRegion);
-
         textureRegion = textureAtlas.findRegion(findRegion);
+
+        hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
         sprite = new Sprite(textureRegion);
         //sprite.scale(scale);
@@ -81,24 +81,24 @@ public class Player implements Entity {
         return sprite;
     }
 
-    public void setX(float x) {
-        this.x = x;
-        box.setX(x);
-        sprite.setX(x);
+    public void setPlayerX(float playerX) {
+        this.playerX = playerX;
+        hitbox.setX(playerX + HITBOX_XOFFSET);
+        sprite.setX(playerX);
     }
 
-    public void setY(float y) {
-        this.y = y;
-        box.setY(y);
-        sprite.setY(y);
+    public void setPlayerY(float playerY) {
+        this.playerY = playerY;
+        hitbox.setY(playerY + HITBOX_YOFFSET);
+        sprite.setY(playerY);
     }
 
-    public float getX() {
-        return x;
+    public float getPlayerX() {
+        return playerX;
     }
 
-    public float getY() {
-        return y;
+    public float getPlayerY() {
+        return playerY;
     }
 
     public void setSprite(Sprite sprite) {
@@ -154,19 +154,14 @@ public class Player implements Entity {
             textureRegion = textureAtlas.findRegion(findRegion);
         }
         getSprite().setRegion(textureRegion);
-
     }
 
-    public Rectangle getBox() {
-        return box;
+    public Rectangle getHitbox() {
+        return hitbox;
     }
 
-    public void setBox(Rectangle box) {
-        this.box = box;
-    }
-
-    public static void setTextureAtlas(TextureAtlas textureAtlas) {
-        Player.textureAtlas = textureAtlas;
+    public void setHitbox(Rectangle hitbox) {
+        this.hitbox = hitbox;
     }
 
     public void setTextureRegion(TextureRegion textureRegion) {
@@ -248,32 +243,28 @@ public class Player implements Entity {
         this.compteurRight = compteurRight;
     }
 
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
-    }
-
     public TextureRegion getTextureRegion() {
         return textureRegion;
     }
 
     private float getRealX() {
-        float relativePlayerX = x - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
+        float relativePlayerX = playerX - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
         return relativePlayerX;
     }
 
     private float getRealY() {
-        float relativePlayerY = y - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
+        float relativePlayerY = playerY - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
         return relativePlayerY;
     }
 
     private void setYFromRealY(float parseFloat) {
         float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
-        setY(temp);
+        setPlayerY(temp);
     }
 
     private void setXFromRealX(float parseFloat) {
         float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
-        setX(temp);
+        setPlayerX(temp);
     }
 
     private MainGame getGame() {
@@ -282,6 +273,16 @@ public class Player implements Entity {
 
     private void setGame(MainGame mainGame) {
         this.mainGame = mainGame;
+    }
+
+    private void debug(ShapeRenderer renderer) {
+        float relativeHitboxX = hitbox.x + GameScreen.getCamera().position.x; // - GameScreen.SCREEN_WIDTH / 2.0f
+        float relativeHitboxY = hitbox.y + GameScreen.getCamera().position.y; //- GameScreen.SCREEN_HEIGHT / 2.0f
+
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.MAGENTA);
+        renderer.rect(relativeHitboxX, relativeHitboxY, hitbox.width, hitbox.height);
+        renderer.end();
     }
 
 //    public float getScale() {

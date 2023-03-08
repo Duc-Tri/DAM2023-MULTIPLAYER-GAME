@@ -1,6 +1,7 @@
 package com.mygdx.input;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 
@@ -45,6 +46,7 @@ public class Joystick {
 
     public void render(ShapeRenderer renderer) {
         renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.WHITE);
         renderer.circle(circle0.x, circle0.y, circle0.radius);
         renderer.end();
         renderer.begin(ShapeRenderer.ShapeType.Filled);
