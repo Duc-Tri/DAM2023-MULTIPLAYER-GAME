@@ -13,9 +13,6 @@ import java.net.URL;
 public class NewPlayer {
 
     public static void requestServer(Player player) {
-
-        System.out.println("@@@@@ Player >>>>>>>>" + player.uniqueID + "<<<<<<<< NewPlayer.requestServer...");
-
         String GET_URL = MainGame.URLServer + "NewPlayer";//
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
@@ -37,27 +34,23 @@ public class NewPlayer {
                 }
                 in.close();
                 player.setServerUniqueID(String.valueOf(response));
-
-                System.out.println("@@@@@ NewPlayer/GET OK setServerUniqueID ---_" + String.valueOf(response) + "_--- " + player.getServerUniqueID());
-
             } else {
-                System.out.println("@@@@@ " + responseCode + " NewPlayer/GET request did not work.");
             }
 
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
     private static String buildParam(Player player) {
 
         String param = "?";
-        param = param + "x=" + player.getPlayerX();
-        param = param + "&y=" + player.getPlayerY();
+        param = param + "x=" + player.getX();
+        param = param + "&y=" + player.getY();
         param = param + "&boxWidth=" + player.getHitbox().getWidth();
         param = param + "&boxHeight=" + player.getHitbox().getHeight();
         param = param + "&uniqueID=" + player.getUniqueID();
@@ -66,7 +59,7 @@ public class NewPlayer {
         param = param + "&textureAtlasPath=" + player.getTextureAtlasPath();
         param = param + "&scale=" + 1;//+player.getScale();
 
-        System.out.println("NewPlayer _____________________ buildParam : " + param);
+//        System.out.println("NewPlayer _____________________ buildParam : " + param);
 
         return param;
     }

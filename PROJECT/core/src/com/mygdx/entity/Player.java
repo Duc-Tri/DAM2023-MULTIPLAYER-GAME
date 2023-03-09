@@ -62,8 +62,8 @@ public class Player implements Entity {
         initializeSprite();
 
         // to position everything well ----------
-        setPlayerX(getPlayerX());
-        setPlayerY(getPlayerY());
+        setX(getX());
+        setY(getY());
     }
 
     public void initializeSprite() {
@@ -83,23 +83,23 @@ public class Player implements Entity {
         return sprite;
     }
 
-    public void setPlayerX(float playerX) {
+    public void setX(float playerX) {
         this.playerX = playerX;
         hitbox.setX(playerX + HITBOX_XOFFSET);
         sprite.setX(playerX);
     }
 
-    public void setPlayerY(float playerY) {
+    public void setY(float playerY) {
         this.playerY = playerY;
         hitbox.setY(playerY + HITBOX_YOFFSET);
         sprite.setY(playerY);
     }
 
-    public float getPlayerX() {
+    public float getX() {
         return playerX;
     }
 
-    public float getPlayerY() {
+    public float getY() {
         return playerY;
     }
 
@@ -210,7 +210,6 @@ public class Player implements Entity {
 
     public void drawAndUpdate(SpriteBatch batch) {
         sprite.draw(batch);
-        UpdatePlayer.requestServer(this);
     }
 
     public int getCompteurUp() {
@@ -259,16 +258,15 @@ public class Player implements Entity {
         return relativePlayerY;
     }
 
-    private void setYFromRealY(float parseFloat) {
-        float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
-        setPlayerY(temp);
+    public void setYFromRealY() {
+        float temp = getRealY() - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
+        setY(temp);
     }
 
-    private void setXFromRealX(float parseFloat) {
-        float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
-        setPlayerX(temp);
+    public void setXFromRealX() {
+        float temp = getRealX() - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
+        setX(temp);
     }
-
     private MainGame getGame() {
         return mainGame;
     }
@@ -286,13 +284,4 @@ public class Player implements Entity {
         renderer.rect(relativeHitboxX, relativeHitboxY, hitbox.width, hitbox.height);
         renderer.end();
     }
-
-//    public float getScale() {
-//        return scale;
-//    }
-
-//    public void setScale(float scale) {
-//        this.scale = scale;
-//    }
-
 }
