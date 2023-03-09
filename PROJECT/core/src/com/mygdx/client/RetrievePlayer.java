@@ -1,6 +1,5 @@
 package com.mygdx.client;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.entity.Player;
@@ -62,13 +61,6 @@ public class RetrievePlayer {
             player.setFindRegion(tempString[6]);
             player.setTextureAtlasPath(tempString[7]);
             player.setScale(Float.parseFloat(tempString[8]));
-            System.out.println("player.getServerUniqueID()    "+player.getServerUniqueID());
-            System.out.println("player.getX()     "+player.getX());
-            System.out.println("player.getY()     "+player.getY());
-//            System.out.println("     "+player.);
-//            System.out.println("     "+player.);
-//            System.out.println("     "+player.);
-
         }
     }
 

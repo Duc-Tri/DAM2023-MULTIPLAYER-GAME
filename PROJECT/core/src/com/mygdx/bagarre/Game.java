@@ -57,7 +57,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     int calculatedHeight = 0;
     Joystick joystick;
     ShapeRenderer shapeRenderer;
-//    String URLServer = "http://172.16.200.104:8080/DAMCorp/";
     String URLServer = "http://91.161.85.206:49153/DAMCorp/";
     public static boolean lockOnListReadFromDB = false;
 
@@ -65,10 +64,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     UpdatePlayer updatePlayer;
     RetrieveMate retrieveMate;
-
     RetrieveUpdatePlayer retrieveUpdatePlayer;
-//    UpdatePlayer.requestServer(player);
-
 
 
     @Override
@@ -85,10 +81,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         firebase.updateUser();
         setSCREEN_WIDTH(Gdx.graphics.getWidth());
         setSCREEN_HEIGHT(Gdx.graphics.getHeight());
-//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getWidth());
-//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getHeight());
-
-
         createCamera();
         setViewport(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera));
         setJoystick(new Joystick(100, 100, 200));
@@ -147,11 +139,8 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         NewPlayer.requestServer(player);
     }
 
-
     @Override
     public void render() {
-
-
         if(threadPoolExecutor.getActiveCount()<3){
             System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount() );
             threadPoolExecutor.submit(updatePlayer);
@@ -168,13 +157,11 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         } else {
             display = false;
         }
-
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         map.getTiledMapRenderer().setView(camera);
         map.getTiledMapRenderer().render();
         batch.begin();
-
         for(int i =0 ; i < mates.size() ; i ++){
             if(mates.get(i)!= null && mates.get(i).getSprite()!=null  ){
                 mates.get(i).setXFromRealX();
@@ -188,26 +175,6 @@ public class Game extends ApplicationAdapter implements InputProcessor {
             joystick.render(shapeRenderer);
         }
     }
-
-//    private void createMates(String[] tempMates) {
-//        if(tempMates !=  null){
-//        for (int i0 = 0; i0 < tempMates.length; i0++) {
-//            boolean finded = false;
-//            for(int i1 = 0; i1 < mates.size(); i1++){
-//                if(tempMates[i0] != null && tempMates[i0].equalsIgnoreCase(mates.get(i1).getServerUniqueID())   ){
-//                    finded = true;
-//                }
-//            }
-//            if(!finded){
-//                mates.add(new Mate(this));
-//                mates.get(mates.size()-1).setServerUniqueID(tempMates[i0]);
-//                RetrievePlayer.requestServer(mates.get(mates.size()-1));
-//                mates.get(mates.size()-1).initializeSprite();
-//            }
-//         }
-//       }
-//
-//    }
 
     private void displayJoystick() {
         if (Gdx.input.isTouched(0)) {

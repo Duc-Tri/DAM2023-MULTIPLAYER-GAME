@@ -6,7 +6,7 @@ import com.mygdx.entity.Player;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.HttpURLConnection;  
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -23,9 +23,6 @@ public class RetrieveMate implements Runnable {
         while(System.currentTimeMillis() < initialTime+runningTime){
             String[] tempMates = requestServer(player);
             createMates(tempMates);
-//        String[] tempMates = RetrieveMate.requestServer(player);
-//        createMates(tempMates);
-
         }
     }
     public static String[] requestServer(Player player) {
@@ -72,7 +69,6 @@ public class RetrieveMate implements Runnable {
         return param;
     }
 
-
     private void createMates(String[] tempMates) {
         if(tempMates !=  null){
             for (int i0 = 0; i0 < tempMates.length; i0++) {
@@ -91,7 +87,5 @@ public class RetrieveMate implements Runnable {
                 }
             }
         }
-
     }
-
 }
