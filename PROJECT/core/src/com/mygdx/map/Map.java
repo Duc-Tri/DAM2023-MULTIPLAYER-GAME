@@ -22,9 +22,9 @@ public class Map {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
+        obstaclesLayer.setVisible(false);
 
         printLayer(obstaclesLayer);
-
     }
 
     public void setView(OrthographicCamera camera) {
@@ -39,6 +39,10 @@ public class Map {
         int heightMap = Integer.parseInt(tiledMap.getProperties().get("height") + "");
         int tileheight = Integer.parseInt(tiledMap.getProperties().get("tileheight") + "");
         return heightMap * tileheight;
+    }
+
+    public TiledMapTileLayer getObstaclesLayer() {
+        return obstaclesLayer;
     }
 
     public int mapPixelsWidth() {
@@ -93,7 +97,7 @@ public class Map {
 
     public boolean checkObstacle(Player player, int deltaX, int deltaY) {
         Rectangle plHb = player.getHitbox();
-        hitbox.set(plHb.x+deltaX,plHb.y+deltaY,plHb.width, plHb.height);
+        hitbox.set(plHb.x + deltaX, plHb.y + deltaY, plHb.width, plHb.height);
 
         boolean hitOnCorners = checkObstacle(hitbox.x, hitbox.y) ||
                 checkObstacle(hitbox.x + hitbox.width, hitbox.y) ||
