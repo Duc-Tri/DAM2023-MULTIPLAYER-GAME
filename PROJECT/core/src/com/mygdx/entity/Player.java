@@ -79,7 +79,7 @@ public class Player implements Entity {
         //sprite.setColor(spriteTint);
     }
 
-    private Sprite getSprite() {
+    public Sprite getSprite() {
         return sprite;
     }
 

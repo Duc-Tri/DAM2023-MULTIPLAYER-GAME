@@ -30,7 +30,7 @@ public class GameScreen implements Screen, InputProcessor {
     private int refreshValue = 0;
     private int speedOfSprite = 3; //Plus c'est grand plus c'est lent
     private static Map map;
-    private static OrthographicCamera camera;
+    private static ClampedCamera clampedCamera;
     private Viewport viewport;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
@@ -40,8 +40,8 @@ public class GameScreen implements Screen, InputProcessor {
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
 
-    int mapPixelsWidth = 0;
-    int mapPixelsHeight = 0;
+//    int mapPixelsWidth = 0;
+//    int mapPixelsHeight = 0;
 
     public static boolean lockOnListReadFromDB = false;
 
@@ -65,16 +65,16 @@ public class GameScreen implements Screen, InputProcessor {
         createPlayer();
         mates = new Mates(player);
 
-        createCamera();
+        loadMap(mapFilename);
 
         shapeRenderer = new ShapeRenderer();
 
-        loadMap(mapFilename);
+        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 0.5f : 0.25f);
 
         joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
         batch = new SpriteBatch();
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(clampedCamera.combined);
 
         createThreadsPool();
     }
@@ -86,19 +86,12 @@ public class GameScreen implements Screen, InputProcessor {
         NewPlayer.requestServer(player);
     }
 
-    private void createCamera() {
-        camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
-        camera.zoom = MainGame.runOnDesktop() ? 0.5f : 0.25f; //cameraZoom;
-        camera.position.set(player.getX(), player.getY(), 0);
-        camera.update();
-    }
-
     private void loadMap(String mapFilename) {
         map = new Map(mapFilename);
-        map.setView(camera);
+        //map.setView(clampedCamera);
         map.render();
-        mapPixelsHeight = map.mapPixelsHeight();
-        mapPixelsWidth = map.mapPixelsWidth();
+//        mapPixelsHeight = map.mapPixelsHeight();
+//        mapPixelsWidth = map.mapPixelsWidth();
     }
 
     private void createThreadsPool() {
@@ -138,14 +131,14 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(clampedCamera.combined);
 
         batch.begin(); //======================================================
 
         // une image test pour situer le 0/0
         //batch.draw(testImage, 0, 0);
 
-        map.setView(camera);
+        map.setView(clampedCamera);
         map.render();
 
         // dessine le player et les mates -------
@@ -173,15 +166,15 @@ public class GameScreen implements Screen, InputProcessor {
 //
 //        }
         if (threadPoolExecutor0.getActiveCount() < 1) {
-            System.out.println("updatePlayer    RESTART" );
+            System.out.println("updatePlayer    RESTART");
             threadPoolExecutor0.submit(updatePlayer);
         }
         if (threadPoolExecutor1.getActiveCount() < 1) {
-            System.out.println("retrieveMate    RESTART" );
+            System.out.println("retrieveMate    RESTART");
             threadPoolExecutor1.submit(retrieveMate);
         }
         if (threadPoolExecutor2.getActiveCount() < 1) {
-            System.out.println("retrieveUpdatePlayer    RESTART" );
+            System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
         }
 
@@ -215,7 +208,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     public static OrthographicCamera getCamera() {
-        return camera;
+        return clampedCamera;
     }
 
     private void displayJoystick() {
@@ -253,23 +246,20 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void movePlayer(String dirKeyword, int deltaX, int deltaY) {
 
+        player.animate(dirKeyword);
+
         if (MainGame.getMap().checkObstacle(player, deltaX, deltaY))
             return; // OBSTACLE ! on ne bouge pas !
 
-        player.animate(dirKeyword);
         if (deltaX != 0) {
-
             player.setX(player.getX() + deltaX);
-            camera.position.x = player.getX();
-
         }
 
         if (deltaY != 0) {
             player.setY(player.getY() + deltaY);
-            camera.position.y = player.getY();
         }
 
-        camera.update();
+        clampedCamera.centerOnPlayer();
 
         /*
 
