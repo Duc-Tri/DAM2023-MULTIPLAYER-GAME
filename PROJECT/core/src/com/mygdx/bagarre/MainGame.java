@@ -10,7 +10,7 @@ public class MainGame extends Game {
 
     // CONSTANTES DU JEU ==========================================================================
 //    public final static String URLServer = "http://localhost:8080/DAMCorp/"; // marche UNIQUEMENT en DESKTOP
-    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison
+    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison
 
 //    public final static String URLServer = "http://172.16.200.104:8080/DAMCorp/"; // mathias greta
 

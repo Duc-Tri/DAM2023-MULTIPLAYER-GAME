@@ -9,10 +9,10 @@
     "fileStates": {
         "DAMCorp_1.tmx": {
             "scale": 0.75,
-            "selectedLayer": 4,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 542,
-                "y": 108.66666666666663
+                "x": 448,
+                "y": 109.33333333333331
             }
         },
         "DAMCorp_test - Copie.tmx": {
