@@ -41,7 +41,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
     boolean display = false;
     int refreshValue = 0;
-    int speedOfSprite = 3;//Plus c'est grand plus c'est lent
+    int speedOfSprite = 0;//Plus c'est grand plus c'est lent
     Map map;
     OrthographicCamera camera;
     Viewport viewport;
@@ -150,19 +150,24 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void render() {
+        System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount() );
+
+        if(threadPoolExecutor.getActiveCount()<3){
+            threadPoolExecutor.submit(updatePlayer);
+            threadPoolExecutor.submit(retrieveMate);
+            threadPoolExecutor.submit(retrieveUpdatePlayer);
+        }
         displayJoystick();
         if (Gdx.input.isTouched(0)) {
             refreshValue++;
-            if (refreshValue == speedOfSprite) {
-                refreshValue = 0;
+//            if (refreshValue == speedOfSprite) {
+//                refreshValue = 0;
                 movePlayer(joystick.getDirectionInput());
-            }
+//            }
         } else {
             display = false;
         }
-//
-//        String[] tempMates = RetrieveMate.requestServer(player);
-//        createMates(tempMates);
+
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         map.getTiledMapRenderer().setView(camera);
@@ -171,13 +176,9 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
         for(int i =0 ; i < mates.size() ; i ++){
             if(mates.get(i)!= null && mates.get(i).getSprite()!=null  ){
-//                RetrieveUpdatePlayer.requestServer(mates.get(i));
-
                 mates.get(i).getSprite().draw(batch);
             }
-
         }
-
         myPlayerSprite.draw(batch);
         batch.end();
         if (display) {

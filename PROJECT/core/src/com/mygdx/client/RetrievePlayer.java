@@ -1,6 +1,7 @@
 package com.mygdx.client;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.entity.Player;
 
@@ -47,12 +48,13 @@ public class RetrievePlayer {
         }
     }
 
-    private static void updatePlayer(Player player, String[] tempString) {
+    private  static void updatePlayer(Player player, String[] tempString) {
         if(tempString[0]!=null  && !tempString[0].isEmpty()){
             player.setBox(new Rectangle());
-            player.initializeSprite();
+            player.setSprite(new Sprite());
             player.setX(Float.parseFloat(tempString[0]));
             player.setY(Float.parseFloat(tempString[1]));
+            player.initializeSprite();
             player.getBox().setWidth(Float.parseFloat(tempString[2]));
             player.getBox().setHeight(Float.parseFloat(tempString[3]));
             player.setUniqueID(tempString[4]);
@@ -60,6 +62,13 @@ public class RetrievePlayer {
             player.setFindRegion(tempString[6]);
             player.setTextureAtlasPath(tempString[7]);
             player.setScale(Float.parseFloat(tempString[8]));
+            System.out.println("player.getServerUniqueID()    "+player.getServerUniqueID());
+            System.out.println("player.getX()     "+player.getX());
+            System.out.println("player.getY()     "+player.getY());
+//            System.out.println("     "+player.);
+//            System.out.println("     "+player.);
+//            System.out.println("     "+player.);
+
         }
     }
 

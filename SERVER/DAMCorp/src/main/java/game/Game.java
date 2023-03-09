@@ -5,7 +5,7 @@ import game.entity.Player;
 public class Game {
 
 //	PLayer[][] PoolList = new PLayer[100][10];
-	final static int poolSize = 10;
+	final static int poolSize = 30;
 	static int staticIdCpt;
 	 static Player[] players =  new Player[poolSize]; 
 	

@@ -49,7 +49,9 @@ public class Player  implements Entity{
         }
         textureRegion = textureAtlas.findRegion(findRegion);
         sprite = new Sprite(textureRegion);
-        sprite.scale(scale);
+//        sprite.setX(getX());
+//        sprite.setY(getY());
+        sprite.setScale(scale);
         sprite.setColor(spriteTint);
     }
 
@@ -66,12 +68,15 @@ public class Player  implements Entity{
         this.x = x;
         box.setX(x);
         sprite.setX(x);
+//        System.out.println("sprite.getX()     "+sprite.getX());
     }
 
     public void setY(float y) {
         this.y = y;
         box.setY(y);
         sprite.setY(y);
+
+//        System.out.println("sprite.getY()     "+sprite.getY());
     }
 
     public float getX() {

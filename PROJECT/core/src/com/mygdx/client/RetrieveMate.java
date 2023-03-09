@@ -78,7 +78,8 @@ public class RetrieveMate implements Runnable {
             for (int i0 = 0; i0 < tempMates.length; i0++) {
                 boolean finded = false;
                 for(int i1 = 0; i1 < player.getGame().getMates().size(); i1++){
-                    if(tempMates[i0] != null && tempMates[i0].equalsIgnoreCase(player.getGame().getMates().get(i1).getServerUniqueID())   ){
+                    if(tempMates[i0] != null
+                            && tempMates[i0].equalsIgnoreCase(player.getGame().getMates().get(i1).getServerUniqueID())){
                         finded = true;
                     }
                 }
