@@ -1,0 +1,55 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "DAMCorp_1.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "DAMCorp_1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 542,
+                "y": 108.66666666666663
+            }
+        },
+        "DAMCorp_test - Copie.tmx": {
+            "scale": 0.42215625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 801.835813161596,
+                "y": 800.6514175734695
+            }
+        },
+        "DAMCorp_test.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 925,
+                "y": 776
+            }
+        },
+        "DAMCorp_tuiles.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/WORK/DAM2023-MULTIPLAYER-GAME/PROJECT/assets/map",
+    "map.height": 15,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 30,
+    "openFiles": [
+        "DAMCorp_tuiles.tsx",
+        "DAMCorp_1.tmx"
+    ],
+    "project": "DAMCorp.tiled-project",
+    "recentFiles": [
+        "DAMCorp_tuiles.tsx",
+        "DAMCorp_1.tmx",
+        "DAMCorp_test.tmx",
+        "DAMCorp_test - Copie.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
