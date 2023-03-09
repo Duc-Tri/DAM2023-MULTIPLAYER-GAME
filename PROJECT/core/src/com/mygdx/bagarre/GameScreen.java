@@ -161,6 +161,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     private void submitThreadJobs() {
+        System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount());
         if (threadPoolExecutor.getActiveCount() < 3) {
             System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount());
             threadPoolExecutor.submit(updatePlayer);

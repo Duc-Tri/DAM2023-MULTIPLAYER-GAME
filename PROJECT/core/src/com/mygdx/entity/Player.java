@@ -210,7 +210,6 @@ public class Player implements Entity {
 
     public void drawAndUpdate(SpriteBatch batch) {
         sprite.draw(batch);
-//        UpdatePlayer.requestServer(this);
     }
 
     public int getCompteurUp() {
@@ -259,16 +258,23 @@ public class Player implements Entity {
         return relativePlayerY;
     }
 
-    private void setYFromRealY(float parseFloat) {
-        float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
+    public void setYFromRealY() {
+        float temp = getRealY() - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
         setY(temp);
     }
 
-    private void setXFromRealX(float parseFloat) {
-        float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
+    public void setXFromRealX() {
+        float temp = getRealX() - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
         setX(temp);
     }
-
+//    public void setXFromRealX() {
+//        float temp = getRealX()- GameScreen.getCamera().position.x+ GameScreen.SCREEN_WIDTH()/2.0f;
+//        setX(temp);
+//    }
+//    public void setYFromRealY() {
+//        float temp = getRealY()-game.getCamera().position.y+game.getSCREEN_HEIGHT()/2.0f;
+//        setY(temp);
+//    }
     private MainGame getGame() {
         return mainGame;
     }
