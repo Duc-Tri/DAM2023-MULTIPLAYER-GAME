@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.bagarre.Game;
 
 
@@ -24,6 +23,8 @@ public class Player  implements Entity{
     private float x = 0;
     private float y = 0;
 
+    private float realX = 0;
+    private float realY = 0;
     public String uniqueID;
     public Color spriteTint; // from unique ID
 
@@ -249,19 +250,28 @@ public class Player  implements Entity{
     public void setGame(Game game) {
         this.game = game;
     }
-    public float getRealX() {
+    public float getRealXFromX() {
         float relativePlayerX = x - game.getSCREEN_WIDTH()/2.0f+game.getCamera().position.x;
         return relativePlayerX;
     }
 
-    public float getRealY() {
-        float relativePlayerY = y-game.getSCREEN_HEIGHT()/2.0f+game.getCamera().position.y+10;
+    public float getRealYFromY() {
+        float relativePlayerY = y-game.getSCREEN_HEIGHT()/2.0f+game.getCamera().position.y;
         return relativePlayerY;
+    }
+
+    public void setXFromRealX() {
+        float temp = getRealX()-game.getCamera().position.x+game.getSCREEN_WIDTH()/2.0f;
+        setX(temp);
+    }
+    public void setYFromRealY() {
+        float temp = getRealY()-game.getCamera().position.y+game.getSCREEN_HEIGHT()/2.0f;
+        setY(temp);
     }
 
     public void setXFromRealX(float parseFloat) {
 
-        float temp = parseFloat-game.getCamera().position.x+game.getSCREEN_WIDTH()/2.0f+10;
+        float temp = parseFloat-game.getCamera().position.x+game.getSCREEN_WIDTH()/2.0f;
         setX(temp);
     }
 
@@ -271,4 +281,19 @@ public class Player  implements Entity{
         setY(temp);
     }
 
+    public float getRealX() {
+        return realX;
+    }
+
+    public void setRealX(float realX) {
+        this.realX = realX;
+    }
+
+    public float getRealY() {
+        return realY;
+    }
+
+    public void setRealY(float realY) {
+        this.realY = realY;
+    }
 }

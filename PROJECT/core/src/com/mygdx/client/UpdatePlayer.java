@@ -57,8 +57,8 @@ public class UpdatePlayer implements Runnable {
     }
 
     private static String buildParam(Player player) {
-        float realX = player.getRealX();
-        float realY = player.getRealY();
+        float realX = player.getRealXFromX();
+        float realY = player.getRealYFromY();
         String param = "?";
         param = param + "x="+realX;
         param = param + "&y="+realY;

@@ -41,7 +41,7 @@ public class Game extends ApplicationAdapter implements InputProcessor {
     String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
     boolean display = false;
     int refreshValue = 0;
-    int speedOfSprite = 0;//Plus c'est grand plus c'est lent
+    int speedOfSprite = 3;//Plus c'est grand plus c'est lent
     Map map;
     OrthographicCamera camera;
     Viewport viewport;
@@ -150,9 +150,10 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void render() {
-        System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount() );
+
 
         if(threadPoolExecutor.getActiveCount()<3){
+            System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount() );
             threadPoolExecutor.submit(updatePlayer);
             threadPoolExecutor.submit(retrieveMate);
             threadPoolExecutor.submit(retrieveUpdatePlayer);
@@ -160,10 +161,10 @@ public class Game extends ApplicationAdapter implements InputProcessor {
         displayJoystick();
         if (Gdx.input.isTouched(0)) {
             refreshValue++;
-//            if (refreshValue == speedOfSprite) {
-//                refreshValue = 0;
+            if (refreshValue == speedOfSprite) {
+                refreshValue = 0;
                 movePlayer(joystick.getDirectionInput());
-//            }
+            }
         } else {
             display = false;
         }
@@ -176,6 +177,8 @@ public class Game extends ApplicationAdapter implements InputProcessor {
 
         for(int i =0 ; i < mates.size() ; i ++){
             if(mates.get(i)!= null && mates.get(i).getSprite()!=null  ){
+                mates.get(i).setXFromRealX();
+                mates.get(i).setYFromRealY();
                 mates.get(i).getSprite().draw(batch);
             }
         }
