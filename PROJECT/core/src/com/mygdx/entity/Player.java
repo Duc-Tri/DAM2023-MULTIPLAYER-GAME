@@ -210,7 +210,7 @@ public class Player implements Entity {
 
     public void drawAndUpdate(SpriteBatch batch) {
         sprite.draw(batch);
-        UpdatePlayer.requestServer(this);
+//        UpdatePlayer.requestServer(this);
     }
 
     public int getCompteurUp() {

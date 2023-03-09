@@ -24,7 +24,7 @@ public class Mates {
         //createNewMates(RetrieveMate.requestServer(player));
         for (Mate m : mates) {
             if (m != null) {
-                RetrieveUpdatePlayer.requestServer(m);
+//                RetrieveUpdatePlayer.requestServer(m);
                 m.drawAndUpdate(batch);
             }
         }
