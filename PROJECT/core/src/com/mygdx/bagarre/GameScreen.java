@@ -10,14 +10,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.client.NewPlayer;
+import com.mygdx.client.RetrieveMate;
+import com.mygdx.client.RetrieveUpdatePlayer;
+import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Player;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 public class GameScreen implements Screen, InputProcessor {
 
-    private final Player player;
+    private Player player;
     private Mates mates;
     private boolean showJoystick = false;
     private int refreshValue = 0;
@@ -43,30 +50,64 @@ public class GameScreen implements Screen, InputProcessor {
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
 
-    public GameScreen(String mapFilename, Player pl) {
+    int threadPoolSize = 15;
+    ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadPoolSize);
+    UpdatePlayer updatePlayer;
+    RetrieveMate retrieveMate;
+    RetrieveUpdatePlayer retrieveUpdatePlayer;
+
+    public GameScreen(String mapFilename) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
-        player = pl;
+        createPlayer();
         mates = new Mates(player);
 
-        camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
-        camera.zoom = MainGame.runOnDesktop() ? 0.5f : 0.25f; //cameraZoom;
-        camera.position.set(player.getX(), player.getY(), 0);
-        camera.update();
+        createCamera();
 
         shapeRenderer = new ShapeRenderer();
 
-        map = new Map(mapFilename);
-        map.setView(camera);
-        map.render();
-        mapPixelsHeight = map.mapPixelsHeight();
-        mapPixelsWidth = map.mapPixelsWidth();
+        loadMap(mapFilename);
 
         joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
+
+        createThreadsPool();
+    }
+
+    private void createPlayer() {
+        player = new Player();
+        player.setX(100); // temp
+        player.setY(100); // temp
+        NewPlayer.requestServer(player);
+    }
+
+    private void createCamera() {
+        camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
+        camera.zoom = MainGame.runOnDesktop() ? 0.5f : 0.25f; //cameraZoom;
+        camera.position.set(player.getX(), player.getY(), 0);
+        camera.update();
+    }
+
+    private void loadMap(String mapFilename) {
+        map = new Map(mapFilename);
+        map.setView(camera);
+        map.render();
+        mapPixelsHeight = map.mapPixelsHeight();
+        mapPixelsWidth = map.mapPixelsWidth();
+    }
+
+    private void createThreadsPool() {
+        updatePlayer = new UpdatePlayer(player);
+        threadPoolExecutor.submit(updatePlayer);
+
+        retrieveMate = new RetrieveMate(player);
+        threadPoolExecutor.submit(retrieveMate);
+
+        retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
+        threadPoolExecutor.submit(retrieveUpdatePlayer);
     }
 
     public static Map getMap() {
@@ -76,6 +117,9 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     // deltaTime = temps depuis la dernière frame
     public void render(float deltaTime) {
+
+        submitThreadJobs();
+
         displayJoystick();
 
         if (Gdx.input.isTouched(0)) {
@@ -110,11 +154,19 @@ public class GameScreen implements Screen, InputProcessor {
         batch.end(); //========================================================
         // player.debug(shapeRenderer);
 
-
         if (showJoystick) {
             joystick.render(shapeRenderer);
         }
 
+    }
+
+    private void submitThreadJobs() {
+        if (threadPoolExecutor.getActiveCount() < 3) {
+            System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount());
+            threadPoolExecutor.submit(updatePlayer);
+            threadPoolExecutor.submit(retrieveMate);
+            threadPoolExecutor.submit(retrieveUpdatePlayer);
+        }
     }
 
     @Override

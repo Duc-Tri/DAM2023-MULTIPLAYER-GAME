@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Player;
+import com.mygdx.firebase.FirebaseHelper;
 import com.mygdx.map.Map;
 
 public class MainGame extends Game {
@@ -24,8 +25,6 @@ public class MainGame extends Game {
 
     private static String config; // "android" or "desktop";
     GameScreen gameScreen;
-
-    Player player;
 
     private static MainGame instance;
 
@@ -53,12 +52,9 @@ public class MainGame extends Game {
 
     @Override
     public void create() {
-        player = new Player();
-        player.setX(100); // temp
-        player.setY(100); // temp
-        NewPlayer.requestServer(player);
+        FirebaseHelper firebaseHelper=new FirebaseHelper(firebaseURL);
 
-        gameScreen = new GameScreen(mapFilename, player);
+        gameScreen = new GameScreen(mapFilename);
         setScreen(gameScreen);
 
         Gdx.input.setInputProcessor(gameScreen);

@@ -4,8 +4,10 @@ import com.mygdx.firebase.Firebase;
 
 public class FirebaseHelper {
 
+    Firebase firebase;
+
     public FirebaseHelper(String firebaseURL) {
-        Firebase firebase = new Firebase(firebaseURL, "json/key.json");
+        firebase = new Firebase(firebaseURL, "json/key.json");
         firebase.displayJson();
         firebase.connect();
         firebase.updateUser();
