@@ -25,6 +25,9 @@ public class RetrieveUpdatePlayer implements Runnable {
         long initialTime = System.currentTimeMillis();
         long runningTime = 100000000L;
         while (System.currentTimeMillis() < initialTime + runningTime) {
+
+            System.out.println("RetrieveUpdatePlayer : run " + Mates.getMates().size());
+
             for (int i = 0; i < Mates.getMates().size(); i++) {
                 requestServer(Mates.getMate(i));
             }
@@ -54,6 +57,9 @@ public class RetrieveUpdatePlayer implements Runnable {
                 in.close();
                 String responseString = String.valueOf(response);
                 String[] tempString = responseString.split(";");
+
+                System.out.println("requestServer " + player.getX() + " / " + player.getY());
+
                 updatePlayer(player, tempString);
             } else {
                 System.out.println("GET request did not work.");
@@ -73,6 +79,9 @@ public class RetrieveUpdatePlayer implements Runnable {
             float tempY = Float.parseFloat(tempString[1]);
             //player.setRealX(tempX);
             //player.setRealY(tempY);
+
+            System.out.println("updatePlayer " + player.getX() + " / " + player.getY());
+
             player.setX(tempX);
             player.setY(tempY);
             player.setFindRegion(tempString[2]);

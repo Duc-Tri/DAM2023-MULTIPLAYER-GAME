@@ -23,10 +23,10 @@ public class Mates {
     public void drawAndUpdate(SpriteBatch batch) {
         //createNewMates(RetrieveMate.requestServer(player));
         for (Mate m : mates) {
-            m.setXFromRealX();
-            m.setYFromRealY();
+//            m.setXFromRealX();
+//            m.setYFromRealY();
             if (m != null) {
-//                RetrieveUpdatePlayer.requestServer(m);
+                //RetrieveUpdatePlayer.requestServer(m);
                 m.drawAndUpdate(batch);
             }
         }
