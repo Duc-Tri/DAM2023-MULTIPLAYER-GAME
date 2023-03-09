@@ -51,7 +51,9 @@ public class GameScreen implements Screen, InputProcessor {
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
 
     int threadPoolSize = 15;
-    ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadPoolSize);
+    ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolExecutor1 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolExecutor2 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     UpdatePlayer updatePlayer;
     RetrieveMate retrieveMate;
     RetrieveUpdatePlayer retrieveUpdatePlayer;
@@ -101,13 +103,13 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void createThreadsPool() {
         updatePlayer = new UpdatePlayer(player);
-        threadPoolExecutor.submit(updatePlayer);
+        threadPoolExecutor0.submit(updatePlayer);
 
         retrieveMate = new RetrieveMate(player);
-        threadPoolExecutor.submit(retrieveMate);
+        threadPoolExecutor1.submit(retrieveMate);
 
         retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
-        threadPoolExecutor.submit(retrieveUpdatePlayer);
+        threadPoolExecutor2.submit(retrieveUpdatePlayer);
     }
 
     public static Map getMap() {
@@ -162,12 +164,32 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void submitThreadJobs() {
 //        System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount());
-        if (threadPoolExecutor.getActiveCount() < 3) {
-//            System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount());
-            threadPoolExecutor.submit(updatePlayer);
-            threadPoolExecutor.submit(retrieveMate);
-            threadPoolExecutor.submit(retrieveUpdatePlayer);
+//        if (threadPoolExecutor.getActiveCount() < 3) {
+////            System.out.println("threadPoolExecutor.getActiveCount()   " + threadPoolExecutor.getActiveCount());
+//
+//            threadPoolExecutor.submit(retrieveUpdatePlayer);
+//            threadPoolExecutor.submit(updatePlayer);
+//            threadPoolExecutor.submit(retrieveMate);
+//
+//        }
+        if (threadPoolExecutor0.getActiveCount() < 1) {
+            System.out.println("updatePlayer    RESTART" );
+            threadPoolExecutor0.submit(updatePlayer);
         }
+        if (threadPoolExecutor1.getActiveCount() < 1) {
+            System.out.println("retrieveMate    RESTART" );
+            threadPoolExecutor1.submit(retrieveMate);
+        }
+        if (threadPoolExecutor2.getActiveCount() < 1) {
+            System.out.println("retrieveUpdatePlayer    RESTART" );
+            threadPoolExecutor2.submit(retrieveUpdatePlayer);
+        }
+
+//        retrieveMate = new RetrieveMate(player);
+//        threadPoolExecutor1.submit(retrieveMate);
+//
+//        retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
+//        threadPoolExecutor2.submit(retrieveUpdatePlayer);
     }
 
     @Override

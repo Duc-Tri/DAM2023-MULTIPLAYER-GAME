@@ -37,7 +37,6 @@ public class MainGame extends Game {
     private MainGame() {
         // SINGLETION design pattern
     }
-
     public static void setConfig(String c) {
         config = c;
     }
@@ -53,16 +52,9 @@ public class MainGame extends Game {
     @Override
     public void create() {
         FirebaseHelper firebaseHelper=new FirebaseHelper(firebaseURL);
-
         gameScreen = new GameScreen(mapFilename);
         setScreen(gameScreen);
-
         Gdx.input.setInputProcessor(gameScreen);
-
-//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getWidth());
-//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getHeight());
-
-        //setViewport(new FitViewport(100, 100, camera));
     }
 
     @Override

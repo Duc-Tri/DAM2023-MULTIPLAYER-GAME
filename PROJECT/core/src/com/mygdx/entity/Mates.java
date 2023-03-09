@@ -21,12 +21,10 @@ public class Mates {
     }
 
     public void drawAndUpdate(SpriteBatch batch) {
-        //createNewMates(RetrieveMate.requestServer(player));
         for (Mate m : mates) {
             m.setXFromRealX();
             m.setYFromRealY();
             if (m != null) {
-                //RetrieveUpdatePlayer.requestServer(m);
                 m.drawAndUpdate(batch);
             }
         }
@@ -34,11 +32,9 @@ public class Mates {
 
     private String[] ids() {
         String[] uids = new String[mates.size()];
-
-        for (int i = 0; i < mates.size(); i++) {
+         for (int i = 0; i < mates.size(); i++) {
             uids[i] = mates.get(i).getServerUniqueID();
         }
-
         return uids;
     }
 

@@ -13,9 +13,6 @@ import java.net.URL;
 public class NewPlayer {
 
     public static void requestServer(Player player) {
-
-//        System.out.println("@@@@@ Player >>>>>>>>" + player.uniqueID + "<<<<<<<< NewPlayer.requestServer...");
-
         String GET_URL = MainGame.URLServer + "NewPlayer";//
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
@@ -37,11 +34,7 @@ public class NewPlayer {
                 }
                 in.close();
                 player.setServerUniqueID(String.valueOf(response));
-
-//                System.out.println("@@@@@ NewPlayer/GET OK setServerUniqueID ---_" + String.valueOf(response) + "_--- " + player.getServerUniqueID());
-
             } else {
-//                System.out.println("@@@@@ " + responseCode + " NewPlayer/GET request did not work.");
             }
 
         } catch (MalformedURLException e) {

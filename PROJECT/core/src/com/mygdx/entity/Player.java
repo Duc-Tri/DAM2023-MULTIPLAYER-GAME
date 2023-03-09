@@ -284,13 +284,4 @@ public class Player implements Entity {
         renderer.rect(relativeHitboxX, relativeHitboxY, hitbox.width, hitbox.height);
         renderer.end();
     }
-
-//    public float getScale() {
-//        return scale;
-//    }
-
-//    public void setScale(float scale) {
-//        this.scale = scale;
-//    }
-
 }

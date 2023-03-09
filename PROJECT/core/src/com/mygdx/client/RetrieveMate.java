@@ -1,7 +1,6 @@
 package com.mygdx.client;
 
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.entity.Mate;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Player;
 
