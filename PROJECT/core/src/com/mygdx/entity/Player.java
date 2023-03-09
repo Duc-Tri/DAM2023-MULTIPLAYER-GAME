@@ -62,8 +62,8 @@ public class Player implements Entity {
         initializeSprite();
 
         // to position everything well ----------
-        setPlayerX(getPlayerX());
-        setPlayerY(getPlayerY());
+        setX(getX());
+        setY(getY());
     }
 
     public void initializeSprite() {
@@ -83,23 +83,23 @@ public class Player implements Entity {
         return sprite;
     }
 
-    public void setPlayerX(float playerX) {
+    public void setX(float playerX) {
         this.playerX = playerX;
         hitbox.setX(playerX + HITBOX_XOFFSET);
         sprite.setX(playerX);
     }
 
-    public void setPlayerY(float playerY) {
+    public void setY(float playerY) {
         this.playerY = playerY;
         hitbox.setY(playerY + HITBOX_YOFFSET);
         sprite.setY(playerY);
     }
 
-    public float getPlayerX() {
+    public float getX() {
         return playerX;
     }
 
-    public float getPlayerY() {
+    public float getY() {
         return playerY;
     }
 
@@ -261,12 +261,12 @@ public class Player implements Entity {
 
     private void setYFromRealY(float parseFloat) {
         float temp = parseFloat - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
-        setPlayerY(temp);
+        setY(temp);
     }
 
     private void setXFromRealX(float parseFloat) {
         float temp = parseFloat - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
-        setPlayerX(temp);
+        setX(temp);
     }
 
     private MainGame getGame() {

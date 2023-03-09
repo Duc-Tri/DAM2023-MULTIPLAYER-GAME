@@ -1,5 +1,6 @@
 package com.mygdx.client;
 
+import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Player;
 
 import java.io.BufferedReader;
@@ -25,7 +26,7 @@ public class UpdatePlayer implements Runnable {
     }
 
     public static void requestServer(Player player) {
-        String GET_URL = player.getGame().getURLServer()+"UpdatePlayer";
+        String GET_URL = MainGame.URLServer+"UpdatePlayer";
         String paramString  = buildParam(player);
         GET_URL = GET_URL+paramString;
         String USER_AGENT = "Mozilla/5.0";
@@ -57,8 +58,8 @@ public class UpdatePlayer implements Runnable {
     }
 
     private static String buildParam(Player player) {
-        float realX = player.getRealXFromX();
-        float realY = player.getRealYFromY();
+        float realX = player.getX();
+        float realY = player.getY();
         String param = "?";
         param = param + "x="+realX;
         param = param + "&y="+realY;

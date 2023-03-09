@@ -8,12 +8,16 @@ import com.mygdx.client.RetrieveUpdatePlayer;
 import java.util.ArrayList;
 
 public class Mates {
-    private ArrayList<Mate> mates = new ArrayList<>();
+    private static ArrayList<Mate> mates = new ArrayList<>();
     private static Player player;
 
     public Mates(Player pl) {
         if (player == null)
             player = pl;
+    }
+
+    public static Mate getMate(int i) {
+        return mates.get(i);
     }
 
     public void drawAndUpdate(SpriteBatch batch) {
@@ -36,7 +40,11 @@ public class Mates {
         return uids;
     }
 
-    private void createNewMates(String[] tempMates) {
+    public static ArrayList<Mate> getMates() {
+        return mates;
+    }
+
+    public static void createNewMates(String[] tempMates) {
 
         // FLOOD !!!
 //        System.out.println("createNewMates >>>>> tempMates{" + tempMates.length + "}=" + String.join("_@_", tempMates) + " >>>>> mates{" + mates.size() + "}=" + String.join("_@_", ids()));

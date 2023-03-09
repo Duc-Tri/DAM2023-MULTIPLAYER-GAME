@@ -1,6 +1,8 @@
 package com.mygdx.client;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.bagarre.MainGame;
+import com.mygdx.entity.Mates;
 import com.mygdx.entity.Player;
 
 import java.io.BufferedReader;
@@ -13,22 +15,24 @@ import java.net.URL;
 public class RetrieveUpdatePlayer implements Runnable {
     Player player;
     float cpt;
+
     public RetrieveUpdatePlayer(Player player) {
         this.player = player;
     }
 
     @Override
     public void run() {
-        long initialTime  = System.currentTimeMillis();
-        long runningTime  = 100000000L;
-        while(System.currentTimeMillis() < initialTime+runningTime){
-            for(int i = 0 ; i < player.getGame().getMates().size(); i++){
-                requestServer( player.getGame().getMates().get(i));
+        long initialTime = System.currentTimeMillis();
+        long runningTime = 100000000L;
+        while (System.currentTimeMillis() < initialTime + runningTime) {
+            for (int i = 0; i < Mates.getMates().size(); i++) {
+                requestServer(Mates.getMate(i));
             }
         }
     }
+
     public static void requestServer(Player player) {
-        String GET_URL = player.getGame().getURLServer()+"RetrieveUpdatePlayer";
+        String GET_URL = MainGame.URLServer + "RetrieveUpdatePlayer";
         String paramString = buildParam(player);
 
         GET_URL = GET_URL + paramString;
@@ -49,7 +53,7 @@ public class RetrieveUpdatePlayer implements Runnable {
                 }
                 in.close();
                 String responseString = String.valueOf(response);
-                String [] tempString = responseString.split(";");
+                String[] tempString = responseString.split(";");
                 updatePlayer(player, tempString);
             } else {
                 System.out.println("GET request did not work.");
@@ -64,11 +68,13 @@ public class RetrieveUpdatePlayer implements Runnable {
     }
 
     private static void updatePlayer(Player player, String[] tempString) {
-        if(tempString[0]!=null  && !tempString[0].isEmpty()){
+        if (tempString[0] != null && !tempString[0].isEmpty()) {
             float tempX = Float.parseFloat(tempString[0]);
             float tempY = Float.parseFloat(tempString[1]);
-            player.setRealX(tempX);
-            player.setRealY(tempY);
+            //player.setRealX(tempX);
+            //player.setRealY(tempY);
+            player.setX(tempX);
+            player.setY(tempY);
             player.setFindRegion(tempString[2]);
         }
     }

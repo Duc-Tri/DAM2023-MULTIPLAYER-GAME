@@ -56,8 +56,8 @@ public class NewPlayer {
     private static String buildParam(Player player) {
 
         String param = "?";
-        param = param + "x=" + player.getPlayerX();
-        param = param + "&y=" + player.getPlayerY();
+        param = param + "x=" + player.getX();
+        param = param + "&y=" + player.getY();
         param = param + "&boxWidth=" + player.getHitbox().getWidth();
         param = param + "&boxHeight=" + player.getHitbox().getHeight();
         param = param + "&uniqueID=" + player.getUniqueID();

@@ -52,7 +52,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
         camera.zoom = MainGame.runOnDesktop() ? 0.5f : 0.25f; //cameraZoom;
-        camera.position.set(player.getPlayerX(), player.getPlayerY(), 0);
+        camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
@@ -184,14 +184,14 @@ public class GameScreen implements Screen, InputProcessor {
         player.animate(dirKeyword);
         if (deltaX != 0) {
 
-            player.setPlayerX(player.getPlayerX() + deltaX);
-            camera.position.x = player.getPlayerX();
+            player.setX(player.getX() + deltaX);
+            camera.position.x = player.getX();
 
         }
 
         if (deltaY != 0) {
-            player.setPlayerY(player.getPlayerY() + deltaY);
-            camera.position.y = player.getPlayerY();
+            player.setY(player.getY() + deltaY);
+            camera.position.y = player.getY();
         }
 
         camera.update();
