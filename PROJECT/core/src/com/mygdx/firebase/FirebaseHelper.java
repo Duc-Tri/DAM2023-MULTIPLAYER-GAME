@@ -7,10 +7,10 @@ public class FirebaseHelper {
     Firebase firebase;
 
     public FirebaseHelper(String firebaseURL) {
-        firebase = new Firebase(firebaseURL, "json/key.json");
-        firebase.displayJson();
-        firebase.connect();
-        firebase.updateUser();
+//        firebase = new Firebase(firebaseURL, "json/key.json");
+//        firebase.displayJson();
+//        firebase.connect();
+//        firebase.updateUser();
 
     }
 

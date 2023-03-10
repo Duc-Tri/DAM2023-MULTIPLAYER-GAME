@@ -14,6 +14,7 @@ import com.mygdx.entity.Player;
 
 public class Map {
     private final TiledMapTileLayer obstaclesLayer;
+    private final TiledMapTileLayer top1;
     private TiledMap tiledMap;
     private TiledMapRenderer tiledMapRenderer;
 
@@ -25,6 +26,7 @@ public class Map {
 
         obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
         obstaclesLayer.setVisible(false);
+        top1 = (TiledMapTileLayer) tiledMap.getLayers().get("top1");
 
         // retrieve TRIGGERS rectangles -----------------------------------------------------------
         Array<RectangleMapObject> mapRectangles = tiledMap.getLayers().get("TRIGGERS").getObjects().getByType(RectangleMapObject.class);
@@ -40,12 +42,15 @@ public class Map {
     }
 
     public void render() {
-        tiledMapRenderer.render();
+
+//        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("top1"));
+
+        tiledMapRenderer.renderTileLayer(top1);
     }
 
     public int mapPixelsHeight() {
-        int heightMap = Integer.parseInt(tiledMap.getProperties().get("height") + "");
-        int tileheight = Integer.parseInt(tiledMap.getProperties().get("tileheight") + "");
+        int heightMap = obstaclesLayer.getHeight();
+        int tileheight = obstaclesLayer.getTileHeight();
         return heightMap * tileheight;
     }
 
@@ -54,8 +59,8 @@ public class Map {
     }
 
     public int mapPixelsWidth() {
-        int widthMap = Integer.parseInt(tiledMap.getProperties().get("width") + "");
-        int tilewidth = Integer.parseInt(tiledMap.getProperties().get("tilewidth") + "");
+        int widthMap = obstaclesLayer.getWidth();
+        int tilewidth = obstaclesLayer.getTileWidth();
         return widthMap * tilewidth;
     }
 
