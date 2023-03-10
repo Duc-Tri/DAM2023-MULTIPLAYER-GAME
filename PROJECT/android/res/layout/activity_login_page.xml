@@ -73,10 +73,10 @@
             android:layout_margin="4dp"
             android:maxWidth="300dp"
             android:maxHeight="50dp"
+            android:onClick="continuer"
             android:text="@string/s_enregistrer"
             android:textAllCaps="false"
-            android:visibility="gone"
-            android:onClick="continuer"/>
+            android:visibility="visible" />
 
     </LinearLayout>
 

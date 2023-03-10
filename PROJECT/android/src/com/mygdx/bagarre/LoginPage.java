@@ -17,11 +17,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.util.Objects;
 
 public class LoginPage extends AppCompatActivity {
@@ -55,7 +52,7 @@ public class LoginPage extends AppCompatActivity {
 
         //Création de l'audio manager
         audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
-        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) ((audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC))*0.5f), 0);
+        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)), 0);
     }
 
     public void connectBase() {

@@ -8,13 +8,12 @@
 
     <ImageView
         android:id="@+id/background"
-        android:layout_width="918dp"
-        android:layout_height="411dp"
+        android:layout_width="929dp"
+        android:layout_height="438dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background_mode_selection2" />
+        app:srcCompat="@drawable/part8" />
 
     <ImageButton
         android:id="@+id/volumeBtn2"
@@ -80,12 +79,12 @@
         android:id="@+id/soloBtn"
         android:layout_width="412dp"
         android:layout_height="64dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="68dp"
         android:background="@null"
         android:contentDescription="@string/partie_solo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/partie_solo_btn"
         tools:ignore="VisualLintBounds" />
 
@@ -93,11 +92,10 @@
         android:id="@+id/soloBtn2"
         android:layout_width="412dp"
         android:layout_height="64dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:background="@null"
         android:contentDescription="@string/partie_solo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
         app:srcCompat="@drawable/partie_en_ligne_btn"
@@ -108,10 +106,10 @@
         android:layout_width="104dp"
         android:layout_height="119dp"
         android:layout_marginStart="360dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="36dp"
         android:contentDescription="@string/fl_au_du_bouton_partie_solo"
         app:layout_constraintStart_toStartOf="@+id/soloBtn"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/fleau"
         tools:ignore="VisualLintBounds" />
 
@@ -119,8 +117,8 @@
         android:id="@+id/perso_left"
         android:layout_width="104dp"
         android:layout_height="145dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toStartOf="@+id/soloBtn2"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
         app:srcCompat="@drawable/perso1" />
@@ -129,8 +127,8 @@
         android:id="@+id/perso_right"
         android:layout_width="104dp"
         android:layout_height="145dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintStart_toEndOf="@+id/soloBtn2"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
         app:srcCompat="@drawable/perso2" />
@@ -140,7 +138,7 @@
         android:layout_width="74dp"
         android:layout_height="135dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="360dp"
+        android:layout_marginEnd="356dp"
         app:layout_constraintEnd_toEndOf="@+id/soloBtn2"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
         app:srcCompat="@drawable/swords_left" />

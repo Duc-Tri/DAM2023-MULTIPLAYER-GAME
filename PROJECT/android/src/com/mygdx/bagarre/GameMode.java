@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,12 +21,15 @@ public class GameMode extends AppCompatActivity {
     ImageView ivPseudo;
     Spinner imageSp;
 
+    ImageButton buttonSolo;
+
     List<ImageItem> imgList = new ArrayList<>();
 
     public void initUi() {
         tvPseudo = findViewById(R.id.tvPseudo);
         ivPseudo = findViewById(R.id.ivPseudo);
         imageSp = findViewById(R.id.imageSp);
+        buttonSolo = findViewById(R.id.soloBtn);
     }
 
     @Override
@@ -78,6 +82,14 @@ public class GameMode extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
                 imageSp.setVisibility(View.INVISIBLE);
             }
+        });
+
+        ImageView background = findViewById(R.id.background);
+        background.setTranslationY(-130);
+
+        buttonSolo.setOnClickListener(v -> {
+            Intent itGame = new Intent(GameMode.this, AndroidLauncher.class);
+            startActivity(itGame);
         });
 
     }
