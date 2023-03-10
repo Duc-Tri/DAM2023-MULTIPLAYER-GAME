@@ -139,24 +139,18 @@ public class GameScreen implements Screen, InputProcessor {
         // une image test pour situer le 0/0
         //batch.draw(testImage, 0, 0);
 
+        // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
         map.renderFloor();
-
-        // dessine le player et les mates -------
-
-        player.drawAndUpdate(batch);
-        mates.drawAndUpdate(batch);
-
-        map.renderPlayersAndTiles(player, mates);
+        map.renderAllPlayersAndTiles(player, mates);
         map.renderTop();
 
         batch.end(); //========================================================
-        // player.debug(shapeRenderer);
+
 
         if (showJoystick) {
             joystick.render(shapeRenderer);
         }
-
     }
 
     private void submitThreadJobs() {

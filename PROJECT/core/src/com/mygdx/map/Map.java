@@ -21,20 +21,23 @@ import java.util.List;
 
 
 public class Map {
-    private final TiledMapTileLayer obstaclesLayer;
-    private final TiledMapTileLayer playersLayer;
-    private TiledMap tiledMap;
+    private final TiledMap tiledMap;
+    private final int mapNumberLayers;
     private TiledMap floorMap; // contient que les sols, en dessous des joueurs
     private TiledMap topMap; // contient que les top, au dessus des joueurs
-    public TiledMapRenderer floorMapRenderer;
+    private final TiledMapTileLayer obstaclesLayer; // tuiles d'obstacles
+    private final TiledMapTileLayer playersLayer; // contient les tuiles au même niveau que les joueurs
+    private TiledMapRenderer floorMapRenderer;
     private TiledMapRenderer topMapRenderer;
     private final SpriteBatch batch;
     private List<Player> playersList;
-    private final int mapWidthInsTiles;
-    private final int mapHeightInsTiles;
-    private final int mapTileWidth;
-    private final int mapTileHeight;
+    private final int mapWidthInTiles;
+    private final int mapHeightInTiles;
+    private final int tileWidth;
+    private final int tileHeight;
 
+    private PlayerComparator playerComparator = new PlayerComparator();
+    private Rectangle hitbox = new Rectangle();
 
     public Map(String mapFilename, SpriteBatch batch) {
         tiledMap = new TmxMapLoader().load(mapFilename);
@@ -46,40 +49,42 @@ public class Map {
 
         this.batch = batch;
 
-        obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
-        obstaclesLayer.setVisible(false);
         playersLayer = (TiledMapTileLayer) tiledMap.getLayers().get("PLAYERS");
 
-        mapWidthInsTiles = obstaclesLayer.getWidth();
-        mapHeightInsTiles = obstaclesLayer.getHeight();
-        mapTileWidth = obstaclesLayer.getTileWidth();
-        mapTileHeight = obstaclesLayer.getTileHeight();
+        obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
+        obstaclesLayer.setVisible(false);
+        printLayer(obstaclesLayer);
+
+        mapWidthInTiles = obstaclesLayer.getWidth();
+        mapHeightInTiles = obstaclesLayer.getHeight();
+        tileWidth = obstaclesLayer.getTileWidth();
+        tileHeight = obstaclesLayer.getTileHeight();
+        mapNumberLayers = tiledMap.getLayers().size();
 
         constructFloorMap();
         constructTopMap();
 
+        playersList = new ArrayList<>();
+
         // retrieve TRIGGERS rectangles -----------------------------------------------------------
         Array<RectangleMapObject> mapRectangles = tiledMap.getLayers().get("TRIGGERS").getObjects().getByType(RectangleMapObject.class);
-        for (RectangleMapObject r : mapRectangles) {
+        for (RectangleMapObject r : mapRectangles)
             System.out.println(r.getName());
-        }
-
-        printLayer(obstaclesLayer);
     }
 
     private void constructTopMap() {
-        for (int i = 0; i < 4; i++) {
-            TiledMapTileLayer floorLayer = (TiledMapTileLayer) tiledMap.getLayers().get("top" + i);
-            if (floorLayer != null)
-                topMap.getLayers().add(floorLayer);
+        for (int i = 0; i < mapNumberLayers; i++) {
+            TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("top" + i); // get(i) ne marche pas !!!
+            if (layer != null)
+                topMap.getLayers().add(layer);
         }
     }
 
     private void constructFloorMap() {
-        for (int i = 0; i < 4; i++) {
-            TiledMapTileLayer floorLayer = (TiledMapTileLayer) tiledMap.getLayers().get("sol" + i);
-            if (floorLayer != null)
-                floorMap.getLayers().add(floorLayer);
+        for (int i = 0; i < mapNumberLayers; i++) {
+            TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("floor" + i); // get(i) ne marche pas !!!
+            if (layer != null)
+                floorMap.getLayers().add(layer);
         }
     }
 
@@ -88,32 +93,8 @@ public class Map {
         topMapRenderer.setView(camera);
     }
 
-    public void render() {
-//        floorMapRenderer.render();
-//        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get(0));
-
-//        return;
-
-        /*
-        if (batch == null || tiledMap == null || GameScreen.getCamera() == null)
-            return;
-
-//        batch.begin();
-//        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("top1"));
-
-//        tiledMapRenderer.setView(GameScreen.getCamera());
-        if (top1 != null)
-            tiledMapRenderer.renderTileLayer(top1);
-
-//        batch.end();
-
-         */
-    }
-
     public int mapPixelsHeight() {
-        int heightMap = obstaclesLayer.getHeight();
-        int tileheight = obstaclesLayer.getTileHeight();
-        return heightMap * tileheight;
+        return mapHeightInTiles * tileHeight;
     }
 
     public TiledMapTileLayer getObstaclesLayer() {
@@ -121,17 +102,11 @@ public class Map {
     }
 
     public int mapPixelsWidth() {
-        int widthMap = obstaclesLayer.getWidth();
-        int tilewidth = obstaclesLayer.getTileWidth();
-        return widthMap * tilewidth;
+        return mapWidthInTiles * tileWidth;
     }
 
     public TiledMap getTiledMap() {
         return tiledMap;
-    }
-
-    public void setTiledMap(TiledMap tiledMap) {
-        this.tiledMap = tiledMap;
     }
 
     public TiledMapRenderer getFloorMapRenderer() {
@@ -168,8 +143,6 @@ public class Map {
         return res;
     }
 
-    Rectangle hitbox = new Rectangle();
-
     public boolean checkObstacle(Player player, int deltaX, int deltaY) {
         Rectangle plHb = player.getHitbox();
         hitbox.set(plHb.x + deltaX, plHb.y + deltaY, plHb.width, plHb.height);
@@ -186,58 +159,53 @@ public class Map {
         floorMapRenderer.render();
     }
 
-    PlayerComparator playerComparator = new PlayerComparator();
+    public void renderTop() {
+        topMapRenderer.render();
+    }
 
-    public void renderPlayersAndTiles(Player player, Mates mates) {
-//        if (obstaclesLayer == null)            return;
-
-        playersList = new ArrayList<>();
+    public void renderAllPlayersAndTiles(Player player, Mates mates) {
+        playersList.clear();
         playersList.add(player);
         playersList.addAll(Mates.getMates());
 
+        // ON FAIT LE RENDU DES TUILES EN MÊME TEMPS QUE LES JOUEURS, EN TRIANT SUR LEUR Y
+
         Collections.sort(playersList, playerComparator);
 
-//        for (Player p : playersList) p.drawAndUpdate(batch);
-
-        //topMapRenderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get(0));
-        //render();
-
-        TiledMapTileLayer t = ((TiledMapTileLayer) (tiledMap.getLayers().get(3)));
-
-
-        int realY = mapHeightInsTiles * mapTileHeight;
+        int realY = mapHeightInTiles * tileHeight;
 
         // on commence par afficher le haut ! -----------------------------------------------------
-        for (int tileY = mapHeightInsTiles; tileY >= 0; tileY--) {
+        for (int tileY = mapHeightInTiles; tileY >= 0; tileY--) {
 
             // affiche les sprites qui sont au dessus de ce realY ---------------------------------
             for (int pi = playersList.size() - 1; pi >= 0; pi--) {
                 Player currentPlayer = playersList.get(pi);
-                if (currentPlayer.getY() > realY) {
+                if (currentPlayer != null && currentPlayer.getY() > realY) {
                     currentPlayer.drawAndUpdate(batch);
                     playersList.remove(currentPlayer);
-                } else break;
+                } else
+                    break;
             }
 
+            // affiche les tuiles de cette rangée tileY -------------------------------------------
             int realX = 0;
-            for (int tileX = 0; tileX < mapWidthInsTiles; tileX++) {
-                Cell c = playersLayer.getCell(tileX, tileY);
-                if (c != null)
-                    batch.draw(c.getTile().getTextureRegion(), realX, realY);
 
-                realX += mapTileWidth;
+            for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
+                Cell c = playersLayer.getCell(tileX, tileY);
+                if (c != null) {
+                    batch.draw(c.getTile().getTextureRegion(), realX, realY);
+                }
+
+                realX += tileWidth;
             }
 
-            realY -= mapTileHeight;
+            realY -= tileHeight;
         }
 
     }
 
-    public void renderTop() {
-
-        topMapRenderer.render();
-
+    public void render() {
+        // obsolete
     }
-
 }
 
