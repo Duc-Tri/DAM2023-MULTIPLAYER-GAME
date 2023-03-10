@@ -1,12 +1,14 @@
 package com.mygdx.map;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.entity.Player;
 
 
@@ -23,6 +25,12 @@ public class Map {
 
         obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
         obstaclesLayer.setVisible(false);
+
+        // retrieve TRIGGERS rectangles -----------------------------------------------------------
+        Array<RectangleMapObject> mapRectangles = tiledMap.getLayers().get("TRIGGERS").getObjects().getByType(RectangleMapObject.class);
+        for (RectangleMapObject r : mapRectangles) {
+            System.out.println(r.getName());
+        }
 
         printLayer(obstaclesLayer);
     }
