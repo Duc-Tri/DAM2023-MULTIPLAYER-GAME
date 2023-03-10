@@ -7,72 +7,90 @@
     tools:context=".LoginPage">
 
     <ImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="3000dp"
+        android:layout_height="350dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/connexion_page" />
+
+    <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_width="260dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@string/logo_du_jeu"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher" />
+        app:srcCompat="@drawable/bagarre_crop" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="100dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo">
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/card_border"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="none">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tiPseudo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/pseudo"
-                    android:minHeight="48dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/registerBtn"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiPseudo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:maxWidth="300dp"
-                android:maxHeight="50dp"
-                android:text="@string/s_enregistrer"
-                android:textAllCaps="false" />
+                android:hint="@string/pseudo"
+                android:minHeight="48dp"
+                android:textColorHint="#000000" />
 
-            <Button
-                android:id="@+id/connexionBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:maxWidth="300dp"
-                android:maxHeight="50dp"
-                android:text="@string/s_enregistrer"
-                android:textAllCaps="false"
-                android:visibility="gone" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/registerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:maxWidth="300dp"
+            android:maxHeight="50dp"
+            android:text="@string/s_enregistrer"
+            android:textAllCaps="false"
+            android:onClick="register"/>
+
+        <Button
+            android:id="@+id/connexionBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:maxWidth="300dp"
+            android:maxHeight="50dp"
+            android:text="@string/s_enregistrer"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:onClick="continuer"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/volumeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/volume_on"
+        android:maxHeight="50dp"
+        android:minHeight="50dp"
+        android:onClick="toggleMute"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

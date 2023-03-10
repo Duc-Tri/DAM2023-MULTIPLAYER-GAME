@@ -6,26 +6,177 @@
     android:layout_height="match_parent"
     tools:context=".GameMode">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="918dp"
+        android:layout_height="411dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background_mode_selection2" />
+
+    <ImageButton
+        android:id="@+id/volumeBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/volume_on"
+        android:maxHeight="50dp"
+        android:minHeight="50dp"
+        android:onClick="toggleMute"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/card_border_pseudo_card"
             android:orientation="horizontal"
             android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/ivPseudo"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/image_de_profil"
+                app:srcCompat="@android:drawable/btn_star_big_on"
+                tools:ignore="ImageContrastCheck" />
 
             <TextView
                 android:id="@+id/tvPseudo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pseudo" />
+                android:text="@string/pseudo"
+                android:textColor="#000000"
+                android:textSize="20sp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <Spinner
+        android:id="@+id/imageSp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <ImageButton
+        android:id="@+id/soloBtn"
+        android:layout_width="412dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="60dp"
+        android:background="@null"
+        android:contentDescription="@string/partie_solo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:srcCompat="@drawable/partie_solo_btn"
+        tools:ignore="VisualLintBounds" />
+
+    <ImageButton
+        android:id="@+id/soloBtn2"
+        android:layout_width="412dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="44dp"
+        android:background="@null"
+        android:contentDescription="@string/partie_solo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/partie_en_ligne_btn"
+        tools:ignore="VisualLintBounds" />
+
+    <ImageView
+        android:id="@+id/fleau"
+        android:layout_width="104dp"
+        android:layout_height="119dp"
+        android:layout_marginStart="360dp"
+        android:layout_marginTop="40dp"
+        android:contentDescription="@string/fl_au_du_bouton_partie_solo"
+        app:layout_constraintStart_toStartOf="@+id/soloBtn"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:srcCompat="@drawable/fleau"
+        tools:ignore="VisualLintBounds" />
+
+    <ImageView
+        android:id="@+id/perso_left"
+        android:layout_width="104dp"
+        android:layout_height="145dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toStartOf="@+id/soloBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/perso1" />
+
+    <ImageView
+        android:id="@+id/perso_right"
+        android:layout_width="104dp"
+        android:layout_height="145dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintStart_toEndOf="@+id/soloBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/perso2" />
+
+    <ImageView
+        android:id="@+id/sword_left"
+        android:layout_width="74dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="360dp"
+        app:layout_constraintEnd_toEndOf="@+id/soloBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/swords_left" />
+
+    <ImageView
+        android:id="@+id/sword_right"
+        android:layout_width="76dp"
+        android:layout_height="134dp"
+        android:layout_marginStart="370dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/soloBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/swords_right" />
+
+    <ImageButton
+        android:id="@+id/optionsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:contentDescription="@string/option"
+        android:minWidth="50dp"
+        android:minHeight="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn2"
+        app:srcCompat="@drawable/option" />
+
+    <ImageView
+        android:id="@+id/ecrou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/optionsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn2"
+        app:srcCompat="@drawable/ecrou" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

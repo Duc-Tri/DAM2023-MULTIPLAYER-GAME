@@ -142,7 +142,7 @@ public class FirebaseAndroid {
         refPseudo.setValue(pseudo, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                Log.i("WRITED_ON_BASE", pseudo + "écris avec succès");
+                Log.i("WRITED_ON_BASE", pseudo + " écris avec succès");
             }
         });
     }
