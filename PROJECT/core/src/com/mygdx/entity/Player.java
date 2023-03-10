@@ -209,6 +209,8 @@ public class Player implements Entity {
     }
 
     public void drawAndUpdate(SpriteBatch batch) {
+        if(batch==null || sprite==null || sprite.getTexture()==null) return;
+
         sprite.draw(batch);
     }
 

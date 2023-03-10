@@ -65,7 +65,9 @@ public class GameScreen implements Screen, InputProcessor {
         createPlayer();
         mates = new Mates(player);
 
-        loadMap(mapFilename);
+        batch = new SpriteBatch();
+
+        loadMap(mapFilename, batch);
 
         shapeRenderer = new ShapeRenderer();
 
@@ -73,7 +75,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
-        batch = new SpriteBatch();
         batch.setProjectionMatrix(clampedCamera.combined);
 
         createThreadsPool();
@@ -86,8 +87,8 @@ public class GameScreen implements Screen, InputProcessor {
         NewPlayer.requestServer(player);
     }
 
-    private void loadMap(String mapFilename) {
-        map = new Map(mapFilename);
+    private void loadMap(String mapFilename, SpriteBatch sb) {
+        map = new Map(mapFilename, sb);
         //map.setView(clampedCamera);
         map.render();
 //        mapPixelsHeight = map.mapPixelsHeight();
@@ -139,12 +140,15 @@ public class GameScreen implements Screen, InputProcessor {
         //batch.draw(testImage, 0, 0);
 
         map.setView(clampedCamera);
-        map.render();
+        map.renderFloor();
 
         // dessine le player et les mates -------
 
         player.drawAndUpdate(batch);
         mates.drawAndUpdate(batch);
+
+        map.renderPlayersAndTiles(player, mates);
+        map.renderTop();
 
         batch.end(); //========================================================
         // player.debug(shapeRenderer);
