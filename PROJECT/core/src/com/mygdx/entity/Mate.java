@@ -1,12 +1,8 @@
 package com.mygdx.entity;
 
-import com.mygdx.bagarre.MainGame;
-
 public class Mate extends Player implements Runnable{
-
     boolean started;
     int timeout = 99999999;
-
     public Mate() {
         super();
     }

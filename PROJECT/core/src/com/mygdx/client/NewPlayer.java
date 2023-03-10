@@ -35,15 +35,14 @@ public class NewPlayer {
                 in.close();
                 player.setServerUniqueID(String.valueOf(response));
             } else {
-                System.out.println(responseCode + " GET request did not work.");
             }
 
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -52,13 +51,15 @@ public class NewPlayer {
         String param = "?";
         param = param + "x=" + player.getX();
         param = param + "&y=" + player.getY();
-        param = param + "&boxWidth=" + player.getBox().getWidth();
-        param = param + "&boxHeight=" + player.getBox().getHeight();
+        param = param + "&boxWidth=" + player.getHitbox().getWidth();
+        param = param + "&boxHeight=" + player.getHitbox().getHeight();
         param = param + "&uniqueID=" + player.getUniqueID();
         param = param + "&spriteColorInt=" + player.getSpriteTint();
         param = param + "&findRegion=" + player.getFindRegion();
         param = param + "&textureAtlasPath=" + player.getTextureAtlasPath();
         param = param + "&scale=" + 1;//+player.getScale();
+
+//        System.out.println("NewPlayer _____________________ buildParam : " + param);
 
         return param;
     }

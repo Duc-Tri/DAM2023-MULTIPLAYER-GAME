@@ -41,7 +41,7 @@ public class RMXPCharactesAtlasGenerator {
     static final int VERT_PAD = 4; // marge et padding vertical
 
     // public pour lecture du testeur
-    public static final int ANIM_FRAMES = 3;
+    public static final int ANIM_FRAMES = 4;
 
     // dans l'ordre de la spritesheet, de haut en bas
     static final String DIRS[] = {"DOWN", "LEFT", "RIGHT", "UP"};
@@ -87,15 +87,16 @@ public class RMXPCharactesAtlasGenerator {
                     String currentDir = DIRS[iDir];
 
                     // ANIM_FRAMES+1 car la frame iddle est en position 0
-                    for (int frame = 0; frame < ANIM_FRAMES + 1; frame++) {
+                    for (int frame = 0; frame < ANIM_FRAMES; frame++) {
 
                         // après la frame iddle, on fait repartir le # frame de 0
-                        sbAtlas.append(nChar + "_" + currentDir + "_" +
-                                ((frame == 0) ? "IDDLE" : (frame - 1)) + "\n");
+                        //sbAtlas.append(nChar + "_" + currentDir + "_" + ((frame == 0) ? "IDDLE" : (frame - 1)) + "\n");
+
+                        sbAtlas.append(nChar + "_" + currentDir + "_" + frame + "\n");
 
                         sbAtlas.append("\trotate: false\n")
                                 .append("\txy: " +
-                                        ((xchar + 1) * HORI_PAD + xchar * (ANIM_FRAMES + 1) * FRAME_WIDTH + frame * FRAME_WIDTH) +
+                                        ((xchar + 1) * HORI_PAD + xchar * (ANIM_FRAMES) * FRAME_WIDTH + frame * FRAME_WIDTH) +
                                         "," +
                                         ((ychar + 1) * VERT_PAD + ychar * (DIRS.length) * FRAME_HEIGHT + iDir * FRAME_HEIGHT) + "\n")
                                 .append("\tsize: " + FRAME_WIDTH + ", " + FRAME_HEIGHT + "\n")

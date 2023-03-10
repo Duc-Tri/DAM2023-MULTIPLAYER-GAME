@@ -1,6 +1,6 @@
 package com.mygdx.client;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Player;
@@ -14,7 +14,7 @@ import java.net.URL;
 
 public class RetrievePlayer {
     public static void requestServer(Player player) {
-        String GET_URL = MainGame.URLServer + "RetrievePlayer";
+        String GET_URL = MainGame.URLServer+"RetrievePlayer";
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
@@ -33,7 +33,7 @@ public class RetrievePlayer {
                     response.append(inputLine);
                 }
                 in.close();
-                String[] tempString = String.valueOf(response).split(";");
+                String [] tempString = String.valueOf(response).split(";");
                 updatePlayer(player, tempString);
 
             } else {
@@ -41,26 +41,27 @@ public class RetrievePlayer {
             }
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
-    private static void updatePlayer(Player player, String[] tempString) {
-        if (tempString[0] != null && !tempString[0].isEmpty()) {
-            player.setBox(new Rectangle());
-            player.initializeSprite();
+    private  static void updatePlayer(Player player, String[] tempString) {
+        if(tempString[0]!=null  && !tempString[0].isEmpty()){
+            player.setHitbox(new Rectangle());
+            player.setSprite(new Sprite());
             player.setX(Float.parseFloat(tempString[0]));
             player.setY(Float.parseFloat(tempString[1]));
-            player.getBox().setWidth(Float.parseFloat(tempString[2]));
-            player.getBox().setHeight(Float.parseFloat(tempString[3]));
+            player.initializeSprite();
+            player.getHitbox().setWidth(Float.parseFloat(tempString[2]));
+            player.getHitbox().setHeight(Float.parseFloat(tempString[3]));
             player.setUniqueID(tempString[4]);
             player.setServerUniqueID(tempString[5]);
             player.setFindRegion(tempString[6]);
-            player.setTextureAtlasPath(tempString[7]);
-            ///////////player.setScale(Float.parseFloat(tempString[8]));
+            //player.setTextureAtlasPath(tempString[7]);
+            //player.setScale(Float.parseFloat(tempString[8]));
         }
     }
 

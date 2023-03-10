@@ -2,21 +2,30 @@ package com.mygdx.bagarre;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Player;
+import com.mygdx.firebase.FirebaseHelper;
+import com.mygdx.map.Map;
 
 public class MainGame extends Game {
 
     // CONSTANTES DU JEU ==========================================================================
-    //    static String URLServer = "http://172.16.200.104:8080/DAMCorp/";
-    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/";
-    private final static String mapFilename = "map/DAMCorp_test.tmx";
+//    public final static String URLServer = "http://localhost:8080/DAMCorp/"; // marche UNIQUEMENT en DESKTOP
+//    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison 1
+//    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison 2
+
+//    public final static String URLServer = "http://172.16.200.104:8080/DAMCorp/"; // mathias greta
+
+    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
+
+    //---------------------------------------------------------------------------------------------
+    private final static String mapFilename = "map/DAMCorp_1.tmx"; //"map/DAMCorp_test.tmx";
 
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
     //==============================================================================================
 
+    private static String config; // "android" or "desktop";
     GameScreen gameScreen;
-
-    Player player;
 
     private static MainGame instance;
 
@@ -30,18 +39,24 @@ public class MainGame extends Game {
         // SINGLETION design pattern
     }
 
+    public static void setConfig(String c) {
+        config = c;
+    }
+
+    public static boolean runOnAndroid() {
+        return config.equalsIgnoreCase("android");
+    }
+
+    public static boolean runOnDesktop() {
+        return config.equalsIgnoreCase("Desktop");
+    }
+
     @Override
     public void create() {
-        player = new Player();
-        gameScreen = new GameScreen(mapFilename, player);
+        FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
+        gameScreen = new GameScreen(mapFilename);
         setScreen(gameScreen);
-
         Gdx.input.setInputProcessor(gameScreen);
-
-//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getWidth());
-//        System.out.println("Gdx.graphics.getWidth() " + Gdx.graphics.getHeight());
-
-        //setViewport(new FitViewport(100, 100, camera));
     }
 
     @Override
@@ -57,6 +72,10 @@ public class MainGame extends Game {
     @Override
     public void resize(int width, int height) {
         gameScreen.resize(width, height);
+    }
+
+    public static Map getMap() {
+        return GameScreen.getMap();
     }
 
 }

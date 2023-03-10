@@ -8,7 +8,7 @@ import com.mygdx.client.RetrieveUpdatePlayer;
 import java.util.ArrayList;
 
 public class Mates {
-    private ArrayList<Mate> mates = new ArrayList<>();
+    private static ArrayList<Mate> mates = new ArrayList<>();
     private static Player player;
 
     public Mates(Player pl) {
@@ -16,41 +16,58 @@ public class Mates {
             player = pl;
     }
 
-    String[] tempMates;
+    public static Mate getMate(int i) {
+        return mates.get(i);
+    }
 
     public void drawAndUpdate(SpriteBatch batch) {
-        tempMates = RetrieveMate.requestServer(player);
-        createMates(tempMates);
         for (Mate m : mates) {
+            m.setXFromRealX();
+            m.setYFromRealY();
             if (m != null) {
-                RetrieveUpdatePlayer.requestServer(m);
                 m.drawAndUpdate(batch);
             }
         }
     }
 
-    private void createMates(String[] tempMates) {
-        //                    mates[i] = new Mate(this);
-        //                    mates[i].setServerUniqueID(tempMates[i]);
-        //                    RetrievePlayer.requestServer(mates[i]);
-        if (tempMates != null) {
+    private String[] ids() {
+        String[] uids = new String[mates.size()];
+         for (int i = 0; i < mates.size(); i++) {
+            uids[i] = mates.get(i).getServerUniqueID();
+        }
+        return uids;
+    }
 
-            for (int i0 = 0; i0 < tempMates.length; i0++) {
+    public static ArrayList<Mate> getMates() {
+        return mates;
+    }
+
+    public static void createNewMates(String[] tempMates) {
+
+        // FLOOD !!!
+//        System.out.println("createNewMates >>>>> tempMates{" + tempMates.length + "}=" + String.join("_@_", tempMates) + " >>>>> mates{" + mates.size() + "}=" + String.join("_@_", ids()));
+
+        if (tempMates != null && tempMates.length != 0) {
+
+            for (String oneMate : tempMates) {
 
                 boolean found = false;
 
-                for (int i1 = 0; i1 < mates.size(); i1++) {
-                    if (tempMates[i0] != null && tempMates[i0].equalsIgnoreCase(mates.get(i1).getServerUniqueID())) {
-                        found = true;
-                        break;
+                if (oneMate != null && !oneMate.isEmpty()) {
+                    for (Mate m : mates) {
+                        if (oneMate.equalsIgnoreCase(m.getServerUniqueID())) {
+                            found = true;
+                            break;
+                        }
                     }
-                }
 
-                if (!found) {
-                    mates.add(new Mate());
-                    mates.get(mates.size() - 1).setServerUniqueID(tempMates[i0]);
-                    RetrievePlayer.requestServer(mates.get(mates.size() - 1));
-                    mates.get(mates.size() - 1).initializeSprite();
+                    if (!found) {
+                        Mate newMate = new Mate();
+                        mates.add(newMate);
+                        newMate.setServerUniqueID(oneMate);
+                        RetrievePlayer.requestServer(newMate);
+                        newMate.initializeSprite();
+                    }
                 }
             }
         }

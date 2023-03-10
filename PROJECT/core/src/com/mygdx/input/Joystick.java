@@ -1,6 +1,7 @@
 package com.mygdx.input;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 
@@ -25,25 +26,27 @@ public class Joystick {
             y = (float) (circle0.y + deltaY0 * ratio);
         }
         circle1.setPosition(x, y);
+
         double deltaX = circle1.x - circle0.x;
         double deltaY = circle1.y - circle0.y;
         double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
         if (-45 < angle && angle < 45) {
             directionInput = Input.Keys.RIGHT;
         }
-        if (45 < angle && angle < 135) {
+        else if (45 < angle && angle < 135) {
             directionInput = Input.Keys.UP;
         }
-        if (angle < -135 || angle > 135) {
+        else if (angle < -135 || angle > 135) {
             directionInput = Input.Keys.LEFT;
         }
-        if (-135 < angle && angle < -45) {
+        else if (-135 < angle && angle < -45) {
             directionInput = Input.Keys.DOWN;
         }
     }
 
     public void render(ShapeRenderer renderer) {
         renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.WHITE);
         renderer.circle(circle0.x, circle0.y, circle0.radius);
         renderer.end();
         renderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -58,35 +61,36 @@ public class Joystick {
         circle1.setY(y);
     }
 
-    public Circle getCircle0() {
-        return circle0;
-    }
-
-    public void setCircle0(Circle circle0) {
-        this.circle0 = circle0;
-    }
-
-    public Circle getCircle1() {
-        return circle1;
-    }
-
-    public void setCircle1(Circle circle1) {
-        this.circle1 = circle1;
-    }
-
     public boolean isPositionFixe() {
         return positionFixe;
-    }
-
-    public void setPositionFixe(boolean positionFixe) {
-        this.positionFixe = positionFixe;
     }
 
     public int getDirectionInput() {
         return directionInput;
     }
 
-    public void setDirectionInput(int directionInput) {
+
+    private Circle getCircle0() {
+        return circle0;
+    }
+
+    private void setCircle0(Circle circle0) {
+        this.circle0 = circle0;
+    }
+
+    private Circle getCircle1() {
+        return circle1;
+    }
+
+    private void setCircle1(Circle circle1) {
+        this.circle1 = circle1;
+    }
+
+    private void setPositionFixe(boolean positionFixe) {
+        this.positionFixe = positionFixe;
+    }
+
+    private void setDirectionInput(int directionInput) {
         this.directionInput = directionInput;
     }
 }
