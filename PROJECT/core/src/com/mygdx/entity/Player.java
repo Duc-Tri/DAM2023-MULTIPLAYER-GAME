@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.client.UpdatePlayer;
 import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
 
 
@@ -32,12 +31,13 @@ public class Player implements Entity {
     private int compteurDown = 0;
     private int compteurLeft = 0;
     private int compteurRight = 0;
-
     private TextureRegion textureRegion;
     private Sprite sprite;
-    private float playerX = -1;
-    private float playerY = -1;
+    private float x = -1;
+    private float y = -1;
 
+    private float realX = -1;
+    private float realY = -1;
     public String uniqueID;
     public Color spriteTint; // from unique ID
 
@@ -47,6 +47,9 @@ public class Player implements Entity {
     private String serverUniqueID;
 
     private String RMXP_CHARACTER; // le personnage dans la feuille de sprites
+
+
+
 
     public Player() {
 
@@ -84,23 +87,23 @@ public class Player implements Entity {
     }
 
     public void setX(float playerX) {
-        this.playerX = playerX;
+        this.x = playerX;
         hitbox.setX(playerX + HITBOX_XOFFSET);
         sprite.setX(playerX);
     }
 
     public void setY(float playerY) {
-        this.playerY = playerY;
+        this.y = playerY;
         hitbox.setY(playerY + HITBOX_YOFFSET);
         sprite.setY(playerY);
     }
 
     public float getX() {
-        return playerX;
+        return x;
     }
 
     public float getY() {
-        return playerY;
+        return y;
     }
 
     public void setSprite(Sprite sprite) {
@@ -248,23 +251,23 @@ public class Player implements Entity {
         return textureRegion;
     }
 
-    private float getRealX() {
-        float relativePlayerX = playerX - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
+    private float calculateRealX() {
+        float relativePlayerX = x - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
         return relativePlayerX;
     }
 
-    private float getRealY() {
-        float relativePlayerY = playerY - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
+    private float calculateRealY() {
+        float relativePlayerY = y - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
         return relativePlayerY;
     }
 
     public void setYFromRealY() {
-        float temp = getRealY() - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
+        float temp = calculateRealY() - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
         setY(temp);
     }
 
     public void setXFromRealX() {
-        float temp = getRealX() - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
+        float temp = calculateRealX() - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
         setX(temp);
     }
     private MainGame getGame() {
@@ -283,5 +286,22 @@ public class Player implements Entity {
         renderer.setColor(Color.MAGENTA);
         renderer.rect(relativeHitboxX, relativeHitboxY, hitbox.width, hitbox.height);
         renderer.end();
+    }
+
+
+    public float getRealX() {
+        return realX;
+    }
+
+    public void setRealX(float realX) {
+        this.realX = realX;
+    }
+
+    public float getRealY() {
+        return realY;
+    }
+
+    public void setRealY(float realY) {
+        this.realY = realY;
     }
 }

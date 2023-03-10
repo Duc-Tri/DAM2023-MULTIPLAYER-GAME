@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
+import com.mygdx.client.RetrieveUpdateMates;
 import com.mygdx.client.RetrieveUpdatePlayer;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
@@ -54,9 +55,11 @@ public class GameScreen implements Screen, InputProcessor {
     ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     ThreadPoolExecutor threadPoolExecutor1 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     ThreadPoolExecutor threadPoolExecutor2 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolExecutor3 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     UpdatePlayer updatePlayer;
     RetrieveMate retrieveMate;
     RetrieveUpdatePlayer retrieveUpdatePlayer;
+    RetrieveUpdateMates retrieveUpdateMates;
 
     public GameScreen(String mapFilename) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -108,8 +111,11 @@ public class GameScreen implements Screen, InputProcessor {
         retrieveMate = new RetrieveMate(player);
         threadPoolExecutor1.submit(retrieveMate);
 
-        retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
-        threadPoolExecutor2.submit(retrieveUpdatePlayer);
+//        retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
+//        threadPoolExecutor2.submit(retrieveUpdatePlayer);
+
+        retrieveUpdateMates = new RetrieveUpdateMates(player);
+        threadPoolExecutor3.submit(retrieveUpdateMates);
     }
 
     public static Map getMap() {
@@ -180,9 +186,14 @@ public class GameScreen implements Screen, InputProcessor {
             System.out.println("retrieveMate    RESTART" );
             threadPoolExecutor1.submit(retrieveMate);
         }
-        if (threadPoolExecutor2.getActiveCount() < 1) {
-            System.out.println("retrieveUpdatePlayer    RESTART" );
-            threadPoolExecutor2.submit(retrieveUpdatePlayer);
+//        if (threadPoolExecutor2.getActiveCount() < 1) {
+//            System.out.println("retrieveUpdatePlayer    RESTART" );
+//            threadPoolExecutor2.submit(retrieveUpdatePlayer);
+//        }
+
+        if (threadPoolExecutor3.getActiveCount() < 1) {
+            System.out.println("retrieveUpdateMates    RESTART" );
+            threadPoolExecutor3.submit(retrieveUpdateMates);
         }
 
 //        retrieveMate = new RetrieveMate(player);

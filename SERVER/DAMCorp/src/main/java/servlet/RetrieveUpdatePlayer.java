@@ -39,6 +39,7 @@ public class RetrieveUpdatePlayer extends HttpServlet {
 		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
 
 			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"));
+			player.setLastUpdate(System.currentTimeMillis());
 			if (player != null) {
 				response.getWriter().append(player.getX());
 				response.getWriter().append(";" + player.getY());

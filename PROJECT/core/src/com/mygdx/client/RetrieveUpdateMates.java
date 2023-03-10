@@ -1,6 +1,5 @@
 package com.mygdx.client;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Player;
@@ -12,11 +11,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RetrieveUpdatePlayer implements Runnable {
+public class RetrieveUpdateMates implements Runnable {
     Player player;
     float cpt;
 
-    public RetrieveUpdatePlayer(Player player) {
+    public RetrieveUpdateMates(Player player) {
         this.player = player;
     }
 
@@ -35,7 +34,7 @@ public class RetrieveUpdatePlayer implements Runnable {
     }
 
     public static void requestServer(Player player) {
-        String GET_URL = MainGame.URLServer + "RetrieveUpdatePlayer";
+        String GET_URL = MainGame.URLServer + "RetrieveUpdateMates";
         String paramString = buildParam(player);
 
         GET_URL = GET_URL + paramString;
@@ -56,35 +55,42 @@ public class RetrieveUpdatePlayer implements Runnable {
                 }
                 in.close();
                 String responseString = String.valueOf(response);
-                String[] tempString = responseString.split(";");
+                String[] tempStringArray = responseString.split("/");
 
-//                System.out.println("requestServer " + player.getX() + " / " + player.getY());
+//               System.out.println("requestServer " + player.getX() + " / " + player.getY());
 
-//                updatePlayer(player, tempString);
+                for(int i = 0 ; i < tempStringArray.length; i++ ){
+                    String[] tempString = tempStringArray[i].split(";");
+                    updatePlayer(player, tempString);
+                }
+
             } else {
                 System.out.println("GET request did not work.");
             }
         } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
 //            throw new RuntimeException(e);
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
     private static void updatePlayer(Player player, String[] tempString) {
         if (tempString[0] != null && !tempString[0].isEmpty()) {
+//            System.out.println("tempString[0]  " + tempString[0]);
+//            System.out.println("tempString[1]  " + tempString[1]);
+//            System.out.println("tempString[2]  " + tempString[2]);
             float tempX = Float.parseFloat(tempString[0]);
             float tempY = Float.parseFloat(tempString[1]);
-            //player.setRealX(tempX);
-            //player.setRealY(tempY);
-
-//            System.out.println("updatePlayer " + player.getX() + " / " + player.getY());
-
             player.setRealX(tempX);
             player.setRealY(tempY);
-            player.setFindRegion(tempString[2]);
+
+//            System.out.println(player.getServerUniqueID() +"   updatePlayers " + player.getX() + " / " + player.getY());
+//
+//            player.setX(tempX);
+//            player.setY(tempY);
+//            player.setFindRegion(tempString[2]);
         }
     }
 

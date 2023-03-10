@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.desktop.SystemEventListener;
+
 import game.entity.Player;
 
 public class Game {
@@ -55,7 +57,10 @@ public class Game {
 //		System.out.println("players.length " + players.length);
 		for (int i = 0; i < players.length; i++) {
 //			System.out.println("i " + i);
-			if (player != null && !player.getServerUniqueID().equalsIgnoreCase(i + "") && (players[i] != null)) {
+		
+			if (player != null && !player.getServerUniqueID().equalsIgnoreCase(i + "") && (players[i] != null) 
+//					&& player.getLastUpdate()>System.currentTimeMillis()-10*1000
+					) {
 //				System.out.println("Fine i " + i);
 				if (cpt == 0) {
 					tempString = "" + i;
@@ -72,4 +77,14 @@ public class Game {
 
 	}
 
+	public Player[] getPlayers() {
+		return players;
+	}
+
+	public static void setPlayers(Player[] players) {
+		Game.players = players;
+	}
+
+	
+	
 }

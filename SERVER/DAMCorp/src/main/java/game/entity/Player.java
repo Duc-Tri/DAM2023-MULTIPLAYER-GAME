@@ -12,11 +12,11 @@ public class Player {
 	private String findRegion;
 	private String textureAtlasPath;
 	private String scale;
+	private long lastUpdate =-1;
 
 	public Player(String uniqueID, String serverUniqueID) {
 		super();
 		this.uniqueID = uniqueID;
-
 		this.serverUniqueID = serverUniqueID;
 	}
 
@@ -99,5 +99,16 @@ public class Player {
 	public void setScale(String scale) {
 		this.scale = scale;
 	}
+
+	public long getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(long lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+	
+	
+	
 
 }

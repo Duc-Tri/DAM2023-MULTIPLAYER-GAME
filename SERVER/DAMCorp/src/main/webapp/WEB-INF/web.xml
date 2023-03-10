@@ -69,4 +69,14 @@
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/TestServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RetrieveUpdateMates</display-name>
+    <servlet-name>RetrieveUpdateMates</servlet-name>
+    <servlet-class>servlet.RetrieveUpdateMates</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RetrieveUpdateMates</servlet-name>
+    <url-pattern>/RetrieveUpdateMates</url-pattern>
+  </servlet-mapping>
 </web-app>
