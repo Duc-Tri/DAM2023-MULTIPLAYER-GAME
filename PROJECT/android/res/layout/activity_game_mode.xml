@@ -44,7 +44,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -63,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_weight="1"
-            android:gravity="end"
+            android:gravity="center_horizontal"
             android:text="@string/pseudo"
             android:textAlignment="viewEnd"
             android:textColor="@color/white"
