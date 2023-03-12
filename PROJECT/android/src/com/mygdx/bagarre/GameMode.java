@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GameMode extends AppCompatActivity {
     TextView tvPseudo;
-    ImageView ivPseudo;
+    ImageView ivPseudo, background;
     Spinner imageSp;
 
     ImageButton buttonSolo;
@@ -30,6 +30,7 @@ public class GameMode extends AppCompatActivity {
         ivPseudo = findViewById(R.id.ivPseudo);
         imageSp = findViewById(R.id.imageSp);
         buttonSolo = findViewById(R.id.soloBtn);
+        background = findViewById(R.id.background);
     }
 
     @Override
@@ -83,9 +84,6 @@ public class GameMode extends AppCompatActivity {
                 imageSp.setVisibility(View.INVISIBLE);
             }
         });
-
-        ImageView background = findViewById(R.id.background);
-        background.setTranslationY(-130);
 
         buttonSolo.setOnClickListener(v -> {
             Intent itGame = new Intent(GameMode.this, AndroidLauncher.class);
