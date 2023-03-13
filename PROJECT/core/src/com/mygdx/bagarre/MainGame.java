@@ -11,8 +11,8 @@ public class MainGame extends Game {
 
     // CONSTANTES DU JEU ==========================================================================
 //    public final static String URLServer = "http://localhost:8080/DAMCorp/"; // marche UNIQUEMENT en DESKTOP
-//    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison
-    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison
+    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/"; // tri greta
+//    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison
 
 //    public final static String URLServer = "http://172.16.200.104:8080/DAMCorp/"; // mathias greta
 
@@ -22,6 +22,11 @@ public class MainGame extends Game {
     private final static String mapFilename = "map/DAMCorp_1.tmx"; //"map/DAMCorp_test.tmx";
 
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
+
+    public final static String playersAtlasPath = "characters/RMXP_humans.atlas";
+
+    public final static String monstersAtlasPath = "characters/RMXP_monsters.atlas";
+
     //==============================================================================================
 
     private static String config; // "android" or "desktop";

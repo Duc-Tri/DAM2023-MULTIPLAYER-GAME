@@ -33,16 +33,16 @@ public class TestCharactersAtlas extends ApplicationAdapter implements InputProc
         int posX = 0;
         int posY = 0;
 
-        for (int nchar = 0; nchar < RMXPCharactesAtlasGenerator.MAX_CHARACTERS; nchar++) {
+        for (int nchar = 0; nchar < RMXPCharactersAtlasGenerator.MAX_CHARACTERS; nchar++) {
 
-            for (int dir = 0; dir < RMXPCharactesAtlasGenerator.DIRS.length; dir++) {
+            for (int dir = 0; dir < RMXPCharactersAtlasGenerator.DIRS.length; dir++) {
 
-                for (int frame = 0; frame < RMXPCharactesAtlasGenerator.ANIM_FRAMES; frame++) {
+                for (int frame = 0; frame < RMXPCharactersAtlasGenerator.ANIM_FRAMES; frame++) {
 
                     if (frame == 0 || frame == 2)
                         continue; // on saute les iddles pour en afficher moins ...
 
-                    String region = nchar + "_" + RMXPCharactesAtlasGenerator.DIRS[dir] + "_" + frame;
+                    String region = nchar + "_" + RMXPCharactersAtlasGenerator.DIRS[dir] + "_" + frame;
                     TextureAtlas.AtlasRegion textureRegion = textureAtlas.findRegion(region);
 
                     // frame==0 : IDDLE
@@ -51,10 +51,10 @@ public class TestCharactersAtlas extends ApplicationAdapter implements InputProc
                     //batch.draw(textureRegion, (nchar + dir + frame) * 16, (nchar + dir + frame) * 24);
                     batch.draw(textureRegion, posX, posY);
 
-                    posX += RMXPCharactesAtlasGenerator.FRAME_WIDTH;
+                    posX += RMXPCharactersAtlasGenerator.FRAME_WIDTH;
                     if (posX > SCREEN_WIDTH) {
                         posX = 0;
-                        posY += RMXPCharactesAtlasGenerator.FRAME_HEIGHT;
+                        posY += RMXPCharactersAtlasGenerator.FRAME_HEIGHT;
                     }
                 }
 

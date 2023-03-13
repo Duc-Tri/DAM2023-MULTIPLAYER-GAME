@@ -2,9 +2,8 @@ package com.libgdx.pathfinder;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
+import com.mygdx.graphics.RMXPCharactersAtlasGenerator;
 import com.mygdx.graphics.TestCharactersAtlas;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
@@ -21,7 +20,7 @@ public class DesktopLauncher {
 
 
         // CLIENT + SERVEUR ---------------------------------------------------
-        new Lwjgl3Application(MainGame.getInstance(), config);
+//        new Lwjgl3Application(MainGame.getInstance(), config);
 
 
         // TEST PATHFINDING ---------------------------------------------------
@@ -33,8 +32,8 @@ public class DesktopLauncher {
 
 
         // TESTS ATLAS PERSONNAGES---------------------------------------------
-//        RMXPCharactesAtlasGenerator.printlnAtlas();
-//        new Lwjgl3Application(new TestCharactersAtlas(), config);
+        RMXPCharactersAtlasGenerator.printlnAtlas();
+        new Lwjgl3Application(new TestCharactersAtlas(), config);
 
     }
 

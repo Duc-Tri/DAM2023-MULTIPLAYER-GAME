@@ -6,32 +6,32 @@ Génération de l'atlas pour les personnages de la sprite sheet de RPG MAKER XP.
 
 - les persos ont 4 directions de marche et d'iddle
 
-- chaque animation de marche a 3 frames, chaque iddle est sur une seule frame
+- chaque animation de marche a 4 frames, (iddle / pas1 / iddle / pas2)
 
 - chaque frame fait 32 pixels de large et 48 pixels de haut
 
 - chaque pesonnage a donc 16 frames (4 en colonnes, 4 en lignes)
 
-- pour chaque ligne de frames, on a: dir_iddle, dir_frame0, dir_frame1 et dir_frame2
+- pour chaque ligne de frames, on a: dir_frame0, dir_frame1, dir_frame2 et dir_frame3
 
-- dir_iddle et dir_frame1 sont le même sprite... ce n'est donc pas optimal (d'origine)
+- dir_frame0 et dir_frame2 sont le même sprite... ce n'est donc pas optimal (d'origine)
 
 - horizontalement, il y a un padding de 2 pixels entre chaque personnage
 
 - verticalement, il y a un un padding de 4 pixels entre chaque personnage
 
-- les deux derniers personnages ne respectent pas le format précédent (96 persos en tout donc)
+- les deux derniers personnages ne respectent pas le format précédent (98 persos en tout donc)
 
-- il y a des frames de mort des personnages (en bas de la sheet)
+- NON TRAITÉ : il y a des frames de mort des personnages (en bas de la sheet)
 
 La sprite sheet en ligne (les paddings sont erronés et corrigés dans le projet) :
 https://www.spriters-resource.com/pc_computer/rpgmakerxp/sheet/100490/
 ===============================================================================
 */
 
-public class RMXPCharactesAtlasGenerator {
+public class RMXPCharactersAtlasGenerator {
 
-    static final String PNG_FILENAME = "PC Computer - RPG Maker XP - Human Characters.png";
+    static final String PNG_FILENAME = "RMXP_humans.png";
 
     // public pour lecture du testeur
     public static final int MAX_CHARACTERS = 98; // nb. personnages "valides" selon notre format défini
