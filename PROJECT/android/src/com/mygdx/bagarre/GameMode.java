@@ -20,7 +20,7 @@ public class GameMode extends AppCompatActivity {
     TextView tvPseudo;
     ImageView ivPseudo, background;
     Spinner imageSp;
-
+    String userID;
     ImageButton buttonSolo;
 
     List<ImageItem> imgList = new ArrayList<>();
@@ -43,10 +43,18 @@ public class GameMode extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("pref_pseudo", this.MODE_PRIVATE);
         SharedPreferences.Editor editPref = prefs.edit();
 
+        userID = prefs.getString("userID", null);
+        if(userID != null){
+            Log.i("PREFS_USERID", userID);
+        } else {
+            Log.i("PREFS_USERID_NULL", "User ID est nul");
+        }
+
         int idImg = prefs.getInt("img", 0);
-        Log.i("IDIMG_PREF", String.valueOf(idImg));
+        Log.i("PREFS_IMG", String.valueOf(idImg));
         if(idImg != 0) {
             ivPseudo.setImageResource(idImg);
+            Log.i("PREFS_IMG_NULL", "Il n'y a pas encore d'icone de profil enregistrée");
         }
 
         imgList.add(new ImageItem(R.drawable.profil1, "profil1"));

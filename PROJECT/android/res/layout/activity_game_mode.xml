@@ -32,16 +32,17 @@
         android:id="@+id/ivPanoPseudo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/pano_pseudo" />
+        app:srcCompat="@drawable/pano_flat" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="198dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="12dp"
         android:orientation="horizontal"
         android:paddingStart="12dp"
@@ -55,6 +56,7 @@
             android:id="@+id/ivPseudo"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginEnd="4dp"
             android:contentDescription="@string/image_de_profil"
             app:srcCompat="@android:drawable/btn_star_big_on"
@@ -64,13 +66,13 @@
             android:id="@+id/tvPseudo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_gravity="center_vertical|end"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/pseudo"
+            android:text="WWWWWWWWWWW"
             android:textAlignment="viewEnd"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

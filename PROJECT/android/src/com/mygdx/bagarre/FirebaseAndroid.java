@@ -5,7 +5,6 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.badlogic.gdx.backends.android.AndroidFiles;
-import com.badlogic.gdx.backends.android.DefaultAndroidFiles;
 import com.badlogic.gdx.backends.android.ZipResourceFile;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -137,19 +136,44 @@ public class FirebaseAndroid {
         });
     }
 
-    public void registerUser(String pseudo){
+    public String registerUser(String pseudo){
         refPseudo = firebaseDatabase.getReference("Pseudo");
-        refPseudo.setValue(pseudo, new DatabaseReference.CompletionListener() {
+        String userId = refPseudo.push().getKey();
+
+        refPseudo.child(userId).setValue(pseudo, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 Log.i("WRITED_ON_BASE", pseudo + " écris avec succès");
+                Log.i("USER_ID", userId);
             }
         });
+
+        return userId;
     }
 
     public void displayJson(){
         String stringFileHandle = filehandle.readString();
         System.out.println("displayJson    " + stringFileHandle);
+    }
+
+    public void deleteAllPseudos() {
+        refPseudo = firebaseDatabase.getReference("Pseudo");
+        refPseudo.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                Log.i("REF_PSEUDO_EMPTIED", "La référence des pseudos de la base de donnée a été vidée");
+            }
+        });
+    }
+
+    public void suppressUnusedPseudo(String childRef, String oldPseudo) {
+        refPseudo = firebaseDatabase.getReference("Pseudo");
+        refPseudo.child(childRef).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                Log.i("UNUSED_PSEUDO_DELETED", "Le pseudo " + oldPseudo + " n'était plus utilisé et a été supprimé de la base de donnée");
+            }
+        });
     }
 
 }
