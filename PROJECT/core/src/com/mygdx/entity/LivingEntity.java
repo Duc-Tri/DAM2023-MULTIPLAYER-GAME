@@ -15,7 +15,7 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 // Entity qui
 public class LivingEntity implements Entity {
 
-    protected static TextureAtlas textureAtlas;
+    protected  TextureAtlas textureAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
     private static final int CHAR_WIDTH = 32;
@@ -43,11 +43,14 @@ public class LivingEntity implements Entity {
 
     protected String serverUniqueID;
 
-    protected String RMXP_CHARACTER; // non de la région dans l'atlas
+    protected String RMXP_CHARACTER; // non de la région texture dans l'atlas
+
+    public LivingEntity() {
+        System.out.println("########## CONSTRUCTOR LivingEntity");
+    }
 
     @Override
     public void initializeSprite() {
-
     }
 
     @Override
@@ -170,16 +173,16 @@ public class LivingEntity implements Entity {
         return sprite;
     }
 
-    public void setX(float playerX) {
-        this.entityX = playerX;
-        hitbox.setX(playerX + HITBOX_XOFFSET);
-        sprite.setX(playerX);
+    public void setX(float x) {
+        this.entityX = x;
+        hitbox.setX(x + HITBOX_XOFFSET);
+        sprite.setX(x);
     }
 
-    public void setY(float playerY) {
-        this.entityY = playerY;
-        hitbox.setY(playerY + HITBOX_YOFFSET);
-        sprite.setY(playerY);
+    public void setY(float y) {
+        this.entityY = y;
+        hitbox.setY(y + HITBOX_YOFFSET);
+        sprite.setY(y);
     }
 
     public void setTextureRegion(TextureRegion textureRegion) {
@@ -213,7 +216,7 @@ public class LivingEntity implements Entity {
     }
 
     public String getTextureAtlasPath() {
-        return MainGame.playersAtlasPath;
+        return MainGame.PLAYERS_ATLAS;
     }
 
     public String getServerUniqueID() {
@@ -234,8 +237,8 @@ public class LivingEntity implements Entity {
 
         // DONT WORK !
 
-        Vector3 camXYZ =GameScreen.getCamera().position;
-         Vector3 screenXYZ=   GameScreen.getCamera().project(camXYZ);
+        Vector3 camXYZ = GameScreen.getCamera().position;
+        Vector3 screenXYZ = GameScreen.getCamera().project(camXYZ);
 
         float screenHitboxX = hitbox.x + screenXYZ.x; // - GameScreen.SCREEN_WIDTH / 2.0f
         float screenHitboxY = hitbox.y + screenXYZ.y; //- GameScreen.SCREEN_HEIGHT / 2.0f

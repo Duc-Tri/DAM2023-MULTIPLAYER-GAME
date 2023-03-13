@@ -39,14 +39,13 @@ public class TestAtlas extends ApplicationAdapter implements InputProcessor {
         int posX = 0;
         int posY = 0;
 
-        for (int nchar = 0; nchar < RMXPMonstersAtlas.MAX_CHARACTERS; nchar++) {
+        for (int nchar = 0; nchar < RMXPMonstersAtlas.MAX_MONSTERS; nchar++) {
 
             for (int dir = 0; dir < RMXPMonstersAtlas.DIRS.length; dir++) {
 
                 for (int frame = 0; frame < RMXPMonstersAtlas.ANIM_FRAMES; frame++) {
 
-                    if (frame == 0 || frame == 2)
-                        continue; // on saute les iddles pour en afficher moins ...
+//                    if (frame == 0 || frame == 2)                        continue; // on saute les iddles pour en afficher moins ...
 
                     String region = nchar + "_" + RMXPMonstersAtlas.DIRS[dir] + "_" + frame;
                     TextureAtlas.AtlasRegion textureRegion = textureAtlas.findRegion(region);
@@ -57,7 +56,7 @@ public class TestAtlas extends ApplicationAdapter implements InputProcessor {
                     batch.draw(textureRegion, posX, posY);
 
                     posX += textureRegion.getRegionWidth();
-                    if (posX > SCREEN_WIDTH) {
+                    if (posX + 16 > SCREEN_WIDTH) {
                         posX = 0;
                         posY += textureRegion.getRegionHeight();
                     }
@@ -69,6 +68,7 @@ public class TestAtlas extends ApplicationAdapter implements InputProcessor {
 
         batch.end();
     }
+
     public void renderPlayers() {
         ScreenUtils.clear(0.4f, 0.4f, 0.4f, 1);
 

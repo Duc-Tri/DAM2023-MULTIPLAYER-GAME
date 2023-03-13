@@ -11,9 +11,11 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.entity.LivingEntity;
 import com.mygdx.entity.Mates;
+import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.PlayerComparator;
+import com.mygdx.entity.LivingEntityComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,13 +32,13 @@ public class Map {
     private TiledMapRenderer floorMapRenderer;
     private TiledMapRenderer topMapRenderer;
     private final SpriteBatch batch;
-    private List<Player> playersList;
+    private List<LivingEntity> livingEntitiesList;
     private final int mapWidthInTiles;
     private final int mapHeightInTiles;
     private final int tileWidth;
     private final int tileHeight;
 
-    private PlayerComparator playerComparator = new PlayerComparator();
+    private LivingEntityComparator livingEntityComparator = new LivingEntityComparator();
     private Rectangle hitbox = new Rectangle();
 
     public Map(String mapFilename, SpriteBatch batch) {
@@ -64,7 +66,7 @@ public class Map {
         constructFloorMap();
         constructTopMap();
 
-        playersList = new ArrayList<>();
+        livingEntitiesList = new ArrayList<>();
 
         // retrieve TRIGGERS rectangles -----------------------------------------------------------
         Array<RectangleMapObject> mapRectangles = tiledMap.getLayers().get("TRIGGERS").getObjects().getByType(RectangleMapObject.class);
@@ -143,8 +145,8 @@ public class Map {
         return res;
     }
 
-    public boolean checkObstacle(Player player, int deltaX, int deltaY) {
-        Rectangle plHb = player.getHitbox();
+    public boolean checkObstacle(LivingEntity entity, int deltaX, int deltaY) {
+        Rectangle plHb = entity.getHitbox();
         hitbox.set(plHb.x + deltaX, plHb.y + deltaY, plHb.width, plHb.height);
 
         boolean hitOnCorners = checkObstacle(hitbox.x, hitbox.y) ||
@@ -163,14 +165,15 @@ public class Map {
         topMapRenderer.render();
     }
 
-    public void renderAllPlayersAndTiles(Player player, Mates mates) {
-        playersList.clear();
-        playersList.add(player);
-        playersList.addAll(Mates.getMates());
+    public void renderAllLivingEntitiesAndTiles(Player player, Mates mates, Monsters monsters) {
+        livingEntitiesList.clear();
+        livingEntitiesList.addAll(monsters.getMobs());
+        livingEntitiesList.addAll(Mates.getMates());
+        livingEntitiesList.add(player);
 
         // ON FAIT LE RENDU DES TUILES EN MÊME TEMPS QUE LES JOUEURS, EN TRIANT SUR LEUR Y
 
-        Collections.sort(playersList, playerComparator);
+        Collections.sort(livingEntitiesList, livingEntityComparator);
 
         int realY = mapHeightInTiles * tileHeight;
 
@@ -178,11 +181,11 @@ public class Map {
         for (int tileY = mapHeightInTiles; tileY >= 0; tileY--) {
 
             // affiche les sprites qui sont au dessus de ce realY ---------------------------------
-            for (int pi = playersList.size() - 1; pi >= 0; pi--) {
-                Player currentPlayer = playersList.get(pi);
-                if (currentPlayer != null && currentPlayer.getY() > realY) {
-                    currentPlayer.drawAndUpdate(batch);
-                    playersList.remove(currentPlayer);
+            for (int pi = livingEntitiesList.size() - 1; pi >= 0; pi--) {
+                LivingEntity currentEntity = livingEntitiesList.get(pi);
+                if (currentEntity != null && currentEntity.getY() > realY) {
+                    currentEntity.drawAndUpdate(batch);
+                    livingEntitiesList.remove(currentEntity);
                 } else
                     break;
             }

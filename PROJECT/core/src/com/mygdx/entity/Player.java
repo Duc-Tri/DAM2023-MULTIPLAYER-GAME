@@ -12,15 +12,26 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 
 public class Player extends LivingEntity {
 
+    private static TextureAtlas allPlayersAtlas;
+
     public Player() {
 
+        // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
+        if (allPlayersAtlas == null) {
+            System.out.println("initializeSprite .......... " + MainGame.PLAYERS_ATLAS);
+            allPlayersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.PLAYERS_ATLAS));
+        }
+
+        System.out.println("---------------------------- CONSTRUCTOR Player");
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
         uniqueID = "player" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
+        // TODO : remove randomness
         RMXP_CHARACTER = (int) (Math.random() * RMXPCharactersAtlas.MAX_CHARACTERS) + "_";
+
         findRegion = RMXP_CHARACTER + "DOWN_0";
 
         initializeSprite();
@@ -30,19 +41,23 @@ public class Player extends LivingEntity {
         setY(getY());
     }
 
+    @Override
     public void initializeSprite() {
+
+        // TEXTURE LOCAL DE LIVINGENTITY --------------------------------------
         if (textureAtlas == null) {
-            textureAtlas = new TextureAtlas(Gdx.files.internal(MainGame.playersAtlasPath));
+            textureAtlas = allPlayersAtlas;
         }
+
         textureRegion = textureAtlas.findRegion(findRegion);
 
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
         sprite = new Sprite(textureRegion);
+
         //sprite.scale(scale);
         //sprite.setColor(spriteTint);
     }
-
 
     private float getRealX() {
         float relativePlayerX = entityX - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;

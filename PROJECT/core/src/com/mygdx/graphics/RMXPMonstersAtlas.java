@@ -28,17 +28,21 @@ https://www.spriters-resource.com/pc_computer/rpgmakerxp/sheet/100488/
 
 import com.badlogic.gdx.math.Rectangle;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public final class RMXPMonstersAtlas extends RMXPAtlasGenerator {
 
     static final String PNG_FILENAME = "RMXP_monsters.png";
 
     // public pour lecture du testeur
-    public static int MAX_CHARACTERS = -1; // nb. de monstres traités
+    public final static int MAX_MONSTERS = 10; // rendre dynamique !?!
     int FRAME_WIDTH = -1; // selon le monstre
     int FRAME_HEIGHT = -1; // selon le monstre
-
 
     // dans l'ordre de la spritesheet, de haut en bas
 
@@ -48,17 +52,45 @@ public final class RMXPMonstersAtlas extends RMXPAtlasGenerator {
     private static void populateMonstersFramesData() {
         System.out.println("populateMonstersFramesData ################################ " + PNG_FILENAME);
         monstersFramesSet = new ArrayList<>();
+
         // diablotin bleu aux yeux rouges
         monstersFramesSet.add(new Rectangle(910, 2, 128, 192));
 
-        MAX_CHARACTERS = monstersFramesSet.size();
+        // chauve-souris
+        monstersFramesSet.add(new Rectangle(2014, 2, 128, 192));
+
+        // diable bleu ailé
+        monstersFramesSet.add(new Rectangle(1164, 198, 192, 256));
+
+        // scorpion rouge
+        monstersFramesSet.add(new Rectangle(1680, 198, 256, 256));
+
+        // insecte monstrueux ailé
+        monstersFramesSet.add(new Rectangle(1938, 198, 320, 256));
+
+        // molusque hargneux
+        monstersFramesSet.add(new Rectangle(2, 458, 256, 320));
+
+        // gélatine bleutée
+        monstersFramesSet.add(new Rectangle(1744, 586, 192, 192));
+
+        // troll blanc
+        monstersFramesSet.add(new Rectangle(2, 782, 320, 384));
+
+        // serpent multicolore
+        monstersFramesSet.add(new Rectangle(646, 782, 384, 384));
+
+        // arbre maléfique
+        monstersFramesSet.add(new Rectangle(902, 1298, 384, 384));
+
+//        MAX_MONSTERS = monstersFramesSet.size();
     }
 
 
     //=========================================================================
     // Copier-coller le texte obtenu dans la console => fichier .atlas
     //=========================================================================
-    public static void printlnAtlas() {
+    public static void printlnAtlas(boolean writeTofile) {
 
         // on génère les monstres de gauche à droite, de haut en bas
         // example du format :
@@ -103,8 +135,8 @@ public final class RMXPMonstersAtlas extends RMXPAtlasGenerator {
                                     "," +
                                     (int) (monsterFrames.y + iDir * frameHeight) + "\n")
 
-                            .append("\tsize: " + (int) monsterFrames.width + ", " + (int) monsterFrames.height + "\n")
-                            .append("\torig: " + (int) monsterFrames.width + ", " + (int) monsterFrames.height + "\n")
+                            .append("\tsize: " + frameWidth + ", " + frameHeight + "\n")
+                            .append("\torig: " + frameWidth + ", " + frameHeight + "\n")
                             .append("\toffset: 0, 0\n")
                             .append("\tindex: -1\n"); /* /!\ PAS DE DOUBLE NEW_LINE /!\ */
                 }
@@ -112,10 +144,37 @@ public final class RMXPMonstersAtlas extends RMXPAtlasGenerator {
             }
             nChar++;
 
-
         }
 
+        if (writeTofile)
+            writeTextFile("C:\\Users\\DAM_007\\Documents\\GitHub\\DAM2023-MULTIPLAYER-GAME\\PROJECT\\assets\\characters\\RMXP_monsters.atlas", sbAtlas.toString());
+
         System.out.println(sbAtlas);
+    }
+
+    public static void writeTextFile(String filePath, String atlasContent) {
+        BufferedWriter writer = null;
+        try {
+            //create a temporary file
+            String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+
+            File logFile = new File(timeLog);
+
+            // This will output the full path where the file will be written to...
+            System.out.println(logFile.getCanonicalPath());
+
+            System.out.println("============================= filePath=" + filePath);
+            writer = new BufferedWriter(new FileWriter(filePath)); // logfile
+            writer.write(atlasContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close the writer regardless of what happens...
+                writer.close();
+            } catch (Exception e) {
+            }
+        }
     }
 
 

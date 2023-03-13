@@ -21,7 +21,7 @@ public class DesktopLauncher {
 
 
         // CLIENT + SERVEUR ---------------------------------------------------
-//        new Lwjgl3Application(MainGame.getInstance(), config);
+        new Lwjgl3Application(MainGame.getInstance(), config);
 
 
         // TEST PATHFINDING ---------------------------------------------------
@@ -34,8 +34,8 @@ public class DesktopLauncher {
 
         // TESTS ATLAS PERSONNAGES---------------------------------------------
 //        RMXPCharactersAtlas.printlnAtlas();
-        RMXPMonstersAtlas.printlnAtlas();
-        new Lwjgl3Application(new TestAtlas(), config);
+//        RMXPMonstersAtlas.printlnAtlas(false);
+//        new Lwjgl3Application(new TestAtlas(), config);
 
     }
 

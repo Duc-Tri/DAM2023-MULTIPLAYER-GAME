@@ -2,8 +2,6 @@ package com.mygdx.bagarre;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.mygdx.client.NewPlayer;
-import com.mygdx.entity.Player;
 import com.mygdx.firebase.FirebaseHelper;
 import com.mygdx.map.Map;
 
@@ -23,9 +21,9 @@ public class MainGame extends Game {
 
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
 
-    public final static String playersAtlasPath = "characters/RMXP_humans.atlas";
+    public final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
 
-    public final static String monstersAtlasPath = "characters/RMXP_monsters.atlas";
+    public final static String MONSTERS_ATLAS = "characters/RMXP_monsters.atlas";
 
     //==============================================================================================
 

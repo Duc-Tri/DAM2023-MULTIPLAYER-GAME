@@ -15,6 +15,7 @@ import com.mygdx.client.RetrieveMate;
 import com.mygdx.client.RetrieveUpdatePlayer;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
+import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
@@ -26,6 +27,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     private Player player;
     private Mates mates;
+    private Monsters monsters;
     private boolean showJoystick = false;
     private int refreshValue = 0;
     private int speedOfSprite = 3; //Plus c'est grand plus c'est lent
@@ -36,7 +38,6 @@ public class GameScreen implements Screen, InputProcessor {
     public static int SCREEN_HEIGHT = 0;
     private SpriteBatch batch;
     private int sizeOfStep = 8;
-
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
 
@@ -64,6 +65,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         createPlayer();
         mates = new Mates(player);
+        monsters = new Monsters();
 
         batch = new SpriteBatch();
 
@@ -128,6 +130,8 @@ public class GameScreen implements Screen, InputProcessor {
             showJoystick = false;
         }
 
+        monsters.moveRandomly(deltaTime);
+
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -142,7 +146,7 @@ public class GameScreen implements Screen, InputProcessor {
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
         map.renderFloor();
-        map.renderAllPlayersAndTiles(player, mates);
+        map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
         map.renderTop();
 
         batch.end(); //========================================================
@@ -172,7 +176,7 @@ public class GameScreen implements Screen, InputProcessor {
             threadPoolExecutor1.submit(retrieveMate);
         }
         if (threadPoolExecutor2.getActiveCount() < 1) {
-            System.out.println("retrieveUpdatePlayer    RESTART");
+            //System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
         }
 
