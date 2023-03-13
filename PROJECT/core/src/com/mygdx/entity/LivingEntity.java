@@ -2,11 +2,15 @@ package com.mygdx.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.graphics.RMXPCharactersAtlasGenerator;
+import com.mygdx.graphics.RMXPCharactersAtlas;
 
 // Entity qui
 public class LivingEntity implements Entity {
@@ -56,7 +60,7 @@ public class LivingEntity implements Entity {
             compteurUp = 0;
             compteurRight = 0;
             compteurLeft++;
-            if (compteurLeft == RMXPCharactersAtlasGenerator.ANIM_FRAMES) {
+            if (compteurLeft == RMXPCharactersAtlas.ANIM_FRAMES) {
                 compteurLeft = 0;
             }
             findRegion = RMXP_CHARACTER + "LEFT_" + compteurLeft;
@@ -67,7 +71,7 @@ public class LivingEntity implements Entity {
             compteurUp = 0;
             compteurLeft = 0;
             compteurRight++;
-            if (compteurRight == RMXPCharactersAtlasGenerator.ANIM_FRAMES) {
+            if (compteurRight == RMXPCharactersAtlas.ANIM_FRAMES) {
                 compteurRight = 0;
             }
             findRegion = RMXP_CHARACTER + "RIGHT_" + compteurRight;
@@ -78,7 +82,7 @@ public class LivingEntity implements Entity {
             compteurRight = 0;
             compteurLeft = 0;
             compteurUp++;
-            if (compteurUp == RMXPCharactersAtlasGenerator.ANIM_FRAMES) {
+            if (compteurUp == RMXPCharactersAtlas.ANIM_FRAMES) {
                 compteurUp = 0;
             }
             findRegion = RMXP_CHARACTER + "UP_" + compteurUp;
@@ -89,7 +93,7 @@ public class LivingEntity implements Entity {
             compteurRight = 0;
             compteurLeft = 0;
             compteurDown++;
-            if (compteurDown == RMXPCharactersAtlasGenerator.ANIM_FRAMES) {
+            if (compteurDown == RMXPCharactersAtlas.ANIM_FRAMES) {
                 compteurDown = 0;
             }
             findRegion = RMXP_CHARACTER + "DOWN_" + compteurDown;
@@ -97,4 +101,149 @@ public class LivingEntity implements Entity {
         }
         sprite.setRegion(textureRegion);
     }
+
+    public float getX() {
+        return entityX;
+    }
+
+    public float getY() {
+        return entityY;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
+
+    public void setHitbox(Rectangle hitbox) {
+        this.hitbox = hitbox;
+    }
+
+    public int getCompteurUp() {
+        return compteurUp;
+    }
+
+    public void setCompteurUp(int compteurUp) {
+        this.compteurUp = compteurUp;
+    }
+
+    public int getCompteurDown() {
+        return compteurDown;
+    }
+
+    public void setCompteurDown(int compteurDown) {
+        this.compteurDown = compteurDown;
+    }
+
+    public int getCompteurLeft() {
+        return compteurLeft;
+    }
+
+    public void setCompteurLeft(int compteurLeft) {
+        this.compteurLeft = compteurLeft;
+    }
+
+    public int getCompteurRight() {
+        return compteurRight;
+    }
+
+    public void setCompteurRight(int compteurRight) {
+        this.compteurRight = compteurRight;
+    }
+
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
+    }
+
+    private MainGame getGame() {
+        return mainGame;
+    }
+
+    private void setGame(MainGame mainGame) {
+        this.mainGame = mainGame;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setX(float playerX) {
+        this.entityX = playerX;
+        hitbox.setX(playerX + HITBOX_XOFFSET);
+        sprite.setX(playerX);
+    }
+
+    public void setY(float playerY) {
+        this.entityY = playerY;
+        hitbox.setY(playerY + HITBOX_YOFFSET);
+        sprite.setY(playerY);
+    }
+
+    public void setTextureRegion(TextureRegion textureRegion) {
+        this.textureRegion = textureRegion;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
+    }
+
+    public Color getSpriteTint() {
+        return spriteTint;
+    }
+
+    public void setSpriteTint(Color spriteTint) {
+        this.spriteTint = spriteTint;
+    }
+
+    public String getFindRegion() {
+        return findRegion;
+    }
+
+    public void setFindRegion(String findRegion) {
+        this.findRegion = findRegion;
+        textureRegion = textureAtlas.findRegion(this.findRegion);
+        getSprite().setRegion(textureRegion);
+    }
+
+    public String getTextureAtlasPath() {
+        return MainGame.playersAtlasPath;
+    }
+
+    public String getServerUniqueID() {
+        return serverUniqueID;
+    }
+
+    public void setServerUniqueID(String serverUniqueID) {
+        this.serverUniqueID = serverUniqueID;
+    }
+
+    public void drawAndUpdate(SpriteBatch batch) {
+        if (batch == null || sprite == null || sprite.getTexture() == null) return;
+
+        sprite.draw(batch);
+    }
+
+    public void debug(ShapeRenderer renderer) {
+
+        // DONT WORK !
+
+        Vector3 camXYZ =GameScreen.getCamera().position;
+         Vector3 screenXYZ=   GameScreen.getCamera().project(camXYZ);
+
+        float screenHitboxX = hitbox.x + screenXYZ.x; // - GameScreen.SCREEN_WIDTH / 2.0f
+        float screenHitboxY = hitbox.y + screenXYZ.y; //- GameScreen.SCREEN_HEIGHT / 2.0f
+
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.MAGENTA);
+        renderer.rect(screenHitboxX, screenHitboxY, hitbox.width, hitbox.height);
+        renderer.end();
+    }
+
 }

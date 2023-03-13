@@ -1,0 +1,117 @@
+RMXP_monsters.png
+size: 2576, 1684
+format: RGBA8888
+filter Nearest,Nearest
+repeat: none
+0_DOWN_0
+	rotate: false
+	xy: 910,2
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_DOWN_1
+	rotate: false
+	xy: 942,2
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_DOWN_2
+	rotate: false
+	xy: 974,2
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_DOWN_3
+	rotate: false
+	xy: 1006,2
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_LEFT_0
+	rotate: false
+	xy: 910,50
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_LEFT_1
+	rotate: false
+	xy: 942,50
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_LEFT_2
+	rotate: false
+	xy: 974,50
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_LEFT_3
+	rotate: false
+	xy: 1006,50
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_RIGHT_0
+	rotate: false
+	xy: 910,98
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_RIGHT_1
+	rotate: false
+	xy: 942,98
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_RIGHT_2
+	rotate: false
+	xy: 974,98
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_RIGHT_3
+	rotate: false
+	xy: 1006,98
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_UP_0
+	rotate: false
+	xy: 910,146
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_UP_1
+	rotate: false
+	xy: 942,146
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_UP_2
+	rotate: false
+	xy: 974,146
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1
+0_UP_3
+	rotate: false
+	xy: 1006,146
+	size: 128, 192
+	orig: 128, 192
+	offset: 0, 0
+	index: -1

@@ -29,7 +29,7 @@ https://www.spriters-resource.com/pc_computer/rpgmakerxp/sheet/100490/
 ===============================================================================
 */
 
-public class RMXPCharactersAtlasGenerator {
+public final class RMXPCharactersAtlas extends RMXPAtlasGenerator{
 
     static final String PNG_FILENAME = "RMXP_humans.png";
 
@@ -40,13 +40,6 @@ public class RMXPCharactersAtlasGenerator {
     static final int HORI_PAD = 2; // marge et padding horizontal
     static final int VERT_PAD = 4; // marge et padding vertical
 
-    // public pour lecture du testeur
-    public static final int ANIM_FRAMES = 4;
-
-    // dans l'ordre de la spritesheet, de haut en bas
-    static final String DIRS[] = {"DOWN", "LEFT", "RIGHT", "UP"};
-
-    static final String IDDLE = "IDDLE";
     static final int CHAR_HORI = 10; // nb de persos en horizontal
     static final int CHAR_VERT = 10; // nb de persos en vertical
 
