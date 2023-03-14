@@ -22,7 +22,6 @@ public class ClampedCamera extends OrthographicCamera {
         this.map = map;
 
         this.map.setView(this);
-        this.map.render();
         computeClampedLimits();
         centerOnPlayer();
     }

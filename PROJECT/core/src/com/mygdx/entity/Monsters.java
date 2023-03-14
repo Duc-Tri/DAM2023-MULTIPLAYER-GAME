@@ -2,12 +2,14 @@ package com.mygdx.entity;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.map.Map;
+import com.mygdx.pathfinding.AStarMap;
 
 import java.util.ArrayList;
 
 public class Monsters {
     private static ArrayList<Mob> mobs = new ArrayList<>();
     private static Map map;
+    private static AStarMap aStarMap;
 
     public Monsters() {
 
@@ -25,6 +27,7 @@ public class Monsters {
 
         this();
         setMap(m);
+        aStarMap = new AStarMap(m);
     }
 
     public static Mob getMob(int i) {

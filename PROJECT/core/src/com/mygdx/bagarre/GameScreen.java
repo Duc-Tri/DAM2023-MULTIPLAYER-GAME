@@ -93,7 +93,6 @@ public class GameScreen implements Screen, InputProcessor {
     private Map loadMap(String mapFilename, SpriteBatch sb) {
         Map m = new Map(mapFilename, sb);
         //m.setView(clampedCamera);
-        m.render();
 //        mapPixelsHeight = m.mapPixelsHeight();
 //        mapPixelsWidth = m.mapPixelsWidth();
 

@@ -165,6 +165,14 @@ public class Map {
         topMapRenderer.render();
     }
 
+    public int getMapWidthInTiles() {
+        return mapWidthInTiles;
+    }
+
+    public int getMapHeightInTiles() {
+        return mapHeightInTiles;
+    }
+
     public void renderAllLivingEntitiesAndTiles(Player player, Mates mates, Monsters monsters) {
         livingEntitiesList.clear();
         if (monsters != null) {
@@ -213,8 +221,7 @@ public class Map {
 
     }
 
-    public void render() {
-        // obsolete
-    }
+
+
 }
 

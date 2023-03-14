@@ -73,7 +73,6 @@ public class TestMonsters extends ApplicationAdapter implements InputProcessor {
     private void loadMap(String mapFilename, SpriteBatch sb) {
         map = new Map(mapFilename, sb);
         //map.setView(clampedCamera);
-        map.render();
     }
 
     public static Map getMap() {
