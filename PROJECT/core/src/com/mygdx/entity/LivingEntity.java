@@ -46,7 +46,7 @@ public class LivingEntity implements Entity {
     protected String RMXP_CHARACTER; // non de la région texture dans l'atlas
 
     public LivingEntity() {
-        System.out.println("########## CONSTRUCTOR LivingEntity");
+        //System.out.println("########## CONSTRUCTOR LivingEntity");
     }
 
     @Override

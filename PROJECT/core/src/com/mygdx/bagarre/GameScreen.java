@@ -65,11 +65,12 @@ public class GameScreen implements Screen, InputProcessor {
 
         createPlayer();
         mates = new Mates(player);
-        monsters = new Monsters();
 
         batch = new SpriteBatch();
 
-        loadMap(mapFilename, batch);
+        map=loadMap(mapFilename, batch);
+
+        monsters = new Monsters(map);
 
         shapeRenderer = new ShapeRenderer();
 
@@ -89,12 +90,14 @@ public class GameScreen implements Screen, InputProcessor {
         NewPlayer.requestServer(player);
     }
 
-    private void loadMap(String mapFilename, SpriteBatch sb) {
-        map = new Map(mapFilename, sb);
-        //map.setView(clampedCamera);
-        map.render();
-//        mapPixelsHeight = map.mapPixelsHeight();
-//        mapPixelsWidth = map.mapPixelsWidth();
+    private Map loadMap(String mapFilename, SpriteBatch sb) {
+        Map m = new Map(mapFilename, sb);
+        //m.setView(clampedCamera);
+        m.render();
+//        mapPixelsHeight = m.mapPixelsHeight();
+//        mapPixelsWidth = m.mapPixelsWidth();
+
+        return m;
     }
 
     private void createThreadsPool() {
@@ -243,7 +246,6 @@ public class GameScreen implements Screen, InputProcessor {
         } else if (keycode == Input.Keys.DOWN) {
             movePlayer("DOWN", 0, -sizeOfStep);
         }
-
     }
 
     private void movePlayer(String dirKeyword, int deltaX, int deltaY) {

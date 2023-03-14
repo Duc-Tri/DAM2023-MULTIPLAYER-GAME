@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPAtlasGenerator;
 import com.mygdx.graphics.RMXPMonstersAtlas;
+import com.mygdx.map.Map;
 
 public class Mob extends LivingEntity {
 
@@ -23,6 +24,8 @@ public class Mob extends LivingEntity {
     private float height = 0;
 
     private String currentDir;
+    private static Map map;
+
 
     public Mob() {
         if (allMonstersAtlas == null) {
@@ -46,8 +49,7 @@ public class Mob extends LivingEntity {
         HITBOX_WIDTH = (int) ((sprite.getWidth() - 32) / 2); // temp
         HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
 
-
-        System.out.println("---------------------------- CONSTRUCTOR Mob");
+        //System.out.println("---------------------------- CONSTRUCTOR Mob");
 
         // to position everything well ----------
         setX(getX());
@@ -86,7 +88,7 @@ public class Mob extends LivingEntity {
 
         sprite = new Sprite(textureRegion);
 
-        System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
+        //System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
     }
 
     public String getMobID() {
@@ -94,22 +96,38 @@ public class Mob extends LivingEntity {
     }
 
 
+    // TEST DATA ==================================================================================
+    private int totalSteps;
+    private int maximumSteps;
     private String randomDir;
     private float targetTimeRandom;
     private float moveTimeRandom;
-    private int randomStep = 4;
-
+    private int spriteStep = 4;
 
     private void randomize() {
-        moveTimeRandom = 0;
         randomDir = RMXPAtlasGenerator.randomDir();
+
+        // pour la version moveToRandomDir(float deltaTime)
+        moveTimeRandom = 0;
         targetTimeRandom = (float) (Math.random() * 5);
+
+        // pour la version moveToRandomDir()
+        totalSteps = 0;
+        maximumSteps = (int) (Math.random() * 200);
     }
 
     // move to random direction, until time reached
     public void moveToRandomDir(float deltaTime) {
         moveTimeRandom += deltaTime;
         if (moveTimeRandom > targetTimeRandom) {
+            randomize();
+        }
+        moveMob(randomDir);
+    }
+
+    public void moveToRandomDir() {
+        totalSteps++;
+        if (totalSteps > maximumSteps) {
             randomize();
         }
         moveMob(randomDir);
@@ -122,24 +140,24 @@ public class Mob extends LivingEntity {
 
         switch (dirKeyword) {
             case "LEFT":
-                deltaX = -randomStep;
+                deltaX = -spriteStep;
                 break;
             case "RIGHT":
-                deltaX = randomStep;
+                deltaX = spriteStep;
                 break;
             case "UP":
-                deltaY = randomStep;
+                deltaY = spriteStep;
                 break;
             case "DOWN":
-                deltaY = -randomStep;
+                deltaY = -spriteStep;
                 break;
         }
 
         animate(dirKeyword);
 
-        System.out.println(this.uniqueID + " d=" + dirKeyword + " t=" + moveTimeRandom + "/" + targetTimeRandom);
+//        System.out.println(this.uniqueID + " d=" + dirKeyword + " t=" + moveTimeRandom + "/" + targetTimeRandom);
 
-        if (MainGame.getMap().checkObstacle(this, deltaX, deltaY))
+        if (map.checkObstacle(this, deltaX, deltaY))
             return; // OBSTACLE ! on ne bouge pas !
 
         if (deltaX != 0) {
@@ -151,6 +169,13 @@ public class Mob extends LivingEntity {
         }
     }
 
+    public static void setMap(Map m) {
+        map = m;
+    }
+
+    public static Map getMap() {
+        return map;
+    }
 }
 
 

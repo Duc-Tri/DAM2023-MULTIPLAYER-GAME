@@ -35,8 +35,8 @@ public final class RMXPCharactersAtlas extends RMXPAtlasGenerator{
 
     // public pour lecture du testeur
     public static final int MAX_CHARACTERS = 98; // nb. personnages "valides" selon notre format défini
-    static final int FRAME_WIDTH = 32;
-    static final int FRAME_HEIGHT = 48;
+    public static final int FRAME_WIDTH = 32;
+    public static final int FRAME_HEIGHT = 48;
     static final int HORI_PAD = 2; // marge et padding horizontal
     static final int VERT_PAD = 4; // marge et padding vertical
 

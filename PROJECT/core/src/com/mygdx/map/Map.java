@@ -167,9 +167,15 @@ public class Map {
 
     public void renderAllLivingEntitiesAndTiles(Player player, Mates mates, Monsters monsters) {
         livingEntitiesList.clear();
-        livingEntitiesList.addAll(monsters.getMobs());
-        livingEntitiesList.addAll(Mates.getMates());
-        livingEntitiesList.add(player);
+        if (monsters != null) {
+            livingEntitiesList.addAll(monsters.getMobs());
+        }
+        if (mates != null) {
+            livingEntitiesList.addAll(Mates.getMates());
+        }
+        if (player != null) {
+            livingEntitiesList.add(player);
+        }
 
         // ON FAIT LE RENDU DES TUILES EN MÊME TEMPS QUE LES JOUEURS, EN TRIANT SUR LEUR Y
 

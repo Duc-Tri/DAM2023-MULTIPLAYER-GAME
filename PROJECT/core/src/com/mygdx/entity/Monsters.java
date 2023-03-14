@@ -1,11 +1,13 @@
 package com.mygdx.entity;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.map.Map;
 
 import java.util.ArrayList;
 
 public class Monsters {
     private static ArrayList<Mob> mobs = new ArrayList<>();
+    private static Map map;
 
     public Monsters() {
 
@@ -17,6 +19,12 @@ public class Monsters {
             m.setY((float) (125 + Math.random() * 50 - 25));
             mobs.add(m);
         }
+    }
+
+    public Monsters(Map m) {
+
+        this();
+        setMap(m);
     }
 
     public static Mob getMob(int i) {
@@ -80,6 +88,20 @@ public class Monsters {
         for (Mob m : mobs) {
             m.moveToRandomDir(deltaTime);
         }
+    }
+
+    public void moveRandomly() {
+
+        for (Mob m : mobs) {
+            m.moveToRandomDir();
+        }
+    }
+
+    public static void setMap(Map m) {
+        map = m;
+
+        if (Mob.getMap() != map)
+            Mob.setMap(map);
     }
 
 }

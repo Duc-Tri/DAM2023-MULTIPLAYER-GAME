@@ -1,7 +1,7 @@
 package com.mygdx.pathfinding;
 
 public class Vector2int {
-    int myX, myY;
+    public int myX, myY;
     public Vector2int(int x, int y) {
         myX = x;
         myY = y;
