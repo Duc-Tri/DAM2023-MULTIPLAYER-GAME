@@ -20,6 +20,40 @@ public class Mates {
         return mates.get(i);
     }
 
+    public static void removeOldMates(String[] tempMates) {
+
+
+        for (int i = mates.size()-1 ; i>-1 ; i--) {
+//            System.out.println("mates.size() "  + mates.size());
+            boolean found = false;
+            if(tempMates!=null){
+                for (String oneMate : tempMates) {
+
+                    if (oneMate != null && !oneMate.isEmpty()) {
+                        if (oneMate.equalsIgnoreCase(mates.get(i).getServerUniqueID())) {
+                            if (  oneMate.equalsIgnoreCase(mates.get(i).getServerUniqueID())) {
+
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+            if (!found) {
+//                System.out.println("Remove   m  " + mates.get(i).getServerUniqueID());
+                mates.remove(i);
+            }
+        }
+//        System.out.println("mates.size() "  + mates.size());
+//        System.out.println("mates.size() "  + mates.size());
+//        System.out.println("mates.size() "  + mates.size());
+//        System.out.println("mates.size() "  + mates.size());
+//        System.out.println("mates.size() "  + mates.size());
+
+    }
+
     public void drawAndUpdate(SpriteBatch batch) {
         for (Mate m : mates) {
             m.setXFromRealX();
@@ -55,7 +89,7 @@ public class Mates {
 
                 if (oneMate != null && !oneMate.isEmpty()) {
                     for (Mate m : mates) {
-                        if (oneMate.equalsIgnoreCase(m.getServerUniqueID())) {
+                        if ( oneMate.equalsIgnoreCase(m.getServerUniqueID())) {
                             found = true;
                             break;
                         }

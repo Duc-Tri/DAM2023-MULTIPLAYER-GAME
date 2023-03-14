@@ -164,6 +164,7 @@ public class Map {
     }
 
     public void renderAllPlayersAndTiles(Player player, Mates mates) {
+
         playersList.clear();
         playersList.add(player);
         playersList.addAll(Mates.getMates());

@@ -25,6 +25,7 @@ public class RetrieveMate implements Runnable {
         while (System.currentTimeMillis() < initialTime + runningTime) {
             String[] tempMates = requestServer(player);
             Mates.createNewMates(tempMates);
+            Mates.removeOldMates(tempMates);
         }
     }
 
@@ -52,6 +53,7 @@ public class RetrieveMate implements Runnable {
                 if (!String.valueOf(response).isEmpty()) {
                     String[] mates = String.valueOf(response).split(";");
                     return mates;
+//                    return null;
                 }
 
             } else {

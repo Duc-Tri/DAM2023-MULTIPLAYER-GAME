@@ -55,7 +55,10 @@ public class Game {
 //		System.out.println("players.length " + players.length);
 		for (int i = 0; i < players.length; i++) {
 //			System.out.println("i " + i);
-			if (player != null && !player.getServerUniqueID().equalsIgnoreCase(i + "") && (players[i] != null)) {
+			if (player != null 
+					&& !player.getServerUniqueID().equalsIgnoreCase(i + "") 
+					&& (players[i] != null) 
+					&& players[i].getLastUpdate()>System.currentTimeMillis()-10000L ) {
 //				System.out.println("Fine i " + i);
 				if (cpt == 0) {
 					tempString = "" + i;

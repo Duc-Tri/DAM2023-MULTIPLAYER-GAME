@@ -42,7 +42,9 @@ public class RetrieveMate extends HttpServlet {
 //			System.out.println("RetrieveMate  " );
 			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"));
 //			System.out.println("RetrieveMate  "+player );
-			response.getWriter().append(game.retrieveMate(player));
+			response.getWriter().append(game.retrieveMate(player));	
+			
+			
 //		System.out.println("response " + response.toString());
 		}
 	}
