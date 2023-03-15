@@ -197,4 +197,18 @@ public class GameMode extends AppCompatActivity {
 
         return imgList;
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        audioLauncher.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Arrêter et libérer les ressources de l'objet MediaPlayer
+        audioLauncher.stop();
+        audioLauncher.release();
+    }
 }
