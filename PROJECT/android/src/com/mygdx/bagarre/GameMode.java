@@ -2,6 +2,8 @@ package com.mygdx.bagarre;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,8 +24,12 @@ public class GameMode extends AppCompatActivity {
     Spinner imageSp;
     String userID;
     ImageButton buttonSolo;
-
     List<ImageItem> imgList = new ArrayList<>();
+    MediaPlayer audioLauncher;
+    Intent itGameMode;
+    ImageButton volumeBtn2;
+    boolean isMuted = false;
+    int musicPos;
 
     public void initUi() {
         tvPseudo = findViewById(R.id.tvPseudo);
@@ -31,6 +37,7 @@ public class GameMode extends AppCompatActivity {
         imageSp = findViewById(R.id.imageSp);
         buttonSolo = findViewById(R.id.soloBtn);
         background = findViewById(R.id.background);
+        volumeBtn2 = findViewById(R.id.volumeBtn2);
     }
 
     @Override
@@ -39,9 +46,47 @@ public class GameMode extends AppCompatActivity {
         setContentView(R.layout.activity_game_mode);
 
         initUi();
+        itGameMode = getIntent();
 
         SharedPreferences prefs = getSharedPreferences("pref_pseudo", this.MODE_PRIVATE);
         SharedPreferences.Editor editPref = prefs.edit();
+
+        audioLauncher = MediaPlayer.create(this, R.raw.connexion_theme);
+        musicPos = itGameMode.getIntExtra("musicPos", 0);
+        Log.i("MUSIC_POS_ACT_GM", String.valueOf(musicPos));
+        audioLauncher.seekTo(musicPos);
+        audioLauncher.setLooping(true);
+        audioLauncher.start();
+
+        //Création de l'audio manager
+        AudioManager audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
+        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
+
+        Log.i("IS_MUTED", String.valueOf(itGameMode.getBooleanExtra("isMuted", false)));
+        isMuted = itGameMode.getBooleanExtra("isMuted", false);
+        if (isMuted) {
+            volumeBtn2.setImageResource(R.drawable.volume_off);
+            audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        } else {
+            volumeBtn2.setImageResource(R.drawable.volume_on);
+        }
+
+        volumeBtn2.setOnClickListener(v -> {
+            //Vérifie si la musique est mute et la mute si ce n'est pas le cas. La demute si c'est le cas.
+            if(isMuted) {
+                audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) ((audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC))*0.5f), 0);
+                volumeBtn2.setImageResource(R.drawable.volume_on);
+
+                isMuted = false;
+            } else {
+                audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+                volumeBtn2.setImageResource(R.drawable.volume_off);
+
+                isMuted = true;
+            }
+        });
+
+
 
         userID = prefs.getString("userID", null);
         if(userID != null){
@@ -67,7 +112,7 @@ public class GameMode extends AppCompatActivity {
         imageSp.setAdapter(adapter);
 
         //Récupération du pseudo depuis la précédente application et l'afficher a la place de pseudo
-        Intent itGameMode = getIntent();
+
         if (itGameMode != null) {
             if (itGameMode.hasExtra("pseudoToDisplay")) {
                 tvPseudo.setText(itGameMode.getStringExtra("pseudoToDisplay"));
@@ -98,6 +143,11 @@ public class GameMode extends AppCompatActivity {
             startActivity(itGame);
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     // Méthode pour récupérer la ressource ID de l'image sélectionnée

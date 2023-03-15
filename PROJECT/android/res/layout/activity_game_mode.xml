@@ -24,7 +24,6 @@
         android:contentDescription="@string/volume_on"
         android:maxHeight="50dp"
         android:minHeight="50dp"
-        android:onClick="toggleMute"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,14 +40,12 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="198dp"
-        android:layout_height="32dp"
+        android:layout_height="35dp"
         android:layout_marginTop="11dp"
         android:layout_marginEnd="12dp"
         android:orientation="horizontal"
         android:paddingStart="12dp"
-        android:paddingTop="8dp"
         android:paddingEnd="8dp"
-        android:paddingBottom="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -64,15 +61,18 @@
 
         <TextView
             android:id="@+id/tvPseudo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
             android:layout_gravity="center_vertical|end"
             android:layout_weight="1"
+            android:fontFamily="@font/minecraft"
             android:gravity="center_horizontal"
-            android:text="WWWWWWWWWWW"
+            android:paddingTop="10dp"
+            android:text="@string/pseudo"
             android:textAlignment="viewEnd"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="19sp" />
 
     </LinearLayout>
 
@@ -88,7 +88,7 @@
         android:id="@+id/soloBtn"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="76dp"
         android:background="@null"
         android:contentDescription="@string/partie_solo"
         android:minHeight="48dp"
@@ -103,7 +103,7 @@
         android:id="@+id/soloBtn2"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="32dp"
         android:background="@null"
         android:contentDescription="@string/partie_solo"
         android:minHeight="48dp"
@@ -114,12 +114,27 @@
         app:srcCompat="@drawable/partie_en_ligne_btn_tiny"
         tools:ignore="VisualLintBounds" />
 
+    <ImageButton
+        android:id="@+id/soloBtn3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="104dp"
+        android:background="@null"
+        android:contentDescription="@string/partie_solo"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/pano_flat"
+        tools:ignore="VisualLintBounds" />
+
     <ImageView
         android:id="@+id/fleau"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="70dp"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="64dp"
         android:contentDescription="@string/fl_au_du_bouton_partie_solo"
         app:layout_constraintStart_toStartOf="@+id/soloBtn"
         app:layout_constraintTop_toTopOf="parent"
@@ -130,7 +145,7 @@
         android:id="@+id/perso_left"
         android:layout_width="68dp"
         android:layout_height="110dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="80dp"
         app:layout_constraintEnd_toStartOf="@+id/soloBtn2"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
@@ -140,8 +155,8 @@
         android:id="@+id/perso_right"
         android:layout_width="69dp"
         android:layout_height="110dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toEndOf="@+id/soloBtn2"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
         app:srcCompat="@drawable/perso2" />
@@ -170,12 +185,13 @@
         android:id="@+id/optionsBtn"
         android:layout_width="136dp"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="84dp"
         android:background="@null"
         android:contentDescription="@string/option"
         android:minWidth="50dp"
         android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn2"
         app:srcCompat="@drawable/option_tiny" />
@@ -185,9 +201,27 @@
         android:layout_width="27dp"
         android:layout_height="25dp"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="92dp"
         app:layout_constraintStart_toStartOf="@+id/optionsBtn"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn2"
         app:srcCompat="@drawable/ecrou" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="175dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/minecraft"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Mode Brawler"
+        android:textAllCaps="true"
+        android:textColor="#F4EDED"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/soloBtn3"
+        app:layout_constraintEnd_toEndOf="@+id/soloBtn3"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="@+id/soloBtn3"
+        app:layout_constraintTop_toTopOf="@+id/soloBtn3"
+        app:layout_constraintVertical_bias="0.611" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

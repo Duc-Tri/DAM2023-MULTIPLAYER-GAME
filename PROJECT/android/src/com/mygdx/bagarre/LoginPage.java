@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,13 +32,12 @@ public class LoginPage extends AppCompatActivity {
     AudioManager audioPlayer;
     MediaPlayer audioLauncher;
     private Button registerBtn, connexionBtn;
-    private ImageButton volumeBtn, ibNewAccount, ibOldAccount;
+    private ImageButton volumeBtn;
     private TextInputEditText tiPseudo;
-    private TextView tvOldAccount, tvNewAccount;
     private boolean isMuted = false;
     private ImageView ivBackground;
     String pseudo, oldPseudo, userID;
-    int img, state = 0;
+    int img, state = 0, musicPos;
     FirebaseAndroid db;
     SharedPreferences prefs;
     SharedPreferences.Editor editPref;
@@ -45,15 +45,12 @@ public class LoginPage extends AppCompatActivity {
     View grayedOutView;
 
     public void initUi(){
-        registerBtn = findViewById(R.id.registerBtn);
         tiPseudo = findViewById(R.id.tiPseudo);
+        volumeBtn = findViewById(R.id.volumeBtn);
+        registerBtn = findViewById(R.id.registerBtn);
         connexionBtn = findViewById(R.id.connexionBtn);
         ivBackground = findViewById(R.id.ivBackground);
-        volumeBtn = findViewById(R.id.volumeBtn);
-        ibOldAccount = findViewById(R.id.ibOldAccount);
-        ibNewAccount = findViewById(R.id.ibNewAccount);
-        tvOldAccount = findViewById(R.id.tvOldAccount);
-        tvNewAccount = findViewById(R.id.tvNewAccount);
+
     }
 
     public void playMusic() {
@@ -150,12 +147,7 @@ public class LoginPage extends AppCompatActivity {
                 .start();
     }
 
-    private View.OnClickListener onClickGreyBackgroundListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            onClickGreyBackground();
-        }
-    };
+    private final View.OnClickListener onClickGreyBackgroundListener = v -> onClickGreyBackground();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +156,15 @@ public class LoginPage extends AppCompatActivity {
 
         //Initialisation des vues
         initUi();
+
+        //Check de la preférence
+        checkPref();
+
+        //TEST : Vidage du fichier de préférence
+        /*editPref.remove("pseudo");
+        editPref.remove("userID");
+        editPref.remove("img");
+        editPref.apply();*/
 
         //On lance la musique
         playMusic();
@@ -177,15 +178,6 @@ public class LoginPage extends AppCompatActivity {
         //TEST : Vidage de la référence pseudo
         /*db.deleteAllPseudos();*/
 
-        //Check de la preférence
-        checkPref();
-
-        //TEST : Vidage du fichier de préférence
-        /*editPref.remove("pseudo");
-        editPref.remove("userID");
-        editPref.remove("img");
-        editPref.apply();*/
-
         //Appel du setOnClick pour le fond gris
         grayedOutView = new View(this);
         grayedOutView.setOnClickListener(onClickGreyBackgroundListener);
@@ -198,6 +190,10 @@ public class LoginPage extends AppCompatActivity {
     public void continuer (View v){
         //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité
         itGameMode.putExtra("pseudoToDisplay", pseudo);
+        musicPos = audioLauncher.getCurrentPosition();
+        itGameMode.putExtra("isMuted", isMuted);
+        itGameMode.putExtra("musicPos", musicPos);
+        Log.i("MUSIC_POS_ACT_LOG", String.valueOf(musicPos));
         startActivity(itGameMode);
     }
 
@@ -209,17 +205,28 @@ public class LoginPage extends AppCompatActivity {
 
                 //Réccupération du pseudo
                 pseudo = Objects.requireNonNull(tiPseudo.getText()).toString();
+                pseudo = pseudo.trim();
 
-                //Enregistre des préférences pour la prochaine connexion
-                editPref.putString("pseudo", pseudo);
+                //Test si le pseudo est nul
+                if (pseudo.isEmpty()) {
+                    Toast.makeText(this, "Le pseudo ne peut pas être vide ! Mettez au moins une lettre !", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Enregistre des préférences pour la prochaine connexion
+                    editPref.putString("pseudo", pseudo);
 
-                //Ecriture en base
-                editPref.putString("userID", db.registerUser(pseudo));
-                editPref.apply();
+                    //Ecriture en base
+                    editPref.putString("userID", db.registerUser(pseudo));
+                    editPref.apply();
 
-                //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité
-                itGameMode.putExtra("pseudoToDisplay", pseudo);
-                startActivity(itGameMode);
+                    //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité
+                    itGameMode.putExtra("pseudoToDisplay", pseudo);
+
+                    //On réccupère le moment de la musique pour la prochaine activité
+                    musicPos = audioLauncher.getCurrentPosition();
+                    itGameMode.putExtra("isMuted", isMuted);
+                    itGameMode.putExtra("musicPos", musicPos);
+                    startActivity(itGameMode);
+                }
 
                 break;
 
@@ -228,25 +235,18 @@ public class LoginPage extends AppCompatActivity {
 
                 //Réccupération de l'ancien pseudo
                 oldPseudo = pseudo;
+                oldPseudo = oldPseudo.trim();
 
                 //Réccupération du nouveau pseudo
                 pseudo = Objects.requireNonNull(tiPseudo.getText()).toString();
+                pseudo = pseudo.trim();
 
-                dialogAndGrayBackground();
-
-                /*//Enregistre des préférences pour la prochaine connexion
-                editPref.putString("pseudo", pseudo);
-
-                //Supprime l'ancien pseudo de la base de donnée
-                db.suppressUnusedPseudo(prefs.getString("userID", null), oldPseudo);
-
-                //Ecriture en base et mise a jour des préférences
-                editPref.putString("userID", db.registerUser(pseudo));
-                editPref.apply();
-
-                //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité
-                itGameMode.putExtra("pseudoToDisplay", pseudo);
-                startActivity(itGameMode);*/
+                //Test si le pseudo est nul
+                if (pseudo.isEmpty()) {
+                    Toast.makeText(this, "Le pseudo ne peut pas être vide ! Mettez au moins une lettre !", Toast.LENGTH_SHORT).show();
+                } else {
+                    dialogAndGrayBackground();
+                }
 
                 break;
         }
@@ -284,17 +284,18 @@ public class LoginPage extends AppCompatActivity {
         ((ViewGroup) rootView).addView(grayedOutView);
         grayedOutView.setVisibility(View.GONE);
 
-        // Affichez le Dialog et le fond semi-transparent
-        dialog.show();
-        grayedOutView.setVisibility(View.VISIBLE);
+        Log.i("OLDPSEUDO", oldPseudo);
+        Log.i("PSEUDO", pseudo);
+
+        TextView tvOldAccount = dialogView.findViewById(R.id.tvOldAccount);
+        TextView tvNewAccount = dialogView.findViewById(R.id.tvNewAccount);
 
         //Je fais le setting des boutons
-        tvOldAccount.setText(oldPseudo);
-        if(pseudo == null) {
-            //TODO il ne faut pas que ce soit nul ici il faut que je trouve une solution
-        } else {
-            tvNewAccount.setText(pseudo);
-        }
+        tvOldAccount.setText(String.valueOf(oldPseudo));
+        tvNewAccount.setText(String.valueOf(pseudo));
+
+        dialog.show();
+        grayedOutView.setVisibility(View.VISIBLE);
 
     }
 
@@ -314,17 +315,20 @@ public class LoginPage extends AppCompatActivity {
         }
     }
 
-    public void onOldPseudoClicked () {
+    public void onOldPseudoClicked (View v) {
         //Enregistre des préférences pour la prochaine connexion
         editPref.putString("pseudo", oldPseudo);
         editPref.apply();
 
-        //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité
+        //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité et l'état de la musique
         itGameMode.putExtra("pseudoToDisplay", oldPseudo);
+        musicPos = audioLauncher.getCurrentPosition();
+        itGameMode.putExtra("isMuted", isMuted);
+        itGameMode.putExtra("musicPos", musicPos);
         startActivity(itGameMode);
     }
 
-    public void onNewPseudoClicked () {
+    public void onNewPseudoClicked (View v) {
         //Enregistre des préférences pour la prochaine connexion
         editPref.putString("pseudo", pseudo);
         editPref.apply();
@@ -336,8 +340,12 @@ public class LoginPage extends AppCompatActivity {
         editPref.putString("userID", db.registerUser(pseudo));
         editPref.apply();
 
-        //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité
+        //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité et l'état de la musique
         itGameMode.putExtra("pseudoToDisplay", pseudo);
+        musicPos = audioLauncher.getCurrentPosition();
+        Log.i("MUSIC_POS_ACT_LOG", String.valueOf(musicPos));
+        itGameMode.putExtra("isMuted", isMuted);
+        itGameMode.putExtra("musicPos", musicPos);
         startActivity(itGameMode);
     }
 
