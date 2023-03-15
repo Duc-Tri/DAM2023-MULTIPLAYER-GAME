@@ -1,4 +1,4 @@
-package com.mygdx.pathfinding;
+package com.mygdx.test;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.map.CustomTiledMap;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
 import java.util.List;

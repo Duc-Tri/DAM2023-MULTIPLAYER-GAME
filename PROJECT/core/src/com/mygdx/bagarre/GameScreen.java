@@ -15,6 +15,7 @@ import com.mygdx.client.RetrieveMate;
 import com.mygdx.client.RetrieveUpdatePlayer;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
+import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
@@ -26,6 +27,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     private Player player;
     private Mates mates;
+    private Monsters monsters;
     private boolean showJoystick = false;
     private int refreshValue = 0;
     private int speedOfSprite = 3; //Plus c'est grand plus c'est lent
@@ -36,7 +38,6 @@ public class GameScreen implements Screen, InputProcessor {
     public static int SCREEN_HEIGHT = 0;
     private SpriteBatch batch;
     private int sizeOfStep = 8;
-
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
 
@@ -67,7 +68,9 @@ public class GameScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
 
-        loadMap(mapFilename, batch);
+        map=loadMap(mapFilename, batch);
+
+        monsters = new Monsters(map);
 
         shapeRenderer = new ShapeRenderer();
 
@@ -87,12 +90,14 @@ public class GameScreen implements Screen, InputProcessor {
         NewPlayer.requestServer(player);
     }
 
-    private void loadMap(String mapFilename, SpriteBatch sb) {
-        map = new Map(mapFilename, sb);
-        //map.setView(clampedCamera);
-        map.render();
-//        mapPixelsHeight = map.mapPixelsHeight();
-//        mapPixelsWidth = map.mapPixelsWidth();
+    private Map loadMap(String mapFilename, SpriteBatch sb) {
+        Map m = new Map(mapFilename, sb);
+        //m.setView(clampedCamera);
+        m.render();
+//        mapPixelsHeight = m.mapPixelsHeight();
+//        mapPixelsWidth = m.mapPixelsWidth();
+
+        return m;
     }
 
     private void createThreadsPool() {
@@ -128,6 +133,8 @@ public class GameScreen implements Screen, InputProcessor {
             showJoystick = false;
         }
 
+        monsters.moveRandomly(deltaTime);
+
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -142,7 +149,7 @@ public class GameScreen implements Screen, InputProcessor {
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
         map.renderFloor();
-        map.renderAllPlayersAndTiles(player, mates);
+        map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
         map.renderTop();
 
         batch.end(); //========================================================
@@ -172,7 +179,7 @@ public class GameScreen implements Screen, InputProcessor {
             threadPoolExecutor1.submit(retrieveMate);
         }
         if (threadPoolExecutor2.getActiveCount() < 1) {
-            System.out.println("retrieveUpdatePlayer    RESTART");
+            //System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
         }
 
@@ -239,7 +246,6 @@ public class GameScreen implements Screen, InputProcessor {
         } else if (keycode == Input.Keys.DOWN) {
             movePlayer("DOWN", 0, -sizeOfStep);
         }
-
     }
 
     private void movePlayer(String dirKeyword, int deltaX, int deltaY) {
