@@ -51,7 +51,7 @@ public class NewPlayer extends HttpServlet {
 
 			System.out.println("NewPlayer "+game+" =================== " + player.getServerUniqueID());
 
-			response.getWriter().append(player.getServerUniqueID());
+			
 
 			if (request.getParameter("x") != null) {
 				player.setX(request.getParameter("x"));
@@ -89,10 +89,18 @@ public class NewPlayer extends HttpServlet {
 
 			game.addPlayer(player);
 
+			
+			response.getWriter().append(player.getServerUniqueID());
+			response.getWriter().append(";"+player.getNumLobby());
+			
+			
+			
+			
+			
 			System.out.println("NewPlayer ========== " + player.getServerUniqueID() + " * " + player.getX() + " * "
 					+ player.getY() + " * " + player.getBoxWidth() + " * " + player.getBoxHeight() + " * "
 					+ player.getUniqueID() + " * " + player.getSpriteColorInt() + " * " + player.getFindRegion() + " * "
-					+ player.getTextureAtlasPath() + " * " + player.getScale());
+					+ player.getTextureAtlasPath() + " * " + player.getScale() + " * " + player.getNumLobby());
 		} else {
 			System.out.println("NewPlayer - No available place");
 		}

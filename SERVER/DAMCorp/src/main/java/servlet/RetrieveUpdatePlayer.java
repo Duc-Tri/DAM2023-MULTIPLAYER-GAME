@@ -38,7 +38,7 @@ public class RetrieveUpdatePlayer extends HttpServlet {
 
 		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
 
-			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"));
+			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"),request.getParameter("numLobby"));
 			if (player != null) {
 				response.getWriter().append(player.getX());
 				response.getWriter().append(";" + player.getY());

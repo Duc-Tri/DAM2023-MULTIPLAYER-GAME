@@ -31,7 +31,7 @@ public class RetrievePlayer extends HttpServlet {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		if( request.getParameter("serverUniqueID")!=null) {
-			Player player =game.retrievePlayer(request.getParameter("serverUniqueID"));
+			Player player =game.retrievePlayer(request.getParameter("serverUniqueID"),request.getParameter("numLobby"));
 			
 			if(player!= null) {
 				 response.getWriter().append(player.getX());
@@ -44,6 +44,7 @@ public class RetrievePlayer extends HttpServlet {
 				 response.getWriter().append(";"+player.getFindRegion());
 				 response.getWriter().append(";"+player.getTextureAtlasPath());
 				 response.getWriter().append(";"+player.getScale());
+				 response.getWriter().append(";"+player.getNumLobby());
 				 
 				 System.out.println();
 				 System.out.println(player.getServerUniqueID());
@@ -56,6 +57,7 @@ public class RetrievePlayer extends HttpServlet {
 				 System.out.println(player.getFindRegion());
 				 System.out.println(player.getTextureAtlasPath());
 				 System.out.println(player.getScale());
+				 System.out.println(player.getNumLobby());
 			}
 			 
 			

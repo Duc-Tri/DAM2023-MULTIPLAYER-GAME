@@ -85,6 +85,7 @@ public class GameScreen implements Screen, InputProcessor {
         player.setX(100); // temp
         player.setY(100); // temp
         NewPlayer.requestServer(player);
+        System.out.println();
     }
 
     private void loadMap(String mapFilename, SpriteBatch sb) {

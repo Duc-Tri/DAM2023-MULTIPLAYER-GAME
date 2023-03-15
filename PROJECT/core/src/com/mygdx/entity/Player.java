@@ -45,6 +45,9 @@ public class Player implements Entity {
 
     //////////float scale = 2.0f;
     private String serverUniqueID;
+    private String numLobby="";
+
+
 
     private String RMXP_CHARACTER; // le personnage dans la feuille de sprites
 
@@ -285,5 +288,14 @@ public class Player implements Entity {
         renderer.setColor(Color.MAGENTA);
         renderer.rect(relativeHitboxX, relativeHitboxY, hitbox.width, hitbox.height);
         renderer.end();
+    }
+
+
+    public String getNumLobby() {
+        return numLobby;
+    }
+
+    public void setNumLobby(String numLobby) {
+        this.numLobby = numLobby;
     }
 }
