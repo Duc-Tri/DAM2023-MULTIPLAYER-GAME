@@ -42,7 +42,7 @@ public class AStarMap {
             Node u = openList.get(0);
             openList.remove(0);
 
-            if (u.point.equals(pointArrivee.point) || steps++ > 1000) {
+            if (u.point.equals(pointArrivee.point) || steps++ > 5000) {
 
 //                System.out.println("findPath FOUND __________" + pointDepart.toString() + " => " + pointArrivee.toString() + "__________ steps=" + steps);
 

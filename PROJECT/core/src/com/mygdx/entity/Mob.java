@@ -13,7 +13,6 @@ import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Mob extends LivingEntity {
@@ -28,6 +27,8 @@ public class Mob extends LivingEntity {
     public Color spriteTint;
     private float width = 0;
     private float height = 0;
+    Vector2int oldTargetPos;
+
 
     public Mob() {
         if (allMonstersAtlas == null) {
@@ -58,7 +59,8 @@ public class Mob extends LivingEntity {
         setY(getY());
 
         randomize(); // TODO : remove it after tests
-        nextPoint = new Vector2int(0, 0);
+        nextPoint = new Vector2int(-99, -99);
+        oldTargetPos = new Vector2int(-99, -99);
     }
 
     public Mob(float x, float y, float width, float height) {
@@ -209,12 +211,16 @@ public class Mob extends LivingEntity {
         return path;
     }
 
-    private void initPathToPlayer() {
-        if (mapPathToTarget == null || mapPathToTarget.size() == 0) {
+    private void processPathToPlayer(boolean forceNewPath) {
+        if (forceNewPath || mapPathToTarget == null || mapPathToTarget.size() == 0) {
+
             mapPathToTarget = pathToTarget(targetPlayer);
+            System.out.println("initPathToPlayer ---------- NEW PATH ---------- " + mapPathToTarget.size());
         }
 
         if (mapPathToTarget != null) {
+            System.out.println("initPathToPlayer ----- same path ----- " + mapPathToTarget.size());
+
             nextPoint = mapPathToTarget.get(mapPathToTarget.size() - 1);
             mapPathToTarget.remove(mapPathToTarget.size() - 1);
         }
@@ -223,8 +229,7 @@ public class Mob extends LivingEntity {
     int waitBeforeMove = WAIT_FRAMES + 1;
 
     public void moveToPlayer() {
-
-        if (playerReached() || waitBeforeMove++ < WAIT_FRAMES)
+        if (playerReached() || (waitBeforeMove++ < WAIT_FRAMES))
             return;
         else
             waitBeforeMove = 0;
@@ -233,28 +238,24 @@ public class Mob extends LivingEntity {
         float deltaY = nextPoint.y - entityY;
 
         // on a atteint le point courant => point suivant
-        // ou recalcul du pathfinding si plus de point
-        //-----------------------------------------------------
-        if (nextPoint.x == 0 || nextPoint.y == 0 || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
+        // ou recalcul du pathfinding si aucun point restant
+        //---------------------------------------------------------------------
+        boolean moved = playerHasMoved();
+        if (moved || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
 
 //            if (nextPoint.x > 0 && nextPoint.y > 0) {
 //                setX(nextPoint.x);
 //                setY(nextPoint.y);
 //            }
+            System.out.println("moveToPlayer :::::: " + moved +
+                    " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
 
-            initPathToPlayer();
+            processPathToPlayer(moved);
         }
 
-//        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
-//                " entity={" + entityX + "/" + entityY + "} " +
-//                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
-
-        // TEST : téléportation ---------------
-//        setX(nextPoint.x);
-//        setY(nextPoint.y);
 
         // Calcul de la direction, et mouvement effectif
-        //--------------------------------------------------
+        //---------------------------------------------------------------------
         String dir;
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
             // déplacement horizontal
@@ -264,6 +265,26 @@ public class Mob extends LivingEntity {
             dir = (deltaY > 0 ? "UP" : "DOWN");
         }
         moveMob(dir, false);
+
+        // TEST : téléportation ---------------
+        //        setX(nextPoint.x);
+        //        setY(nextPoint.y);
+
+        //        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
+        //                " entity={" + entityX + "/" + entityY + "} " +
+        //                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
+    }
+
+    private boolean playerHasMoved() {
+        Vector2int pos = map.pixelsToMapTile(targetPlayer.getX(), targetPlayer.getY());
+        if (pos.equals(oldTargetPos)) {
+            return false;
+        }
+
+        // le joueur a bougé
+        oldTargetPos = pos;
+        System.out.println("playerHasMoved #####################################################");
+        return true;
     }
 
     private boolean playerReached() {
@@ -274,11 +295,10 @@ public class Mob extends LivingEntity {
                         Math.abs(getMiddleOfHitboxY() - targetPlayer.getMiddleOfHitboxY()) < spriteStep);
     }
 
-    public Player getTargetPlµayer() {
+    public Player getTargetPlayer() {
         return targetPlayer;
     }
 
-    Vector2int oldTargetPos;
 
     public void setTargetPlayer(Player player) {
         targetPlayer = player;
