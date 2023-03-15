@@ -1,11 +1,9 @@
 package com.mygdx.test;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,11 +18,9 @@ import com.mygdx.entity.Player;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
 
-import java.awt.print.Printable;
+public class TestMonstersScreen extends ApplicationAdapter implements InputProcessor {
 
-public class TestMonsters extends ApplicationAdapter implements InputProcessor {
-
-    private Player player;
+    public static Player player; // tout moche ! pour tests uniquement
     private Monsters monsters;
     private boolean showJoystick = false;
     private int refreshValue = 0;
@@ -49,13 +45,14 @@ public class TestMonsters extends ApplicationAdapter implements InputProcessor {
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
         batch = new SpriteBatch();
-        map = new Map(mapFilename, batch);
-        Mob.setMap(map);
-
         createPlayer();
+
+        map = new Map(mapFilename, batch);
         monsters = new Monsters();
+        monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
 
         loadMap(mapFilename, batch);
+        Mob.setMap(map);
 
         shapeRenderer = new ShapeRenderer();
 
@@ -68,8 +65,8 @@ public class TestMonsters extends ApplicationAdapter implements InputProcessor {
 
     private void createPlayer() {
         player = new Player();
-        player.setX(100); // temp
-        player.setY(100); // temp
+        player.setX(300); // temp
+        player.setY(300); // temp
         NewPlayer.requestServer(player);
     }
 
@@ -98,7 +95,8 @@ public class TestMonsters extends ApplicationAdapter implements InputProcessor {
             showJoystick = false;
         }
 
-        monsters.moveRandomly();
+        //monsters.moveRandomly();
+        monsters.moveToPlayer();
 
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -236,6 +234,5 @@ public class TestMonsters extends ApplicationAdapter implements InputProcessor {
     public void resize(int width, int height) {
         //viewport.update(width, height);
     }
-
 
 }

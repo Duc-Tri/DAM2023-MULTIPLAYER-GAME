@@ -74,13 +74,13 @@ public class TempMaze {
         }
 
         // dessine le départ et l'arrivée
-        batchDraw(batch, START, startPoint.myX, startPoint.myY);
-        batchDraw(batch, FINISH, endPoint.myX, endPoint.myY);
+        batchDraw(batch, START, startPoint.x, startPoint.y);
+        batchDraw(batch, FINISH, endPoint.x, endPoint.y);
 
         // dessine la solution, si pas null
         if (solution != null) {
             for (Vector2int v : solution) {
-                batchDraw(batch, PATH, v.myX, v.myY);
+                batchDraw(batch, PATH, v.x, v.y);
             }
         }
 

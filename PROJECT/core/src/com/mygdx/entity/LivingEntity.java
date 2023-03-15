@@ -174,13 +174,13 @@ public class LivingEntity implements Entity {
     }
 
     public void setX(float x) {
-        this.entityX = x;
+        entityX = x;
         hitbox.setX(x + HITBOX_XOFFSET);
         sprite.setX(x);
     }
 
     public void setY(float y) {
-        this.entityY = y;
+        entityY = y;
         hitbox.setY(y + HITBOX_YOFFSET);
         sprite.setY(y);
     }
@@ -247,6 +247,14 @@ public class LivingEntity implements Entity {
         renderer.setColor(Color.MAGENTA);
         renderer.rect(screenHitboxX, screenHitboxY, hitbox.width, hitbox.height);
         renderer.end();
+    }
+
+    public float getMiddleOfHitboxX() {
+        return hitbox.x + HITBOX_XOFFSET + hitbox.width / 2;
+    }
+
+    public float getMiddleOfHitboxY() {
+        return hitbox.y + HITBOX_YOFFSET + hitbox.height / 2;
     }
 
 }

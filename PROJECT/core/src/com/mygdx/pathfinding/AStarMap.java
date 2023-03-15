@@ -11,13 +11,13 @@ public class AStarMap {
     /* La première liste, appelée liste ouverte, va contenir tous les noeuds étudiés. Dès que l'algorithme va se pencher sur
     un noeud du graphe, il passera dans la liste ouverte (sauf s'il y est déjà).
     */
-    private List<Node> openList = new ArrayList<>();
+    private List<Node> openList;
 
     /*  La seconde liste, appelée liste fermée, contiendra tous les noeuds qui, à un moment où à un autre, ont été considérés
     comme faisant partie du chemin solution. Avant de passer dans la liste fermée, un noeud doit d'abord passer dans la
     liste ouverte, en effet, il doit d'abord être étudié avant d'être jugé comme bon.
     */
-    private List<Node> close = new ArrayList<>();
+    private List<Node> close;
 
     private Map map;
 
@@ -25,24 +25,27 @@ public class AStarMap {
         this.map = m;
     }
 
+    // start: coordonnées de la tuile de départ, goal: coordonnées de la tuile de départ
     public List<Vector2int> findPath(Vector2int start, Vector2int goal) {
         return findPath(new Node(start, null), new Node(goal, null));
     }
 
     public List<Vector2int> findPath(Node pointDepart, Node pointArrivee) {
         int steps = 0; // pour limiter la recherche
-        close.clear();
-        openList.clear();
+        close = new ArrayList<>();
+        openList = new ArrayList<>();
         openList.add(pointDepart);
 
         while (!openList.isEmpty()) {
-            System.out.println("FindPath _______________________________________ stemps=" + steps);
 
             Collections.sort(openList, new NodeComparator());
             Node u = openList.get(0);
             openList.remove(0);
 
-            if (u.point.equals(pointArrivee.point) || steps++ > 100) {
+            if (u.point.equals(pointArrivee.point) || steps++ > 1000) {
+
+//                System.out.println("findPath FOUND __________" + pointDepart.toString() + " => " + pointArrivee.toString() + "__________ steps=" + steps);
+
                 return restitutePath(u);
             }
 
@@ -58,6 +61,8 @@ public class AStarMap {
             close.add(u);
         }
 
+        System.out.println("findPath KO __________" + pointDepart.toString() + " => " + pointArrivee.toString() + " NULL ");
+
         return null;
     }
 
@@ -65,12 +70,12 @@ public class AStarMap {
 
         List<Vector2int> path = new ArrayList<>();
 
-        path.add(end.point);
-
-        while (end.parent != null) {
-            path.add(end.parent.point);
+        do
+        {
+            path.add(map.mapTileToPixels(end.point));
             end = end.parent;
         }
+        while (end != null);
 
         return path;
     }
@@ -93,24 +98,26 @@ public class AStarMap {
 
         if (isValidNode(nodeBas)) Neighbours.add(nodeBas);
 
+//        System.out.println("getNeighbours::::::::::::::::: " + nodeGauche + " * " + nodeDroite + " * " + nodeHaut + " * " + nodeBas + " = " + Neighbours.size());
+
         return Neighbours;
     }
 
     private Node makeNeighbour(Node parent, int xDiff, int yDiff) {
-        return new Node(parent.point.myX + xDiff, parent.point.myY + yDiff, parent);
+        return new Node(parent.point.x + xDiff, parent.point.y + yDiff, parent);
     }
 
     private boolean isValidNode(Node node) {
 
-        boolean isXValide = node.point.myX < map.mapWidthInTiles && node.point.myX >= 0;
+        boolean isXValid = node.point.x < map.mapWidthInTiles && node.point.x >= 0;
 
-        boolean isYValide = node.point.myY < map.mapHeightInTiles && node.point.myY >= 0;
+        boolean isYValid = node.point.y < map.mapHeightInTiles && node.point.y >= 0;
 
-        if (!isXValide || !isYValide) {
+        if (!isXValid || !isYValid) {
             return false;
         }
 
-        return (!map.checkObstacle(node.point.myX, node.point.myY));
+        return (!map.isTileObstacle(node.point.x, node.point.y));
     }
 
     public Map getMap() {

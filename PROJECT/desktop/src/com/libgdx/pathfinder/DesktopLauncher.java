@@ -3,8 +3,7 @@ package com.libgdx.pathfinder;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.test.TestAtlas;
-import com.mygdx.test.TestMonsters;
+import com.mygdx.test.TestMonstersScreen;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -12,9 +11,9 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setForegroundFPS(30);
+        config.setForegroundFPS(60);
         config.setTitle("DESKTOP");
-        config.setWindowedMode(1024, 768);
+        config.setWindowedMode(1900, 1000);
 
         MainGame.setConfig("desktop");
 
@@ -40,7 +39,7 @@ public class DesktopLauncher {
 
         // TESTS MONSTRES + PLAYER --------------------------------------------
         config.setTitle("TEST MONSTERS (solo)");
-        new Lwjgl3Application(new TestMonsters(), config);
+        new Lwjgl3Application(new TestMonstersScreen(), config);
 
     }
 

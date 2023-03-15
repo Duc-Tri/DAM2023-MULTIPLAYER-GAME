@@ -93,7 +93,7 @@ public class LabyTest extends ApplicationAdapter {
     public void drawSolutionInPixels(SpriteBatch batch) {
 
         for (Vector2int v : customTiledMap.solution) {
-            batch.draw(splitTiles[5][0], v.myX * 16, v.myY * 16);
+            batch.draw(splitTiles[5][0], v.x * 16, v.y * 16);
         }
     }
 

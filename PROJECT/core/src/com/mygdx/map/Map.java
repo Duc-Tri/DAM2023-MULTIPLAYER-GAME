@@ -16,6 +16,7 @@ import com.mygdx.entity.Mates;
 import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
 import com.mygdx.entity.LivingEntityComparator;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,10 +141,15 @@ public class Map {
         int tileX = (int) (pixelX / obstaclesLayer.getTileWidth());
         int tileY = (int) (pixelY / obstaclesLayer.getTileHeight());
 
-        boolean res = (obstaclesLayer.getCell(tileX, tileY) != null);
-        //System.out.println("movePlayer === " + pixelX + "/" + pixelY + " --- " + tileX + "/" + tileY + " --- " + res);
+        return isTileObstacle(tileX, tileY);
+    }
 
-        return res;
+    public boolean isTileObstacle(int tileX, int tileY) {
+        boolean tilePresent = (obstaclesLayer.getCell(tileX, tileY) != null);
+
+//        System.out.println("checkObstacle ....... " + tileX + "/" + tileY + " --- " + tilePresent);
+
+        return tilePresent;
     }
 
     public boolean checkObstacle(LivingEntity entity, int deltaX, int deltaY) {
@@ -214,6 +220,17 @@ public class Map {
 
     }
 
+    public Vector2int mapTileToPixels(Vector2int tile) {
+        return new Vector2int(tile.x * tileWidth + tileWidth / 2, tile.y * tileHeight + tileHeight / 2);
+    }
+
+    public Vector2int pixelsToMapTile(Vector2int pos) {
+        return new Vector2int(pos.x / tileWidth, pos.y / tileHeight);
+    }
+
+    public Vector2int pixelsToMapTile(float x, float y) {
+        return new Vector2int(x / tileWidth, y / tileHeight);
+    }
 
 }
 

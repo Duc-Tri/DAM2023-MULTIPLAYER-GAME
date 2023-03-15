@@ -117,20 +117,20 @@ public class AStarTiledMap {
     }
 
     private Node makeNeighbour(Node parent, int xDiff, int yDiff) {
-        return new Node(parent.point.myX + xDiff, parent.point.myY + yDiff, parent);
+        return new Node(parent.point.x + xDiff, parent.point.y + yDiff, parent);
     }
 
     private boolean isValidNode(Node node) {
 
-        boolean isXValide = node.point.myX < customTiledMap.myLabyrinthLayer.getWidth() && node.point.myX >= 0;
+        boolean isXValide = node.point.x < customTiledMap.myLabyrinthLayer.getWidth() && node.point.x >= 0;
 
-        boolean isYValide = node.point.myY < customTiledMap.myLabyrinthLayer.getHeight() && node.point.myY >= 0;
+        boolean isYValide = node.point.y < customTiledMap.myLabyrinthLayer.getHeight() && node.point.y >= 0;
 
         if (!isXValide || !isYValide) {
             return false;
         }
 
-        int val = (customTiledMap.myLabyrinthLayer.getCell(node.point.myX, node.point.myY) == null) ? 0 : 1; // TEMP
+        int val = (customTiledMap.myLabyrinthLayer.getCell(node.point.x, node.point.y) == null) ? 0 : 1; // TEMP
 
         return (val == 0);
     }

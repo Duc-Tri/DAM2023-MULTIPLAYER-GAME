@@ -3,6 +3,7 @@ package com.mygdx.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
+import com.mygdx.test.TestMonstersScreen;
 
 import java.util.ArrayList;
 
@@ -10,11 +11,12 @@ public class Monsters {
     private static ArrayList<Mob> mobs = new ArrayList<>();
     private static Map map;
     private static AStarMap aStarMap;
+    private static final int MAX_MONSTERS = 10;
 
     public Monsters() {
 
         // TEMP, populate monsters
-        for (int n = 0; n < 20; n++) {
+        for (int n = 0; n < MAX_MONSTERS; n++) {
 
             Mob m = new Mob();
             m.setX((float) (125 + Math.random() * 50 - 25));
@@ -100,6 +102,12 @@ public class Monsters {
         }
     }
 
+    public void moveToPlayer() {
+        for (Mob m : mobs) {
+            m.moveToPlayer();
+        }
+    }
+
     public static void setMap(Map m) {
         map = m;
 
@@ -107,5 +115,10 @@ public class Monsters {
             Mob.setMap(map);
     }
 
+    public void setTargetPlayer(Player player) {
+        for (Mob m : mobs) {
+            m.setTargetPlayer(player);
+        }
+    }
 }
 

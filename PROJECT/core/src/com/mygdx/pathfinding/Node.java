@@ -46,7 +46,11 @@ public class Node {
     }
 
     public boolean equals(Node other) {
-        return (this.point.myX == other.point.myX && this.point.myY == other.point.myY);
+        return (this.point.x == other.point.x && this.point.y == other.point.y);
+    }
+
+    public String toString() {
+        return point.x + "/" + point.y + "*" + cost + "_" + heuristic;
     }
 
 }
