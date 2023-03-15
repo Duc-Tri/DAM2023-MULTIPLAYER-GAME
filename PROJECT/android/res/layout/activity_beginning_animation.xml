@@ -7,16 +7,12 @@
     tools:context=".BeginningAnimation">
 
     <ImageView
-        android:id="@+id/blackbackgroundscenic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@color/black" />
-
-    <ImageView
         android:id="@+id/ivBackground1"
         android:layout_width="match_parent"
         android:layout_height="350dp"
+        android:clickable="false"
+        android:onClick="nextAct"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -29,9 +25,10 @@
         android:id="@+id/ivBackground2"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:visibility="invisible"
+        android:clickable="false"
+        android:onClick="nextAct"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/beg_anim2" />
@@ -41,7 +38,9 @@
         android:layout_width="wrap_content"
         android:layout_height="296dp"
         android:layout_marginStart="96dp"
-        android:visibility="invisible"
+        android:clickable="false"
+        android:onClick="nextAct"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/ivBackground1"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/left_guy2" />
@@ -50,8 +49,10 @@
         android:id="@+id/right_guy"
         android:layout_width="wrap_content"
         android:layout_height="336dp"
-        android:layout_marginEnd="87dp"
-        android:visibility="invisible"
+        android:layout_marginEnd="86dp"
+        android:clickable="false"
+        android:onClick="nextAct"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/ivBackground1"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/right_guy" />
@@ -61,7 +62,9 @@
         android:layout_width="362dp"
         android:layout_height="135dp"
         android:layout_marginTop="37dp"
-        android:visibility="invisible"
+        android:clickable="false"
+        android:onClick="nextAct"
+        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/blackbackgroundscenic"
         app:layout_constraintStart_toEndOf="@+id/blackbackgroundscenic"
         app:layout_constraintTop_toTopOf="parent"
@@ -72,10 +75,24 @@
         android:layout_width="418dp"
         android:layout_height="35dp"
         android:layout_marginBottom="57dp"
-        android:visibility="invisible"
+        android:clickable="false"
+        android:onClick="nextAct"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/ivBackground2"
         app:layout_constraintEnd_toStartOf="@+id/ivBackground1"
         app:layout_constraintStart_toEndOf="@+id/ivBackground1"
         app:srcCompat="@drawable/touchtocontinue" />
+
+    <ImageView
+        android:id="@+id/blackbackgroundscenic"
+        android:layout_width="2280dp"
+        android:layout_height="1014dp"
+        android:clickable="false"
+        android:onClick="nextAct"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background_scenic_test" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
