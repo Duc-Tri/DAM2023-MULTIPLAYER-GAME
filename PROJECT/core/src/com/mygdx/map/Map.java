@@ -55,7 +55,7 @@ public class Map {
         playersLayer = (TiledMapTileLayer) tiledMap.getLayers().get("PLAYERS");
 
         obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
-        obstaclesLayer.setVisible(false);
+        obstaclesLayer.setVisible(true); // true pour debug -------------------
         //printLayer(obstaclesLayer); //
 
         mapWidthInTiles = obstaclesLayer.getWidth();
@@ -81,6 +81,9 @@ public class Map {
             if (layer != null)
                 topMap.getLayers().add(layer);
         }
+
+        if (obstaclesLayer != null && obstaclesLayer.isVisible())
+            topMap.getLayers().add(obstaclesLayer);
     }
 
     private void constructFloorMap() {
@@ -206,18 +209,19 @@ public class Map {
             // affiche les tuiles de cette rangée tileY -------------------------------------------
             int realX = 0;
 
-            for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
-                Cell c = playersLayer.getCell(tileX, tileY);
-                if (c != null) {
-                    batch.draw(c.getTile().getTextureRegion(), realX, realY);
-                }
+            if (playersLayer != null) {
+                for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
+                    Cell c = playersLayer.getCell(tileX, tileY);
+                    if (c != null) {
+                        batch.draw(c.getTile().getTextureRegion(), realX, realY);
+                    }
 
-                realX += tileWidth;
+                    realX += tileWidth;
+                }
             }
 
             realY -= tileHeight;
         }
-
     }
 
     public Vector2int mapTileToPixels(Vector2int tile) {

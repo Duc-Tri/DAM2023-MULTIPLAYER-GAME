@@ -30,6 +30,7 @@ public class AStarMap {
         return findPath(new Node(start, null), new Node(goal, null));
     }
 
+    NodeComparator nodeComparator= new NodeComparator();
     public List<Vector2int> findPath(Node pointDepart, Node pointArrivee) {
         int steps = 0; // pour limiter la recherche
         close = new ArrayList<>();
@@ -38,7 +39,7 @@ public class AStarMap {
 
         while (!openList.isEmpty()) {
 
-            Collections.sort(openList, new NodeComparator());
+            Collections.sort(openList, nodeComparator);
             Node u = openList.get(0);
             openList.remove(0);
 

@@ -18,6 +18,9 @@ import com.mygdx.entity.Player;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
 
+//=================================================================================================
+// JEU DE TEST POUR L'ANMATION & LE PATHFINDING DES MONSTRES
+//=================================================================================================
 public class TestMonstersScreen extends ApplicationAdapter implements InputProcessor {
 
     public static Player player; // tout moche ! pour tests uniquement
@@ -36,7 +39,7 @@ public class TestMonstersScreen extends ApplicationAdapter implements InputProce
     private ShapeRenderer shapeRenderer;
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
-    private final String mapFilename = "map/DAMCorp_1.tmx";
+    private final String mapFilename = "map/DAMCorp_2.tmx";
 
 
     public void create() {
@@ -65,7 +68,7 @@ public class TestMonstersScreen extends ApplicationAdapter implements InputProce
 
     private void createPlayer() {
         player = new Player();
-        player.setX(300); // temp
+        player.setX(400); // temp
         player.setY(300); // temp
         NewPlayer.requestServer(player);
     }

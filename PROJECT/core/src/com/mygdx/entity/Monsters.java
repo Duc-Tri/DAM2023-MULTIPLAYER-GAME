@@ -11,7 +11,7 @@ public class Monsters {
     private static ArrayList<Mob> mobs = new ArrayList<>();
     private static Map map;
     private static AStarMap aStarMap;
-    private static final int MAX_MONSTERS = 1;
+    private static final int MAX_MONSTERS = 10;
 
     public Monsters() {
 

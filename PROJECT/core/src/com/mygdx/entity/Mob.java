@@ -2,7 +2,9 @@ package com.mygdx.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,6 +15,7 @@ import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mob extends LivingEntity {
@@ -25,8 +28,6 @@ public class Mob extends LivingEntity {
     private TextureRegion textureRegion;
     public String mobID;
     public Color spriteTint;
-    private float width = 0;
-    private float height = 0;
     Vector2int oldTargetPos;
 
 
@@ -46,16 +47,13 @@ public class Mob extends LivingEntity {
         RMXP_CHARACTER = (int) (Math.random() * RMXPMonstersAtlas.MAX_MONSTERS) + "_";
 
         findRegion = RMXP_CHARACTER + "DOWN_0";
-        this.hitbox = new Rectangle(entityX, entityY, 8, 8); // be precise ?
 
         initializeSprite();
-        HITBOX_WIDTH = (int) ((sprite.getWidth() - 32) / 2); // temp
-        HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
 
         //System.out.println("---------------------------- CONSTRUCTOR Mob");
 
         // to position everything well ----------
-        setX(getX());
+        setFootX(getFootX());
         setY(getY());
 
         randomize(); // TODO : remove it after tests
@@ -66,8 +64,6 @@ public class Mob extends LivingEntity {
     public Mob(float x, float y, float width, float height) {
         entityX = x;
         entityY = y;
-        this.width = width;
-        this.height = height;
         hitbox = new Rectangle(x, y, width, height);
     }
 
@@ -75,23 +71,23 @@ public class Mob extends LivingEntity {
         this.hitbox = rect;
         entityX = rect.getX();
         entityY = rect.getY();
-        this.width = rect.getWidth();
-        this.height = rect.getHeight();
+        hitbox = rect;
     }
 
     @Override
     public void initializeSprite() {
 
-        // TEXTURE LOCAL DE LIVINGENTITY --------------------------------
+        // TEXTURE LOCAL DE LIVING_ENTITY -------------------------------------
         if (textureAtlas == null) {
             textureAtlas = allMonstersAtlas;
         }
 
         textureRegion = textureAtlas.findRegion(findRegion);
-
-        hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
-
         sprite = new Sprite(textureRegion);
+
+        HITBOX_WIDTH = (int) (sprite.getWidth() - 16); // temp
+        HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
+        hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
         //System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
     }
@@ -170,7 +166,7 @@ public class Mob extends LivingEntity {
             return; // OBSTACLE ! on ne bouge pas !
 
         if (deltaX != 0) {
-            setX(getX() + deltaX);
+            setFootX(getFootX() + deltaX);
         }
 
         if (deltaY != 0) {
@@ -198,12 +194,23 @@ public class Mob extends LivingEntity {
 
     public List<Vector2int> pathToTarget(LivingEntity target) {
 
-        aStarCurrentPos = map.pixelsToMapTile(entityX, entityY);
-        aStarGoal = map.pixelsToMapTile(target.entityX, target.entityY);
+        aStarCurrentPos = map.pixelsToMapTile(getFootX(), entityY);
+        aStarGoal = map.pixelsToMapTile(target.getFootX(), target.getY());
 
         List<Vector2int> path = aStarMap.findPath(aStarCurrentPos, aStarGoal);
-        if (path != null)
-            path.add(0, new Vector2int(target.entityX, target.entityY));
+
+        if (path == null) {
+            // pour avoir une liste non null et y ajouter la position de la target
+            path = new ArrayList<>();
+        } else {
+            // on enlève le 1er point, pour mettre un meilleur :) =================================
+            path.remove(0);
+
+            // évite un tremblement sur place quand le joueur a bougé !!! =========================
+            if (path.size() != 0)
+                path.remove(path.size() - 1);
+        }
+        path.add(0, new Vector2int(target.getFootX(), target.getY()));
 
 //        System.out.println("pathToTarget ################################################ " +
 //                (path == null ? "PATH NULL" : Arrays.toString(path.toArray())));
@@ -234,8 +241,8 @@ public class Mob extends LivingEntity {
         else
             waitBeforeMove = 0;
 
-        float deltaX = nextPoint.x - entityX;
-        float deltaY = nextPoint.y - entityY;
+        float deltaX = nextPoint.x - getFootX();
+        float deltaY = nextPoint.y - getY();
 
         // on a atteint le point courant => point suivant
         // ou recalcul du pathfinding si aucun point restant
@@ -243,16 +250,11 @@ public class Mob extends LivingEntity {
         boolean moved = playerHasMoved();
         if (moved || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
 
-//            if (nextPoint.x > 0 && nextPoint.y > 0) {
-//                setX(nextPoint.x);
-//                setY(nextPoint.y);
-//            }
             System.out.println("moveToPlayer :::::: " + moved +
                     " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
 
             processPathToPlayer(moved);
         }
-
 
         // Calcul de la direction, et mouvement effectif
         //---------------------------------------------------------------------
@@ -266,9 +268,8 @@ public class Mob extends LivingEntity {
         }
         moveMob(dir, false);
 
-        // TEST : téléportation ---------------
-        //        setX(nextPoint.x);
-        //        setY(nextPoint.y);
+        // TEST : téléportation --------------------
+        //        setX(nextPoint.x);        //        setY(nextPoint.y);
 
         //        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
         //                " entity={" + entityX + "/" + entityY + "} " +
@@ -276,7 +277,7 @@ public class Mob extends LivingEntity {
     }
 
     private boolean playerHasMoved() {
-        Vector2int pos = map.pixelsToMapTile(targetPlayer.getX(), targetPlayer.getY());
+        Vector2int pos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
         if (pos.equals(oldTargetPos)) {
             return false;
         }
@@ -289,8 +290,10 @@ public class Mob extends LivingEntity {
 
     private boolean playerReached() {
         return hitbox.overlaps(targetPlayer.hitbox) ||
+
                 (Math.abs(entityX - targetPlayer.entityX) < spriteStep &&
                         Math.abs(entityY - targetPlayer.entityY) < spriteStep) ||
+
                 (Math.abs(getMiddleOfHitboxX() - targetPlayer.getMiddleOfHitboxX()) < spriteStep &&
                         Math.abs(getMiddleOfHitboxY() - targetPlayer.getMiddleOfHitboxY()) < spriteStep);
     }
@@ -303,7 +306,25 @@ public class Mob extends LivingEntity {
     public void setTargetPlayer(Player player) {
         targetPlayer = player;
         if (map != null)
-            oldTargetPos = map.pixelsToMapTile(targetPlayer.getMiddleOfHitboxX(), targetPlayer.getMiddleOfHitboxY());
+            oldTargetPos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
+    }
+
+    static final Texture debugTarget16 = new Texture("test/target16x16.png");
+    static final Texture debugTarget8 = new Texture("test/target8x8.png");
+
+    public void drawAndUpdate(SpriteBatch batch) {
+        super.drawAndUpdate(batch);
+        if (mapPathToTarget != null) {
+            for (Vector2int v : mapPathToTarget) {
+                batch.draw(debugTarget16, v.x, v.y);
+            }
+        }
+
+        batch.draw(debugTarget8, targetPlayer.hitbox.x, targetPlayer.hitbox.y,
+                targetPlayer.hitbox.width, targetPlayer.hitbox.height);
+
+        batch.draw(debugTarget8, hitbox.x, hitbox.y,
+                hitbox.width, hitbox.height);
     }
 
 }

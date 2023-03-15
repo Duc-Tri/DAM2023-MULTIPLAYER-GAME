@@ -19,8 +19,8 @@ public class LivingEntity implements Entity {
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
     private static final int CHAR_WIDTH = 32;
-    protected int HITBOX_WIDTH = 8;
-    protected int HITBOX_HEIGHT = 8;
+    protected int HITBOX_WIDTH = 16;
+    protected int HITBOX_HEIGHT = 16;
     protected int HITBOX_YOFFSET = 0; // Y : aux pieds du sprite
     protected int HITBOX_XOFFSET = (CHAR_WIDTH - HITBOX_WIDTH) / 2; // X :au mileu
 
@@ -109,6 +109,10 @@ public class LivingEntity implements Entity {
         return entityX;
     }
 
+    public float getFootX() {
+        return entityX + sprite.getWidth() / 2;
+    }
+
     public float getY() {
         return entityY;
     }
@@ -185,6 +189,10 @@ public class LivingEntity implements Entity {
         sprite.setY(y);
     }
 
+    public void setFootX(float x) {
+        setX(x - sprite.getWidth() / 2);
+    }
+
     public void setTextureRegion(TextureRegion textureRegion) {
         this.textureRegion = textureRegion;
     }
@@ -250,11 +258,11 @@ public class LivingEntity implements Entity {
     }
 
     public float getMiddleOfHitboxX() {
-        return hitbox.x + HITBOX_XOFFSET + hitbox.width / 2;
+        return hitbox.x + hitbox.width / 2; // HITBOX_XOFFSET
     }
 
     public float getMiddleOfHitboxY() {
-        return hitbox.y + HITBOX_YOFFSET + hitbox.height / 2;
+        return hitbox.y + hitbox.height / 2; // HITBOX_YOFFSET
     }
 
 }
