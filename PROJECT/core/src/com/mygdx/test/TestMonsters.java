@@ -20,6 +20,8 @@ import com.mygdx.entity.Player;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
 
+import java.awt.print.Printable;
+
 public class TestMonsters extends ApplicationAdapter implements InputProcessor {
 
     private Player player;
@@ -42,6 +44,7 @@ public class TestMonsters extends ApplicationAdapter implements InputProcessor {
 
 
     public void create() {
+        System.out.println("TEST MONSTERS (solo) ################################################");
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 

@@ -33,10 +33,10 @@ public class Map {
     private TiledMapRenderer topMapRenderer;
     private final SpriteBatch batch;
     private List<LivingEntity> livingEntitiesList;
-    private final int mapWidthInTiles;
-    private final int mapHeightInTiles;
-    private final int tileWidth;
-    private final int tileHeight;
+    public final int mapWidthInTiles;
+    public final int mapHeightInTiles;
+    public final int tileWidth;
+    public final int tileHeight;
 
     private LivingEntityComparator livingEntityComparator = new LivingEntityComparator();
     private Rectangle hitbox = new Rectangle();
@@ -55,7 +55,7 @@ public class Map {
 
         obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
         obstaclesLayer.setVisible(false);
-        printLayer(obstaclesLayer);
+        //printLayer(obstaclesLayer); //
 
         mapWidthInTiles = obstaclesLayer.getWidth();
         mapHeightInTiles = obstaclesLayer.getHeight();
@@ -119,6 +119,7 @@ public class Map {
         this.floorMapRenderer = floorMapRenderer;
     }
 
+    // imprime dans la console le layer OBSTACLES
     private void printLayer(TiledMapTileLayer layer) {
         int layerHeight = layer.getHeight();
         int layerWidth = layer.getWidth();
@@ -163,14 +164,6 @@ public class Map {
 
     public void renderTop() {
         topMapRenderer.render();
-    }
-
-    public int getMapWidthInTiles() {
-        return mapWidthInTiles;
-    }
-
-    public int getMapHeightInTiles() {
-        return mapHeightInTiles;
     }
 
     public void renderAllLivingEntitiesAndTiles(Player player, Mates mates, Monsters monsters) {
@@ -220,7 +213,6 @@ public class Map {
         }
 
     }
-
 
 
 }

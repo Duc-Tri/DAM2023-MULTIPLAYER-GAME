@@ -25,7 +25,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class GameScreen implements Screen, InputProcessor {
 
-    private Player player;
+    private static Player player; // main player
     private Mates mates;
     private Monsters monsters;
     private boolean showJoystick = false;
@@ -68,7 +68,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
 
-        map=loadMap(mapFilename, batch);
+        map = loadMap(mapFilename, batch);
 
         monsters = new Monsters(map);
 
@@ -373,6 +373,10 @@ public class GameScreen implements Screen, InputProcessor {
         GameScreen.cameraZoom = cameraZoom;
     }
 
+    public static Player getPlayer() {
+        return player;
+    }
+
 }
 
 /*
@@ -403,30 +407,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     public Map getMap() {
         return map;
-    }
-
-    public Viewport getViewport() {
-        return viewport;
-    }
-
-    public void setViewport(Viewport viewport) {
-        this.viewport = viewport;
-    }
-
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
-    }
-
-    public void setTextureAtlas(TextureAtlas textureAtlas) {
-        this.textureAtlas = textureAtlas;
-    }
-
-    public int getSizeOfStep() {
-        return sizeOfStep;
-    }
-
-    public void setSizeOfStep(int sizeOfStep) {
-        this.sizeOfStep = sizeOfStep;
     }
 
     public static boolean isLockOnListReadFromDB() {

@@ -7,6 +7,11 @@ public class Vector2int {
         myY = y;
     }
 
+    public Vector2int(float x, float y) {
+        myX = (int)x;
+        myY = (int)y;
+    }
+
     public int getDistanceManhattan(Vector2int point2) {
         return Math.abs(myX - point2.myX) + Math.abs(myY - point2.myY);
     }

@@ -15,7 +15,7 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 // Entity qui
 public class LivingEntity implements Entity {
 
-    protected  TextureAtlas textureAtlas;
+    protected TextureAtlas textureAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
     private static final int CHAR_WIDTH = 32;

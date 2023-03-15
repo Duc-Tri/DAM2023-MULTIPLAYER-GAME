@@ -77,7 +77,7 @@ public class Monsters {
                         Mob newMob = new Mob();
                         mobs.add(newMob);
                         newMob.setServerUniqueID(oneMob);
-                        ///RetrievePlayer.requestServer(newMob); // TODO: servlet for mobs
+                        ///RetrievePlayer.requestServer(newMob); // TODO: write servlet for mobs
                         newMob.initializeSprite();
                     }
                 }

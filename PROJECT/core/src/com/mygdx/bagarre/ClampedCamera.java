@@ -57,8 +57,7 @@ public class ClampedCamera extends OrthographicCamera {
         update();
     }
 
-    public void translateAndCenter()
-    {
+    public void translateAndCenter() {
 
     }
 }

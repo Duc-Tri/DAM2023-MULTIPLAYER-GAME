@@ -2,8 +2,6 @@ package com.mygdx.bagarre;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.mygdx.client.NewPlayer;
-import com.mygdx.entity.Player;
 import com.mygdx.firebase.FirebaseHelper;
 import com.mygdx.map.Map;
 

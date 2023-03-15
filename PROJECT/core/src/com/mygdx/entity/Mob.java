@@ -10,22 +10,22 @@ import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPAtlasGenerator;
 import com.mygdx.graphics.RMXPMonstersAtlas;
 import com.mygdx.map.Map;
+import com.mygdx.pathfinding.AStarMap;
+import com.mygdx.pathfinding.Vector2int;
 
 public class Mob extends LivingEntity {
 
+    private static AStarMap aStarMap;
     private static TextureAtlas allMonstersAtlas;
 
     private TextureRegion textureRegion;
     public String mobID;
     public Color spriteTint;
-    private float x = 0;
-    private float y = 0;
     private float width = 0;
     private float height = 0;
 
     private String currentDir;
     private static Map map;
-
 
     public Mob() {
         if (allMonstersAtlas == null) {
@@ -43,7 +43,7 @@ public class Mob extends LivingEntity {
         RMXP_CHARACTER = (int) (Math.random() * RMXPMonstersAtlas.MAX_MONSTERS) + "_";
 
         findRegion = RMXP_CHARACTER + "DOWN_0";
-        this.hitbox = new Rectangle(this.x, this.y, 8, 8); // be precise ?
+        this.hitbox = new Rectangle(entityX, entityY, 8, 8); // be precise ?
 
         initializeSprite();
         HITBOX_WIDTH = (int) ((sprite.getWidth() - 32) / 2); // temp
@@ -59,8 +59,8 @@ public class Mob extends LivingEntity {
     }
 
     public Mob(float x, float y, float width, float height) {
-        this.x = x;
-        this.y = y;
+        entityX = x;
+        entityY = y;
         this.width = width;
         this.height = height;
         hitbox = new Rectangle(x, y, width, height);
@@ -68,8 +68,8 @@ public class Mob extends LivingEntity {
 
     public Mob(Rectangle rect) {
         this.hitbox = rect;
-        this.x = rect.getX();
-        this.y = rect.getY();
+        entityX = rect.getX();
+        entityY = rect.getY();
         this.width = rect.getWidth();
         this.height = rect.getHeight();
     }
@@ -171,11 +171,33 @@ public class Mob extends LivingEntity {
 
     public static void setMap(Map m) {
         map = m;
+
+        if (aStarMap == null)
+            aStarMap = new AStarMap(map);
+        else
+            aStarMap.setMap(map);
     }
 
     public static Map getMap() {
         return map;
     }
+
+    private Vector2int aStarCurrentPos = new Vector2int(0, 0);
+    private Vector2int aStarGoal = new Vector2int(0, 0);
+
+    public void goAfter(LivingEntity target) {
+        aStarCurrentPos.myX = (int) (entityX / map.tileWidth);
+        aStarCurrentPos.myY = (int) (entityY / map.tileWidth);
+        aStarGoal.myX = (int) (target.entityX / map.tileWidth);
+        aStarGoal.myY = (int) (target.entityY / map.tileWidth);
+
+        aStarMap.findPath(aStarCurrentPos, aStarGoal);
+    }
+
+    public void goTo(int x, int y) {
+
+    }
+
 }
 
 

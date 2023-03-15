@@ -20,7 +20,7 @@ public class DesktopLauncher {
 
 
         // CLIENT + SERVEUR ---------------------------------------------------
-        new Lwjgl3Application(MainGame.getInstance(), config);
+//        new Lwjgl3Application(MainGame.getInstance(), config);
 
 
         // TEST PATHFINDING ---------------------------------------------------
@@ -31,14 +31,16 @@ public class DesktopLauncher {
 //        new Lwjgl3Application(new LabyTest(), config); // MERGE LABYRINTHE + PATH FINDING
 
 
-        // TESTS ATLAS PERSONNAGES---------------------------------------------
+        // TESTS ATLAS PERSONNAGES --------------------------------------------
+//        config.setTitle("TESTS ATLAS PERSONNAGES");
 //        RMXPCharactersAtlas.printlnAtlas();
 //        RMXPMonstersAtlas.printlnAtlas(false);
 //        new Lwjgl3Application(new TestAtlas(), config);
 
 
         // TESTS MONSTRES + PLAYER --------------------------------------------
-//        new Lwjgl3Application(new TestMonsters(), config);
+        config.setTitle("TEST MONSTERS (solo)");
+        new Lwjgl3Application(new TestMonsters(), config);
 
     }
 
