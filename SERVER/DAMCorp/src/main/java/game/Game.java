@@ -10,6 +10,7 @@ public class Game {
 	static int numLobby = 0;
 	static Player[][] players = new Player[poolSize][lobbySize];
 	int cptLobby =0;
+	private long timeout = 10000L;
 	
 	public boolean possibleToScribe() {
 		if (staticIdCpt*cptLobby < poolSize*lobbySize) {
@@ -19,7 +20,6 @@ public class Game {
 	}
 
 	public String getNextId() {
-		System.out.println("compteur du nombre de passage de nextID : "+ staticIdCpt);
 		if(staticIdCpt<lobbySize) {
 			return "" + staticIdCpt++;	
 		}
@@ -60,7 +60,7 @@ public class Game {
 				if (player != null 
 						&& (players[nLobby][i] != null)
 						&& !player.getServerUniqueID().equalsIgnoreCase(players[nLobby][i].getServerUniqueID() + "") 
-						&& players[nLobby][i].getLastUpdate()>System.currentTimeMillis()-100000L 
+						&& players[nLobby][i].getLastUpdate()>System.currentTimeMillis()-this.timeout  
 						){
 					if (cpt == 0) {
 						tempString = "" + players[nLobby][i].getServerUniqueID();
@@ -69,10 +69,15 @@ public class Game {
 					}
 					cpt++;
 				}else {
-					System.out.println("players "+i+" is null " );
+					if (player != null 
+							&& (players[nLobby][i] != null)
+							&& !player.getServerUniqueID().equalsIgnoreCase(players[nLobby][i].getServerUniqueID() + "") 
+							&& !(players[nLobby][i].getLastUpdate()>System.currentTimeMillis()-this.timeout)  
+							){
+						System.out.println("Temps dépassé, on ne retourne pas " + players[nLobby][i].getServerUniqueID());
+					}
 				}
 			}
-			System.out.println();
 		}
 		return tempString;
 	}

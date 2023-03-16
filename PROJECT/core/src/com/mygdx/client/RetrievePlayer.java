@@ -18,7 +18,6 @@ public class RetrievePlayer {
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
-        //System.out.println("URL RetrievePlayer : "+GET_URL);
         URL url = null;
         try {
             url = new URL(GET_URL);
@@ -35,18 +34,12 @@ public class RetrievePlayer {
                 }
                 in.close();
                 String [] tempString = String.valueOf(response).split(";");
-                //System.out.println(String.valueOf(response));
                 updatePlayer(player, tempString);
-
             } else {
                 System.out.println("GET request did not work.");
             }
         } catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         } catch (IOException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         }
     }
 
@@ -62,14 +55,6 @@ public class RetrievePlayer {
             player.setUniqueID(tempString[4]);
             player.setServerUniqueID(tempString[5]);
             player.setFindRegion(tempString[6]);
-            //player.setTextureAtlasPath(tempString[7]);
-            //player.setScale(Float.parseFloat(tempString[8]));
-
-//            System.out.println("Num Lobby dans update player : " + player.getNumLobby());
-//            System.out.println("Server Unique ID : "+player.getServerUniqueID());
-//            System.out.println("player X : "+player.getX());
-//            System.out.println("player Y : "+player.getY());
-//            System.out.println("player Unique ID : "+player.getUniqueID());
         }
     }
 
@@ -77,7 +62,6 @@ public class RetrievePlayer {
         String param = "?";
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
         param = param + "&numLobby=" + player.getNumLobby();
-      //  System.out.println("numLobby = "+ player.getNumLobby());
         return param;
     }
 }

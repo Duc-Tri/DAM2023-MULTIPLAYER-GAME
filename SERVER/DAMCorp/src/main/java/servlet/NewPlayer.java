@@ -18,17 +18,6 @@ public class NewPlayer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	static Game game = new Game();
-
-//    private float x;
-//    private float y;
-//    private float boxWidth;
-//    private float boxHeight;
-//    public String uniqueID;
-//    public String serverUniqueID;
-//    private float spriteColorInt;
-//    private String findRegion;
-//    private String textureAtlasPath;
-//    private float scale;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */

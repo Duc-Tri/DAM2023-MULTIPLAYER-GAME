@@ -36,21 +36,10 @@ public class NewPlayer {
                 String[] resp = String.valueOf(response).split(";");
                 player.setServerUniqueID(resp[0]);
                 player.setNumLobby(resp[1]);
-                System.out.println("================================================================");
-                System.out.println("Le server ID de NewPlayer : " + player.getServerUniqueID());
-                System.out.println("Le NumLobby de NewPlayer : " + player.getNumLobby());
-                System.out.println("Reponse recu du serveur : 0 -> " +resp[0]);
-                System.out.println("Reponse recu du serveur : 1 -> " +resp[1]);
-            } else {
-
             }
 
         } catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         } catch (IOException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         }
     }
 
