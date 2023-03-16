@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_background_color">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#FBC02D</color>
+    <color name="colorPrimaryVariant">#FFA000</color>
+    <color name="colorAccent">#0288D1</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#D32F2F</color>
+    <color name="gray">#A2A2A2</color>
+
 </resources>

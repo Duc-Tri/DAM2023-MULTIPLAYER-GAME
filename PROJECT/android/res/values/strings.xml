@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">My GDX Game</string>
+    <string name="app_name">Bagarre Déchainée</string>
+    <string name="logo_du_jeu">Logo du jeu</string>
+    <string name="s_enregistrer">S\'enregistrer</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="change_account">Creer un nouveau compte</string>
+    <string name="image_de_profil">Image de profil</string>
+    <string name="volume_on">Volume on</string>
+    <string name="partie_solo">Partie solo</string>
+    <string name="fl_au_du_bouton_partie_solo">Fleau du bouton partie solo</string>
+    <string name="option">option</string>
+    <string name="change_pseudo">Etes vous sur de vouloir changer de pseudo ?</string>
+    <string name="définitivement">Cela supprimera votre precedent compte définitivement.</string>
+    <string name="continuer_new_pseudo">Continuer + New Pseudo</string>
+    <string name="new_pseudo">New Pseudo</string>
+    <string name="old_pseudo">Old Pseudo</string>
+    <string name="bouton_nouveau_pseudo">Bouton nouveau pseudo</string>
+    <string name="ib_new_pseudo">Nouveau pseudo image bouton</string>
+    <string name="ib_old_pseudo">Old pseudo image bouton</string>
+
+    <string-array name="image_array">
+        <item>profil1</item>
+        <item>profil2</item>
+        <item>profil3</item>
+        <item>profil4</item>
+    </string-array>
 
 </resources>
