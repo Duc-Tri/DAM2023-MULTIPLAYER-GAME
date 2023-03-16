@@ -74,7 +74,7 @@ public class Game {
 							&& !player.getServerUniqueID().equalsIgnoreCase(players[nLobby][i].getServerUniqueID() + "") 
 							&& !(players[nLobby][i].getLastUpdate()>System.currentTimeMillis()-this.timeout)  
 							){
-						System.out.println("Temps dépassé, on ne retourne pas " + players[nLobby][i].getServerUniqueID());
+//						System.out.println("Temps dépassé, on ne retourne pas " + players[nLobby][i].getServerUniqueID());
 					}
 				}
 			}
