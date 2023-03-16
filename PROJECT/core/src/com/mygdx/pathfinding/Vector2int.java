@@ -1,23 +1,28 @@
 package com.mygdx.pathfinding;
 
 public class Vector2int {
-    int myX, myY;
+    public int x, y;
     public Vector2int(int x, int y) {
-        myX = x;
-        myY = y;
+        this.x = x;
+        this.y = y;
+    }
+
+    public Vector2int(float x, float y) {
+        this.x = (int)x;
+        this.y = (int)y;
     }
 
     public int getDistanceManhattan(Vector2int point2) {
-        return Math.abs(myX - point2.myX) + Math.abs(myY - point2.myY);
+        return Math.abs(x - point2.x) + Math.abs(y - point2.y);
     }
 
     public float getDistanceEucl(Vector2int point2) {
-        int dx = myX - point2.myX;
-        int dy = myY - point2.myY;
+        int dx = x - point2.x;
+        int dy = y - point2.y;
         return (float) Math.sqrt(dx*dx + dy*dy);
     }
 
     public boolean equals(Vector2int point2) {
-        return myX == point2.myX && myY == point2.myY;
+        return x == point2.x && y == point2.y;
     }
 }

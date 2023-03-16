@@ -2,6 +2,7 @@ package com.mygdx.map;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -11,85 +12,118 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.entity.LivingEntity;
 import com.mygdx.entity.Mates;
+import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.PlayerComparator;
+import com.mygdx.entity.LivingEntityComparator;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+//#################################################################################################
+// Structure attendue d'une carte (TiledMap) fait avec TILED :
+//-------------------------------------------------------------------------------------------------
+// - un calque OBLIGATOIRE TRIGGERS (qui contient les points de spawn START, EXIT & ENEMY)
+//
+// - un calque optionnel PLAYERS (tuiles au même niveau que les joueurs)
+//
+// - des calques optionnels GROUNDxxx (xxx nombre entier >= 0)
+//
+// - des calques optionnels TOPxxx (xxx nombre entier >= 0)
+//
+// - un calque optionnel OBSTACLES
+//#################################################################################################
 public class Map {
+
+    public final static boolean DEBUG_MAP = false; // true = AFFICHE LE LAYER OBSTACLES (=> TOPMAP)
     private final TiledMap tiledMap;
     private final int mapNumberLayers;
-    private TiledMap floorMap; // contient que les sols, en dessous des joueurs
+    private TiledMap groundMap; // contient que les sols, en dessous des joueurs
     private TiledMap topMap; // contient que les top, au dessus des joueurs
-    private final TiledMapTileLayer obstaclesLayer; // tuiles d'obstacles
+    private final TiledMapTileLayer obstaclesLayer; // calque des tuiles d'obstacles => collisions
     private final TiledMapTileLayer playersLayer; // contient les tuiles au même niveau que les joueurs
-    private TiledMapRenderer floorMapRenderer;
+    private TiledMapRenderer groundMapRenderer;
     private TiledMapRenderer topMapRenderer;
     private final SpriteBatch batch;
-    private List<Player> playersList;
-    private final int mapWidthInTiles;
-    private final int mapHeightInTiles;
-    private final int tileWidth;
-    private final int tileHeight;
-
-    private PlayerComparator playerComparator = new PlayerComparator();
-    private Rectangle hitbox = new Rectangle();
+    private List<LivingEntity> livingEntitiesList; // liste des entités à afficher
+    public final int mapWidthInTiles;
+    public final int mapHeightInTiles;
+    public final int tileWidth;
+    public final int tileHeight;
 
     public Map(String mapFilename, SpriteBatch batch) {
+        this.batch = batch;
+        livingEntitiesList = new ArrayList<>();
+
+        // Les maps + renderers ===================================================================
         tiledMap = new TmxMapLoader().load(mapFilename);
 
-        floorMap = new TiledMap();
+        groundMap = new TiledMap();
+        groundMapRenderer = new OrthogonalTiledMapRenderer(groundMap);
         topMap = new TiledMap();
-        floorMapRenderer = new OrthogonalTiledMapRenderer(floorMap);
         topMapRenderer = new OrthogonalTiledMapRenderer(topMap);
 
-        this.batch = batch;
+        // Les layers =============================================================================
+        playersLayer = (TiledMapTileLayer) getLayerAnyCase("PLAYERS");
 
-        playersLayer = (TiledMapTileLayer) tiledMap.getLayers().get("PLAYERS");
+        obstaclesLayer = (TiledMapTileLayer) getLayerAnyCase("OBSTACLES");
+        obstaclesLayer.setVisible(DEBUG_MAP);
+        //printLayer(obstaclesLayer);
+        renameLayersToUpperCase();
 
-        obstaclesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("OBSTACLES");
-        obstaclesLayer.setVisible(false);
-        printLayer(obstaclesLayer);
-
+        // les autres données de la carte =========================================================
+        mapNumberLayers = tiledMap.getLayers().size();
         mapWidthInTiles = obstaclesLayer.getWidth();
         mapHeightInTiles = obstaclesLayer.getHeight();
         tileWidth = obstaclesLayer.getTileWidth();
         tileHeight = obstaclesLayer.getTileHeight();
-        mapNumberLayers = tiledMap.getLayers().size();
 
-        constructFloorMap();
+        // Reconstruction des sets de layers (ground / top), triggers ==============================
+        constructGroundMap();
         constructTopMap();
-
-        playersList = new ArrayList<>();
-
-        // retrieve TRIGGERS rectangles -----------------------------------------------------------
-        Array<RectangleMapObject> mapRectangles = tiledMap.getLayers().get("TRIGGERS").getObjects().getByType(RectangleMapObject.class);
-        for (RectangleMapObject r : mapRectangles)
-            System.out.println(r.getName());
+        retrieveTriggerRectangles();
     }
 
+    // Charge les rectangles TRIGGERS
+    private void retrieveTriggerRectangles() {
+        // si le calque n'existe pas , ça plante !!!
+        Array<RectangleMapObject> mapRectangles = getLayerAnyCase("TRIGGERS").getObjects().getByType(RectangleMapObject.class);
+        for (RectangleMapObject r : mapRectangles) {
+            System.out.println("retrieveTriggerRectangles ========== rectTrigger=" + r.getName());
+        }
+    }
+
+    // Assemble les layers
     private void constructTopMap() {
-        for (int i = 0; i < mapNumberLayers; i++) {
-            TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("top" + i); // get(i) ne marche pas !!!
-            if (layer != null)
-                topMap.getLayers().add(layer);
-        }
+
+        // si debug, on met les obstacles dans le topMap, pour qu'il soit au dessus de tout
+        if (DEBUG_MAP)
+            topMap.getLayers().add(obstaclesLayer);
+        else
+            addLayersToMap("TOP", topMap);
     }
 
-    private void constructFloorMap() {
-        for (int i = 0; i < mapNumberLayers; i++) {
-            TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("floor" + i); // get(i) ne marche pas !!!
-            if (layer != null)
-                floorMap.getLayers().add(layer);
-        }
+    private void constructGroundMap() {
+        if (!DEBUG_MAP) addLayersToMap("GROUND", groundMap);
+    }
+
+    private void addLayersToMap(String prefixName, TiledMap map) {
+        addLayerToMap(prefixName, map);
+
+        for (int i = 0; i < mapNumberLayers; i++) addLayerToMap(prefixName + i, map);
+    }
+
+    private void addLayerToMap(String name, TiledMap map) {
+        MapLayer layer = getLayerAnyCase(name);
+        if (layer != null)
+            map.getLayers().add(layer);
     }
 
     public void setView(OrthographicCamera camera) {
-        floorMapRenderer.setView(camera);
+        groundMapRenderer.setView(camera);
         topMapRenderer.setView(camera);
     }
 
@@ -109,14 +143,15 @@ public class Map {
         return tiledMap;
     }
 
-    public TiledMapRenderer getFloorMapRenderer() {
-        return floorMapRenderer;
+    public TiledMapRenderer getGroundMapRenderer() {
+        return groundMapRenderer;
     }
 
-    public void setFloorMapRenderer(TiledMapRenderer floorMapRenderer) {
-        this.floorMapRenderer = floorMapRenderer;
+    public void setGroundMapRenderer(TiledMapRenderer groundMapRenderer) {
+        this.groundMapRenderer = groundMapRenderer;
     }
 
+    // imprime dans la console le layer OBSTACLES
     private void printLayer(TiledMapTileLayer layer) {
         int layerHeight = layer.getHeight();
         int layerWidth = layer.getWidth();
@@ -137,14 +172,23 @@ public class Map {
         int tileX = (int) (pixelX / obstaclesLayer.getTileWidth());
         int tileY = (int) (pixelY / obstaclesLayer.getTileHeight());
 
-        boolean res = (obstaclesLayer.getCell(tileX, tileY) != null);
-        //System.out.println("movePlayer === " + pixelX + "/" + pixelY + " --- " + tileX + "/" + tileY + " --- " + res);
-
-        return res;
+        return isTileObstacle(tileX, tileY);
     }
 
-    public boolean checkObstacle(Player player, int deltaX, int deltaY) {
-        Rectangle plHb = player.getHitbox();
+    public boolean isTileObstacle(int tileX, int tileY) {
+        boolean tilePresent = (obstaclesLayer.getCell(tileX, tileY) != null);
+
+        // System.out.println("isTileObstacle ... " + tileX + "/" + tileY + " --- " + tilePresent);
+
+        return tilePresent;
+    }
+
+    private Rectangle hitbox = new Rectangle();
+
+    // Check collision avec la FUTURE position de l'entity
+    //---------------------------------------------------------------------------------------------
+    public boolean checkObstacle(LivingEntity entity, int deltaX, int deltaY) {
+        Rectangle plHb = entity.getHitbox();
         hitbox.set(plHb.x + deltaX, plHb.y + deltaY, plHb.width, plHb.height);
 
         boolean hitOnCorners = checkObstacle(hitbox.x, hitbox.y) ||
@@ -155,62 +199,101 @@ public class Map {
         return hitOnCorners;
     }
 
-    public void renderFloor() {
-        floorMapRenderer.render();
+    public void renderGround() {
+        groundMapRenderer.render();
     }
 
     public void renderTop() {
         topMapRenderer.render();
     }
 
-    public void renderAllPlayersAndTiles(Player player, Mates mates) {
+    private LivingEntityComparator livingEntityComparator = new LivingEntityComparator();
 
-        playersList.clear();
-        playersList.add(player);
-        playersList.addAll(Mates.getMates());
+    public void renderAllLivingEntitiesAndTiles(Player player, Mates mates, Monsters monsters) {
 
-       // System.out.println("Je suis la taille MatesGet dans Map : "+ Mates.getMates().size() );
-      //   ON FAIT LE RENDU DES TUILES EN MÊME TEMPS QUE LES JOUEURS, EN TRIANT SUR LEUR Y
-//        for (Player p : playersList) {
-//            System.out.println("Présent dans le Mates dans le renderAllPlayer de Map : "+p.getServerUniqueID());
-//            System.out.println("Dont le Y vaut : " + p.getY());
-//        }
-        Collections.sort(playersList, playerComparator);
+        // Met à jour de la liste de tous les entités
+        //-------------------------------------------------
+        livingEntitiesList.clear();
+        if (monsters != null) livingEntitiesList.addAll(monsters.getMobs());
+
+        if (mates != null) livingEntitiesList.addAll(Mates.getMates());
+
+        if (player != null) livingEntitiesList.add(player);
+
+
+        if (!DEBUG_MAP) renderGround();
+
+        // on trie les entités selon leur Y, pour faciliter la comparaison avec les tuiles
+        Collections.sort(livingEntitiesList, livingEntityComparator);
 
         int realY = mapHeightInTiles * tileHeight;
 
-        // on commence par afficher le haut ! -----------------------------------------------------
+        // on commence par afficher le haut -------------------------------------------------------
         for (int tileY = mapHeightInTiles; tileY >= 0; tileY--) {
 
-            // affiche les sprites qui sont au dessus de ce realY ---------------------------------
-            for (int pi = playersList.size() - 1; pi >= 0; pi--) {
-                Player currentPlayer = playersList.get(pi);
-                if (currentPlayer != null && currentPlayer.getY() > realY) {
-                    currentPlayer.drawAndUpdate(batch);
-                    playersList.remove(currentPlayer);
+            // on affiche les sprites qui sont au dessus de ce realY ------------------------------
+            for (int ent = livingEntitiesList.size() - 1; ent >= 0; ent--) {
+                LivingEntity currentEntity = livingEntitiesList.get(ent);
+                if (currentEntity != null && currentEntity.getY() > realY) {
+                    currentEntity.drawAndUpdate(batch);
+                    livingEntitiesList.remove(currentEntity);
                 } else
-                    break;
+                    break; // si personne n'est au dessus de ce Y, on sort !
             }
 
             // affiche les tuiles de cette rangée tileY -------------------------------------------
             int realX = 0;
+            if (playersLayer != null) {
+                for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
+                    Cell c = playersLayer.getCell(tileX, tileY);
+                    if (c != null) {
+                        batch.draw(c.getTile().getTextureRegion(), realX, realY);
+                    }
 
-            for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
-                Cell c = playersLayer.getCell(tileX, tileY);
-                if (c != null) {
-                    batch.draw(c.getTile().getTextureRegion(), realX, realY);
+                    realX += tileWidth;
                 }
-
-                realX += tileWidth;
             }
 
-            realY -= tileHeight;
+            realY -= tileHeight; // on "va vers le bas" pour l'affichage
         }
 
+        renderTop(); // on affiche le topmap, quelque soit l'état de DEBUG_MAP
     }
 
-    public void render() {
-        // obsolete
+    // Indice tuile => Coordonées pixels
+    public Vector2int mapTileToPixels(Vector2int tile) {
+        return new Vector2int(tile.x * tileWidth + tileWidth / 2, tile.y * tileHeight + tileHeight / 2);
     }
+
+    // Coordonées pixels => Indice tuile
+    public Vector2int pixelsToMapTile(Vector2int pos) {
+        return new Vector2int(pos.x / tileWidth, pos.y / tileHeight);
+    }
+
+    // Coordonées pixels => Indice tuile
+    public Vector2int pixelsToMapTile(float x, float y) {
+        return new Vector2int(x / tileWidth, y / tileHeight);
+    }
+
+    // Renvoie un MapLayer, on castera si besoin dans l'appelant
+    private MapLayer getLayerAnyCase(String layerName) {
+        MapLayer layer = tiledMap.getLayers().get(layerName.toUpperCase());
+        if (layer == null) {
+            layer = tiledMap.getLayers().get(layerName.toLowerCase());
+        }
+
+        System.out.println("getLayerAnyCase ___" + layerName + "_____" +
+                (layer == null ? " <not found>" : layer.getName()));
+
+        return layer;
+    }
+
+    private void renameLayersToUpperCase() {
+        for (MapLayer layer : tiledMap.getLayers()) {
+            layer.setName(layer.getName().toUpperCase());
+            // System.out.println("renameLayers ____________________________ " + layer.getName());
+        }
+    }
+
 }
 

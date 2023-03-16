@@ -2,10 +2,10 @@ package com.libgdx.pathfinder;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
-import com.mygdx.graphics.TestCharactersAtlas;
+import com.mygdx.graphics.RMXPMonstersAtlas;
+import com.mygdx.test.TestAtlas;
+import com.mygdx.test.TestMonstersScreen;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -13,14 +13,14 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setForegroundFPS(30);
-        config.setTitle("PATHFINDER");
-        config.setWindowedMode(1024, 768);
+        config.setForegroundFPS(60);
+        config.setTitle("DESKTOP");
+        config.setWindowedMode(1200, 600);
 
         MainGame.setConfig("desktop");
 
 
-        // CLIENT + SERVEUR ---------------------------------------------------
+        // JEU CLIENT + SERVEUR ###################################################################
         new Lwjgl3Application(MainGame.getInstance(), config);
 
 
@@ -32,9 +32,16 @@ public class DesktopLauncher {
 //        new Lwjgl3Application(new LabyTest(), config); // MERGE LABYRINTHE + PATH FINDING
 
 
-        // TESTS ATLAS PERSONNAGES---------------------------------------------
-//        RMXPCharactesAtlasGenerator.printlnAtlas();
-//        new Lwjgl3Application(new TestCharactersAtlas(), config);
+        // TESTS ATLAS PERSONNAGES --------------------------------------------
+//        config.setTitle("TESTS ATLAS PERSONNAGES");
+//        RMXPCharactersAtlas.printlnAtlas();
+//        RMXPMonstersAtlas.printlnAtlas(false);
+//        new Lwjgl3Application(new TestAtlas(), config);
+
+
+        // TESTS MONSTRES + PLAYER --------------------------------------------
+//        config.setTitle("TEST MONSTERS (solo)");
+//        new Lwjgl3Application(new TestMonstersScreen(), config);
 
     }
 

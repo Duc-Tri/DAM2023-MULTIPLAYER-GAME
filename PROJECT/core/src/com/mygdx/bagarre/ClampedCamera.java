@@ -22,7 +22,6 @@ public class ClampedCamera extends OrthographicCamera {
         this.map = map;
 
         this.map.setView(this);
-        this.map.render();
         computeClampedLimits();
         centerOnPlayer();
     }
@@ -35,10 +34,10 @@ public class ClampedCamera extends OrthographicCamera {
         CLAMP_Y_MIN = (int) (zoom * viewportHeight / 2); // ex: 192 * 2 = 768 * 0.5
         CLAMP_Y_MAX = (int) (map.mapPixelsHeight() - CLAMP_Y_MIN);
 
-        System.out.println("### clampCamera : CLAMP_X_MIN=" + CLAMP_X_MIN +
-                " / CLAMP_X_MAX=" + CLAMP_X_MAX +
-                " / CLAMP_Y_MIN=" + CLAMP_Y_MIN +
-                " / CLAMP_Y_MAX=" + CLAMP_Y_MAX);
+//        System.out.println("### clampCamera : CLAMP_X_MIN=" + CLAMP_X_MIN +
+//                " / CLAMP_X_MAX=" + CLAMP_X_MAX +
+//                " / CLAMP_Y_MIN=" + CLAMP_Y_MIN +
+//                " / CLAMP_Y_MAX=" + CLAMP_Y_MAX);
     }
 
     public void centerOnPlayer() {
@@ -56,5 +55,9 @@ public class ClampedCamera extends OrthographicCamera {
         if (position.y > CLAMP_Y_MAX) position.y = CLAMP_Y_MAX;
 
         update();
+    }
+
+    public void translateAndCenter() {
+
     }
 }

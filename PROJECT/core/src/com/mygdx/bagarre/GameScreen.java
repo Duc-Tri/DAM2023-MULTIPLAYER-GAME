@@ -15,6 +15,7 @@ import com.mygdx.client.RetrieveMate;
 import com.mygdx.client.RetrieveUpdatePlayer;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
+import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
@@ -24,8 +25,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class GameScreen implements Screen, InputProcessor {
 
-    private Player player;
+    private static Player player; // main player
     private Mates mates;
+    private Monsters monsters;
     private boolean showJoystick = false;
     private int refreshValue = 0;
     private int speedOfSprite = 3; //Plus c'est grand plus c'est lent
@@ -36,7 +38,6 @@ public class GameScreen implements Screen, InputProcessor {
     public static int SCREEN_HEIGHT = 0;
     private SpriteBatch batch;
     private int sizeOfStep = 8;
-
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
 
@@ -67,7 +68,10 @@ public class GameScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
 
-        loadMap(mapFilename, batch);
+        map = loadMap(mapFilename, batch);
+
+        monsters = new Monsters(map);
+        monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
 
         shapeRenderer = new ShapeRenderer();
 
@@ -88,12 +92,13 @@ public class GameScreen implements Screen, InputProcessor {
         System.out.println();
     }
 
-    private void loadMap(String mapFilename, SpriteBatch sb) {
-        map = new Map(mapFilename, sb);
-        //map.setView(clampedCamera);
-        map.render();
-//        mapPixelsHeight = map.mapPixelsHeight();
-//        mapPixelsWidth = map.mapPixelsWidth();
+    private Map loadMap(String mapFilename, SpriteBatch sb) {
+        Map m = new Map(mapFilename, sb);
+        //m.setView(clampedCamera);
+//        mapPixelsHeight = m.mapPixelsHeight();
+//        mapPixelsWidth = m.mapPixelsWidth();
+
+        return m;
     }
 
     private void createThreadsPool() {
@@ -129,7 +134,9 @@ public class GameScreen implements Screen, InputProcessor {
             showJoystick = false;
         }
 
-        Gdx.gl.glClearColor(0, 0, 0, 0);
+        monsters.moveToPlayer(deltaTime);
+
+        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -142,9 +149,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
-        map.renderFloor();
-        map.renderAllPlayersAndTiles(player, mates);
-        map.renderTop();
+        map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
 
         batch.end(); //========================================================
 
@@ -173,7 +178,7 @@ public class GameScreen implements Screen, InputProcessor {
             threadPoolExecutor1.submit(retrieveMate);
         }
         if (threadPoolExecutor2.getActiveCount() < 1) {
-            System.out.println("retrieveUpdatePlayer    RESTART");
+            //System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
         }
 
@@ -240,7 +245,6 @@ public class GameScreen implements Screen, InputProcessor {
         } else if (keycode == Input.Keys.DOWN) {
             movePlayer("DOWN", 0, -sizeOfStep);
         }
-
     }
 
     private void movePlayer(String dirKeyword, int deltaX, int deltaY) {
@@ -369,6 +373,10 @@ public class GameScreen implements Screen, InputProcessor {
         GameScreen.cameraZoom = cameraZoom;
     }
 
+    public static Player getPlayer() {
+        return player;
+    }
+
 }
 
 /*
@@ -399,30 +407,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     public Map getMap() {
         return map;
-    }
-
-    public Viewport getViewport() {
-        return viewport;
-    }
-
-    public void setViewport(Viewport viewport) {
-        this.viewport = viewport;
-    }
-
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
-    }
-
-    public void setTextureAtlas(TextureAtlas textureAtlas) {
-        this.textureAtlas = textureAtlas;
-    }
-
-    public int getSizeOfStep() {
-        return sizeOfStep;
-    }
-
-    public void setSizeOfStep(int sizeOfStep) {
-        this.sizeOfStep = sizeOfStep;
     }
 
     public static boolean isLockOnListReadFromDB() {

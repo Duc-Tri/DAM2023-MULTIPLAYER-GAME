@@ -54,6 +54,7 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
 
+        implementation fileTree(dir : '../libs/firebase', include: '*.jar')
 
     }
 }

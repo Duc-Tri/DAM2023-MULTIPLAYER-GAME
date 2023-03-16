@@ -1,10 +1,5 @@
 package com.mygdx.pathfinding;
 
-import com.mygdx.pathfinding.Node;
-import com.mygdx.pathfinding.NodeComparator;
-import com.mygdx.pathfinding.TempMaze;
-import com.mygdx.pathfinding.Vector2int;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -121,20 +116,20 @@ public class AStarTempMaze {
     }
 
     private Node makeNeighbour(Node parent, int xDiff, int yDiff) {
-        return new Node(parent.point.myX + xDiff, parent.point.myY + yDiff, parent);
+        return new Node(parent.point.x + xDiff, parent.point.y + yDiff, parent);
     }
 
     private boolean isValidNode(Node node) {
 
-        boolean isXValide = node.point.myX < myMaze.array[0].length && node.point.myX >= 0;
+        boolean isXValide = node.point.x < myMaze.array[0].length && node.point.x >= 0;
 
-        boolean isYValide = node.point.myY < myMaze.array.length && node.point.myY >= 0;
+        boolean isYValide = node.point.y < myMaze.array.length && node.point.y >= 0;
 
         if (!isXValide || !isYValide) {
             return false;
         }
 
-        int val = myMaze.array[node.point.myY][node.point.myX];
+        int val = myMaze.array[node.point.y][node.point.x];
 
         return (val == 0);
     }
