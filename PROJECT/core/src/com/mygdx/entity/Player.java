@@ -16,6 +16,8 @@ import com.mygdx.graphics.RMXPCharactesAtlasGenerator;
 
 public class Player implements Entity {
 
+
+    private String lobbyPlayerId;
     private final static String textureAtlasPath = "characters/RMXP_humans.atlas"; //"tiny_16x16.atlas";
     private static TextureAtlas textureAtlas;
 
@@ -297,5 +299,14 @@ public class Player implements Entity {
 
     public void setNumLobby(String numLobby) {
         this.numLobby = numLobby;
+    }
+
+
+    public String getLobbyPlayerId() {
+        return lobbyPlayerId;
+    }
+
+    public void setLobbyPlayerId(String lobbyPlayerId) {
+        this.lobbyPlayerId = lobbyPlayerId;
     }
 }

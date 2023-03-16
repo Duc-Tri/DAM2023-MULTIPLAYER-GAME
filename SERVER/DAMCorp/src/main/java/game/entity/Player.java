@@ -8,6 +8,7 @@ public class Player {
 	private String boxHeight;
 	private String uniqueID;
 	private String serverUniqueID;
+	private String lobbyPlayerId;
 	private String spriteColorInt;
 	private String findRegion;
 	private String textureAtlasPath;
@@ -116,6 +117,14 @@ public class Player {
 
 	public void setNumLobby(String numLobby) {
 		this.numLobby = numLobby;
+	}
+
+	public String getLobbyPlayerId() {
+		return lobbyPlayerId;
+	}
+
+	public void setLobbyPlayerId(String lobbyPlayerId) {
+		this.lobbyPlayerId = lobbyPlayerId;
 	}
 
 	

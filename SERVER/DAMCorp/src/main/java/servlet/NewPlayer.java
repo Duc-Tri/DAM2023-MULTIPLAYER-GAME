@@ -46,15 +46,7 @@ public class NewPlayer extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		if (game.possibleToScribe()) {
-			
-			System.out.println("Le GetID : "+game.getId());
-			
 			Player player = new Player(request.getParameter("uniqueID"), "" + game.getNextId());
-
-			System.out.println("NewPlayer "+game+" =================== " + player.getServerUniqueID());
-
-			
-
 			if (request.getParameter("x") != null) {
 				player.setX(request.getParameter("x"));
 			}
@@ -95,10 +87,6 @@ public class NewPlayer extends HttpServlet {
 			response.getWriter().append(player.getServerUniqueID());
 			response.getWriter().append(";"+player.getNumLobby());
 			
-			
-			
-			
-			
 			System.out.println("NewPlayer ========== " + player.getServerUniqueID() + " * " + player.getX() + " * "
 					+ player.getY() + " * " + player.getBoxWidth() + " * " + player.getBoxHeight() + " * "
 					+ player.getUniqueID() + " * " + player.getSpriteColorInt() + " * " + player.getFindRegion() + " * "
@@ -107,17 +95,14 @@ public class NewPlayer extends HttpServlet {
 			System.out.println("NewPlayer - No available place");
 		}
 
-		System.out.println("NewPlayer - doGet");
-
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

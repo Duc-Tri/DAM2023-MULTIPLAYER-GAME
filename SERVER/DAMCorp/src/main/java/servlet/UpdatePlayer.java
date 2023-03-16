@@ -42,8 +42,6 @@ public class UpdatePlayer extends HttpServlet {
 				player.setFindRegion(request.getParameter("findRegion"));	
 			}
 			player.setLastUpdate(System.currentTimeMillis());
-//			System.out.println("player.x " + player.getX());
-//			System.out.println("player.y " + player.getY());
 		}
 	}
 		
