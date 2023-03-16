@@ -56,12 +56,12 @@ public class RetrieveMate implements Runnable {
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
-                System.out.println("Je suis apres la while : " + response);
+               // System.out.println("Je suis apres la while : " + response);
                 in.close();
                 if (!String.valueOf(response).isEmpty()) {
-                    System.out.println("Je suis avant le parse : " + response);
+                 //   System.out.println("Je suis avant le parse : " + response);
                     String[] mates = String.valueOf(response).split(";");
-                    System.out.println("Je suis apres le parse : " + mates[0]);
+                    System.out.println("StringValue(response) : --------> " + String.valueOf(response));
                     return mates;
 //                    return null;
                 }

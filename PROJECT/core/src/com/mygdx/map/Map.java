@@ -169,8 +169,12 @@ public class Map {
         playersList.add(player);
         playersList.addAll(Mates.getMates());
 
-        // ON FAIT LE RENDU DES TUILES EN MÊME TEMPS QUE LES JOUEURS, EN TRIANT SUR LEUR Y
-
+       // System.out.println("Je suis la taille MatesGet dans Map : "+ Mates.getMates().size() );
+      //   ON FAIT LE RENDU DES TUILES EN MÊME TEMPS QUE LES JOUEURS, EN TRIANT SUR LEUR Y
+//        for (Player p : playersList) {
+//            System.out.println("Présent dans le Mates dans le renderAllPlayer de Map : "+p.getServerUniqueID());
+//            System.out.println("Dont le Y vaut : " + p.getY());
+//        }
         Collections.sort(playersList, playerComparator);
 
         int realY = mapHeightInTiles * tileHeight;

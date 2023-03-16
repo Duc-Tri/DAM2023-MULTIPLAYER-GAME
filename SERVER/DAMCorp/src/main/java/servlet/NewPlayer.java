@@ -46,7 +46,9 @@ public class NewPlayer extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		if (game.possibleToScribe()) {
-
+			
+			System.out.println("Le GetID : "+game.getId());
+			
 			Player player = new Player(request.getParameter("uniqueID"), "" + game.getNextId());
 
 			System.out.println("NewPlayer "+game+" =================== " + player.getServerUniqueID());

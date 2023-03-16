@@ -13,6 +13,7 @@ public class Game {
 	int cptLobby =0;
 	
 	
+	
 	public boolean possibleToScribe() {
 		// TODO Auto-generated method stub
 		if (staticIdCpt < poolSize*lobbySize) {
@@ -25,6 +26,7 @@ public class Game {
 
 	public String getNextId() {
 		// TODO Auto-generated method stub
+		System.out.println("compteur du nombre de passage de nextID : "+ staticIdCpt);
 		return "" + staticIdCpt++;
 	}
 
@@ -97,25 +99,31 @@ public class Game {
 	//		System.out.println("players.length " + players.length);
 			for (int i = 0; i < players[nLobby].length; i++) {
 	//			System.out.println("i " + i);
-				if (player != null 
-						//&& !player.getServerUniqueID().equalsIgnoreCase(i + "") 
-						&& (players[nLobby][i] != null) 
-						&& players[nLobby][i].getLastUpdate()>System.currentTimeMillis()-100000L ) {
+				if (player != null && (players[nLobby][i] != null)
+						&& !player.getServerUniqueID().equalsIgnoreCase(players[nLobby][i].getServerUniqueID() + "") 
+						
+						//&& players[nLobby][i].getLastUpdate()>System.currentTimeMillis()-100000L 
+						){
 	//				System.out.println("Fine i " + i);
 					if (cpt == 0) {
-						tempString = "" + i;
+						tempString = "" + players[nLobby][i].getServerUniqueID();
 					} else {
-						tempString = tempString + ";" + i;
+						tempString = tempString + ";" + players[nLobby][i].getServerUniqueID();
 					}
 					cpt++;
-	//				System.out.println("tempString  " + tempString);
+				
 				}
-	
 			}
+			System.out.println("Je suis le player qui demande : " + player.getServerUniqueID());
+			System.out.println("tempString  " + tempString);
 		}
 		// System.out.println("tempString " + tempString);
 		return tempString;
 
 	}
 
+	
+	public int getId() {
+		return staticIdCpt;
+	}
 }

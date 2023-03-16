@@ -88,8 +88,10 @@ public class Mates {
                 boolean found = false;
 
                 if (oneMate != null && !oneMate.isEmpty()) {
-                    System.out.println("Je suis dans le create NewMates = "+oneMate);
+
                     for (Mate m : mates) {
+                        System.out.println("Je suis dans le create NewMates = "+oneMate);
+                        System.out.println(m.getServerUniqueID());
                         if ( oneMate.equalsIgnoreCase(m.getServerUniqueID())) {
                             found = true;
                             break;
@@ -99,7 +101,10 @@ public class Mates {
                     if (!found) {
                         Mate newMate = new Mate();
                         mates.add(newMate);
+                        System.out.println("le server ID donner dans Matess : "+oneMate);
+
                         newMate.setServerUniqueID(oneMate);
+                        newMate.setNumLobby(player.getNumLobby());
                         RetrievePlayer.requestServer(newMate);
                         newMate.initializeSprite();
                     }
