@@ -1,6 +1,7 @@
 package com.mygdx.entity;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,7 +15,7 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 
 // Entity qui
 public class LivingEntity implements Entity {
-
+    public static final boolean DEBUG_HITBOX = false;
     protected TextureAtlas textureAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
@@ -235,10 +236,14 @@ public class LivingEntity implements Entity {
         this.serverUniqueID = serverUniqueID;
     }
 
+    private static final Texture debugTarget8 = new Texture("test/target8x8.png");
+
     public void drawAndUpdate(SpriteBatch batch) {
         if (batch == null || sprite == null || sprite.getTexture() == null) return;
 
         sprite.draw(batch);
+
+        if (DEBUG_HITBOX) batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
 
     public void debug(ShapeRenderer renderer) {

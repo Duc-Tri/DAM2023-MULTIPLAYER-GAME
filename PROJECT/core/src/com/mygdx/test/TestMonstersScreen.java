@@ -114,9 +114,7 @@ public class TestMonstersScreen extends ApplicationAdapter implements InputProce
 
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
-        map.renderFloor();
         map.renderAllLivingEntitiesAndTiles(player, null, monsters);
-        map.renderTop();
 
         batch.end(); //========================================================
 

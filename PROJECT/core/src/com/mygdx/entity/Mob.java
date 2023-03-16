@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mob extends LivingEntity {
+    public static final boolean DEBUG_MOB = false;
 
     private static Map map; // la même carte pour tous les monstres
     private static AStarMap aStarMap; // le pathfinding, le même pour tous
@@ -29,7 +30,6 @@ public class Mob extends LivingEntity {
     public String mobID;
     public Color spriteTint;
     Vector2int oldTargetPos;
-
 
     public Mob() {
         if (allMonstersAtlas == null) {
@@ -97,23 +97,23 @@ public class Mob extends LivingEntity {
     }
 
     // TEST DATA ==================================================================================
-    private int totalSteps;
-    private int maximumSteps;
     private String randomDir;
-    private float targetTimeRandom;
-    private float moveTimeRandom;
     private int spriteStep = 4;
+    private int totalSteps; // pour timer le mouvement
+    private int maximumSteps; // pour timer le mouvement
+    private float currentTime; // pour timer le mouvement, maj ENTRE CHAQUE APPEL
+    private float moveTime; // pour timer le mouvement
 
     private void randomize() {
         WAIT_FRAMES = 2 + (int) (Math.random() * 2);
 
         randomDir = RMXPAtlasGenerator.randomDir();
 
-        // pour la version moveToRandomDir(float deltaTime) -------
-        moveTimeRandom = 0;
-        targetTimeRandom = (float) (Math.random() * 5);
+        // pour la version movetoPLayer / moveToRandomDir(float deltaTime) ------------------------
+        moveTime = 0.05f + (float) (Math.random() * 0.2f);
+        currentTime = 0;
 
-        // pour la version moveToRandomDir() ----------------------
+        // pour la version movetoPLayer() / moveToRandomDir() -------------------------------------
         totalSteps = 0;
         maximumSteps = (int) (Math.random() * 200);
         spriteStep = 2 + (int) (Math.random() * 6);
@@ -121,8 +121,8 @@ public class Mob extends LivingEntity {
 
     // move to random direction, until time reached
     public void moveToRandomDir(float deltaTime) {
-        moveTimeRandom += deltaTime;
-        if (moveTimeRandom > targetTimeRandom) {
+        currentTime += deltaTime;
+        if (currentTime > moveTime) {
             randomize();
         }
 
@@ -222,14 +222,14 @@ public class Mob extends LivingEntity {
         if (forceNewPath || mapPathToTarget == null || mapPathToTarget.size() == 0) {
 
             mapPathToTarget = pathToTarget(targetPlayer);
-            System.out.println("initPathToPlayer ---------- NEW PATH ---------- " + mapPathToTarget.size());
+//            System.out.println("processPathToPlayer ---------- NEW PATH ---------- " + mapPathToTarget.size());
         }
 
         if (mapPathToTarget != null) {
-            System.out.println("initPathToPlayer ----- same path ----- " + mapPathToTarget.size());
 
             nextPoint = mapPathToTarget.get(mapPathToTarget.size() - 1);
             mapPathToTarget.remove(mapPathToTarget.size() - 1);
+//            System.out.println("processPathToPlayer ----- same path ----- " + mapPathToTarget.size());
         }
     }
 
@@ -276,6 +276,47 @@ public class Mob extends LivingEntity {
         //                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
     }
 
+    public void moveToPlayer(float deltaTime) {
+        if (playerReached() || ((currentTime += deltaTime) < moveTime))
+            return;
+
+        currentTime = moveTime - currentTime;
+
+        float deltaX = nextPoint.x - getFootX();
+        float deltaY = nextPoint.y - getY();
+
+        // on a atteint le point courant => point suivant
+        // ou recalcul du pathfinding si aucun point restant
+        //---------------------------------------------------------------------
+        boolean moved = playerHasMoved();
+        if (moved || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
+
+//            System.out.println("moveToPlayer :::::: " + moved +
+//                    " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
+
+            processPathToPlayer(moved);
+        }
+
+        // Calcul de la direction, et mouvement effectif
+        //---------------------------------------------------------------------
+        String dir;
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // déplacement horizontal
+            dir = (deltaX > 0 ? "RIGHT" : "LEFT");
+        } else {
+            // déplacement vertical
+            dir = (deltaY > 0 ? "UP" : "DOWN");
+        }
+        moveMob(dir, false);
+
+        // TEST : téléportation --------------------
+        //        setX(nextPoint.x);        //        setY(nextPoint.y);
+
+        //        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
+        //                " entity={" + entityX + "/" + entityY + "} " +
+        //                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
+    }
+
     private boolean playerHasMoved() {
         Vector2int pos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
         if (pos.equals(oldTargetPos)) {
@@ -284,7 +325,7 @@ public class Mob extends LivingEntity {
 
         // le joueur a bougé
         oldTargetPos = pos;
-        System.out.println("playerHasMoved #####################################################");
+//        System.out.println("playerHasMoved ###################################################");
         return true;
     }
 
@@ -314,17 +355,10 @@ public class Mob extends LivingEntity {
 
     public void drawAndUpdate(SpriteBatch batch) {
         super.drawAndUpdate(batch);
-        if (mapPathToTarget != null) {
-            for (Vector2int v : mapPathToTarget) {
-                batch.draw(debugTarget16, v.x, v.y);
-            }
+
+        if (AStarMap.DEBUG_ASTAR && mapPathToTarget != null) {
+            for (Vector2int v : mapPathToTarget) batch.draw(debugTarget16, v.x, v.y);
         }
-
-        batch.draw(debugTarget8, targetPlayer.hitbox.x, targetPlayer.hitbox.y,
-                targetPlayer.hitbox.width, targetPlayer.hitbox.height);
-
-        batch.draw(debugTarget8, hitbox.x, hitbox.y,
-                hitbox.width, hitbox.height);
     }
 
 }

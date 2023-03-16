@@ -8,6 +8,8 @@ import java.util.List;
 
 public class AStarMap {
 
+    public static final boolean DEBUG_ASTAR = false;
+
     /* La première liste, appelée liste ouverte, va contenir tous les noeuds étudiés. Dès que l'algorithme va se pencher sur
     un noeud du graphe, il passera dans la liste ouverte (sauf s'il y est déjà).
     */
@@ -30,7 +32,8 @@ public class AStarMap {
         return findPath(new Node(start, null), new Node(goal, null));
     }
 
-    NodeComparator nodeComparator= new NodeComparator();
+    NodeComparator nodeComparator = new NodeComparator();
+
     public List<Vector2int> findPath(Node pointDepart, Node pointArrivee) {
         int steps = 0; // pour limiter la recherche
         close = new ArrayList<>();
@@ -43,7 +46,7 @@ public class AStarMap {
             Node u = openList.get(0);
             openList.remove(0);
 
-            if (u.point.equals(pointArrivee.point) || steps++ > 5000) {
+            if (u.point.equals(pointArrivee.point) || steps++ > 2000) {
 
 //                System.out.println("findPath FOUND __________" + pointDepart.toString() + " => " + pointArrivee.toString() + "__________ steps=" + steps);
 
@@ -71,8 +74,7 @@ public class AStarMap {
 
         List<Vector2int> path = new ArrayList<>();
 
-        do
-        {
+        do {
             path.add(map.mapTileToPixels(end.point));
             end = end.parent;
         }

@@ -40,7 +40,7 @@ public final class RMXPMonstersAtlas extends RMXPAtlasGenerator {
     static final String PNG_FILENAME = "RMXP_monsters.png";
 
     // public pour lecture du testeur
-    public final static int MAX_MONSTERS = 10; // rendre dynamique !?!
+    public static int MAX_MONSTERS = 7; // rendre dynamique !!!!!!!!!!!!!!!!!!!
     int FRAME_WIDTH = -1; // selon le monstre
     int FRAME_HEIGHT = -1; // selon le monstre
 
@@ -65,8 +65,8 @@ public final class RMXPMonstersAtlas extends RMXPAtlasGenerator {
         // scorpion rouge
         monstersFramesSet.add(new Rectangle(1680, 198, 256, 256));
 
-        // insecte monstrueux ailé
-        monstersFramesSet.add(new Rectangle(1938, 198, 320, 256));
+        // insecte monstrueux ailé (TROP LAID)
+//        monstersFramesSet.add(new Rectangle(1938, 198, 320, 256));
 
         // molusque hargneux
         monstersFramesSet.add(new Rectangle(2, 458, 256, 320));
@@ -77,15 +77,14 @@ public final class RMXPMonstersAtlas extends RMXPAtlasGenerator {
         // troll blanc
         monstersFramesSet.add(new Rectangle(2, 782, 320, 384));
 
-        // serpent multicolore
-        monstersFramesSet.add(new Rectangle(646, 782, 384, 384));
+        // serpent multicolore (mouvement bizarre !)
+//        monstersFramesSet.add(new Rectangle(646, 782, 384, 384));
 
         // arbre maléfique
         monstersFramesSet.add(new Rectangle(902, 1298, 384, 384));
 
-//        MAX_MONSTERS = monstersFramesSet.size();
+        MAX_MONSTERS = monstersFramesSet.size();
     }
-
 
     //=========================================================================
     // Copier-coller le texte obtenu dans la console => fichier .atlas

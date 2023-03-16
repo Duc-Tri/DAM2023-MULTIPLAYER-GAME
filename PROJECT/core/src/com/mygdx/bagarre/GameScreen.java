@@ -71,6 +71,7 @@ public class GameScreen implements Screen, InputProcessor {
         map = loadMap(mapFilename, batch);
 
         monsters = new Monsters(map);
+        monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
 
         shapeRenderer = new ShapeRenderer();
 
@@ -132,9 +133,9 @@ public class GameScreen implements Screen, InputProcessor {
             showJoystick = false;
         }
 
-        monsters.moveRandomly(deltaTime);
+        monsters.moveToPlayer(deltaTime);
 
-        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -147,9 +148,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
-        map.renderFloor();
         map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
-        map.renderTop();
 
         batch.end(); //========================================================
 

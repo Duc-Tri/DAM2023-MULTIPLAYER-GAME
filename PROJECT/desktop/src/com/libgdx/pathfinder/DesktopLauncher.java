@@ -3,6 +3,8 @@ package com.libgdx.pathfinder;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.mygdx.bagarre.MainGame;
+import com.mygdx.graphics.RMXPMonstersAtlas;
+import com.mygdx.test.TestAtlas;
 import com.mygdx.test.TestMonstersScreen;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
@@ -18,8 +20,8 @@ public class DesktopLauncher {
         MainGame.setConfig("desktop");
 
 
-        // CLIENT + SERVEUR ---------------------------------------------------
-//        new Lwjgl3Application(MainGame.getInstance(), config);
+        // JEU CLIENT + SERVEUR ###################################################################
+        new Lwjgl3Application(MainGame.getInstance(), config);
 
 
         // TEST PATHFINDING ---------------------------------------------------
@@ -38,8 +40,8 @@ public class DesktopLauncher {
 
 
         // TESTS MONSTRES + PLAYER --------------------------------------------
-        config.setTitle("TEST MONSTERS (solo)");
-        new Lwjgl3Application(new TestMonstersScreen(), config);
+//        config.setTitle("TEST MONSTERS (solo)");
+//        new Lwjgl3Application(new TestMonstersScreen(), config);
 
     }
 

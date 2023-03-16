@@ -95,15 +95,15 @@ public class Monsters {
     }
 
     public void moveRandomly() {
-        for (Mob m : mobs) {
-            m.moveToRandomDir();
-        }
+        for (Mob m : mobs) m.moveToRandomDir();
     }
 
     public void moveToPlayer() {
-        for (Mob m : mobs) {
-            m.moveToPlayer();
-        }
+        for (Mob m : mobs) m.moveToPlayer();
+    }
+
+    public void moveToPlayer(float deltaTime) {
+        for (Mob m : mobs) m.moveToPlayer(deltaTime);
     }
 
     public static void setMap(Map m) {

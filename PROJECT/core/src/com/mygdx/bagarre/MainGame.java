@@ -17,7 +17,7 @@ public class MainGame extends Game {
     //public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
 
     //---------------------------------------------------------------------------------------------
-    private final static String mapFilename = "map/DAMCorp_2.tmx"; //"map/DAMCorp_test.tmx";
+    private final static String mapFilename = "map/DAMCorp_1.tmx"; //"map/DAMCorp_test.tmx";
 
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
 
