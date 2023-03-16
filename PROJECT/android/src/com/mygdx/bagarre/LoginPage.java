@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,8 +24,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class LoginPage extends AppCompatActivity {
     MediaPlayer audioLauncher;
     private Button registerBtn, connexionBtn;
     private ImageButton volumeBtn;
-    private TextInputEditText tiPseudo;
+    private EditText tiPseudo;
     private boolean isMuted = false;
     private ImageView ivBackground;
     String pseudo, oldPseudo, userID;
@@ -66,13 +67,7 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void connectBase() {
-        //Initialisation de Firebase
-        db = new FirebaseAndroid("https://test-e782f-default-rtdb.europe-west1.firebasedatabase.app", "json/keyTest782f.json", this);
-
-        //Test de connexion
-        if(db.connect()) {
-            Log.i("CONNEXION_ENABLED", "La connexion a étée établie");
-        }
+        db = new FirebaseAndroid();
     }
 
     public void checkPref() {
@@ -150,9 +145,18 @@ public class LoginPage extends AppCompatActivity {
     private final View.OnClickListener onClickGreyBackgroundListener = v -> onClickGreyBackground();
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+
+        //Initialisation de firebase gdx
+        /*GdxFIRApp.inst().configure();*/
 
         //Initialisation des vues
         initUi();
@@ -161,10 +165,10 @@ public class LoginPage extends AppCompatActivity {
         checkPref();
 
         //TEST : Vidage du fichier de préférence
-        /*editPref.remove("pseudo");
+        editPref.remove("pseudo");
         editPref.remove("userID");
         editPref.remove("img");
-        editPref.apply();*/
+        editPref.apply();
 
         //On lance la musique
         playMusic();
@@ -175,7 +179,7 @@ public class LoginPage extends AppCompatActivity {
         //Connexion base
         connectBase();
 
-        //TEST : Vidage de la référence pseudo
+        //TEST : Vidage de la référence pseudo avec l'ancienne classe
         /*db.deleteAllPseudos();*/
 
         //Appel du setOnClick pour le fond gris
@@ -214,7 +218,15 @@ public class LoginPage extends AppCompatActivity {
                     //Enregistre des préférences pour la prochaine connexion
                     editPref.putString("pseudo", pseudo);
 
-                    //Ecriture en base
+                    /*//Ecriture en base avec la GDXApp
+                    DatabaseReference pseudoRefDatabase = (DatabaseReference) GdxFIRDatabase.inst().inReference("players").push()
+                            .setValue(pseudo);
+                    String pseudoRef = pseudoRefDatabase.toString().substring(pseudoRefDatabase.toString().lastIndexOf("/") + 1);
+                    Log.i("PSEUDO_REF", pseudoRef);*/
+
+
+
+                    //Maj des préférences
                     editPref.putString("userID", db.registerUser(pseudo));
                     editPref.apply();
 
