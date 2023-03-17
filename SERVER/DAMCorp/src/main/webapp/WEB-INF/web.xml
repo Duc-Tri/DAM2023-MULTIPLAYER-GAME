@@ -69,4 +69,14 @@
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/TestServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddPlayers</display-name>
+    <servlet-name>AddPlayers</servlet-name>
+    <servlet-class>servlet.AddPlayers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddPlayers</servlet-name>
+    <url-pattern>/AddPlayers</url-pattern>
+  </servlet-mapping>
 </web-app>

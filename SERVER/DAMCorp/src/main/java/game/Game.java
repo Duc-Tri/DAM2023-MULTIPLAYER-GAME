@@ -9,8 +9,8 @@ public class Game {
 	final static int lobbySize = 3;
 	static int numLobby = 0;
 	static Player[][] players = new Player[poolSize][lobbySize];
-	int cptLobby =0;
-	private long timeout = 10000L;
+	static int cptLobby =0;
+	static long timeout = 10000L;
 	
 	public boolean possibleToScribe() {
 		if (staticIdCpt*cptLobby < poolSize*lobbySize) {
@@ -41,6 +41,32 @@ public class Game {
 			cptLobby++;
 		}
 	}
+	
+	
+	public void addPlayers(Player[] players) {
+		numLobby++;
+		addPlayers(players,numLobby);
+		numLobby++;
+	}
+	
+	public void addPlayers(Player[] players, int numLobby) {
+		for(int i = 0  ; i < players.length; i++) {
+			addPlayer(players[i],numLobby );
+		}
+	}
+	
+	public void addPlayer(Player player, int numLobby) {
+		if(numLobby < lobbySize) {
+			for(int i = 0 ; i< players[numLobby].length; i++) {
+				if(players[numLobby] ==  null) {
+					players[numLobby][i] = player; 
+				}
+			}
+		}
+	}
+	
+	
+	
 	
 	public Player retrievePlayer(String parameterIDserv, String paramLobby) {
 		if (parameterIDserv != null && !parameterIDserv.isEmpty() && !paramLobby.equalsIgnoreCase("null") && paramLobby != null && !paramLobby.isEmpty() && !paramLobby.equalsIgnoreCase("null")) {
