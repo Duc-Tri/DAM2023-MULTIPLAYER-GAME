@@ -243,7 +243,6 @@ public class Map {
 
         if (player != null) livingEntitiesList.add(player);
 
-
         if (!DEBUG_MAP) renderGround();
 
         // on trie les entités selon leur Y, pour faciliter la comparaison avec les tuiles

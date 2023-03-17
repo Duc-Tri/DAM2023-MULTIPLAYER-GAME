@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPAtlasGenerator;
-import com.mygdx.graphics.RMXPMonstersAtlas;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
@@ -37,6 +36,7 @@ public class Mob extends LivingEntity {
 
     private static int numMob = 0;
 
+    // numéro des monstres selon l'ordre dans le fichier atlas
     final static HashMap<MonsterType, Integer> MonstersDico = new HashMap<MonsterType, Integer>() {{
         put(MonsterType.IMP, 0);
         put(MonsterType.BAT, 1);
@@ -67,15 +67,15 @@ public class Mob extends LivingEntity {
 
         initializeSprite();
 
-//        System.out.println("---------------------------- CONSTRUCTOR Mob");
+        // System.out.println("---------------------------- CONSTRUCTOR Mob " + uniqueID);
 
         // to position everything well !!!
         setFootX(getFootX());
         setY(getY());
 
         randomize(); // TODO : remove it after tests
-        nextPoint = new Vector2int(-99, -99);
-        oldTargetPos = new Vector2int(-99, -99);
+        nextPoint = new Vector2int(999, 999);
+        oldTargetPos = new Vector2int(999, 999);
     }
 
     public Mob(float x, float y, float width, float height) {
@@ -106,7 +106,7 @@ public class Mob extends LivingEntity {
         HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
-        System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
+        //System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
     }
 
     public String getMobID() {
@@ -119,7 +119,7 @@ public class Mob extends LivingEntity {
     private int totalSteps; // pour timer le mouvement
     private int maximumSteps; // pour timer le mouvement
     private float currentTime; // pour timer le mouvement, maj ENTRE CHAQUE APPEL
-    private float moveTime; // pour timer le mouvement
+    private float moveDelay; // pour timer le mouvement
 
     private void randomize() {
         WAIT_FRAMES = 2 + (int) (Math.random() * 2);
@@ -127,7 +127,7 @@ public class Mob extends LivingEntity {
         randomDir = RMXPAtlasGenerator.randomDir();
 
         // pour la version movetoPLayer / moveToRandomDir(float deltaTime) ------------------------
-        moveTime = 0.05f + (float) (Math.random() * 0.2f);
+        moveDelay = 0.01f + (float) (Math.random() * 0.1f);
         currentTime = 0;
 
         // pour la version movetoPLayer() / moveToRandomDir() -------------------------------------
@@ -139,7 +139,7 @@ public class Mob extends LivingEntity {
     // move to random direction, until time reached
     public void moveToRandomDir(float deltaTime) {
         currentTime += deltaTime;
-        if (currentTime > moveTime) {
+        if (currentTime > moveDelay) {
             randomize();
         }
 
@@ -177,7 +177,7 @@ public class Mob extends LivingEntity {
 
         animate(dirKeyword);
 
-//        System.out.println(this.uniqueID + " d=" + dirKeyword + " t=" + moveTimeRandom + "/" + targetTimeRandom);
+        //System.out.println(this.uniqueID + " d=" + dirKeyword + " t=" + currentTime + "/" + moveDelay);
 
         if (collideWithObstacle && map.checkObstacle(this, deltaX, deltaY))
             return; // OBSTACLE ! on ne bouge pas !
@@ -240,14 +240,14 @@ public class Mob extends LivingEntity {
         if (forceNewPath || mapPathToTarget == null || mapPathToTarget.size() == 0) {
 
             mapPathToTarget = pathToTarget(targetPlayer);
-//            System.out.println("processPathToPlayer ---------- NEW PATH ---------- " + mapPathToTarget.size());
+            //System.out.println("processPathToPlayer --- NEW PATH --- " + mapPathToTarget.size());
         }
 
         if (mapPathToTarget != null) {
 
             nextPoint = mapPathToTarget.get(mapPathToTarget.size() - 1);
             mapPathToTarget.remove(mapPathToTarget.size() - 1);
-//            System.out.println("processPathToPlayer ----- same path ----- " + mapPathToTarget.size());
+            //System.out.println("processPathToPlayer -- same path -- " + mapPathToTarget.size());
         }
     }
 
@@ -268,8 +268,8 @@ public class Mob extends LivingEntity {
         boolean moved = playerHasMoved();
         if (moved || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
 
-            System.out.println("moveToPlayer :::::: " + moved +
-                    " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
+            // System.out.println("moveToPlayer :::::: " + moved +
+            //         " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
 
             processPathToPlayer(moved);
         }
@@ -294,11 +294,14 @@ public class Mob extends LivingEntity {
         //                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
     }
 
+    public void moveToPlayer2(float deltaTime) {
+    }
+
     public void moveToPlayer(float deltaTime) {
-        if (playerReached() || ((currentTime += deltaTime) < moveTime))
+        if (mapPathToTarget == null || map == null || playerReached() || ((currentTime += deltaTime) < moveDelay))
             return;
 
-        currentTime = moveTime - currentTime;
+        currentTime = moveDelay - currentTime;
 
         float deltaX = nextPoint.x - getFootX();
         float deltaY = nextPoint.y - getY();
@@ -309,8 +312,8 @@ public class Mob extends LivingEntity {
         boolean moved = playerHasMoved();
         if (moved || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
 
-//            System.out.println("moveToPlayer :::::: " + moved +
-//                    " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
+            // System.out.println("moveToPlayer :::::: " + moved +
+            // " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
 
             processPathToPlayer(moved);
         }
@@ -336,7 +339,7 @@ public class Mob extends LivingEntity {
     }
 
     private boolean playerHasMoved() {
-        if (targetPlayer == null) return false;
+        if (targetPlayer == null) return true;
 
         Vector2int pos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
         if (pos.equals(oldTargetPos)) {
@@ -345,12 +348,12 @@ public class Mob extends LivingEntity {
 
         // le joueur a bougé
         oldTargetPos = pos;
-//        System.out.println("playerHasMoved ###################################################");
+//        System.out.println("playerHasMoved ###########################################");
         return true;
     }
 
     private boolean playerReached() {
-        if (targetPlayer == null) return true;
+        if (targetPlayer == null) return false;
 
         return hitbox.overlaps(targetPlayer.hitbox) ||
 
@@ -367,9 +370,13 @@ public class Mob extends LivingEntity {
 
 
     public void setTargetPlayer(Player player) {
+        mapPathToTarget = null;
+        oldTargetPos.x = -999;
+
         targetPlayer = player;
-        if (map != null && targetPlayer != null)
-            oldTargetPos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
+        if (map != null && targetPlayer != null) {
+            mapPathToTarget = pathToTarget(targetPlayer);
+        }
     }
 
     static final Texture debugTarget16 = new Texture("test/target16x16.png");

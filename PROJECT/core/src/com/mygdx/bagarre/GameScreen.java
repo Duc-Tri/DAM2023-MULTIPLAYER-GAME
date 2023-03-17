@@ -29,8 +29,6 @@ public class GameScreen implements Screen, InputProcessor {
     private Mates mates;
     private Monsters monsters;
     private boolean showJoystick = false;
-    private int refreshValue = 0;
-    private int speedOfSprite = 3; //Plus c'est grand plus c'est lent
     private static Map map;
     private static ClampedCamera clampedCamera;
     private Viewport viewport;
@@ -40,9 +38,6 @@ public class GameScreen implements Screen, InputProcessor {
     private int sizeOfStep = 8;
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
-
-//    int mapPixelsWidth = 0;
-//    int mapPixelsHeight = 0;
 
     public static boolean lockOnListReadFromDB = false;
 
@@ -72,7 +67,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         shapeRenderer = new ShapeRenderer();
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 0.5f : 0.25f);
+        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 0.9f : 0.25f);
 
         joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
@@ -117,6 +112,9 @@ public class GameScreen implements Screen, InputProcessor {
         return map;
     }
 
+    public float currentTime = 0;
+    public final float PLAYER_MOVE_DELAY = 0.05f; // en secondes
+
     @Override
     // deltaTime = temps depuis la dernière frame
     public void render(float deltaTime) {
@@ -125,14 +123,16 @@ public class GameScreen implements Screen, InputProcessor {
 
         displayJoystick();
 
-        if (Gdx.input.isTouched(0)) {
-            refreshValue++;
-            if (refreshValue == speedOfSprite) {
-                refreshValue = 0;
+        currentTime += deltaTime;
+        if (currentTime > PLAYER_MOVE_DELAY) {
+            currentTime = currentTime - PLAYER_MOVE_DELAY;
+
+            if (Gdx.input.isTouched(0))
                 movePlayer(joystick.getDirectionInput());
+            else {
+                showJoystick = false;
+                movePlayer(lastKeyCode);
             }
-        } else {
-            showJoystick = false;
         }
 
         monsters.moveToPlayer(deltaTime);
@@ -323,15 +323,22 @@ public class GameScreen implements Screen, InputProcessor {
          */
     }
 
+    //boolean[] keyOns = new boolean[200];
+    int lastKeyCode = Input.Keys.ESCAPE; // pour faire simple ...
+
     @Override
     public boolean keyDown(int keycode) {
-        showJoystick = true;
-        movePlayer(keycode);
+        showJoystick = false;
+        //keyOns[keycode] = true;
+        lastKeyCode = keycode;
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        showJoystick = false;
+        //keyOns[keycode] = false;
+        lastKeyCode = Input.Keys.ESCAPE;
         return false;
     }
 

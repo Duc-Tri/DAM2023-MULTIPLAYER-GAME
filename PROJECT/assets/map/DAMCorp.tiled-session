@@ -15,16 +15,16 @@
             "scale": 1,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 458.5,
-                "y": 149
+                "x": 433,
+                "y": 148
             }
         },
         "DAMCorp_2.tmx": {
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 480,
-                "y": 239.5
+                "x": 478,
+                "y": 239
             }
         },
         "DAMCorp_test - Copie.tmx": {
@@ -40,7 +40,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 800,
-                "y": 799
+                "y": 800
             }
         },
         "DAMCorp_tuiles.tsx": {

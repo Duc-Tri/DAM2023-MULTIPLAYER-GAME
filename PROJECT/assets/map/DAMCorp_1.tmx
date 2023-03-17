@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="left-down" width="30" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="9">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="left-down" width="30" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="10">
  <tileset firstgid="1" source="DAMCorp_tuiles.tsx"/>
+ <objectgroup id="6" name="TRIGGERS">
+  <object id="1" name="START" x="84.6667" y="300" width="117.333" height="60.3333"/>
+  <object id="3" name="EXIT" x="779.667" y="120.091" width="73.8182" height="45.0303"/>
+  <object id="4" name="SPAWN_01" x="50" y="89" width="81" height="45"/>
+  <object id="8" name="SPAWN_02" x="721" y="331" width="80" height="51"/>
+  <object id="7" name="spawner" x="389" y="-218.5" width="282" height="208">
+   <text fontfamily="Source Code Pro" wrap="1">SPAWN MONSTERS
+
+SCORPION     =3  @spawn_01
+TROLL        =2  @spawn_02
+BAT          =5  @spawn_03
+IMP          =4  @spawn_01
+DEVIL        =1  @spawn_02
+OCTOPUS      =1  @spawn_03
+BLOB         =9  @spawn_01
+LIVING_TREE  =1  @spawn_02
+</text>
+  </object>
+  <object id="9" name="SPAWN_03" x="843.5" y="134.5" width="81" height="45"/>
+ </objectgroup>
  <layer id="7" name="ground0" width="30" height="15" locked="1">
   <data encoding="csv">
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
@@ -115,23 +135,4 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <objectgroup id="6" name="TRIGGERS">
-  <object id="1" name="START" x="84.6667" y="300" width="117.333" height="60.3333"/>
-  <object id="3" name="EXIT" x="779.667" y="120.091" width="73.8182" height="45.0303"/>
-  <object id="4" name="SPAWN_01" x="50" y="89" width="81" height="45"/>
-  <object id="8" name="SPAWN_02" x="721" y="331" width="80" height="51"/>
-  <object id="7" name="spawner" x="389" y="-208.5" width="264" height="194">
-   <text fontfamily="MS Shell Dlg 2" wrap="1" halign="center">SPAWN MONSTERS
-
-SCORPION    =0    @spawn_01
-TROLL       =2       @spawn_02
-BAT         =3       @spawn_01
-IMP         =4       @spawn_02
-DEVIL       =5     @spawn_01
-OCTOPUS      =0    @spawn_02
-BLOB         =5     @spawn_01
-LIVING_TREE  =0   @spawn_02
-</text>
-  </object>
- </objectgroup>
 </map>

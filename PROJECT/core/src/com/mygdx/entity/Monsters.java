@@ -126,6 +126,7 @@ public class Monsters {
         targetPlayer = player;
         for (Mob m : mobs) {
             m.setTargetPlayer(player);
+            // System.out.println("setTargetPlayer ======================== " + player.uniqueID);
         }
     }
 
@@ -141,7 +142,7 @@ public class Monsters {
             if (line.contains("=") && line.contains("@")) {
 
                 // exemple de texte reçu depuis le TiledMap
-                // ================================================================================
+                //-------------------------------------------------
                 // OCTOPUS      =  1@spawn_01
                 // BLOB         =3     @spawn_01
                 // LIVING_TREE  =0   @spawn_01
@@ -149,9 +150,9 @@ public class Monsters {
                 String[] mob_numspawn = line.split("="); // TYPE_MONSTRE   =NOMBRE   @SPAWN_PT
                 String[] num_spawn = mob_numspawn[1].split("@");
 
-                Mob.MonsterType type = null; // le type de monstre --------------------------------
-                int num = -1; // le nombre à spawn ------------------------------------------------
-                String spawnArea = ""; // le point de spawn sur la carte (rectangle) --------------
+                Mob.MonsterType type = null; // le type de monstre
+                int num = -1; // le nombre à spawn
+                String spawnArea = ""; // le point de spawn sur la carte (rectangle)
 
                 try {
                     type = Mob.MonsterType.valueOf(mob_numspawn[0].trim());
@@ -165,7 +166,7 @@ public class Monsters {
                 //-------------------------------------------------------
                 if (type != null && num > 0 && !spawnArea.isEmpty()) {
 
-                    System.out.println("SPAWN +++++++++++++++++++++++++++++++++++++++++++++++++ " +
+                    System.out.println("SPAWN ++++++++++ " +
                             type.toString() + " === " + num + " @@@ " + spawnArea);
 
                     for (int i = 0; i < num; i++) {
