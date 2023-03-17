@@ -43,8 +43,17 @@ public class AddPlayers extends HttpServlet {
 				}
 				
 			}
+			
 			if(players.length>0) {
-				game.addPlayers(players);
+				String lobbyId= request.getParameter("lobbyId");
+				if ( lobbyId!= null
+						&&  !lobbyId.isEmpty()
+						&&  !lobbyId.equalsIgnoreCase("null")
+						) {
+					game.addPlayers(players, Integer.parseInt(lobbyId));
+				}else {
+					game.addPlayers(players);	
+				}
 				response.getWriter().append(";"+players[0].getNumLobby());	
 			}
 			
