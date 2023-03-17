@@ -46,6 +46,7 @@ public class Game {
 	public void addPlayers(Player[] players) {
 		numLobby++;
 		addPlayers(players,numLobby);
+		cptLobby=0;
 		numLobby++;
 	}
 	

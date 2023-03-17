@@ -79,4 +79,14 @@
     <servlet-name>AddPlayers</servlet-name>
     <url-pattern>/AddPlayers</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SetPlayer</display-name>
+    <servlet-name>SetPlayer</servlet-name>
+    <servlet-class>servlet.SetPlayer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SetPlayer</servlet-name>
+    <url-pattern>/SetPlayer</url-pattern>
+  </servlet-mapping>
 </web-app>
