@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/ivBackground1"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_width="1280dp"
+        android:layout_height="800dp"
         android:clickable="false"
         android:onClick="nextAct"
         android:visibility="visible"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/beg_anim1" />
+        app:srcCompat="@drawable/background_animation" />
 
     <ImageView
         android:id="@+id/ivBackground2"
@@ -27,7 +27,7 @@
         android:layout_height="350dp"
         android:clickable="false"
         android:onClick="nextAct"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,9 +35,8 @@
 
     <ImageView
         android:id="@+id/left_guy"
-        android:layout_width="wrap_content"
-        android:layout_height="296dp"
-        android:layout_marginStart="96dp"
+        android:layout_width="350dp"
+        android:layout_height="655dp"
         android:clickable="false"
         android:onClick="nextAct"
         android:visibility="visible"
@@ -47,9 +46,8 @@
 
     <ImageView
         android:id="@+id/right_guy"
-        android:layout_width="wrap_content"
-        android:layout_height="336dp"
-        android:layout_marginEnd="86dp"
+        android:layout_width="350dp"
+        android:layout_height="623dp"
         android:clickable="false"
         android:onClick="nextAct"
         android:visibility="visible"
@@ -64,9 +62,7 @@
         android:layout_marginTop="37dp"
         android:clickable="false"
         android:onClick="nextAct"
-        android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/blackbackgroundscenic"
-        app:layout_constraintStart_toEndOf="@+id/blackbackgroundscenic"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/titre_solo" />
 
@@ -77,22 +73,28 @@
         android:layout_marginBottom="57dp"
         android:clickable="false"
         android:onClick="nextAct"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/ivBackground2"
         app:layout_constraintEnd_toStartOf="@+id/ivBackground1"
         app:layout_constraintStart_toEndOf="@+id/ivBackground1"
         app:srcCompat="@drawable/touchtocontinue" />
 
     <ImageView
-        android:id="@+id/blackbackgroundscenic"
-        android:layout_width="2280dp"
-        android:layout_height="1014dp"
-        android:clickable="false"
-        android:onClick="nextAct"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:id="@+id/light_left_guy"
+        android:layout_width="350dp"
+        android:layout_height="655dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background_scenic_test" />
+        app:srcCompat="@drawable/light_left_character" />
+
+    <ImageView
+        android:id="@+id/light_right_guy"
+        android:layout_width="350dp"
+        android:layout_height="623dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/light_right_character" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/background"
-        android:layout_width="960dp"
-        android:layout_height="600dp"
+        android:layout_width="1280dp"
+        android:layout_height="800dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/background_gamemode" />
@@ -89,99 +89,69 @@
         android:id="@+id/soloBtn"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="416dp"
         android:background="@null"
         android:contentDescription="@string/partie_solo"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/partie_solo_btn_tiny"
         tools:ignore="VisualLintBounds" />
 
-    <ImageButton
-        android:id="@+id/optionsBtn"
-        android:layout_width="136dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        android:background="@null"
-        android:contentDescription="@string/option"
-        android:minWidth="50dp"
-        android:minHeight="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/multiBtn"
-        app:srcCompat="@drawable/option_tiny" />
-
-    <ImageButton
-        android:id="@+id/multiBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="36dp"
-        android:background="@null"
-        android:contentDescription="@string/partie_solo"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.455"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
-        app:srcCompat="@drawable/partie_en_ligne_btn_tiny"
-        tools:ignore="VisualLintBounds" />
-
-    <ImageView
-        android:id="@+id/sword_left"
-        android:layout_width="0dp"
-        android:layout_height="78dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="208dp"
-        app:layout_constraintEnd_toEndOf="@+id/multiBtn"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
-        app:srcCompat="@drawable/swords_left" />
-
-    <ImageView
-        android:id="@+id/sword_right"
-        android:layout_width="0dp"
-        android:layout_height="78dp"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="@+id/multiBtn"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
-        app:srcCompat="@drawable/swords_right" />
-
-    <ImageView
-        android:id="@+id/ecrou"
-        android:layout_width="27dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/optionsBtn"
-        app:layout_constraintTop_toBottomOf="@+id/multiBtn"
-        app:srcCompat="@drawable/ecrou" />
-
     <ImageView
         android:id="@+id/fleau"
         android:layout_width="50dp"
         android:layout_height="70dp"
-        android:layout_marginStart="236dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="404dp"
         android:contentDescription="@string/fl_au_du_bouton_partie_solo"
         app:layout_constraintStart_toStartOf="@+id/soloBtn"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/fleau"
         tools:ignore="VisualLintBounds" />
 
+    <ImageButton
+        android:id="@+id/optionsBtn"
+        android:layout_width="136dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        android:contentDescription="@string/option"
+        android:minWidth="50dp"
+        android:minHeight="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/multiBtn"
+        app:srcCompat="@drawable/option_tiny" />
+
     <ImageView
         android:id="@+id/perso_left"
-        android:layout_width="52dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="356dp"
+        android:layout_width="68dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="456dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/perso_right"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.823"
+        app:layout_constraintVertical_bias="0.588"
         app:srcCompat="@drawable/perso1" />
+
+    <ImageButton
+        android:id="@+id/multiBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:background="@null"
+        android:contentDescription="@string/partie_solo"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/partie_en_ligne_btn_tiny"
+        tools:ignore="VisualLintBounds" />
 
     <ImageButton
         android:id="@+id/soloBtn3"
@@ -220,13 +190,43 @@
 
     <ImageView
         android:id="@+id/perso_right"
-        android:layout_width="44dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="69dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sword_right"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.831"
+        app:layout_constraintVertical_bias="0.602"
         app:srcCompat="@drawable/perso2" />
+
+    <ImageView
+        android:id="@+id/sword_left"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="212dp"
+        app:layout_constraintEnd_toEndOf="@+id/multiBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/swords_left" />
+
+    <ImageView
+        android:id="@+id/sword_right"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/multiBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/swords_right" />
+
+    <ImageView
+        android:id="@+id/ecrou"
+        android:layout_width="27dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/optionsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/multiBtn"
+        app:srcCompat="@drawable/ecrou" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

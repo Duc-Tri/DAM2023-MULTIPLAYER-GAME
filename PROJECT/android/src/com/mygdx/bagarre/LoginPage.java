@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +36,9 @@ public class LoginPage extends AppCompatActivity {
     private Button registerBtn, connexionBtn;
     private ImageButton volumeBtn;
     private EditText tiPseudo;
-    private boolean isMuted = false;
-    private ImageView ivBackground;
+    private boolean isMuted = false, isTablet = false;
+    private ImageView ivBackground, ivLogo;
+    LinearLayout llPseudoBox;
     String pseudo, oldPseudo, userID;
     int img, state = 0, musicPos;
     FirebaseAndroid db;
@@ -44,11 +46,16 @@ public class LoginPage extends AppCompatActivity {
     SharedPreferences.Editor editPref;
     Intent itGameMode;
     View grayedOutView;
+    DisplayMetrics metrics;
+    private final View.OnClickListener onClickGreyBackgroundListener = v -> onClickGreyBackground();
 
     public void initUi(){
+
+        ivLogo = findViewById(R.id.ivLogo);
         tiPseudo = findViewById(R.id.tiPseudo);
         volumeBtn = findViewById(R.id.volumeBtn);
         registerBtn = findViewById(R.id.registerBtn);
+        llPseudoBox = findViewById(R.id.llPseudoBox);
         connexionBtn = findViewById(R.id.connexionBtn);
         ivBackground = findViewById(R.id.ivBackground);
 
@@ -58,7 +65,7 @@ public class LoginPage extends AppCompatActivity {
         //Création de l'audio lancher
         audioLauncher = MediaPlayer.create(this, R.raw.connexion_theme);
         audioLauncher.setLooping(true);
-        audioLauncher.start();
+//        audioLauncher.start();
         volumeBtn.setImageResource(R.drawable.volume_on);
 
         //Création de l'audio manager
@@ -117,10 +124,12 @@ public class LoginPage extends AppCompatActivity {
 
     public void gestionAnimation() {
         // Obtenez la taille de l'écran en pixels
-        DisplayMetrics metrics = new DisplayMetrics();
+        metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         float screenWidth = metrics.widthPixels;
+        float screenHeight = metrics.heightPixels;
         Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
+        Log.i("SCREEN_HEIGHT", String.valueOf(screenWidth));
 
         //Gestion de l'animation
         ivBackground.setTranslationY(-10);
@@ -142,24 +151,43 @@ public class LoginPage extends AppCompatActivity {
                 .start();
     }
 
-    private final View.OnClickListener onClickGreyBackgroundListener = v -> onClickGreyBackground();
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_page);
+
+        metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float screenWidthDp = metrics.densityDpi;
+        float screenWidth = metrics.widthPixels;
+        float screenHeight = metrics.heightPixels;
+        Log.i("SCREEN_WIDTH_DP", String.valueOf(screenWidthDp));
+        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
+        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
+
+        if(screenWidthDp < 300.0f) {
+            isTablet = true;
+            setContentView(R.layout.tablet_login);
+        } else {
+            setContentView(R.layout.activity_login_page);
+        }
+
+
 
         //Initialisation de firebase gdx
         /*GdxFIRApp.inst().configure();*/
 
         //Initialisation des vues
         initUi();
+
+        if (!isTablet) {
+            //Lancement de l'animation du fond
+            gestionAnimation();
+        } else if (screenHeight < 800) {
+            ivLogo.setTranslationY(-150);
+            llPseudoBox.setTranslationY(-300);
+        }
 
         //Check de la preférence
         checkPref();
@@ -173,8 +201,6 @@ public class LoginPage extends AppCompatActivity {
         //On lance la musique
         playMusic();
 
-        //Lancement de l'animation du fond
-        gestionAnimation();
 
         //Connexion base
         connectBase();
@@ -223,8 +249,6 @@ public class LoginPage extends AppCompatActivity {
                             .setValue(pseudo);
                     String pseudoRef = pseudoRefDatabase.toString().substring(pseudoRefDatabase.toString().lastIndexOf("/") + 1);
                     Log.i("PSEUDO_REF", pseudoRef);*/
-
-
 
                     //Maj des préférences
                     editPref.putString("userID", db.registerUser(pseudo));

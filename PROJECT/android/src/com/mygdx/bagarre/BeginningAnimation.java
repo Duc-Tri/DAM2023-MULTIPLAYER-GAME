@@ -22,7 +22,6 @@ public class BeginningAnimation extends AppCompatActivity {
     boolean clickable = false;
 
     public void initUI() {
-        blackbackgroundscenic = findViewById(R.id.blackbackgroundscenic);
         ivBackground1 = findViewById(R.id.ivBackground1);
         ivBackground2 = findViewById(R.id.ivBackground2);
         titre_bagarre = findViewById(R.id.titre_bagarre);
@@ -41,6 +40,9 @@ public class BeginningAnimation extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         float screenWidth = metrics.widthPixels;
         float screenHeight = metrics.heightPixels;
+        float screenDP = metrics.densityDpi;
+
+
         Log.i("SCREEN_DIMENSION", screenWidth + "x" + screenHeight);
 
         initUI();
@@ -59,8 +61,12 @@ public class BeginningAnimation extends AppCompatActivity {
         //====================== Determination des timing de l'animation ======================
 
         //Instantie les des gars hors de l'écran
-        left_guy.setTranslationX(- (screenWidth/2));
-        right_guy.setTranslationX(screenWidth/2);
+        int tLeftGuy = left_guy.getHeight();
+        int tRightGuy = right_guy.getHeight();
+
+        left_guy.setTranslationX(- tLeftGuy*3);
+        right_guy.setTranslationX(tRightGuy*3);
+
 
         //Fade-in du premier background
         fadeInBackground = new AlphaAnimation(0, 1);
@@ -141,9 +147,7 @@ public class BeginningAnimation extends AppCompatActivity {
         titleAnimSet.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
-
             @Override
             public void onAnimationEnd(Animation animation) {
                 clickable = true;
@@ -151,7 +155,6 @@ public class BeginningAnimation extends AppCompatActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
 
