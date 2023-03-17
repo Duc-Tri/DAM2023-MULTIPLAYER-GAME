@@ -70,9 +70,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         map = loadMap(mapFilename, batch);
 
-        monsters = new Monsters(map);
-        monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
-
         shapeRenderer = new ShapeRenderer();
 
         clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 0.5f : 0.25f);
@@ -80,6 +77,10 @@ public class GameScreen implements Screen, InputProcessor {
         joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
         batch.setProjectionMatrix(clampedCamera.combined);
+
+        monsters = new Monsters(map);
+        monsters.spawnMonsters(map.getMonstersToSpawn());
+        monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
 
         createThreadsPool();
     }

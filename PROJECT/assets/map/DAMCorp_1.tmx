@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="left-down" width="30" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="4">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="left-down" width="30" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="9">
  <tileset firstgid="1" source="DAMCorp_tuiles.tsx"/>
  <layer id="7" name="ground0" width="30" height="15" locked="1">
   <data encoding="csv">
@@ -58,7 +58,7 @@
 22,529,2,2,22,2,3,2,529,153,22,4,4,22,153,22,37,2,529,2,33,529,4,33,529,2,33,3,2,33
 </data>
  </layer>
- <layer id="5" name="PLAYERS" width="30" height="15">
+ <layer id="5" name="PLAYERS" width="30" height="15" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,565,566,567,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -77,7 +77,7 @@
 581,727,495,727,495,727,495,495,495,495,495,727,495,495,495,727,495,495,727,495,495,495,495,495,727,495,495,495,495,583
 </data>
  </layer>
- <layer id="4" name="top2" width="30" height="15">
+ <layer id="4" name="top2" width="30" height="15" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,565,566,567,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,477,478,594,595,596,479,480,0,
@@ -96,11 +96,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="TRIGGERS" visible="0" locked="1">
-  <object id="1" name="START" x="84.6667" y="300" width="117.333" height="60.3333"/>
-  <object id="3" name="EXIT" x="788.667" y="121.091" width="54.8182" height="19.0303"/>
- </objectgroup>
- <layer id="3" name="OBSTACLES" width="30" height="15" visible="0" locked="1">
+ <layer id="3" name="OBSTACLES" width="30" height="15" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -119,4 +115,23 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
+ <objectgroup id="6" name="TRIGGERS">
+  <object id="1" name="START" x="84.6667" y="300" width="117.333" height="60.3333"/>
+  <object id="3" name="EXIT" x="779.667" y="120.091" width="73.8182" height="45.0303"/>
+  <object id="4" name="SPAWN_01" x="50" y="89" width="81" height="45"/>
+  <object id="8" name="SPAWN_02" x="721" y="331" width="80" height="51"/>
+  <object id="7" name="spawner" x="389" y="-208.5" width="264" height="194">
+   <text fontfamily="MS Shell Dlg 2" wrap="1" halign="center">SPAWN MONSTERS
+
+SCORPION    =0    @spawn_01
+TROLL       =2       @spawn_02
+BAT         =3       @spawn_01
+IMP         =4       @spawn_02
+DEVIL       =5     @spawn_01
+OCTOPUS      =0    @spawn_02
+BLOB         =5     @spawn_01
+LIVING_TREE  =0   @spawn_02
+</text>
+  </object>
+ </objectgroup>
 </map>

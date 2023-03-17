@@ -9,19 +9,22 @@
     ],
     "fileStates": {
         "DAMCorp_1.tmx": {
-            "scale": 4,
-            "selectedLayer": 4,
+            "expandedObjectLayers": [
+                6
+            ],
+            "scale": 1,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 798.25,
-                "y": 83
+                "x": 458.5,
+                "y": 149
             }
         },
         "DAMCorp_2.tmx": {
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 503.5,
-                "y": 283
+                "x": 480,
+                "y": 239.5
             }
         },
         "DAMCorp_test - Copie.tmx": {
@@ -37,7 +40,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 800,
-                "y": 800
+                "y": 799
             }
         },
         "DAMCorp_tuiles.tsx": {
@@ -63,5 +66,6 @@
         "DAMCorp_1.tmx",
         "DAMCorp_test - Copie.tmx"
     ],
+    "textEdit.monospace": true,
     "tileset.lastUsedFormat": "tsx"
 }

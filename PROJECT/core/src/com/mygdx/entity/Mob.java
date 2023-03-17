@@ -16,9 +16,13 @@ import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Mob extends LivingEntity {
+
+    public static enum MonsterType {IMP, BAT, DEVIL, SCORPION, OCTOPUS, BLOB, TROLL, LIVING_TREE}
+
     public static final boolean DEBUG_MOB = false;
 
     private static Map map; // la même carte pour tous les monstres
@@ -31,9 +35,22 @@ public class Mob extends LivingEntity {
     public Color spriteTint;
     Vector2int oldTargetPos;
 
-    public Mob() {
+    private static int numMob = 0;
+
+    final static HashMap<MonsterType, Integer> MonstersDico = new HashMap<MonsterType, Integer>() {{
+        put(MonsterType.IMP, 0);
+        put(MonsterType.BAT, 1);
+        put(MonsterType.DEVIL, 2);
+        put(MonsterType.SCORPION, 3);
+        put(MonsterType.OCTOPUS, 4);
+        put(MonsterType.BLOB, 5);
+        put(MonsterType.TROLL, 6);
+        put(MonsterType.LIVING_TREE, 7);
+    }};
+
+    public Mob(MonsterType type) {
         if (allMonstersAtlas == null) {
-            System.out.println("initializeSprite .......... " + MainGame.MONSTERS_ATLAS);
+            System.out.println((numMob++) + "_initializeSprite .......... " + MainGame.MONSTERS_ATLAS);
             allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
         }
 
@@ -44,15 +61,15 @@ public class Mob extends LivingEntity {
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
         // TODO : remove randomness
-        RMXP_CHARACTER = (int) (Math.random() * RMXPMonstersAtlas.MAX_MONSTERS) + "_";
-
+        // (int) (Math.random() * RMXPMonstersAtlas.MAX_MONSTERS)
+        RMXP_CHARACTER = MonstersDico.get(type) + "_";
         findRegion = RMXP_CHARACTER + "DOWN_0";
 
         initializeSprite();
 
-        //System.out.println("---------------------------- CONSTRUCTOR Mob");
+//        System.out.println("---------------------------- CONSTRUCTOR Mob");
 
-        // to position everything well ----------
+        // to position everything well !!!
         setFootX(getFootX());
         setY(getY());
 
@@ -89,7 +106,7 @@ public class Mob extends LivingEntity {
         HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
-        //System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
+        System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
     }
 
     public String getMobID() {
@@ -193,6 +210,7 @@ public class Mob extends LivingEntity {
     private Vector2int nextPoint = new Vector2int(-1, -1);
 
     public List<Vector2int> pathToTarget(LivingEntity target) {
+        if (target == null) return null;
 
         aStarCurrentPos = map.pixelsToMapTile(getFootX(), entityY);
         aStarGoal = map.pixelsToMapTile(target.getFootX(), target.getY());
@@ -318,6 +336,8 @@ public class Mob extends LivingEntity {
     }
 
     private boolean playerHasMoved() {
+        if (targetPlayer == null) return false;
+
         Vector2int pos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
         if (pos.equals(oldTargetPos)) {
             return false;
@@ -330,6 +350,8 @@ public class Mob extends LivingEntity {
     }
 
     private boolean playerReached() {
+        if (targetPlayer == null) return true;
+
         return hitbox.overlaps(targetPlayer.hitbox) ||
 
                 (Math.abs(entityX - targetPlayer.entityX) < spriteStep &&
@@ -346,7 +368,7 @@ public class Mob extends LivingEntity {
 
     public void setTargetPlayer(Player player) {
         targetPlayer = player;
-        if (map != null)
+        if (map != null && targetPlayer != null)
             oldTargetPos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
     }
 

@@ -27,6 +27,7 @@ public class AStarMap {
         this.map = m;
     }
 
+
     // start: coordonnées de la tuile de départ, goal: coordonnées de la tuile de départ
     public List<Vector2int> findPath(Vector2int start, Vector2int goal) {
         return findPath(new Node(start, null), new Node(goal, null));
@@ -101,7 +102,7 @@ public class AStarMap {
 
         if (isValidNode(nodeBas)) Neighbours.add(nodeBas);
 
-//        System.out.println("getNeighbours::::::::::::::::: " + nodeGauche + " * " + nodeDroite + " * " + nodeHaut + " * " + nodeBas + " = " + Neighbours.size());
+//        System.out.println("getNeighbours:::::::::: " + nodeGauche + " * " + nodeDroite + " * " + nodeHaut + " * " + nodeBas + " = " + Neighbours.size());
 
         return Neighbours;
     }
@@ -127,8 +128,8 @@ public class AStarMap {
         return map;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMap(Map m) {
+        map = m;
     }
 
 }

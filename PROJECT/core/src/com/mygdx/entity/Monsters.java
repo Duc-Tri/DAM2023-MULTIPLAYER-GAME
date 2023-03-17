@@ -3,33 +3,41 @@ package com.mygdx.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
-import com.mygdx.test.TestMonstersScreen;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
 
+//=================================================================================================
+// Gestion des monstres (appliquée à une carte et donc un AStar
+//=================================================================================================
 public class Monsters {
     private static ArrayList<Mob> mobs = new ArrayList<>();
     private static Map map;
     private static AStarMap aStarMap;
-    private static final int MAX_MONSTERS = 10;
+    private static final int MAX_RANDOM_MONSTERS = 10;
+    private static Player targetPlayer;
 
     public Monsters() {
 
-        // TEMP, populate monsters
-        for (int n = 0; n < MAX_MONSTERS; n++) {
+        // TODO : spawn monsters from map TRIGGERS
+
+        /*
+        for (int n = 0; n < MAX_RANDOM_MONSTERS; n++) {
+
+            // TEMP : populate random monsters
 
             Mob m = new Mob();
             m.setX((float) (125 + Math.random() * 50 - 25));
             m.setY((float) (125 + Math.random() * 50 - 25));
             mobs.add(m);
         }
+        */
     }
 
     public Monsters(Map m) {
-
         this();
-        setMap(m);
         aStarMap = new AStarMap(m);
+        setMap(m);
     }
 
     public static Mob getMob(int i) {
@@ -76,7 +84,7 @@ public class Monsters {
                     }
 
                     if (!found) {
-                        Mob newMob = new Mob();
+                        Mob newMob = new Mob(Mob.MonsterType.LIVING_TREE);
                         mobs.add(newMob);
                         newMob.setServerUniqueID(oneMob);
                         ///RetrievePlayer.requestServer(newMob); // TODO: write servlet for mobs
@@ -109,14 +117,71 @@ public class Monsters {
     public static void setMap(Map m) {
         map = m;
 
-        if (Mob.getMap() != map)
-            Mob.setMap(map);
+        if (Mob.getMap() != map) Mob.setMap(map); // carte globale à tous les monstres
+
+        if (aStarMap.getMap() != map) aStarMap.setMap(map);
     }
 
     public void setTargetPlayer(Player player) {
+        targetPlayer = player;
         for (Mob m : mobs) {
             m.setTargetPlayer(player);
         }
     }
+
+    // Spawn les monstres en nombre demandé au point de Spawn demandé
+    //=============================================================================================
+    public void spawnMonsters(String monstersToSpawn) {
+
+        mobs.clear();
+
+        String[] monsters = monstersToSpawn.split("\n");
+        for (String line : monsters) {
+
+            if (line.contains("=") && line.contains("@")) {
+
+                // exemple de texte reçu depuis le TiledMap
+                // ================================================================================
+                // OCTOPUS      =  1@spawn_01
+                // BLOB         =3     @spawn_01
+                // LIVING_TREE  =0   @spawn_01
+
+                String[] mob_numspawn = line.split("="); // TYPE_MONSTRE   =NOMBRE   @SPAWN_PT
+                String[] num_spawn = mob_numspawn[1].split("@");
+
+                Mob.MonsterType type = null; // le type de monstre --------------------------------
+                int num = -1; // le nombre à spawn ------------------------------------------------
+                String spawnArea = ""; // le point de spawn sur la carte (rectangle) --------------
+
+                try {
+                    type = Mob.MonsterType.valueOf(mob_numspawn[0].trim());
+                    num = Integer.parseInt(num_spawn[0].trim());
+                    spawnArea = num_spawn[1].trim().toUpperCase();
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                }
+
+                // une fois qu'on a les 3 infos, tentative de spawn !
+                //-------------------------------------------------------
+                if (type != null && num > 0 && !spawnArea.isEmpty()) {
+
+                    System.out.println("SPAWN +++++++++++++++++++++++++++++++++++++++++++++++++ " +
+                            type.toString() + " === " + num + " @@@ " + spawnArea);
+
+                    for (int i = 0; i < num; i++) {
+                        Mob m = new Mob(type);
+                        Vector2int pos = map.centerPointAtSpawnArea(spawnArea);
+                        m.setX(pos.x);
+                        m.setY(pos.y);
+                        m.setTargetPlayer(null);
+                        mobs.add(m);
+                    }
+
+                }
+            }
+        }
+
+    }
+
 }
 
