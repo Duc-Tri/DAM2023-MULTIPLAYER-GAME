@@ -67,7 +67,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         shapeRenderer = new ShapeRenderer();
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 0.9f : 0.25f);
+        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 1f : 0.25f);
 
         joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
@@ -137,7 +137,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         monsters.moveToPlayer(deltaTime);
 
-        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -265,62 +265,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         clampedCamera.centerOnPlayer();
 
-        /*
-
-            player.animate("LEFT");
-            player.setX(player.getX() - sizeOfStep);
-            if (player.getX() < SCREEN_WIDTH * 1.0 / 4.0) {
-                if (camera.position.x < SCREEN_WIDTH * 1.0 / 4.0) {
-                    if (player.getX() > 0) {
-                        player.setX(player.getX() + sizeOfStep);
-                    }
-                } else {
-                    player.setX(player.getX() + sizeOfStep);
-                    camera.position.x -= sizeOfStep;
-                }
-            }
-
-
-                    player.animate("RIGHT");
-            player.setX(player.getX() + sizeOfStep);
-            if (player.getX() > SCREEN_WIDTH * 3.0 / 4.0) {
-                if (camera.position.x > calculatedWidth - SCREEN_WIDTH * 1.0 / 4.0) {
-                    if (player.getX() < SCREEN_WIDTH) {
-                        player.setX(player.getX() - sizeOfStep);
-                    }
-                } else {
-                    player.setX(player.getX() - sizeOfStep);
-                    camera.position.x += sizeOfStep;
-                }
-            }
-
-            player.animate("UP");
-            player.setY(player.getY() + sizeOfStep);
-            if (player.getY() > SCREEN_HEIGHT * 3.0 / 4.0) {
-                if (camera.position.y > calculatedHeight - SCREEN_HEIGHT * 1.0 / 4.0) {
-                    if (player.getY() < SCREEN_HEIGHT) {
-                        player.setY(player.getY() - sizeOfStep);
-                    }
-                } else {
-                    player.setY(player.getY() - sizeOfStep);
-                    camera.position.y += sizeOfStep;
-                }
-            }
-
-                    player.animate("DOWN");
-            player.setY(player.getY() - sizeOfStep);
-            if (player.getY() < SCREEN_HEIGHT * 1.0 / 4.0) {
-                if (camera.position.y < SCREEN_HEIGHT * 1.0 / 4.0) {
-                    if (player.getY() > 0) {
-                        player.setY(player.getY() + sizeOfStep);
-                    }
-                } else {
-                    player.setY(player.getY() + sizeOfStep);
-                    camera.position.y -= sizeOfStep;
-                }
-            }
-
-         */
     }
 
     //boolean[] keyOns = new boolean[200];
@@ -388,30 +332,6 @@ public class GameScreen implements Screen, InputProcessor {
 }
 
 /*
-
-    public boolean isDisplay() {
-        return display;
-    }
-
-    public void setDisplay(boolean display) {
-        this.display = display;
-    }
-
-    public int getRefreshValue() {
-        return refreshValue;
-    }
-
-    public void setRefreshValue(int refreshValue) {
-        this.refreshValue = refreshValue;
-    }
-
-    public int getSpeedOfSprite() {
-        return speedOfSprite;
-    }
-
-    public void setSpeedOfSprite(int speedOfSprite) {
-        this.speedOfSprite = speedOfSprite;
-    }
 
     public Map getMap() {
         return map;
