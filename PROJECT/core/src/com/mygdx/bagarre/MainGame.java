@@ -12,8 +12,8 @@ public class MainGame extends Game {
 
     // CONSTANTES DU JEU ==========================================================================/
 //    public final static String URLServer = "http://localhost:8080/DAMCorp/"; // marche UNIQUEMENT en DESKTOP
-    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison 1
-//    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison 2
+//    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison 1
+    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison 2
 
 //    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/";
 
@@ -33,7 +33,6 @@ public class MainGame extends Game {
     private final GameMode gameMode;
     private GameScreen gameScreen;
     private static MainGame instance;
-    public TextureAtlas monstersAtlas;
 
     public static MainGame getInstance() {
         if (instance == null) instance = new MainGame();
@@ -66,8 +65,6 @@ public class MainGame extends Game {
         gameScreen = new GameScreen(mapFilename, this);
         setScreen(gameScreen);
         Gdx.input.setInputProcessor(gameScreen);
-
-        monstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
     }
 
     @Override

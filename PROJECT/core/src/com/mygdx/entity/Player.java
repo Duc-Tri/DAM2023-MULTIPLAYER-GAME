@@ -66,8 +66,6 @@ public class Player extends LivingEntity {
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
         sprite = new Sprite(textureRegion);
-
-        //sprite.scale(scale);
         //sprite.setColor(spriteTint);
     }
 
@@ -113,5 +111,9 @@ public class Player extends LivingEntity {
         if (deltaX != 0) setX(entityX + deltaX);
 
         if (deltaY != 0) setY(entityY + deltaY);
+    }
+
+    public void attack() {
+        Monsters.killRandom();
     }
 }

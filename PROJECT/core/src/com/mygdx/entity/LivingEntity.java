@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
+import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 
 //#################################################################################################
@@ -40,18 +41,20 @@ public class LivingEntity implements Entity {
     public Color spriteTint; // from unique ID
 
     String findRegion = "";
-
     protected String serverUniqueID;
-
     protected String RMXP_CHARACTER; // non de la région texture dans l'atlas
     private static int numLivingEntity = 0;
+    protected int currentLife = 1;
+    protected int maxLife = 1;
     private static MainGame mainGame;
+    protected LifeBar lifeBar;
 
     public LivingEntity() {
         if (mainGame == null) mainGame = MainGame.getInstance();
 
         //System.out.println("########## CONSTRUCTOR LivingEntity");
         numLivingEntity++;
+        lifeBar = new LifeBar(this);
     }
 
     @Override
@@ -181,6 +184,7 @@ public class LivingEntity implements Entity {
         if (batch == null || sprite == null || sprite.getTexture() == null) return;
 
         sprite.draw(batch);
+        lifeBar.draw(batch);
 
         if (DEBUG_HITBOX)
             batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -199,6 +203,18 @@ public class LivingEntity implements Entity {
         // protected = uniquement pour les classes filles
         //return Math.abs(System.currentTimeMillis() + (int) (Math.random() * 1000000));
         return numLivingEntity + (int) (Math.random() * 10000);
+    }
+
+    public int getCurrentLife() {
+        return currentLife;
+    }
+
+    public void setCurrentLife(int l) {
+        currentLife = l;
+    }
+
+    public int getMaxLife() {
+        return maxLife;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.bagarre.MainGame;
+import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPAtlasGenerator;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
@@ -35,9 +34,10 @@ public class Mob extends LivingEntity {
     Vector2int oldTargetPos;
 
     private static int numMob = 0;
+    private MonsterType monsterType;
 
     // numéro des monstres selon l'ordre dans le fichier atlas
-    final static HashMap<MonsterType, Integer> MonstersDico = new HashMap<MonsterType, Integer>() {{
+    final static HashMap<MonsterType, Integer> MonstersNum = new HashMap<MonsterType, Integer>() {{
         put(MonsterType.IMP, 0);
         put(MonsterType.BAT, 1);
         put(MonsterType.DEVIL, 2);
@@ -46,6 +46,17 @@ public class Mob extends LivingEntity {
         put(MonsterType.BLOB, 5);
         put(MonsterType.TROLL, 6);
         put(MonsterType.LIVING_TREE, 7);
+    }};
+
+    final static HashMap<MonsterType, Integer> MonstersHealth = new HashMap<MonsterType, Integer>() {{
+        put(MonsterType.IMP, 50);
+        put(MonsterType.BAT, 10);
+        put(MonsterType.DEVIL, 20);
+        put(MonsterType.SCORPION, 30);
+        put(MonsterType.OCTOPUS, 80);
+        put(MonsterType.BLOB, 40);
+        put(MonsterType.TROLL, 90);
+        put(MonsterType.LIVING_TREE, 100);
     }};
 
     public Mob(MonsterType type) {
@@ -67,8 +78,13 @@ public class Mob extends LivingEntity {
 
         // TODO : remove randomness
         // (int) (Math.random() * RMXPMonstersAtlas.MAX_MONSTERS)
-        RMXP_CHARACTER = MonstersDico.get(type) + "_";
+        monsterType = type;
+        RMXP_CHARACTER = MonstersNum.get(monsterType) + "_";
         findRegion = RMXP_CHARACTER + "DOWN_0";
+        maxLife = MonstersHealth.get(monsterType);
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        currentLife = maxLife; // 1+(int)(Math.random() * (maxLife-1));
+        lifeBar.setBarRatio(maxLife);
 
         initializeSprite();
 

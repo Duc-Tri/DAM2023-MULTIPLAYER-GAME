@@ -1,7 +1,6 @@
 package com.mygdx.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.map.Map;
@@ -9,8 +8,6 @@ import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
-
-import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
 
 //=================================================================================================
 // Gestion des monstres (appliquée à une carte et donc un AStar
@@ -20,14 +17,14 @@ public class Monsters {
     public static TextureAtlas allMonstersAtlas;
 
     public enum MonstersMode {
-        SOLO_MODE, // display ET simulation, mode SOLO
-        SLAVE_MODE, // display seulement, client pas MASTER, multijoueur
-        MASTER_MODE // simulation seulement, MASTER, multijoueur
+        SOLO_MODE, // MODE SOLO, display ET simulation
+        SLAVE_MODE, // MULTIJOUEUR, display seulement, CLIENTS ET MASTER,
+        MASTER_MODE // MULTIJOUEUR, simulation seulement, MASTER
     }
 
     // SOLO: simulationMobs et drawMobs pointent sur les mêmes données
-    // MULTIJOUEUR + MASTER : simulationMobs pour la simulation, drawMobs pour l'affichage
-    // MULTIJOUEUR + SLAVE : drawMobs pour l'affichage, simulationMobs est nul !
+    // MULTIJOUEUR et MASTER : simulationMobs pour la simulation, drawMobs pour l'affichage
+    // MULTIJOUEUR et SLAVE : drawMobs pour l'affichage, simulationMobs est nul !
     private static ArrayList<Mob> drawMobs; // update render
     private static ArrayList<Mob> simulationMobs; // update data
     private static Map map;
@@ -92,15 +89,6 @@ public class Monsters {
     public static Mob getMob(int i) {
         return drawMobs.get(i);
     }
-
-//    public void drawAndUpdate(SpriteBatch batch) {
-//        if (drawMobs.size() != 0)
-//            for (Mob m : drawMobs) {
-//                if (m != null) {
-//                    m.drawAndUpdate(batch);
-//                }
-//            }
-//    }
 
     private String[] ids() {
         String[] uids = new String[drawMobs.size()];
@@ -244,7 +232,6 @@ public class Monsters {
 
         // FLOOD !!!
         //System.out.println("createNewMobs >>>>> tempMobs{" + tempMobs.length + "}=" + String.join("_@_", tempMobs)
-        //+                " >>>>> mobs{" + mobs.size() + "}=" + String.join("_@_", ids())        );
 
         if (tempMobs != null && tempMobs.length != 0) {
 
@@ -255,43 +242,69 @@ public class Monsters {
                 if (strMob != null && !strMob.isEmpty()) {
                     String[] oneMob = strMob.split(";");
                     String oneMobId = oneMob[0];
+                    int life = Integer.parseInt(oneMob[4]);
 
-                    for (Mob m : drawMobs) {
+                    for (int i = drawMobs.size() - 1; i >= 0; i--) {
+                        Mob m = drawMobs.get(i);
                         if (oneMobId.equalsIgnoreCase(m.uniqueID)) {
                             found = true;
-                            m.setFootX(Float.parseFloat(oneMob[1]));
-                            m.setY(Float.parseFloat(oneMob[2]));
-                            m.setFindRegion(oneMob[3]);
 
-//                            System.out.println("createNewMobs >>>>> FOUND " + oneMobId);
+                            if (life > 0) {
+                                m.setFootX(Float.parseFloat(oneMob[1]));
+                                m.setY(Float.parseFloat(oneMob[2]));
+                                m.setFindRegion(oneMob[3]);
+                                m.setCurrentLife(life);
+                            } else
+                                drawMobs.remove(m);
+
+                            // System.out.println("createNewMobs >>>>> FOUND " + oneMobId);
 
                             break;
                         }
                     }
 
-                    if (!found) {
+                    if (!found && life > 0) {
 
                         String n = oneMob[3].split("_")[0];
 
-//                        System.out.println("createNewMobs >>>>> NOT FOUND " + n + " / " + oneMobId);
+                        // System.out.println("createNewMobs >>>>> NOT FOUND " + n + " / " + oneMobId);
 
                         Mob newMob = new Mob(Mob.MonsterType.values()[Integer.parseInt(n)]);
-                        drawMobs.add(newMob);
-                        //newMob.setServerUniqueID(oneMob);
-                        ///RetrievePlayer.requestServer(newMob); // TODO: write servlet for mobs
                         newMob.initializeSprite();
                         newMob.setUniqueID(oneMobId);
                         newMob.setFootX(Float.parseFloat(oneMob[1]));
                         newMob.setY(Float.parseFloat(oneMob[2]));
                         newMob.setFindRegion(oneMob[3]);
+                        newMob.setCurrentLife(Integer.parseInt(oneMob[4]));
+
+                        drawMobs.add(newMob);
                     }
 
-//                    System.out.println("createNewMobs::oneMob=" + strMob);
+                    // System.out.println("createNewMobs::oneMob=" + strMob);
                 }
             }
         }
 
     }
 
-}
+    public static void killRandom() {
+        // juste pour tests........................................................................
+        if (simulationMobs.size() < 1)
+            return;
 
+        int i = (int) (Math.random() * simulationMobs.size());
+        simulationMobs.get(i).setCurrentLife(0);
+        //System.out.println("killRandom :::::::::::::::::::::: " + i);
+        simulationMobs.remove(i);
+    }
+
+//    public void drawAndUpdate(SpriteBatch batch) {
+//        if (drawMobs.size() != 0)
+//            for (Mob m : drawMobs) {
+//                if (m != null) {
+//                    m.drawAndUpdate(batch);
+//                }
+//            }
+//    }
+
+}

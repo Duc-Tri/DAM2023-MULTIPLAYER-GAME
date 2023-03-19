@@ -64,10 +64,8 @@ public class UpdateMonsters implements Runnable {
                 System.out.println("UpdateMonsters:requestServer did not work.");
             }
         } catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
 //            e.printStackTrace();
         } catch (IOException e) {
-//            throw new RuntimeException(e);
 //            e.printStackTrace();
         }
     }
@@ -79,14 +77,15 @@ public class UpdateMonsters implements Runnable {
         sbMonsters.append("&numLobby=" + player.getNumLobby());
         sbMonsters.append("&monsters=");
         int len0 = sbMonsters.length();
-        ////////////////////////// LOBBY !!!!!!!!!!!!!!!!!!!!!
 
-        for (Mob m : simulationMobs) {
-            sbMonsters.append(m.getUniqueID() + ";");
-            sbMonsters.append(m.getFootX() + ";");
-            sbMonsters.append(m.getY() + ";");
-            sbMonsters.append(m.getFindRegion() + "!"); // pas * pas ~ pas # !!!
-        }
+        for (Mob m : simulationMobs)
+            if (m.getCurrentLife() > 0) {
+                sbMonsters.append(m.getUniqueID() + ";");
+                sbMonsters.append(m.getFootX() + ";");
+                sbMonsters.append(m.getY() + ";");
+                sbMonsters.append(m.getFindRegion() + ";");
+                sbMonsters.append(m.getCurrentLife() + "!"); // pas * pas ~ pas # !!!
+            }
 
         // FLOOD !!!
         //System.out.println((sbMonsters.length()-len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);

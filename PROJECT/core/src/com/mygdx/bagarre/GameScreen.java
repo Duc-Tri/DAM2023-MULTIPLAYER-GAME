@@ -36,6 +36,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Viewport viewport;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
+    private boolean showDebugTexts = true;
 
     public SpriteBatch getBatch() {
         return batch;
@@ -175,7 +176,7 @@ public class GameScreen implements Screen, InputProcessor {
         map.setView(clampedCamera);
         map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
 
-        debugOnScreen(); // TOUT A LA FIN !!!
+        if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
 
         batch.end(); //========================================================
 
@@ -307,8 +308,20 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         showJoystick = false;
-        //keyOns[keycode] = true;
-        lastKeyCode = keycode;
+
+        switch (keycode) {
+            case Input.Keys.ESCAPE:
+                showDebugTexts = !showDebugTexts;
+                break;
+            case Input.Keys.SPACE:
+                player.attack();
+                break;
+            default:
+                //keyOns[keycode] = true;
+                lastKeyCode = keycode;
+                break;
+        }
+
         return false;
     }
 
