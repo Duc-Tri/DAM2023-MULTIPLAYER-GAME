@@ -36,6 +36,11 @@ public class GameScreen implements Screen, InputProcessor {
     private Viewport viewport;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
     private SpriteBatch batch;
     private int sizeOfStep = 8;
     private Joystick joystick;
@@ -78,7 +83,7 @@ public class GameScreen implements Screen, InputProcessor {
         joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
 
-        debugOS = new DebugOnScreen(batch, clampedCamera);
+        debugOS = DebugOnScreen.getInstance();
 
         monsters = new Monsters(map, player);
 
@@ -112,9 +117,6 @@ public class GameScreen implements Screen, InputProcessor {
         retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
         threadPoolExecutor2.submit(retrieveUpdatePlayer);
 
-        // SLAVES & MASTER
-        retrieveMonsters = new RetrieveMonsters(player, monsters);
-        threadPoolExecutor3.submit(retrieveMonsters);
 
         // MASTER ONLY
         if (player.isMaster()) {
@@ -122,6 +124,10 @@ public class GameScreen implements Screen, InputProcessor {
             updateMonsters = new UpdateMonsters(player, monsters);
             threadPoolExecutor4.submit(updateMonsters);
         }
+
+        // SLAVES & MASTER
+        retrieveMonsters = new RetrieveMonsters(player, monsters);
+        threadPoolExecutor3.submit(retrieveMonsters);
     }
 
     public static Map getMap() {
@@ -183,13 +189,13 @@ public class GameScreen implements Screen, InputProcessor {
         //debugOS.draw("Score AZER AZETGEZA REZA ", 0, 0);
         debugOS.setText(0, mainGame.getGameMode() + " / " + monsters.getMonstersMode());
         debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
-        debugOS.setText(2, "" + System.currentTimeMillis());
+        debugOS.setText(25, "" + System.currentTimeMillis());
 
 
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
 
-        debugOS.drawTexts();
+        debugOS.drawTexts(batch);
     }
 
     private void submitThreadJobs() {
@@ -253,7 +259,7 @@ public class GameScreen implements Screen, InputProcessor {
         shapeRenderer.dispose();
     }
 
-    public static OrthographicCamera getCamera() {
+    public static ClampedCamera getCamera() {
         return clampedCamera;
     }
 

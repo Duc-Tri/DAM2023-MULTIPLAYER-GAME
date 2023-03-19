@@ -17,7 +17,7 @@ public class RetrieveMonsters implements Runnable {
     private static final String GET_URL = MainGame.URLServer + "RetrieveMonsters";
     private static final String USER_AGENT = "Mozilla/5.0";
     private final static long RUNNING_TIME = 100000000L;
-    private  static Player player;
+    private static Player player;
 
     private Monsters monsters;
 
@@ -32,14 +32,15 @@ public class RetrieveMonsters implements Runnable {
         int i = 0;
         while (System.currentTimeMillis() < initialTime + RUNNING_TIME) {
 
-//            System.out.println("RetrieveMonsters:run +++++++++++++++++++++++++++++++++++++++++" );
-
             String[] tempMobs = requestServer();
+
+//            System.out.println("RetrieveMonsters:run ++++++++++++++++++++++ ");
+
             if (tempMobs != null && tempMobs.length > 0) {
-//                Mates.createNewMates(tempMobs);
-//                Mates.removeOldMates(tempMobs);
+                monsters.createNewMobs(tempMobs);
+                monsters.removeOldMobs(tempMobs);
             } else {
-//                Mates.removeAllMates();
+                monsters.removeAllMobs(tempMobs);
             }
         }
     }
@@ -63,15 +64,14 @@ public class RetrieveMonsters implements Runnable {
                 }
                 in.close();
 
-                if (!String.valueOf(response).isEmpty()) {
+                String res = String.valueOf(response);
+                if (res != null && !res.isEmpty()) {
 
-                    System.out.println("RetrieveMonsters:requestServer " + response);
+//                    System.out.println("RetrieveMonsters:requestServer " + res);
 
-                    String[] monsters = String.valueOf(response).split("#");
+                    String[] monsters = res.split("!");
                     return monsters;
                 }
-
-                ////////////////////////// LOBBY !!!!!!!!!!!!!!!!!!!!!
 
             } else {
                 System.out.println("RetrieveMonsters:requestServer did not work.");

@@ -33,9 +33,7 @@ public class UpdateMonsters implements Runnable {
 
         while (System.currentTimeMillis() < initialTime + RUNNING_TIME) {
             requestServer();
-            System.out.println("UpdateMonsters:run +++++++++++++++++++++++++++++++++++++++++");
-
-
+            // System.out.println("UpdateMonsters:run +++++++++++++++++++++++++++++++++++++++");
         }
     }
 
@@ -60,7 +58,7 @@ public class UpdateMonsters implements Runnable {
                 }
                 in.close();
 
-                System.out.println("UpdateMonsters:requestServer " + response);
+                // System.out.println("UpdateMonsters:requestServer " + response);
 
             } else {
                 System.out.println("UpdateMonsters:requestServer did not work.");
@@ -87,10 +85,11 @@ public class UpdateMonsters implements Runnable {
             sbMonsters.append(m.getUniqueID() + ";");
             sbMonsters.append(m.getFootX() + ";");
             sbMonsters.append(m.getY() + ";");
-            sbMonsters.append(m.getFindRegion() + "*"); // pas # pas +
+            sbMonsters.append(m.getFindRegion() + "!"); // pas * pas ~ pas # !!!
         }
 
-        System.out.println((sbMonsters.length()-len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);
+        // FLOOD !!!
+        //System.out.println((sbMonsters.length()-len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);
 
         return sbMonsters.toString();
     }

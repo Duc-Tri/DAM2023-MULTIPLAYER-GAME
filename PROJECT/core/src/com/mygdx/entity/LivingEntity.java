@@ -84,6 +84,8 @@ public class LivingEntity implements Entity {
     }
 
     public float getFootX() {
+        if (sprite == null) return 0;
+
         return entityX + sprite.getWidth() / 2;
     }
 
@@ -119,11 +121,15 @@ public class LivingEntity implements Entity {
 
     public void setY(float y) {
         entityY = y;
-        hitbox.setY(y + HITBOX_YOFFSET);
-        sprite.setY(y);
+        if (hitbox != null)
+            hitbox.setY(y + HITBOX_YOFFSET);
+        if (sprite != null)
+            sprite.setY(y);
     }
 
     public void setFootX(float x) {
+        if (sprite == null) return;
+
         setX(x - sprite.getWidth() / 2);
     }
 

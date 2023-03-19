@@ -1,6 +1,8 @@
 package com.mygdx.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
@@ -14,6 +16,8 @@ import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
 // Gestion des monstres (appliquée à une carte et donc un AStar
 //=================================================================================================
 public class Monsters {
+
+    public static TextureAtlas allMonstersAtlas;
 
     public enum MonstersMode {
         SOLO_MODE, // display ET simulation, mode SOLO
@@ -35,6 +39,7 @@ public class Monsters {
     public Monsters() {
 
         // TODO : spawn monsters from map TRIGGERS
+        allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
 
         /*
         for (int n = 0; n < MAX_RANDOM_MONSTERS; n++) {
@@ -79,6 +84,7 @@ public class Monsters {
                 drawMobs = new ArrayList<>();
                 simulationMobs = new ArrayList<>();
                 spawnMonsters(map.getMonstersToSpawn());
+                setTargetPlayer(p);
                 break;
         }
     }
@@ -104,38 +110,6 @@ public class Monsters {
         return uids;
     }
 
-    public static void createNewMobs(String[] tempMobs) {
-
-        // FLOOD !!!
-//        System.out.println("createNewMobs >>>>> tempMobs{" + tempMobs.length + "}=" + String.join("_@_", tempMobs) + " >>>>> mobs{" + mobs.size() + "}=" + String.join("_@_", ids()));
-
-        if (tempMobs != null && tempMobs.length != 0) {
-
-            for (String oneMob : tempMobs) {
-
-                boolean found = false;
-
-                if (oneMob != null && !oneMob.isEmpty()) {
-                    for (Mob m : drawMobs) {
-                        if (oneMob.equalsIgnoreCase(m.getServerUniqueID())) {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        Mob newMob = new Mob(Mob.MonsterType.LIVING_TREE);
-                        drawMobs.add(newMob);
-                        newMob.setServerUniqueID(oneMob);
-                        ///RetrievePlayer.requestServer(newMob); // TODO: write servlet for mobs
-                        newMob.initializeSprite();
-                    }
-                }
-            }
-        }
-
-    }
-
     public void moveRandomly(float deltaTime) {
         for (Mob m : simulationMobs) {
             m.moveToRandomDir(deltaTime);
@@ -153,7 +127,6 @@ public class Monsters {
     public void moveToPlayer(float deltaTime) {
         for (Mob m : simulationMobs) m.moveToPlayer(deltaTime);
     }
-
 
     public static void setMap(Map m) {
         map = m;
@@ -256,6 +229,68 @@ public class Monsters {
                 moveToPlayer(deltaTime);
                 break;
         }
+    }
+
+    public void removeOldMobs(String[] tempMobs) {
+
+    }
+
+    public void removeAllMobs(String[] tempMobs) {
+//        simulationMobs.clear();
+//        drawMobs.clear();
+    }
+
+    public static void createNewMobs(String[] tempMobs) {
+
+        // FLOOD !!!
+        //System.out.println("createNewMobs >>>>> tempMobs{" + tempMobs.length + "}=" + String.join("_@_", tempMobs)
+        //+                " >>>>> mobs{" + mobs.size() + "}=" + String.join("_@_", ids())        );
+
+        if (tempMobs != null && tempMobs.length != 0) {
+
+            for (String strMob : tempMobs) {
+
+                boolean found = false;
+
+                if (strMob != null && !strMob.isEmpty()) {
+                    String[] oneMob = strMob.split(";");
+                    String oneMobId = oneMob[0];
+
+                    for (Mob m : drawMobs) {
+                        if (oneMobId.equalsIgnoreCase(m.uniqueID)) {
+                            found = true;
+                            m.setFootX(Float.parseFloat(oneMob[1]));
+                            m.setY(Float.parseFloat(oneMob[2]));
+                            m.setFindRegion(oneMob[3]);
+
+//                            System.out.println("createNewMobs >>>>> FOUND " + oneMobId);
+
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+
+                        String n = oneMob[3].split("_")[0];
+
+//                        System.out.println("createNewMobs >>>>> NOT FOUND " + n + " / " + oneMobId);
+
+                        Mob newMob = new Mob(Mob.MonsterType.values()[Integer.parseInt(n)]);
+                        drawMobs.add(newMob);
+                        //newMob.setServerUniqueID(oneMob);
+                        ///RetrievePlayer.requestServer(newMob); // TODO: write servlet for mobs
+                        newMob.initializeSprite();
+                        newMob.setUniqueID(oneMobId);
+                        newMob.setFootX(Float.parseFloat(oneMob[1]));
+                        newMob.setY(Float.parseFloat(oneMob[2]));
+                        newMob.setFindRegion(oneMob[3]);
+                    }
+
+//                    System.out.println("createNewMobs::oneMob=" + strMob);
+                }
+            }
+        }
+
     }
 
 }

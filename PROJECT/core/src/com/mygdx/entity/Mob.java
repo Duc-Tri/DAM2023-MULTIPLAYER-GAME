@@ -52,9 +52,11 @@ public class Mob extends LivingEntity {
 
         // TEXTURE DE TOUS LES MOBS ---------------------------------------------------------------
         if (allMonstersAtlas == null) {
-            // System.out.println((numMob++) + "_initializeSprite ... " + MainGame.MONSTERS_ATLAS);
-            allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
+            allMonstersAtlas = Monsters.allMonstersAtlas;
+//            allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
         }
+
+        //System.out.println((numMob++) + " / " + type + " =============== CONSTRUCTOR Mob ... " + allMonstersAtlas);
 
         uniqueID = "mob" + nextUniqueId();
 
@@ -97,7 +99,7 @@ public class Mob extends LivingEntity {
     @Override
     public void initializeSprite() {
 
-        // TEXTURE LOCAL DE LIVING_ENTITY -------------------------------------
+        // texture statique mob => texture locale de living_entity --------------------------------
         if (textureAtlas == null) {
             textureAtlas = allMonstersAtlas;
         }
@@ -213,6 +215,9 @@ public class Mob extends LivingEntity {
     private Vector2int nextPoint = new Vector2int(-1, -1);
 
     public List<Vector2int> pathToTarget(LivingEntity target) {
+
+        //System.out.println("pathToTarget " + target.uniqueID);
+
         if (target == null) return null;
 
         aStarCurrentPos = map.pixelsToMapTile(getFootX(), entityY);
@@ -301,6 +306,10 @@ public class Mob extends LivingEntity {
     }
 
     public void moveToPlayer(float deltaTime) {
+
+//        System.out.println(" moveToPlayer ............ mP2t=" + mapPathToTarget + " / m=" + map +
+//                " / pr=" + playerReached() + " / Ct=" + currentTime + " / pl=" + targetPlayer.uniqueID);
+
         if (mapPathToTarget == null || map == null || playerReached() || ((currentTime += deltaTime) < moveDelay))
             return;
 
@@ -315,8 +324,8 @@ public class Mob extends LivingEntity {
         boolean moved = playerHasMoved();
         if (moved || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
 
-            // System.out.println("moveToPlayer :::::: " + moved +
-            // " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
+//            System.out.println("moveToPlayer :::::: " + moved +
+//                    " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
 
             processPathToPlayer(moved);
         }
@@ -336,9 +345,9 @@ public class Mob extends LivingEntity {
         // TEST : téléportation --------------------
         //        setX(nextPoint.x);        //        setY(nextPoint.y);
 
-        //        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
-        //                " entity={" + entityX + "/" + entityY + "} " +
-        //                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
+//        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
+//                " entity={" + entityX + "/" + entityY + "} " +
+//                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
     }
 
     private boolean playerHasMoved() {

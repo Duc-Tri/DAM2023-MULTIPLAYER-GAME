@@ -4,13 +4,17 @@ import game.entity.Player;
 
 public class Game {
 
-	private final static int POOLSIZE = 50;
+	private final static int POOLSIZE = 10;
 	static int staticIdCpt;
-	private final static int LOBBYSIZE = 3;
+	private final static int LOBBYSIZE = 20;
 	static int numLobby = 0;
+
 	static Player[][] players = new Player[POOLSIZE][LOBBYSIZE];
+
+	static String[] monsters = new String[POOLSIZE]; // les monstres sont agglomérés en string
+
 	static int cptLobby = 0;
-	private final static long TIMEOUT = 30000L;
+	private final static long TIMEOUT = 60000L; // 60000L = une minute
 
 	public boolean possibleToScribe() {
 		if (staticIdCpt * cptLobby < POOLSIZE * LOBBYSIZE) {
@@ -101,6 +105,27 @@ public class Game {
 			}
 		}
 		return tempString;
+	}
+
+	public String retrieveMonsters(Player player) {
+		String tempString = "";
+
+		if (player != null) {
+			int nLobby = Integer.parseInt(player.getNumLobby());
+			tempString = monsters[nLobby];
+
+			// System.out.println(nLobby + " / " + tempString.length() + "
+			// Game::retrieveMonsters === " + tempString);
+		}
+
+		return tempString;
+	}
+
+	public void setMonsters(int nLobby, String mobs) {
+		monsters[nLobby] = mobs;
+
+		// System.out.println(nLobby + " / " + mobs.length() + " Game::setMonsters === "
+		// + mobs);
 	}
 
 	public int getId() {

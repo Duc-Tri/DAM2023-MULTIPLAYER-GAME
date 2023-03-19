@@ -2,6 +2,7 @@ package com.mygdx.bagarre;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Player;
 import com.mygdx.firebase.FirebaseHelper;
@@ -31,8 +32,8 @@ public class MainGame extends Game {
     private String config; // "android" or "desktop";
     private final GameMode gameMode;
     private GameScreen gameScreen;
-
     private static MainGame instance;
+    public TextureAtlas monstersAtlas;
 
     public static MainGame getInstance() {
         if (instance == null) instance = new MainGame();
@@ -65,6 +66,8 @@ public class MainGame extends Game {
         gameScreen = new GameScreen(mapFilename, this);
         setScreen(gameScreen);
         Gdx.input.setInputProcessor(gameScreen);
+
+        monstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
     }
 
     @Override

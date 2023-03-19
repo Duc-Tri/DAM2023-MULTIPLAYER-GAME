@@ -34,16 +34,12 @@ public class UpdateMonsters extends HttpServlet {
 		Player player = game.retrievePlayer(request.getParameter("serverUniqueID"), request.getParameter("numLobby"));
 		if (player != null) {
 
-			/*
-			 * if (request.getParameter("x") != null) {
-			 * player.setX(request.getParameter("x")); } if (request.getParameter("y") !=
-			 * null) { player.setY(request.getParameter("y")); } if
-			 * (request.getParameter("findRegion") != null) {
-			 * player.setFindRegion(request.getParameter("findRegion")); }
-			 * player.setLastUpdate(System.currentTimeMillis());
-			 */
 			String mobs = request.getParameter("monsters");
-			System.out.println(mobs.length() + " ### UPDATE MONSTERS === " + mobs);
+			int nLobby = Integer.parseInt(player.getNumLobby());
+
+			// System.out.println(mobs.length() + " ### UPDATE MONSTERS === " + mobs);
+
+			game.setMonsters(nLobby, mobs);
 		}
 
 	}

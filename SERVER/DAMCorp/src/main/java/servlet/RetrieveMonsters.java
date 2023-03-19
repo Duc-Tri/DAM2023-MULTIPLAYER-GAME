@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import game.Game;
+import game.entity.Player;
 
 /**
  * Servlet implementation class RetrieveMonsters
@@ -29,14 +30,18 @@ public class RetrieveMonsters extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-				/*
-		String serverUniqueID = request.getParameter("serverUniqueID");
-		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
-			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"),
-					request.getParameter("numLobby"));
-			response.getWriter().append(game.retrieveMate(player));
+
+		Player player = game.retrievePlayer(request.getParameter("serverUniqueID"), request.getParameter("numLobby"));
+
+		if (player != null) {
+
+			String mobs = game.retrieveMonsters(player);
+
+			// System.out.println(mobs.length() + " ### UPDATE MONSTERS === " + mobs);
+
+			response.getWriter().append(mobs);
 		}
-		*/
+
 	}
 
 	/**
