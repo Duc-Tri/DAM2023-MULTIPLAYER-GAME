@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
+import com.mygdx.map.Map;
 
 public class Player extends LivingEntity {
 
@@ -16,9 +17,10 @@ public class Player extends LivingEntity {
     private String lobbyPlayerId;
     private String numLobby = "";
     private boolean isMaster;
+    private Monsters masterMobs; // simulation des monsters en mode MASTER
+    private static Map map;
 
     public Player() {
-
         // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
         if (allPlayersAtlas == null) {
             //System.out.println("initializeSprite .......... " + MainGame.PLAYERS_ATLAS);
@@ -44,6 +46,11 @@ public class Player extends LivingEntity {
         setY(getY());
 
         System.out.println("---------------------------- CONSTRUCTOR Player " + uniqueID);
+    }
+
+    public Player(Map m) {
+        this();
+        map = m;
     }
 
     @Override
@@ -86,8 +93,25 @@ public class Player extends LivingEntity {
 
     public void setMaster(boolean master) {
         isMaster = master;
-        if (isMaster)
+        if (isMaster) {
             System.out.println(uniqueID + " *** setMaster ========== " + isMaster +
                     " / " + MainGame.getInstance().getGameMode());
+
+//            masterMobs = new Monsters(map, );
+        } else {
+//            masterMobs.reset();
+        }
+
+    }
+
+    public void move(String dirKeyword, int deltaX, int deltaY) {
+        animate(dirKeyword); // dans tous les cas, on anime
+
+        if (MainGame.getInstance().getMap().checkObstacle(this, deltaX, deltaY))
+            return; // OBSTACLE ! on ne bouge pas !
+
+        if (deltaX != 0) setX(entityX + deltaX);
+
+        if (deltaY != 0) setY(entityY + deltaY);
     }
 }

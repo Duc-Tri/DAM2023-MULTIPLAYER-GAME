@@ -2,6 +2,8 @@ package com.mygdx.client;
 
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.entity.Mates;
+import com.mygdx.entity.Mob;
+import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
 
 import java.io.BufferedReader;
@@ -11,37 +13,43 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RetrieveMate implements Runnable {
-    Player player;
+public class RetrieveMonsters implements Runnable {
+    private static final String GET_URL = MainGame.URLServer + "RetrieveMonsters";
+    private static final String USER_AGENT = "Mozilla/5.0";
+    private final static long RUNNING_TIME = 100000000L;
+    private  static Player player;
 
-    public RetrieveMate(Player player) {
-        this.player = player;
+    private Monsters monsters;
+
+    public RetrieveMonsters(Player p, Monsters mobs) {
+        player = p;
+        monsters = mobs;
     }
 
     @Override
     public void run() {
         long initialTime = System.currentTimeMillis();
-        long runningTime = 100000000L;
         int i = 0;
-        while (System.currentTimeMillis() < initialTime + runningTime) {
-            String[] tempMates = requestServer(player);
-            if (tempMates != null && tempMates.length > 0) {
-                Mates.createNewMates(tempMates);
-                Mates.removeOldMates(tempMates);
+        while (System.currentTimeMillis() < initialTime + RUNNING_TIME) {
+
+//            System.out.println("RetrieveMonsters:run +++++++++++++++++++++++++++++++++++++++++" );
+
+            String[] tempMobs = requestServer();
+            if (tempMobs != null && tempMobs.length > 0) {
+//                Mates.createNewMates(tempMobs);
+//                Mates.removeOldMates(tempMobs);
             } else {
-                Mates.removeAllMates();
+//                Mates.removeAllMates();
             }
         }
     }
 
-    public static String[] requestServer(Player player) {
-        String GET_URL = MainGame.URLServer + "RetrieveMate";//
-        String paramString = buildParam(player);
-        GET_URL = GET_URL + paramString;
-        String USER_AGENT = "Mozilla/5.0";
+    public static String[] requestServer() {
+        String paramString = buildParam();
+
         URL url = null;
         try {
-            url = new URL(GET_URL);
+            url = new URL(GET_URL + paramString);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", USER_AGENT);
@@ -54,13 +62,19 @@ public class RetrieveMate implements Runnable {
                     response.append(inputLine);
                 }
                 in.close();
+
                 if (!String.valueOf(response).isEmpty()) {
-                    String[] mates = String.valueOf(response).split(";");
-                    return mates;
+
+                    System.out.println("RetrieveMonsters:requestServer " + response);
+
+                    String[] monsters = String.valueOf(response).split("#");
+                    return monsters;
                 }
 
+                ////////////////////////// LOBBY !!!!!!!!!!!!!!!!!!!!!
+
             } else {
-                System.out.println("GET request did not work.");
+                System.out.println("RetrieveMonsters:requestServer did not work.");
             }
         } catch (MalformedURLException e) {
         } catch (IOException e) {
@@ -68,10 +82,11 @@ public class RetrieveMate implements Runnable {
         return null;
     }
 
-    private static String buildParam(Player player) {
+    private static String buildParam() {
         String param = "?";
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
         param = param + "&numLobby=" + player.getNumLobby();
+
         return param;
     }
 

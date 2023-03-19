@@ -9,19 +9,17 @@ import com.badlogic.gdx.utils.Align;
 import com.google.firebase.database.snapshot.Index;
 
 public class DebugOnScreen {
-    private static final int MAX_TEXTS = 50;
-
+    public static final int MAX_TEXTS = 25;
     private static int SCREEN_HALF_WIDTH, SCREEN_HALF_HEIGHT;
     private static int DEBUG_WIDTH;
     private static int DEBUG_Y;
-    String[] debugTexts = new String[MAX_TEXTS];
+    private String[] debugTexts = new String[MAX_TEXTS];
     private final SpriteBatch spriteBatch;
 
     //font.draw(batch, "Score", HUDLeftX, HUDRow1Y, HUDSectionWidth, Align.left, false);
 
     BitmapFont font;
     ClampedCamera cam;
-
 
     public DebugOnScreen(SpriteBatch batch, ClampedCamera clampedCamera) {
         cam = clampedCamera;
@@ -31,8 +29,8 @@ public class DebugOnScreen {
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         fontParameter.size = 20;
         fontParameter.borderWidth = 2.6f;
-        fontParameter.color = new Color(1, 1, 1, 0.5f);
-        fontParameter.borderColor = new Color(0, 0, 0, 0.5f);
+        fontParameter.color = new Color(1, 1, 1, 0.9f);
+        fontParameter.borderColor = new Color(0, 0, 0, 0.8f);
         fontParameter.spaceX = 1;
 
         font = fontGenerator.generateFont(fontParameter);
@@ -70,9 +68,9 @@ public class DebugOnScreen {
                 sb.append("> " + s.trim() + "\n");
         }
 
-        font.draw(spriteBatch, sb,
-                cam.position.x - SCREEN_HALF_WIDTH, cam.position.y + SCREEN_HALF_HEIGHT,
-                DEBUG_WIDTH, Align.left, true);
+        float x = (cam.position.x ) - SCREEN_HALF_WIDTH* cam.zoom;
+        float y = (cam.position.y  - 3) + SCREEN_HALF_HEIGHT* cam.zoom;
+        font.draw(spriteBatch, sb, x, y, DEBUG_WIDTH, Align.left, true);
     }
 
     public void setText(int textIndex, String text) {

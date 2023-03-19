@@ -235,7 +235,7 @@ public class Map {
         // Met à jour de la liste de tous les entités
         //-------------------------------------------------
         livingEntitiesList.clear();
-        if (monsters != null) livingEntitiesList.addAll(monsters.getMobs());
+        if (monsters != null) livingEntitiesList.addAll(monsters.getDrawMobs());
 
         if (mates != null) livingEntitiesList.addAll(Mates.getMates());
 

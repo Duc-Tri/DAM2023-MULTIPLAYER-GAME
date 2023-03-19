@@ -188,9 +188,11 @@ public class LivingEntity implements Entity {
         return hitbox.y + hitbox.height / 2; // HITBOX_YOFFSET
     }
 
-    protected long nextUniqueId() {
+    protected int nextUniqueId() {
+
         // protected = uniquement pour les classes filles
-        return Math.abs(System.currentTimeMillis() + (int) (Math.random() * 1000000));
+        //return Math.abs(System.currentTimeMillis() + (int) (Math.random() * 1000000));
+        return numLivingEntity + (int) (Math.random() * 10000);
     }
 
 }

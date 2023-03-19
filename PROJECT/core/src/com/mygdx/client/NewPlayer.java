@@ -38,8 +38,10 @@ public class NewPlayer {
                 player.setServerUniqueID(resp[0]);
                 player.setNumLobby(resp[1]);
                 player.setMaster(resp[2].trim().equalsIgnoreCase("true"));
+                ////////////////////////////////////////////////////////
+                player.setMaster(true);
 
-                //System.out.println("NewPlayer ###### " + String.join(" / ", resp));
+                System.out.println("NewPlayer ###### " + String.join(" / ", resp));
             }
 
         } catch (MalformedURLException e) {

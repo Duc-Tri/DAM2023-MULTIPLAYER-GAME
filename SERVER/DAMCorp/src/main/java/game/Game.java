@@ -4,23 +4,23 @@ import game.entity.Player;
 
 public class Game {
 
-	final static int poolSize = 100;
+	private final static int POOLSIZE = 50;
 	static int staticIdCpt;
-	final static int lobbySize = 3;
+	private final static int LOBBYSIZE = 3;
 	static int numLobby = 0;
-	static Player[][] players = new Player[poolSize][lobbySize];
+	static Player[][] players = new Player[POOLSIZE][LOBBYSIZE];
 	static int cptLobby = 0;
-	private final static long TIMEOUT = 10000L;
+	private final static long TIMEOUT = 30000L;
 
 	public boolean possibleToScribe() {
-		if (staticIdCpt * cptLobby < poolSize * lobbySize) {
+		if (staticIdCpt * cptLobby < POOLSIZE * LOBBYSIZE) {
 			return true;
 		}
 		return false;
 	}
 
 	public String getNextId() {
-		if (staticIdCpt < lobbySize) {
+		if (staticIdCpt < LOBBYSIZE) {
 			return "" + staticIdCpt++;
 		}
 		staticIdCpt = 0;
@@ -30,7 +30,7 @@ public class Game {
 	public void addPlayer(Player player) {
 		int serverId = Integer.parseInt(player.getServerUniqueID());
 
-		if (cptLobby >= lobbySize) {
+		if (cptLobby >= LOBBYSIZE) {
 			cptLobby = 0;
 			numLobby++;
 		}
@@ -56,7 +56,7 @@ public class Game {
 	}
 
 	public void addPlayer(Player player, int numLobby) {
-		if (numLobby < lobbySize) {
+		if (numLobby < POOLSIZE) {
 			for (int i = 0; i < players[numLobby].length; i++) {
 				if (players[numLobby] == null) {
 					players[numLobby][i] = player;

@@ -9,11 +9,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
+import com.mygdx.client.RetrieveMonsters;
 import com.mygdx.client.RetrieveUpdatePlayer;
+import com.mygdx.client.UpdateMonsters;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Monsters;
@@ -25,7 +26,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class GameScreen implements Screen, InputProcessor {
-
     private static Player player; // main player
     private final MainGame mainGame;
     private Mates mates;
@@ -53,9 +53,13 @@ public class GameScreen implements Screen, InputProcessor {
     ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     ThreadPoolExecutor threadPoolExecutor1 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     ThreadPoolExecutor threadPoolExecutor2 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolExecutor3 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolExecutor4 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     UpdatePlayer updatePlayer;
     RetrieveMate retrieveMate;
     RetrieveUpdatePlayer retrieveUpdatePlayer;
+    private UpdateMonsters updateMonsters;
+    private RetrieveMonsters retrieveMonsters;
 
     public GameScreen(String mapFilename, MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -63,36 +67,33 @@ public class GameScreen implements Screen, InputProcessor {
 
         mainGame = game;
         createPlayer();
-        mates = new Mates(player);
 
         batch = new SpriteBatch();
-
         map = loadMap(mapFilename, batch);
+        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
+        batch.setProjectionMatrix(clampedCamera.combined);
 
         shapeRenderer = new ShapeRenderer();
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
-
         joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
-        batch.setProjectionMatrix(clampedCamera.combined);
-        debugOS = new DebugOnScreen(batch,clampedCamera);
 
-        monsters = new Monsters(map);
-        if (MainGame.getInstance().isSoloGameMode()) {
-            monsters.spawnMonsters(map.getMonstersToSpawn());
-            monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
+        debugOS = new DebugOnScreen(batch, clampedCamera);
+
+        monsters = new Monsters(map, player);
+
+        if (mainGame.isMultiplayerGameMode()) {
+            mates = new Mates(player);
+            createThreadsPool();
         }
-
-        createThreadsPool();
     }
 
     private void createPlayer() {
-        player = new Player();
+        player = new Player(map);
         player.setX(100); // temp
         player.setY(100); // temp
-        NewPlayer.requestServer(player);
-        System.out.println();
+        if (mainGame.isMultiplayerGameMode())
+            NewPlayer.requestServer(player);
     }
 
     private Map loadMap(String mapFilename, SpriteBatch sb) {
@@ -110,6 +111,17 @@ public class GameScreen implements Screen, InputProcessor {
 
         retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
         threadPoolExecutor2.submit(retrieveUpdatePlayer);
+
+        // SLAVES & MASTER
+        retrieveMonsters = new RetrieveMonsters(player, monsters);
+        threadPoolExecutor3.submit(retrieveMonsters);
+
+        // MASTER ONLY
+        if (player.isMaster()) {
+            System.out.println(player.getUniqueID() + " IS MASTER **********************");
+            updateMonsters = new UpdateMonsters(player, monsters);
+            threadPoolExecutor4.submit(updateMonsters);
+        }
     }
 
     public static Map getMap() {
@@ -140,7 +152,7 @@ public class GameScreen implements Screen, InputProcessor {
             }
         }
 
-        monsters.moveToPlayer(deltaTime);
+        monsters.update(deltaTime);
 
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -168,10 +180,16 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     private void debugOnScreen() {
-        debugOS.setText(0, player.getUniqueID());
-        debugOS.setText(1, "" + System.currentTimeMillis());
-        debugOS.drawTexts();
         //debugOS.draw("Score AZER AZETGEZA REZA ", 0, 0);
+        debugOS.setText(0, mainGame.getGameMode() + " / " + monsters.getMonstersMode());
+        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
+        debugOS.setText(2, "" + System.currentTimeMillis());
+
+
+//        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
+//            debugOS.setText(i, i + "/" + System.currentTimeMillis());
+
+        debugOS.drawTexts();
     }
 
     private void submitThreadJobs() {
@@ -195,6 +213,15 @@ public class GameScreen implements Screen, InputProcessor {
         if (threadPoolExecutor2.getActiveCount() < 1) {
             //System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
+        }
+
+        if (threadPoolExecutor3.getActiveCount() < 1) {
+            //System.out.println("retrieveMonsters    RESTART");
+            threadPoolExecutor3.submit(retrieveMonsters);
+        }
+        if (player.isMaster() && threadPoolExecutor4.getActiveCount() < 1) {
+            //System.out.println("updateMonsters    RESTART");
+            threadPoolExecutor4.submit(updateMonsters);
         }
 
 //        retrieveMate = new RetrieveMate(player);
@@ -264,21 +291,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void movePlayer(String dirKeyword, int deltaX, int deltaY) {
 
-        player.animate(dirKeyword);
-
-        if (MainGame.getInstance().getMap().checkObstacle(player, deltaX, deltaY))
-            return; // OBSTACLE ! on ne bouge pas !
-
-        if (deltaX != 0) {
-            player.setX(player.getX() + deltaX);
-        }
-
-        if (deltaY != 0) {
-            player.setY(player.getY() + deltaY);
-        }
-
+        player.move(dirKeyword, deltaX, deltaY);
         clampedCamera.centerOnPlayer();
-
     }
 
     //boolean[] keyOns = new boolean[200];
@@ -346,11 +360,6 @@ public class GameScreen implements Screen, InputProcessor {
 }
 
 /*
-
-    public Map getMap() {
-        return map;
-    }
-
     public static boolean isLockOnListReadFromDB() {
         return lockOnListReadFromDB;
     }
@@ -358,5 +367,4 @@ public class GameScreen implements Screen, InputProcessor {
     public static void setLockOnListReadFromDB(boolean lockOnListReadFromDB) {
         MainGame.lockOnListReadFromDB = lockOnListReadFromDB;
     }
-
  */

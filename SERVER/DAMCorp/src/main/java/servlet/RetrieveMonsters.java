@@ -7,19 +7,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import game.Game;
-import game.entity.Player;
 
 /**
- * Servlet implementation class RetrieveMate
+ * Servlet implementation class RetrieveMonsters
  */
-public class RetrieveMate extends HttpServlet {
+public class RetrieveMonsters extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Game game = new Game();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public RetrieveMate() {
+	public RetrieveMonsters() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -30,12 +29,14 @@ public class RetrieveMate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+				/*
 		String serverUniqueID = request.getParameter("serverUniqueID");
 		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
 			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"),
 					request.getParameter("numLobby"));
 			response.getWriter().append(game.retrieveMate(player));
 		}
+		*/
 	}
 
 	/**
