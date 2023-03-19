@@ -6,7 +6,6 @@ import com.mygdx.entity.Player;
 import com.mygdx.map.Map;
 
 public class ClampedCamera extends OrthographicCamera {
-
     float CLAMP_X_MIN;
     float CLAMP_X_MAX;
     float CLAMP_Y_MIN;

@@ -1,7 +1,6 @@
 package servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,12 +32,13 @@ public class RetrieveUpdatePlayer extends HttpServlet {
 			throws ServletException, IOException {
 		String serverUniqueID = request.getParameter("serverUniqueID");
 		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
-			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"),request.getParameter("numLobby"));
+			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"),
+					request.getParameter("numLobby"));
+
 			if (player != null) {
 				response.getWriter().append(player.getX());
 				response.getWriter().append(";" + player.getY());
 				response.getWriter().append(";" + player.getFindRegion());
-
 			}
 		}
 	}

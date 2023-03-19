@@ -33,9 +33,13 @@ public class NewPlayer {
                     response.append(inputLine);
                 }
                 in.close();
+
                 String[] resp = String.valueOf(response).split(";");
+
+                System.out.println("NewPlayer ###### " + String.join(" / ", resp));
                 player.setServerUniqueID(resp[0]);
                 player.setNumLobby(resp[1]);
+                player.setMaster(resp[2].trim().equalsIgnoreCase("true"));
             }
 
         } catch (MalformedURLException e) {

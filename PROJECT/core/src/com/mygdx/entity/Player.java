@@ -15,6 +15,7 @@ public class Player extends LivingEntity {
     private static TextureAtlas allPlayersAtlas;
     private String lobbyPlayerId;
     private String numLobby = "";
+    private boolean isMaster;
 
     public Player() {
 
@@ -24,11 +25,11 @@ public class Player extends LivingEntity {
             allPlayersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.PLAYERS_ATLAS));
         }
 
-        System.out.println("---------------------------- CONSTRUCTOR Player");
+        uniqueID = "player" + nextUniqueId();
+
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
-        uniqueID = "player" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
         // TODO : remove randomness
@@ -41,6 +42,8 @@ public class Player extends LivingEntity {
         // to position everything well ----------
         setX(getX());
         setY(getY());
+
+        System.out.println("---------------------------- CONSTRUCTOR Player");
     }
 
     @Override
@@ -96,5 +99,14 @@ public class Player extends LivingEntity {
 
     public void setLobbyPlayerId(String lobbyPlayerId) {
         this.lobbyPlayerId = lobbyPlayerId;
+    }
+
+    public boolean isMaster() {
+        return isMaster;
+    }
+
+    public void setMaster(boolean master) {
+        isMaster = master;
+        System.out.println("setMaster ============================= " + isMaster + " / " + MainGame.getGameMode());
     }
 }

@@ -12,9 +12,9 @@ public class MainGame extends Game {
     // CONSTANTES DU JEU ==========================================================================/
 //    public final static String URLServer = "http://localhost:8080/DAMCorp/"; // marche UNIQUEMENT en DESKTOP
 //    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison
-//    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison
+    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison
 
-    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/";
+//    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/";
 
     //    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
 //     public final static String URLServer = "http://192.168.0.49:6565/DAMCorp/";
@@ -23,10 +23,14 @@ public class MainGame extends Game {
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
     public final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
     public final static String MONSTERS_ATLAS = "characters/RMXP_monsters.atlas";
+
     //==============================================================================================
 
+    public enum GameMode {SOLO, MULTIPLAYER, BRAWLER}
+
     private static String config; // "android" or "desktop";
-    GameScreen gameScreen;
+    private static GameMode gameMode;
+    private GameScreen gameScreen;
 
     private static MainGame instance;
 
@@ -37,6 +41,7 @@ public class MainGame extends Game {
     }
 
     private MainGame() {
+        gameMode = GameMode.SOLO;
         // SINGLETION design pattern
     }
 
@@ -77,6 +82,14 @@ public class MainGame extends Game {
 
     public static Map getMap() {
         return GameScreen.getMap();
+    }
+
+    public static GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public static void setGameMode(GameMode gameMode) {
+        MainGame.gameMode = gameMode;
     }
 
 }

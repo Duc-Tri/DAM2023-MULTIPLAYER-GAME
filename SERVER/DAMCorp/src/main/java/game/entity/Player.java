@@ -12,9 +12,10 @@ public class Player {
 	private String spriteColorInt;
 	private String findRegion;
 	private String textureAtlasPath;
-	private String scale;
-	private String numLobby="";
+	private String numLobby = "";
+
 	private long lastUpdate;
+	private boolean isMaster;
 
 	public Player(String uniqueID, String serverUniqueID) {
 		super();
@@ -95,14 +96,6 @@ public class Player {
 		this.textureAtlasPath = textureAtlasPath;
 	}
 
-	public String getScale() {
-		return scale;
-	}
-
-	public void setScale(String scale) {
-		this.scale = scale;
-	}
-
 	public long getLastUpdate() {
 		return lastUpdate;
 	}
@@ -127,11 +120,16 @@ public class Player {
 		this.lobbyPlayerId = lobbyPlayerId;
 	}
 
-	
-	
-	
-	
-	
-	
-	
+	public boolean isMaster() {
+		return isMaster;
+	}
+
+	public void setMaster(boolean isMaster) {
+		this.isMaster = isMaster;
+	}
+
+	public void setMaster(String master) {
+		this.isMaster = master.trim().toUpperCase().equalsIgnoreCase("true");
+	}
+
 }

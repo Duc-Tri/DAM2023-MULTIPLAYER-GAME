@@ -49,15 +49,17 @@ public class Mob extends LivingEntity {
     }};
 
     public Mob(MonsterType type) {
+
+        // TEXTURE DE TOUS LES MOBS ---------------------------------------------------------------
         if (allMonstersAtlas == null) {
             System.out.println((numMob++) + "_initializeSprite .......... " + MainGame.MONSTERS_ATLAS);
             allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
         }
 
+        uniqueID = "mob" + nextUniqueId();
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
-        uniqueID = "mob" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
         // TODO : remove randomness
