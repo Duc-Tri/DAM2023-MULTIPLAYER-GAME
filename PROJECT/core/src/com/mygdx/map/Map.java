@@ -108,13 +108,11 @@ public class Map {
                 .getChildrenByNameRecursively("text").first().getText();
 
         /*
+        System.out.println("########################## " + textMessage);
         if (monstersToSpawn.toLowerCase().startsWith("spawn monsters"))
             return monstersToSpawn;
-        else
-            return null;
+        else             return null;
          */
-
-        //System.out.println("################################## " + textMessage);
 
         return textMessage;
     }

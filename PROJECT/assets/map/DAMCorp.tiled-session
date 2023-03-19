@@ -10,18 +10,18 @@
     "fileStates": {
         "DAMCorp_1.tmx": {
             "scale": 1,
-            "selectedLayer": 6,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 358,
-                "y": 94
+                "x": 365,
+                "y": 93
             }
         },
         "DAMCorp_2.tmx": {
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 556.5,
-                "y": 238
+                "x": 480,
+                "y": 239.5
             }
         },
         "DAMCorp_test - Copie.tmx": {
@@ -36,8 +36,8 @@
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 959,
-                "y": 794
+                "x": 800,
+                "y": 801
             }
         },
         "DAMCorp_tuiles.tsx": {

@@ -14,7 +14,7 @@ import java.net.URL;
 
 public class RetrievePlayer {
     public static void requestServer(Player player) {
-        String GET_URL = MainGame.URLServer+"RetrievePlayer";
+        String GET_URL = MainGame.URLServer + "RetrievePlayer";
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
@@ -33,7 +33,7 @@ public class RetrievePlayer {
                     response.append(inputLine);
                 }
                 in.close();
-                String [] tempString = String.valueOf(response).split(";");
+                String[] tempString = String.valueOf(response).split(";");
                 updatePlayer(player, tempString);
             } else {
                 System.out.println("GET request did not work.");
@@ -43,8 +43,8 @@ public class RetrievePlayer {
         }
     }
 
-    private  static void updatePlayer(Player player, String[] tempString) {
-        if(tempString[0]!=null  && !tempString[0].isEmpty()){
+    private static void updatePlayer(Player player, String[] tempString) {
+        if (tempString[0] != null && !tempString[0].isEmpty()) {
             player.setHitbox(new Rectangle());
             player.setSprite(new Sprite());
             player.setX(Float.parseFloat(tempString[0]));

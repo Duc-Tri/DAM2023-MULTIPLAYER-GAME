@@ -21,7 +21,7 @@ public class Player extends LivingEntity {
 
         // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
         if (allPlayersAtlas == null) {
-            System.out.println("initializeSprite .......... " + MainGame.PLAYERS_ATLAS);
+            //System.out.println("initializeSprite .......... " + MainGame.PLAYERS_ATLAS);
             allPlayersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.PLAYERS_ATLAS));
         }
 
@@ -43,7 +43,7 @@ public class Player extends LivingEntity {
         setX(getX());
         setY(getY());
 
-        System.out.println("---------------------------- CONSTRUCTOR Player");
+        System.out.println("---------------------------- CONSTRUCTOR Player " + uniqueID);
     }
 
     @Override
@@ -107,6 +107,8 @@ public class Player extends LivingEntity {
 
     public void setMaster(boolean master) {
         isMaster = master;
-        System.out.println("setMaster ============================= " + isMaster + " / " + MainGame.getGameMode());
+        if (isMaster)
+            System.out.println(uniqueID + " *** setMaster ========== " + isMaster +
+                    " / " + MainGame.getGameMode());
     }
 }

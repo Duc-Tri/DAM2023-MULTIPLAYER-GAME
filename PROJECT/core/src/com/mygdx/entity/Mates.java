@@ -21,9 +21,9 @@ public class Mates {
     }
 
     public static void removeOldMates(String[] tempMates) {
-        for (int i = mates.size()-1 ; i>-1 ; i--) {
+        for (int i = mates.size() - 1; i > -1; i--) {
             boolean found = false;
-            if(tempMates!=null){
+            if (tempMates != null) {
                 for (String oneMate : tempMates) {
 //                    System.out.println("Début");
 //                    System.out.println("oneMate   " + oneMate);
@@ -31,7 +31,7 @@ public class Mates {
 //                    System.out.println("Fin");
                     if (oneMate != null && !oneMate.isEmpty()) {
                         if (oneMate.equalsIgnoreCase(mates.get(i).getServerUniqueID())) {
-                            if (  oneMate.equalsIgnoreCase(mates.get(i).getServerUniqueID())) {
+                            if (oneMate.equalsIgnoreCase(mates.get(i).getServerUniqueID())) {
                                 found = true;
                                 break;
                             }
@@ -70,7 +70,7 @@ public class Mates {
 
     private String[] ids() {
         String[] uids = new String[mates.size()];
-         for (int i = 0; i < mates.size(); i++) {
+        for (int i = 0; i < mates.size(); i++) {
             uids[i] = mates.get(i).getServerUniqueID();
         }
         return uids;
@@ -95,7 +95,7 @@ public class Mates {
 
                     for (Mate m : mates) {
 
-                        if ( oneMate.equalsIgnoreCase(m.getServerUniqueID())) {
+                        if (oneMate.equalsIgnoreCase(m.getServerUniqueID())) {
                             found = true;
                             break;
                         }

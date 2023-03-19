@@ -139,25 +139,27 @@ public class Monsters {
         String[] monsters = monstersToSpawn.split("\n");
         for (String line : monsters) {
 
-            if (line.contains("=") && line.contains("@")) {
+            if (line.contains(";")) {
 
                 // exemple de texte reçu depuis le TiledMap
                 //-------------------------------------------------
-                // OCTOPUS      =  1@spawn_01
-                // BLOB         =3     @spawn_01
-                // LIVING_TREE  =0   @spawn_01
+                // OCTOPUS      ;1 ;spawn_01
+                // BLOB         ;3 ;spawn_02
+                // LIVING_TREE  ;0 ;spawn_03
 
-                String[] mob_numspawn = line.split("="); // TYPE_MONSTRE   =NOMBRE   @SPAWN_PT
-                String[] num_spawn = mob_numspawn[1].split("@");
+                String[] mob_num_spawn = line.split(";"); // TYPE_MONSTRE; NOMBRE; SPAWN_PT
 
-                Mob.MonsterType type = null; // le type de monstre
-                int num = -1; // le nombre à spawn
-                String spawnArea = ""; // le point de spawn sur la carte (rectangle)
+                // -------------------------- le type de monstre à spawn
+                Mob.MonsterType type = null;
+                // -------------------------- le nombre
+                int num = -1;
+                // -------------------------- la zone de spawn sur la carte
+                String spawnArea = "";
 
                 try {
-                    type = Mob.MonsterType.valueOf(mob_numspawn[0].trim());
-                    num = Integer.parseInt(num_spawn[0].trim());
-                    spawnArea = num_spawn[1].trim().toUpperCase();
+                    type = Mob.MonsterType.valueOf(mob_num_spawn[0].trim());
+                    num = Integer.parseInt(mob_num_spawn[1].trim());
+                    spawnArea = mob_num_spawn[2].trim().toUpperCase();
                 } catch (Exception e) {
                     //e.printStackTrace();
                 }
