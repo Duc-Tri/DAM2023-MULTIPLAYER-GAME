@@ -59,9 +59,9 @@ public class TestMonstersScreen extends ApplicationAdapter implements InputProce
 
         shapeRenderer = new ShapeRenderer();
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 0.5f : 0.25f);
+        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 0.5f : 0.25f);
 
-        joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
+        joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
         batch.setProjectionMatrix(clampedCamera.combined);
     }

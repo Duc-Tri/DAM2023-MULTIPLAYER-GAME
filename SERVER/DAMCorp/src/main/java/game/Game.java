@@ -78,7 +78,7 @@ public class Game {
 	public String retrieveMate(Player player) {
 		String tempString = "";
 		int cpt = 0;
-		
+
 		if (player != null) {
 			int nLobby = Integer.parseInt(player.getNumLobby());
 			for (int i = 0; i < players[nLobby].length; i++) {

@@ -64,26 +64,6 @@ public class Player extends LivingEntity {
         //sprite.setColor(spriteTint);
     }
 
-    private float getRealX() {
-        float relativePlayerX = entityX - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
-        return relativePlayerX;
-    }
-
-    private float getRealY() {
-        float relativePlayerY = entityY - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
-        return relativePlayerY;
-    }
-
-    public void setYFromRealY() {
-        float temp = getRealY() - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
-        setY(temp);
-    }
-
-    public void setXFromRealX() {
-        float temp = getRealX() - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
-        setX(temp);
-    }
-
     public String getNumLobby() {
         return numLobby;
     }
@@ -91,7 +71,6 @@ public class Player extends LivingEntity {
     public void setNumLobby(String numLobby) {
         this.numLobby = numLobby;
     }
-
 
     public String getLobbyPlayerId() {
         return lobbyPlayerId;
@@ -109,6 +88,6 @@ public class Player extends LivingEntity {
         isMaster = master;
         if (isMaster)
             System.out.println(uniqueID + " *** setMaster ========== " + isMaster +
-                    " / " + MainGame.getGameMode());
+                    " / " + MainGame.getInstance().getGameMode());
     }
 }

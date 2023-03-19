@@ -42,14 +42,9 @@ public class Mates {
             }
             if (!found) {
 //                System.out.println("Remove   m  " + mates.get(i).getServerUniqueID());
-//                System.out.println("Remove   m  " + mates.get(i).getServerUniqueID());
                 mates.remove(i);
             }
         }
-//        System.out.println("mates.size() "  + mates.size());
-//        System.out.println("mates.size() "  + mates.size());
-//        System.out.println("mates.size() "  + mates.size());
-//        System.out.println("mates.size() "  + mates.size());
 //        System.out.println("mates.size() "  + mates.size());
 
     }
@@ -60,8 +55,6 @@ public class Mates {
 
     public void drawAndUpdate(SpriteBatch batch) {
         for (Mate m : mates) {
-            m.setXFromRealX();
-            m.setYFromRealY();
             if (m != null) {
                 m.drawAndUpdate(batch);
             }

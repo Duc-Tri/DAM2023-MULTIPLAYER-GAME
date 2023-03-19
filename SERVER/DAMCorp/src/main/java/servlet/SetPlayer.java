@@ -38,12 +38,12 @@ public class SetPlayer extends HttpServlet {
 		if (lobbyJoueurId != null && lobbyId != null && !lobbyJoueurId.isEmpty() && !lobbyId.isEmpty()
 				&& !lobbyJoueurId.equalsIgnoreCase("null") && !lobbyId.equalsIgnoreCase("null")) {
 			Player player = game.retrievePlayer(lobbyJoueurId, lobbyId);
-			
+
 			if (player != null) {
 				if (request.getParameter("x") != null) {
 					player.setX(request.getParameter("x"));
 				}
-				
+
 				if (request.getParameter("y") != null) {
 					player.setY(request.getParameter("y"));
 				}
@@ -71,7 +71,7 @@ public class SetPlayer extends HttpServlet {
 				if (request.getParameter("textureAtlasPath") != null) {
 					player.setTextureAtlasPath(request.getParameter("textureAtlasPath"));
 				}
-				
+
 				if (request.getParameter("master") != null) {
 					player.setMaster(request.getParameter("master"));
 				}

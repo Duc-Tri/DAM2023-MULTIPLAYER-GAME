@@ -10,7 +10,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 
-// Entity qui
+//#################################################################################################
+// Entity qui possède des points de vie, des sprites, etc.
+//
+//#################################################################################################
 public class LivingEntity implements Entity {
     public static final boolean DEBUG_HITBOX = false;
     protected TextureAtlas textureAtlas;
@@ -41,9 +44,12 @@ public class LivingEntity implements Entity {
     protected String serverUniqueID;
 
     protected String RMXP_CHARACTER; // non de la région texture dans l'atlas
-    private static int numLivingEntity = 0; // sert d'identificateur unique
+    private static int numLivingEntity = 0;
+    private static MainGame mainGame;
 
     public LivingEntity() {
+        if (mainGame == null) mainGame = MainGame.getInstance();
+
         //System.out.println("########## CONSTRUCTOR LivingEntity");
         numLivingEntity++;
     }
@@ -55,46 +61,21 @@ public class LivingEntity implements Entity {
     @Override
     public void animate(String string) {
         if (string.contentEquals("LEFT")) {
-            compteurDown = 0;
-            compteurUp = 0;
-            compteurRight = 0;
-            compteurLeft++;
-            if (compteurLeft == RMXPCharactersAtlas.ANIM_FRAMES) {
-                compteurLeft = 0;
-            }
+            compteurLeft = (compteurLeft + 1) % RMXPCharactersAtlas.ANIM_FRAMES;
             findRegion = RMXP_CHARACTER + "LEFT_" + compteurLeft;
-            textureRegion = textureAtlas.findRegion(findRegion);
         } else if (string.contentEquals("RIGHT")) {
-            compteurDown = 0;
-            compteurUp = 0;
-            compteurLeft = 0;
-            compteurRight++;
-            if (compteurRight == RMXPCharactersAtlas.ANIM_FRAMES) {
-                compteurRight = 0;
-            }
+            compteurRight = (compteurRight + 1) % RMXPCharactersAtlas.ANIM_FRAMES;
             findRegion = RMXP_CHARACTER + "RIGHT_" + compteurRight;
-            textureRegion = textureAtlas.findRegion(findRegion);
         } else if (string.contentEquals("UP")) {
-            compteurDown = 0;
-            compteurRight = 0;
-            compteurLeft = 0;
-            compteurUp++;
-            if (compteurUp == RMXPCharactersAtlas.ANIM_FRAMES) {
-                compteurUp = 0;
-            }
+            compteurUp = (compteurUp + 1) % RMXPCharactersAtlas.ANIM_FRAMES;
             findRegion = RMXP_CHARACTER + "UP_" + compteurUp;
-            textureRegion = textureAtlas.findRegion(findRegion);
         } else if (string.contentEquals("DOWN")) {
-            compteurUp = 0;
-            compteurRight = 0;
-            compteurLeft = 0;
-            compteurDown++;
-            if (compteurDown == RMXPCharactersAtlas.ANIM_FRAMES) {
-                compteurDown = 0;
-            }
+            compteurDown = (compteurDown + 1) % RMXPCharactersAtlas.ANIM_FRAMES;
             findRegion = RMXP_CHARACTER + "DOWN_" + compteurDown;
-            textureRegion = textureAtlas.findRegion(findRegion);
         }
+
+        textureRegion = textureAtlas.findRegion(findRegion);
+        //System.out.println("animate _______________ " + findRegion);
         sprite.setRegion(textureRegion);
     }
 
@@ -195,7 +176,8 @@ public class LivingEntity implements Entity {
 
         sprite.draw(batch);
 
-        if (DEBUG_HITBOX) batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        if (DEBUG_HITBOX)
+            batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
 
     public float getMiddleOfHitboxX() {

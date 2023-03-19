@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
@@ -26,6 +27,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class GameScreen implements Screen, InputProcessor {
 
     private static Player player; // main player
+    private final MainGame mainGame;
     private Mates mates;
     private Monsters monsters;
     private boolean showJoystick = false;
@@ -45,6 +47,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Texture testImage = new Texture(testImageFile);
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
+    private DebugOnScreen debugOS;
 
     int threadPoolSize = 15;
     ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
@@ -54,10 +57,11 @@ public class GameScreen implements Screen, InputProcessor {
     RetrieveMate retrieveMate;
     RetrieveUpdatePlayer retrieveUpdatePlayer;
 
-    public GameScreen(String mapFilename) {
+    public GameScreen(String mapFilename, MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
+        mainGame = game;
         createPlayer();
         mates = new Mates(player);
 
@@ -67,15 +71,18 @@ public class GameScreen implements Screen, InputProcessor {
 
         shapeRenderer = new ShapeRenderer();
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 1f : 0.25f);
+        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
 
-        joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
+        joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
         batch.setProjectionMatrix(clampedCamera.combined);
+        debugOS = new DebugOnScreen(batch,clampedCamera);
 
         monsters = new Monsters(map);
-        monsters.spawnMonsters(map.getMonstersToSpawn());
-        monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
+        if (MainGame.getInstance().isSoloGameMode()) {
+            monsters.spawnMonsters(map.getMonstersToSpawn());
+            monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
+        }
 
         createThreadsPool();
     }
@@ -90,9 +97,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     private Map loadMap(String mapFilename, SpriteBatch sb) {
         Map m = new Map(mapFilename, sb);
-        //m.setView(clampedCamera);
-//        mapPixelsHeight = m.mapPixelsHeight();
-//        mapPixelsWidth = m.mapPixelsWidth();
 
         return m;
     }
@@ -119,7 +123,8 @@ public class GameScreen implements Screen, InputProcessor {
     // deltaTime = temps depuis la dernière frame
     public void render(float deltaTime) {
 
-        submitThreadJobs();
+        if (mainGame.isMultiplayerGameMode())
+            submitThreadJobs();
 
         displayJoystick();
 
@@ -152,12 +157,21 @@ public class GameScreen implements Screen, InputProcessor {
         map.setView(clampedCamera);
         map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
 
+        debugOnScreen(); // TOUT A LA FIN !!!
+
         batch.end(); //========================================================
 
 
         if (showJoystick) {
             joystick.render(shapeRenderer);
         }
+    }
+
+    private void debugOnScreen() {
+        debugOS.setText(0, player.getUniqueID());
+        debugOS.setText(1, "" + System.currentTimeMillis());
+        debugOS.drawTexts();
+        //debugOS.draw("Score AZER AZETGEZA REZA ", 0, 0);
     }
 
     private void submitThreadJobs() {
@@ -252,7 +266,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         player.animate(dirKeyword);
 
-        if (MainGame.getMap().checkObstacle(player, deltaX, deltaY))
+        if (MainGame.getInstance().getMap().checkObstacle(player, deltaX, deltaY))
             return; // OBSTACLE ! on ne bouge pas !
 
         if (deltaX != 0) {
@@ -268,7 +282,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     //boolean[] keyOns = new boolean[200];
-    int lastKeyCode = Input.Keys.ESCAPE; // pour faire simple ...
+    int lastKeyCode = Input.Keys.PRINT_SCREEN; // pour faire simple ...
 
     @Override
     public boolean keyDown(int keycode) {
@@ -282,7 +296,7 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean keyUp(int keycode) {
         showJoystick = false;
         //keyOns[keycode] = false;
-        lastKeyCode = Input.Keys.ESCAPE;
+        lastKeyCode = Input.Keys.PRINT_SCREEN;
         return false;
     }
 

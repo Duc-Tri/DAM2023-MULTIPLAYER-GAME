@@ -10,7 +10,7 @@ public class AndroidLauncher extends AndroidApplication {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MainGame.setConfig("android");
+        MainGame.getInstance().setConfig("android");
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         initialize(MainGame.getInstance(), config);

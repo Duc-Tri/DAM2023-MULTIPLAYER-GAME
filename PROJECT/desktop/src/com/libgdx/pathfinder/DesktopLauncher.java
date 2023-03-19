@@ -17,7 +17,7 @@ public class DesktopLauncher {
         config.setTitle("DESKTOP");
         config.setWindowedMode(900, 600);
 
-        MainGame.setConfig("desktop");
+        MainGame.getInstance().setConfig("desktop");
 
 
         // JEU CLIENT + SERVEUR ###################################################################

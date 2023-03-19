@@ -28,8 +28,8 @@ public class MainGame extends Game {
 
     public enum GameMode {SOLO, MULTIPLAYER, BRAWLER}
 
-    private static String config; // "android" or "desktop";
-    private static GameMode gameMode;
+    private String config; // "android" or "desktop";
+    private final GameMode gameMode;
     private GameScreen gameScreen;
 
     private static MainGame instance;
@@ -45,22 +45,22 @@ public class MainGame extends Game {
         // SINGLETION design pattern
     }
 
-    public static void setConfig(String c) {
+    public void setConfig(String c) {
         config = c;
     }
 
-    public static boolean runOnAndroid() {
+    public boolean runOnAndroid() {
         return config.equalsIgnoreCase("android");
     }
 
-    public static boolean runOnDesktop() {
+    public boolean runOnDesktop() {
         return config.equalsIgnoreCase("Desktop");
     }
 
     @Override
     public void create() {
         FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
-        gameScreen = new GameScreen(mapFilename);
+        gameScreen = new GameScreen(mapFilename, this);
         setScreen(gameScreen);
         Gdx.input.setInputProcessor(gameScreen);
     }
@@ -80,16 +80,24 @@ public class MainGame extends Game {
         gameScreen.resize(width, height);
     }
 
-    public static Map getMap() {
+    public Map getMap() {
         return GameScreen.getMap();
     }
 
-    public static GameMode getGameMode() {
+    public GameMode getGameMode() {
         return gameMode;
     }
 
-    public static void setGameMode(GameMode gameMode) {
-        MainGame.gameMode = gameMode;
+    public boolean isSoloGameMode() {
+        return gameMode == GameMode.SOLO;
+    }
+
+    public boolean isMultiplayerGameMode() {
+        return gameMode == GameMode.MULTIPLAYER;
+    }
+
+    public boolean isBrawlerGameMode() {
+        return gameMode == GameMode.BRAWLER;
     }
 
 }
