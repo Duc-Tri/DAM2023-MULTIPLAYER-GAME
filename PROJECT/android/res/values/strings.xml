@@ -27,4 +27,14 @@
         <item>profil4</item>
     </string-array>
 
+    <string-array name="playerID">
+        <item>Tri</item>
+        <item>Philippe</item>
+        <item>Mathias</item>
+        <item>Inan</item>
+        <item>PetitCailloux</item>
+
+    </string-array>
+
+
 </resources>
