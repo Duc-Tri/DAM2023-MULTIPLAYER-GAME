@@ -4,12 +4,14 @@ package com.mygdx.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 import com.mygdx.map.Map;
+import com.mygdx.weapon.Sword;
 
 //#################################################################################################
 //=================================================================================================
@@ -20,8 +22,8 @@ public class Player extends LivingEntity {
     private String lobbyPlayerId;
     private String numLobby = "";
     private boolean isMaster;
-    private Monsters masterMobs; // simulation des monsters en mode MASTER
-    private static Map map;
+    private static Map map; // même carte pour tout le monde !
+    private Sword sword;
 
     public Player() {
         // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
@@ -41,6 +43,7 @@ public class Player extends LivingEntity {
 
         findRegion = RMXP_CHARACTER + "DOWN_0";
 
+        sword = new Sword(this);
         initializeSprite();
 
         // to position correctly hitbox + sprite well -------------------------
@@ -112,7 +115,19 @@ public class Player extends LivingEntity {
     }
 
     public void attack() {
-        Monsters.killRandom();
+        // Monsters.killRandom();
         // TODO: attaque avec une épée
+        sword.attack();
+    }
+
+    @Override
+    public void animate(String string) {
+        super.animate(string);
+        sword.animate(string);
+    }
+
+    public void drawAndUpdate(SpriteBatch batch) {
+        super.drawAndUpdate(batch);
+        sword.drawAndUpdate(batch);
     }
 }

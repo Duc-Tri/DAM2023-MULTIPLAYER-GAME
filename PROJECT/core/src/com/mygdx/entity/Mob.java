@@ -121,7 +121,6 @@ public class Mob extends LivingEntity {
 
     @Override
     public void initializeSprite() {
-
         // texture statique mob => texture locale de living_entity --------------------------------
         if (textureAtlas == null) {
             textureAtlas = allMonstersAtlas;

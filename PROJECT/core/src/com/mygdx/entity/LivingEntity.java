@@ -95,8 +95,6 @@ public class LivingEntity implements Entity {
     }
 
     public float getFootX() {
-        if (sprite == null) return 0;
-
         return entityX + sprite.getWidth() / 2;
     }
 

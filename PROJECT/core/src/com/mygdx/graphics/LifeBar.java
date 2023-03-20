@@ -11,11 +11,11 @@ import com.mygdx.entity.LivingEntity;
 
 public class LifeBar {
     private final static TextureAtlas colorsAtlas = new TextureAtlas("misc/colors.atlas");
-    private TextureRegion colorRegion;
     private final static TextureRegion blackRegion = colorsAtlas.findRegion("BLACK");
+    private TextureRegion colorRegion;
     private LivingEntity livingEntity;
-    private static final int WIDTH = 40;
-    private static final int HEIGHT = 2;
+    private static final int WIDTH = 32;
+    private static final int HEIGHT = 4;
     private float ratio;
     private int maxLife;
 

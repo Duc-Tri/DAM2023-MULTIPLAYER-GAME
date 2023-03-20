@@ -104,14 +104,14 @@
   <object id="7" name="spawner" x="358" y="-218.5" width="282" height="208">
    <text fontfamily="Source Code Pro" wrap="1">SPAWN MONSTERS
 
-SCORPION     ;0  ;spawn_01
-TROLL        ;0  ;spawn_02
-BAT          ;0  ;spawn_03
-IMP          ;0  ;spawn_01
-DEVIL        ;0  ;spawn_02
-OCTOPUS      ;0  ;spawn_03
-BLOB         ;0  ;spawn_01
-LIVING_TREE  ;0  ;spawn_02
+SCORPION     ;3  ;spawn_01
+TROLL        ;2  ;spawn_02
+BAT          ;5  ;spawn_03
+IMP          ;4  ;spawn_01
+DEVIL        ;1  ;spawn_02
+OCTOPUS      ;1  ;spawn_03
+BLOB         ;6  ;spawn_01
+LIVING_TREE  ;1  ;spawn_02
 </text>
   </object>
   <object id="9" name="SPAWN_03" x="857.5" y="142.5" width="62" height="45"/>
