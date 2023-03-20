@@ -14,9 +14,9 @@ public class MainGame extends Game {
 //    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison
 //    public final static String URLServer = "http://192.168.42.21:8080/DAMCorp/"; // tri maison
 
-//    public final static String URLServer = "http://172.16.200.104:8080/DAMCorp/"; // mathias greta
+    public final static String URLServer = "http://172.16.200.104:8080/DAMCorp/";
 
-    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
+//    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
 //     public final static String URLServer = "http://192.168.0.49:6565/DAMCorp/";
     //---------------------------------------------------------------------------------------------
     private final static String mapFilename = "map/DAMCorp_1.tmx"; //"map/DAMCorp_test.tmx";

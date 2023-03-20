@@ -32,7 +32,12 @@ public class RetrieveMate extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String serverUniqueID = request.getParameter("serverUniqueID");
-		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")) {
+		String numLobby = request.getParameter("numLobby");
+		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")
+				&& numLobby != null && !numLobby.isEmpty() && !numLobby.equals("null")
+				) {
+//			System.out.print("serverUniqueID " + serverUniqueID);
+//			System.out.println("        numLobby " + numLobby);
 			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"), request.getParameter("numLobby"));
 			response.getWriter().append(game.retrieveMate(player));	
 		}

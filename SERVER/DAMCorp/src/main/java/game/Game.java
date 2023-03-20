@@ -70,7 +70,7 @@ public class Game {
 	
 	
 	public Player retrievePlayer(String parameterIDserv, String paramLobby) {
-		if (parameterIDserv != null && !parameterIDserv.isEmpty() && !paramLobby.equalsIgnoreCase("null") && paramLobby != null && !paramLobby.isEmpty() && !paramLobby.equalsIgnoreCase("null")) {
+		if (parameterIDserv != null && !parameterIDserv.isEmpty() && paramLobby != null && !paramLobby.equalsIgnoreCase("null") && !paramLobby.isEmpty() && !paramLobby.equalsIgnoreCase("null")) {
 			int serverId = Integer.parseInt(parameterIDserv);
 			int nLobby = Integer.parseInt(paramLobby);
 			return players[nLobby][serverId];

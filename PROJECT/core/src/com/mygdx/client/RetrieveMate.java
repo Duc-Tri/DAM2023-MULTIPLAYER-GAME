@@ -41,6 +41,7 @@ public class RetrieveMate implements Runnable {
         String USER_AGENT = "Mozilla/5.0";
         URL url = null;
         try {
+//            System.out.println("GET_URL " + GET_URL);
             url = new URL(GET_URL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -54,7 +55,9 @@ public class RetrieveMate implements Runnable {
                     response.append(inputLine);
                 }
                 in.close();
+//                System.out.println("String.valueOf(response)  " + String.valueOf(response));
                 if (!String.valueOf(response).isEmpty()) {
+
                     String[] mates = String.valueOf(response).split(";");
                     return mates;
                 }
