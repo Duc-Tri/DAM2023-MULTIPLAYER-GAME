@@ -131,4 +131,21 @@ public class Game {
 	public int getId() {
 		return staticIdCpt;
 	}
+
+	public void cancelGame(String serverUniqueID, String numLobby) {
+		// TODO Auto-generated method stub
+		int parseInt = -1;
+		try {
+			Integer.parseInt(numLobby);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(parseInt!=-1 && parseInt<LOBBYSIZE ) {
+			for(Player p : players[parseInt]) {
+				p = null;
+			}
+		}
+		
+	}
 }
