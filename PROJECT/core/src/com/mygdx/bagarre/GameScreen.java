@@ -218,7 +218,7 @@ public class GameScreen implements Screen, InputProcessor {
             threadPoolExecutor1.submit(retrieveMate);
         }
         if (threadPoolExecutor2.getActiveCount() < 1) {
-            //System.out.println("retrieveUpdatePlayer    RESTART");
+            System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
         }
 
