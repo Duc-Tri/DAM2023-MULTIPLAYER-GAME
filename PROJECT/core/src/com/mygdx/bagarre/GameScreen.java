@@ -49,8 +49,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     public static boolean lockOnListReadFromDB = false;
 
-    private final static String testImageFile = "test/kenney_tinytown.png";
-    private Texture testImage = new Texture(testImageFile);
+    private Texture testImage = new Texture("test/tiny_16x16.png");
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
     private DebugOnScreen debugOS;

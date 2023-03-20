@@ -29,8 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 
 //#################################################################################################
+// Map: wrapper d'un TiledMap.
 // Structure attendue d'une carte (TiledMap) fait avec TILED :
-//-------------------------------------------------------------------------------------------------
+//=================================================================================================
 // - un calque OBLIGATOIRE TRIGGERS (qui contient les points de spawn START, EXIT & ENEMY)
 //
 // - un calque optionnel PLAYERS (tuiles au même niveau que les joueurs)
@@ -43,7 +44,7 @@ import java.util.List;
 //#################################################################################################
 public class Map {
 
-    public final static boolean DEBUG_MAP = false; // true = AFFICHE LE LAYER OBSTACLES (=> TOPMAP)
+    public final static boolean DEBUG_MAP = true; // true = AFFICHE LE LAYER OBSTACLES (=> TOPMAP)
     private final TiledMap tiledMap;
     private final int mapNumberLayers;
     private TiledMap groundMap; // contient que les sols, en dessous des joueurs
@@ -58,8 +59,8 @@ public class Map {
     public final int mapHeightInTiles;
     public final int tileWidth;
     public final int tileHeight;
-
     public final String monstersToSpawn;
+    private HashMap<String, Rectangle> spawnAreas;
 
     public Map(String mapFilename, SpriteBatch batch) {
         this.batch = batch;
@@ -172,23 +173,6 @@ public class Map {
         this.groundMapRenderer = groundMapRenderer;
     }
 
-    // imprime dans la console le layer OBSTACLES
-    private void printLayer(TiledMapTileLayer layer) {
-        int layerHeight = layer.getHeight();
-        int layerWidth = layer.getWidth();
-
-        String temp = "";
-        for (int cellY = layerHeight; cellY >= 0; cellY--) {
-            for (int cellX = 0; cellX < layerWidth; cellX++) {
-
-                temp += (layer.getCell(cellX, cellY) == null ? " " : "#");
-
-            }
-            temp += "\n";
-        }
-        System.out.println(temp);
-    }
-
     public boolean checkObstacle(float pixelX, float pixelY) {
         int tileX = (int) (pixelX / obstaclesLayer.getTileWidth());
         int tileY = (int) (pixelY / obstaclesLayer.getTileHeight());
@@ -263,7 +247,7 @@ public class Map {
 
             // affiche les tuiles de cette rangée tileY -------------------------------------------
             int realX = 0;
-            if (playersLayer != null) {
+            if (!DEBUG_MAP && playersLayer != null) {
                 for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
                     Cell c = playersLayer.getCell(tileX, tileY);
                     if (c != null) {
@@ -277,7 +261,7 @@ public class Map {
             realY -= tileHeight; // on "va vers le bas" pour l'affichage
         }
 
-        renderTop(); // on affiche le topmap, quelque soit l'état de DEBUG_MAP
+        renderTop(); // on affiche le top
     }
 
     // Indice tuile => Coordonées pixels
@@ -314,9 +298,6 @@ public class Map {
             // System.out.println("renameLayers ____________________________ " + layer.getName());
         }
     }
-
-
-    HashMap<String, Rectangle> spawnAreas;
 
     // Charge les rectangles TRIGGERS
     private void retrieveTriggerObjects() {
@@ -362,5 +343,23 @@ public class Map {
     public Vector2int randomPointAtSpawnArea(String spawnArea) {
         return new Vector2int(0, 0);
     }
+
+    // imprime dans la console le layer OBSTACLES
+    private void printLayer(TiledMapTileLayer layer) {
+        int layerHeight = layer.getHeight();
+        int layerWidth = layer.getWidth();
+
+        String temp = "";
+        for (int cellY = layerHeight; cellY >= 0; cellY--) {
+            for (int cellX = 0; cellX < layerWidth; cellX++) {
+
+                temp += (layer.getCell(cellX, cellY) == null ? " " : "#");
+
+            }
+            temp += "\n";
+        }
+        System.out.println(temp);
+    }
+
 }
 

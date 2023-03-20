@@ -13,10 +13,11 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 
 //#################################################################################################
 // Entity qui possède des points de vie, des sprites, etc.
+//=================================================================================================
 //
 //#################################################################################################
 public class LivingEntity implements Entity {
-    public static final boolean DEBUG_HITBOX = false;
+    public static final boolean DEBUG_HITBOX = true;
     protected TextureAtlas textureAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
@@ -178,7 +179,7 @@ public class LivingEntity implements Entity {
         this.serverUniqueID = serverUniqueID;
     }
 
-    private static final Texture debugTarget8 = new Texture("test/target8x8.png");
+    private static final Texture debugTarget8 = new Texture("misc/target8x8.png");
 
     public void drawAndUpdate(SpriteBatch batch) {
         if (batch == null || sprite == null || sprite.getTexture() == null) return;

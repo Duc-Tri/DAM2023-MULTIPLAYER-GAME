@@ -17,11 +17,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//#################################################################################################
+// Monster
+//=================================================================================================
+//
+//#################################################################################################
 public class Mob extends LivingEntity {
 
     public static enum MonsterType {IMP, BAT, DEVIL, SCORPION, OCTOPUS, BLOB, TROLL, LIVING_TREE}
 
-    public static final boolean DEBUG_MOB = false;
+    //public static final boolean DEBUG_MOB = false;
 
     private static Map map; // la même carte pour tous les monstres
     private static AStarMap aStarMap; // le pathfinding, le même pour tous
@@ -407,8 +412,8 @@ public class Mob extends LivingEntity {
         }
     }
 
-    static final Texture debugTarget16 = new Texture("test/target16x16.png");
-    static final Texture debugTarget8 = new Texture("test/target8x8.png");
+    static final Texture debugTarget16 = new Texture("misc/target16x16.png");
+    static final Texture debugTarget8 = new Texture("misc/target8x8.png");
 
     public void drawAndUpdate(SpriteBatch batch) {
         super.drawAndUpdate(batch);

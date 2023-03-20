@@ -6,9 +6,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//#################################################################################################
+//
+//=================================================================================================
+//
+//#################################################################################################
 public class AStarMap {
 
-    public static final boolean DEBUG_ASTAR = false;
+    public static final boolean DEBUG_ASTAR = true;
 
     /* La première liste, appelée liste ouverte, va contenir tous les noeuds étudiés. Dès que l'algorithme va se pencher sur
     un noeud du graphe, il passera dans la liste ouverte (sauf s'il y est déjà).

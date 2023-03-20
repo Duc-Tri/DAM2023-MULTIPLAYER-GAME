@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.entity.LivingEntity;
 
 public class LifeBar {
-    private final static Texture green = new Texture("test/green.png");
-    private final static Texture black = new Texture("test/black.png");
+    private final static Texture green = new Texture("misc/green.png");
+    private final static Texture black = new Texture("misc/black.png");
     private LivingEntity livingEntity;
     private Sprite sprite;
     private static final int WIDTH = 40;

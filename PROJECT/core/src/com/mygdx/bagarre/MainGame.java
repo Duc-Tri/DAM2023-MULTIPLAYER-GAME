@@ -13,7 +13,7 @@ public class MainGame extends Game {
     // CONSTANTES DU JEU ==========================================================================/
 //    public final static String URLServer = "http://localhost:8080/DAMCorp/"; // marche UNIQUEMENT en DESKTOP
 //    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison 1
-    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/"; // tri maison 2
+    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/"; // tri greta
 
 //    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/";
 
@@ -43,8 +43,8 @@ public class MainGame extends Game {
     private MainGame() {
         // private = singletion design pattern
 
-//        gameMode = GameMode.SOLO;
-        gameMode = GameMode.MULTIPLAYER;
+        gameMode = GameMode.SOLO;
+//        gameMode = GameMode.MULTIPLAYER;
     }
 
     public void setConfig(String c) {
