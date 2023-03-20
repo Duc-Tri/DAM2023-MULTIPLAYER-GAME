@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 import com.mygdx.map.Map;
@@ -41,8 +40,6 @@ public class Player extends LivingEntity {
         // TODO : remove randomness
         RMXP_CHARACTER = (int) (Math.random() * RMXPCharactersAtlas.MAX_CHARACTERS) + "_";
 
-        findRegion = RMXP_CHARACTER + "DOWN_0";
-
         sword = new Sword(this);
         initializeSprite();
 
@@ -60,14 +57,12 @@ public class Player extends LivingEntity {
 
     @Override
     public void initializeSprite() {
-        if (textureAtlas == null) {
-            textureAtlas = allPlayersAtlas; // texture locale de livingentity
-        }
+        if (entityAtlas == null) entityAtlas = allPlayersAtlas; // texture locale
 
-        textureRegion = textureAtlas.findRegion(findRegion);
-        hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
-        sprite = new Sprite(textureRegion);
+        sprite = new Sprite(allPlayersAtlas.findRegion("0_DOWN_0"));
         //sprite.setColor(spriteTint);
+        hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
+        animate("DOWN"); // au départ, le perso regarde vers le bas
     }
 
     public String getNumLobby() {

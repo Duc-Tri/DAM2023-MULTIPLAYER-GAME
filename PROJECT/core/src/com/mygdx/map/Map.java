@@ -44,7 +44,7 @@ import java.util.List;
 //#################################################################################################
 public class Map {
 
-    public final static boolean DEBUG_MAP = true; // true = AFFICHE LE LAYER OBSTACLES (=> TOPMAP)
+    public final static boolean DEBUG_MAP = false; // true = AFFICHE LE LAYER OBSTACLES (=> TOPMAP)
     private final TiledMap tiledMap;
     private final int mapNumberLayers;
     private TiledMap groundMap; // contient que les sols, en dessous des joueurs

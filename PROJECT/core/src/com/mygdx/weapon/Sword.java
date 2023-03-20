@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.entity.LivingEntity;
-import com.mygdx.entity.Mob;
 
 import java.util.HashMap;
 
@@ -53,7 +52,6 @@ public class Sword extends Weapon {
         }
         this.owner = owner;
         swordType = type;
-        hitbox = new Rectangle();
 
         initializeSprite();
     }
@@ -62,18 +60,29 @@ public class Sword extends Weapon {
     public void initializeSprite() {
         sprite = new Sprite(allSwordsAtlas.findRegion("" + SwordsNum.get(swordType)));
         sprite.setOrigin(sprite.getWidth() / 2, 0);
-        sprite.setScale(0.55f,0.55f);
-//        final static int HITBOX_W = 60;
-//        final static int HITBOX_H = 20;
 
         HITBOX_WIDTH = 60; //(int) (sprite.getWidth() - 16); // temp
-        //HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
+        HITBOX_XOFFSET = 0; // (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
         HITBOX_HEIGHT = 20; //(int) (sprite.getHeight() - 16); // temp
         HITBOX_YOFFSET = 0;
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
-        //System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
+        HITBOXES.put("UP", new Rectangle(0, 0, HITBOX_HEIGHT, HITBOX_WIDTH));
+        HITBOXES.put("DOWN", new Rectangle(0, 0, -HITBOX_HEIGHT, -HITBOX_WIDTH));
+        HITBOXES.put("RIGHT", new Rectangle(0, 0, HITBOX_WIDTH, -HITBOX_HEIGHT));
+        HITBOXES.put("LEFT", new Rectangle(0, 0, -HITBOX_WIDTH, -HITBOX_HEIGHT));
 
+        HITBOXES_XOFFSET.put("UP", -HITBOX_HEIGHT / 2);
+        HITBOXES_XOFFSET.put("DOWN", HITBOX_HEIGHT / 2);
+        HITBOXES_XOFFSET.put("RIGHT", 0);
+        HITBOXES_XOFFSET.put("LEFT", 0);
+
+        // On scale le sprite de l'épée pour que sa taille correspond au Hitbox !!!
+        float scale = Math.min((float) HITBOX_WIDTH / sprite.getRegionHeight(), (float) HITBOX_HEIGHT / sprite.getRegionWidth());
+        sprite.setScale(scale, scale);
+
+//        System.out.println("srH=" + sprite.getRegionHeight() + " / srW=" + sprite.getRegionWidth() +
+//                " / HW=" + HITBOX_WIDTH + " / sW=" + sprite.getWidth() + " ********** END initializeSprite " + scale);
     }
 
     @Override
@@ -91,8 +100,6 @@ public class Sword extends Weapon {
             sprite.draw(batch);
             if (DEBUG_HITBOX)
                 batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-
-            //batch.draw(sprite, sprite.getX(), sprite.getY(),0,0,sprite.getWidth(),sprite.getHeight(),1,1,(float) (Math.random()*360));
         }
     }
 

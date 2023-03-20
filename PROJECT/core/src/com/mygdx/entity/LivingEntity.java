@@ -23,8 +23,8 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 // - un hitbox pour les collisions
 //#################################################################################################
 public class LivingEntity implements Entity {
-    public static final boolean DEBUG_HITBOX = false;
-    protected TextureAtlas textureAtlas;
+    public static final boolean DEBUG_HITBOX = true;
+    protected TextureAtlas entityAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
     private static final int CHAR_WIDTH = 32;
@@ -85,7 +85,7 @@ public class LivingEntity implements Entity {
             findRegion = RMXP_CHARACTER + "DOWN_" + compteurDown;
         }
 
-        textureRegion = textureAtlas.findRegion(findRegion);
+        textureRegion = entityAtlas.findRegion(findRegion);
         //System.out.println("animate _______________ " + findRegion);
         sprite.setRegion(textureRegion);
     }
@@ -166,7 +166,7 @@ public class LivingEntity implements Entity {
 
     public void setFindRegion(String findRegion) {
         this.findRegion = findRegion;
-        textureRegion = textureAtlas.findRegion(this.findRegion);
+        textureRegion = entityAtlas.findRegion(this.findRegion);
         getSprite().setRegion(textureRegion);
     }
 

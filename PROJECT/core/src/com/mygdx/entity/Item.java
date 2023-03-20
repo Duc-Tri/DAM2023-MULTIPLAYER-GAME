@@ -21,8 +21,8 @@ public abstract class Item implements Entity {
     private static int numItem = 0;
     protected int HITBOX_YOFFSET = 0; // Y : aux pieds du sprite
     protected int HITBOX_XOFFSET = 0; // X : au mileu ?
-    protected int HITBOX_WIDTH = 16;
-    public int HITBOX_HEIGHT = 16;
+    protected int HITBOX_WIDTH = 100;
+    public int HITBOX_HEIGHT = 100;
 
     public Item() {
         uniqueID = "item" + numItem++;

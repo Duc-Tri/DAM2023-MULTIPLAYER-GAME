@@ -1,8 +1,6 @@
 package com.mygdx.weapon;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.bagarre.DebugOnScreen;
 import com.mygdx.entity.Item;
 import com.mygdx.entity.LivingEntity;
 
@@ -17,7 +15,7 @@ public abstract class Weapon extends Item {
     public static final boolean DEBUG_HITBOX = true;
 
     protected int damage;
-    protected float SLASH_TIME = 400; // la durée active de l'arme pedant une attaque, en millis
+    protected float SLASH_TIME = 200; // la durée active de l'arme pedant une attaque, en millis
     protected float COOLDOWN_TIME = 10; // délai avant de pouvoir réutiliser l'arme, en millis
     protected boolean slashOn; // l'arme est lancée ou pas
     private long lastMillis;
@@ -43,7 +41,7 @@ public abstract class Weapon extends Item {
 
     // STATIC => POUR TOUTES LE ARMES !!!
     //---------------------------------------------------------------------------------------------
-    final static HashMap<String, Integer> WEAPON_ROTATION = new HashMap<String, Integer>() {
+    final static HashMap<String, Integer> WEAPON_ROTATIONS = new HashMap<String, Integer>() {
         {
             put("RIGHT", -90);
             put("LEFT", 90);
@@ -54,33 +52,16 @@ public abstract class Weapon extends Item {
 
     // PAS STATIC => PROPRE À CHAQUE ARME !!!
     //---------------------------------------------------------------------------------------------
-    final HashMap<String, Rectangle> HITBOX_ROTATION = new HashMap<String, Rectangle>() {
-        {
-            put("UP", new Rectangle(0, 0, HITBOX_HEIGHT, HITBOX_WIDTH));
-            put("DOWN", new Rectangle(0, 0, -HITBOX_HEIGHT, -HITBOX_WIDTH));
-            put("RIGHT", new Rectangle(0, 0, HITBOX_WIDTH, -HITBOX_HEIGHT));
-            put("LEFT", new Rectangle(0, 0, -HITBOX_WIDTH, -HITBOX_HEIGHT));
-        }
-    };
+    protected HashMap<String, Rectangle> HITBOXES = new HashMap<>();
+    protected HashMap<String, Integer> HITBOXES_XOFFSET = new HashMap<>();
 
     @Override
     public void animate(String dir) {
-        System.out.println("WEAPON:animate ===== " + dir);
+        //System.out.println("WEAPON:animate ===== " + dir);
 
-//        sprite.setRotation(0);
-
-        sprite.setRotation(WEAPON_ROTATION.get(dir));
-        hitbox = HITBOX_ROTATION.get(dir);
-
-        if (dir.equalsIgnoreCase("UP"))
-            HITBOX_XOFFSET = -HITBOX_H / 2;
-        else if (dir.equalsIgnoreCase("DOWN"))
-            HITBOX_XOFFSET = HITBOX_H / 2;
-        else
-            HITBOX_XOFFSET = 0;
-
-        //(int) HITBOX_ROTATION.get(dir).x; // pointeur sur un objet ...
-        System.out.println(HITBOX_XOFFSET + " / " + HITBOX_YOFFSET);
+        sprite.setRotation(WEAPON_ROTATIONS.get(dir));
+        hitbox = HITBOXES.get(dir);
+        HITBOX_XOFFSET = HITBOXES_XOFFSET.get(dir);
     }
 
     public void update() {

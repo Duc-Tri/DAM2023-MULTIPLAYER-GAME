@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPAtlasGenerator;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
@@ -122,11 +121,11 @@ public class Mob extends LivingEntity {
     @Override
     public void initializeSprite() {
         // texture statique mob => texture locale de living_entity --------------------------------
-        if (textureAtlas == null) {
-            textureAtlas = allMonstersAtlas;
+        if (entityAtlas == null) {
+            entityAtlas = allMonstersAtlas;
         }
 
-        textureRegion = textureAtlas.findRegion(findRegion);
+        textureRegion = entityAtlas.findRegion(findRegion);
         sprite = new Sprite(textureRegion);
 
         HITBOX_WIDTH = (int) (sprite.getWidth() - 16); // temp
