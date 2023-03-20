@@ -24,7 +24,8 @@
             android:layout_height="match_parent" />
 
         <include
-            layout="@layout/item_list_player_extended"/>
+            layout="@layout/item_list_player_minimized"
+            android:visibility="gone" />
 
     </LinearLayout>
 

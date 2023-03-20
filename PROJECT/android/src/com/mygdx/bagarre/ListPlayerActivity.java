@@ -14,11 +14,11 @@ public class ListPlayerActivity extends AppCompatActivity {
 
     String[] playerID;
     int[] illustrations = {
-            R.drawable.illu1,
-            R.drawable.illu2,
-            R.drawable.illu3,
-            R.drawable.illu4,
-            R.drawable.illu5};
+            R.drawable.illu1_head,
+            R.drawable.illu2_head,
+            R.drawable.illu3_head,
+            R.drawable.illu4_head,
+            R.drawable.illu5_head};
 
 
 

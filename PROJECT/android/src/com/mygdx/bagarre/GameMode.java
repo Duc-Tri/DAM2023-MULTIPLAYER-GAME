@@ -113,8 +113,8 @@ public class GameMode extends AppCompatActivity {
         imgList.add(new ImageItem(R.drawable.profil4, "profil4"));
 
         //Création d'un adaptater avec notre nouvelle classe ImageAdapter
-//        ImageAdapter adapter = new ImageAdapter(this, R.layout.spinner_item, imgList);
-//        imageSp.setAdapter(adapter);
+        ImageAdapter adapter = new ImageAdapter(this, R.layout.spinner_item, imgList);
+        imageSp.setAdapter(adapter);
 
         //Récupération du pseudo depuis la précédente application et l'afficher a la place de pseudo
 
