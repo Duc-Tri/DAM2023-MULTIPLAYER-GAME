@@ -60,10 +60,13 @@
             android:id="@+id/tiPseudo"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:ems="11"
             android:fontFamily="@font/minecraft"
             android:hint="@string/pseudo"
-            android:maxLength="11"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:inputType="text"/>
 
         <Button
             android:id="@+id/registerBtn"
