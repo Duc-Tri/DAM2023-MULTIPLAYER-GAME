@@ -312,7 +312,7 @@ public class GameScreen implements Screen, InputProcessor {
             case Input.Keys.ESCAPE:
                 showDebugTexts = !showDebugTexts;
                 break;
-            case Input.Keys.SPACE:
+            case Input.Keys.CONTROL_LEFT:
                 player.attack();
                 break;
             default:

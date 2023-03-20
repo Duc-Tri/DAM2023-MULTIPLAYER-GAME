@@ -20,8 +20,9 @@ public abstract class Item implements Entity {
     public Rectangle hitbox;
     private static int numItem = 0;
     protected int HITBOX_YOFFSET = 0; // Y : aux pieds du sprite
-    protected int HITBOX_XOFFSET = 0; // X :au mileu
-
+    protected int HITBOX_XOFFSET = 0; // X : au mileu ?
+    protected int HITBOX_WIDTH = 16;
+    public int HITBOX_HEIGHT = 16;
 
     public Item() {
         uniqueID = "item" + numItem++;
@@ -44,16 +45,15 @@ public abstract class Item implements Entity {
     }
 
     public void setX(float x) {
-        hitbox.setX(x + HITBOX_XOFFSET);
-//        hitbox.setWidth(sprite.getWidth());
-        sprite.setX(x);
+//        hitbox.setX(x + HITBOX_XOFFSET);
+////        hitbox.setWidth(sprite.getWidth());
+//        sprite.setX(x);
     }
 
     public void setY(float y) {
-        hitbox.setY(y + HITBOX_YOFFSET);
-//        hitbox.setHeight(sprite.getHeight());
-        sprite.setY(y);
-
+//        hitbox.setY(y + HITBOX_YOFFSET);
+////        hitbox.setHeight(sprite.getHeight());
+//        sprite.setY(y);
     }
 
 }

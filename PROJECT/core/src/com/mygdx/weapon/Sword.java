@@ -63,10 +63,12 @@ public class Sword extends Weapon {
         sprite = new Sprite(allSwordsAtlas.findRegion("" + SwordsNum.get(swordType)));
         sprite.setOrigin(sprite.getWidth() / 2, 0);
         sprite.setScale(0.55f,0.55f);
+//        final static int HITBOX_W = 60;
+//        final static int HITBOX_H = 20;
 
-        HITBOX_WIDTH = (int) (sprite.getWidth() - 16); // temp
-        HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
-        HITBOX_HEIGHT = (int) (sprite.getHeight() - 16); // temp
+        HITBOX_WIDTH = 60; //(int) (sprite.getWidth() - 16); // temp
+        //HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
+        HITBOX_HEIGHT = 20; //(int) (sprite.getHeight() - 16); // temp
         HITBOX_YOFFSET = 0;
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 

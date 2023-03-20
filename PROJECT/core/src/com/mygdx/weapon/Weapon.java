@@ -17,12 +17,10 @@ public abstract class Weapon extends Item {
     public static final boolean DEBUG_HITBOX = true;
 
     protected int damage;
-    protected float SLASH_TIME = 200; // le temps d'apparition dans le jeu, en milliseconds
+    protected float SLASH_TIME = 400; // la durée active de l'arme pedant une attaque, en millis
     protected float COOLDOWN_TIME = 10; // délai avant de pouvoir réutiliser l'arme, en millis
     protected boolean slashOn; // l'arme est lancée ou pas
     private long lastMillis;
-    protected int HITBOX_WIDTH = 16;
-    protected int HITBOX_HEIGHT = 16;
 
     protected LivingEntity owner;
 
@@ -41,9 +39,10 @@ public abstract class Weapon extends Item {
             lastMillis = currMillis;
             System.out.println(currMillis + " attack:SLASH ===== " + slashOn);
         }
-
     }
 
+    // STATIC => POUR TOUTES LE ARMES !!!
+    //---------------------------------------------------------------------------------------------
     final static HashMap<String, Integer> WEAPON_ROTATION = new HashMap<String, Integer>() {
         {
             put("RIGHT", -90);
@@ -53,16 +52,14 @@ public abstract class Weapon extends Item {
         }
     };
 
-    final static int HITBOX_W = 50;
-    final static int HITBOX_H = 20;
-
-    final static HashMap<String, Rectangle> HITBOX_ROTATION = new HashMap<String, Rectangle>() {
+    // PAS STATIC => PROPRE À CHAQUE ARME !!!
+    //---------------------------------------------------------------------------------------------
+    final HashMap<String, Rectangle> HITBOX_ROTATION = new HashMap<String, Rectangle>() {
         {
-            put("UP", new Rectangle(-800, 0, HITBOX_H, HITBOX_W));
-            put("DOWN", new Rectangle(800, 0, -HITBOX_H, -HITBOX_W));
-            put("RIGHT", new Rectangle(0, 100, HITBOX_W, -HITBOX_H));
-            put("LEFT", new Rectangle(0, 500, -HITBOX_W, -HITBOX_H));
-
+            put("UP", new Rectangle(0, 0, HITBOX_HEIGHT, HITBOX_WIDTH));
+            put("DOWN", new Rectangle(0, 0, -HITBOX_HEIGHT, -HITBOX_WIDTH));
+            put("RIGHT", new Rectangle(0, 0, HITBOX_WIDTH, -HITBOX_HEIGHT));
+            put("LEFT", new Rectangle(0, 0, -HITBOX_WIDTH, -HITBOX_HEIGHT));
         }
     };
 
@@ -74,7 +71,15 @@ public abstract class Weapon extends Item {
 
         sprite.setRotation(WEAPON_ROTATION.get(dir));
         hitbox = HITBOX_ROTATION.get(dir);
-//        HITBOX_XOFFSET = (int) HITBOX_ROTATION.get(dir).x;
+
+        if (dir.equalsIgnoreCase("UP"))
+            HITBOX_XOFFSET = -HITBOX_H / 2;
+        else if (dir.equalsIgnoreCase("DOWN"))
+            HITBOX_XOFFSET = HITBOX_H / 2;
+        else
+            HITBOX_XOFFSET = 0;
+
+        //(int) HITBOX_ROTATION.get(dir).x; // pointeur sur un objet ...
         System.out.println(HITBOX_XOFFSET + " / " + HITBOX_YOFFSET);
     }
 
@@ -84,7 +89,7 @@ public abstract class Weapon extends Item {
         //sprite.setRegionHeight(4);
 
         long currMillis = System.currentTimeMillis();
-        if (currMillis - lastMillis > SLASH_TIME) {
+        if (slashOn && currMillis - lastMillis > SLASH_TIME) {
             slashOn = false;
             lastMillis = currMillis;
 //            System.out.println(currMillis + " animate:SLASH ===== " + slashOn);
