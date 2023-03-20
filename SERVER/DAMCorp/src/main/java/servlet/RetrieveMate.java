@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 import game.Game;
@@ -33,13 +34,12 @@ public class RetrieveMate extends HttpServlet {
 			throws ServletException, IOException {
 		String serverUniqueID = request.getParameter("serverUniqueID");
 		String numLobby = request.getParameter("numLobby");
-		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null")
-				&& numLobby != null && !numLobby.isEmpty() && !numLobby.equals("null")
-				) {
+		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null") && numLobby != null
+				&& !numLobby.isEmpty() && !numLobby.equals("null")) {
 //			System.out.print("serverUniqueID " + serverUniqueID);
 //			System.out.println("        numLobby " + numLobby);
-			Player player = game.retrievePlayer(request.getParameter("serverUniqueID"), request.getParameter("numLobby"));
-			response.getWriter().append(game.retrieveMate(player));	
+			Player player = game.retrievePlayer(serverUniqueID, numLobby);
+			response.getWriter().append(game.retrieveMate(player));
 		}
 	}
 

@@ -100,7 +100,7 @@ public class RetrieveUpdatePlayer implements Runnable {
     private static String buildParam(Player player) {
         String param = "?";
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
-        param = param + "&numLobby=" +player.getNumLobby();
+        param = param + "&numLobby=" + player.getNumLobby();
         return param;
     }
 }

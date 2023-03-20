@@ -37,7 +37,6 @@ public class RetrieveMate implements Runnable {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 

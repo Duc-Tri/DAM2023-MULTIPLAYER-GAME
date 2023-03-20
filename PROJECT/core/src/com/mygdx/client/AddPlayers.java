@@ -37,9 +37,9 @@ public class AddPlayers {
 //                player.setServerUniqueID(resp[0]);
 //                player.setNumLobby(resp[1]);
                 String[] resp = String.valueOf(response).split(";");
-                if(resp.length>1){
+                if (resp.length > 1) {
                     String[] listId = resp[0].split(",");
-                    for(int i = 0 ; i < listId.length ; i ++){
+                    for (int i = 0; i < listId.length; i++) {
                         players[i].setLobbyPlayerId(listId[i]);
                         players[i].setNumLobby(resp[100]);
                     }
@@ -56,10 +56,10 @@ public class AddPlayers {
 
         String param = "?";
         param = param + "&listPlayers=";
-        for(int i = 0 ; i < players.length; i++){
-            if(i==0){
+        for (int i = 0; i < players.length; i++) {
+            if (i == 0) {
                 param = param + players[i].getUniqueID();
-            }else{
+            } else {
                 param = param + ";" + players[i].getUniqueID();
             }
         }
