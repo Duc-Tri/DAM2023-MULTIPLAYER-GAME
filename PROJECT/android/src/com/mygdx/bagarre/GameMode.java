@@ -46,17 +46,17 @@ public class GameMode extends AppCompatActivity {
         optionsBtn = findViewById(R.id.optionsBtn);
     }
 
-//    public void cleanHudNewTab () {
-//        background.setTranslationX(-95);
-//        background.setTranslationY(-110);
-//        buttonSolo.setTranslationY(-180);
-//        multiBtn.setTranslationY(-180);
-//        fleau.setTranslationY(-180);
-//        sword_right.setTranslationY(-180);
-//        sword_left.setTranslationY(-180);
-//        ecrou.setTranslationY(-180);
-//        optionsBtn.setTranslationY(-180);
-//    }
+    public void cleanHudNewTab () {
+        background.setTranslationX(-95);
+        background.setTranslationY(-110);
+        buttonSolo.setTranslationY(-180);
+        multiBtn.setTranslationY(-180);
+        fleau.setTranslationY(-180);
+        sword_right.setTranslationY(-180);
+        sword_left.setTranslationY(-180);
+        ecrou.setTranslationY(-180);
+        optionsBtn.setTranslationY(-180);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,16 +87,7 @@ public class GameMode extends AppCompatActivity {
         if(!isTablet) {
             background.setTranslationY(-200);
         } else if (screenHeight < 800.0f) {
-//            cleanHudNewTab();
-            background.setTranslationX(-95);
-            background.setTranslationY(-110);
-            buttonSolo.setTranslationY(-180);
-            multiBtn.setTranslationY(-180);
-            fleau.setTranslationY(-180);
-            sword_right.setTranslationY(-180);
-            sword_left.setTranslationY(-180);
-            ecrou.setTranslationY(-180);
-            optionsBtn.setTranslationY(-180);
+            cleanHudNewTab();
         }
 
         itGameMode = getIntent();
@@ -109,7 +100,7 @@ public class GameMode extends AppCompatActivity {
         Log.i("MUSIC_POS_ACT_GM", String.valueOf(musicPos));
         audioLauncher.seekTo(musicPos);
         audioLauncher.setLooping(true);
-//        audioLauncher.start();
+        audioLauncher.start();
 
         //Création de l'audio manager
         AudioManager audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);

@@ -19,6 +19,7 @@ public class BeginningAnimation extends AppCompatActivity {
     Animation fadeInBackground, fadeInBackground2, characterFadeOut, titreFadeIn, scaleTitle, touchScreenFadeIn, touchScreenFadeOut;
     AnimationSet titleAnimSet, blinkTouchScreen;
     long timeFadeInFirstBackground, timeFadeInLight, timeTitleApparition, timeTouchScreen;
+    int tLeftGuy, tRightGuy;
     boolean clickable = false;
 
     public void initUI() {
@@ -60,10 +61,9 @@ public class BeginningAnimation extends AppCompatActivity {
 
         //====================== Determination des timing de l'animation ======================
 
-        //Instantie les des gars hors de l'écran
-        int tLeftGuy = left_guy.getHeight();
-        int tRightGuy = right_guy.getHeight();
-
+        //Instantie les deux gars hors de l'écran
+        tLeftGuy = left_guy.getHeight();
+        tRightGuy = right_guy.getHeight();
         left_guy.setTranslationX(- tLeftGuy*3);
         right_guy.setTranslationX(tRightGuy*3);
 
@@ -126,14 +126,14 @@ public class BeginningAnimation extends AppCompatActivity {
 
         //Set de l'animation du mec de gauche
         left_guy.animate()
-                .translationX(screenWidth/17)
+                .translationX(tLeftGuy*3)
                 .setStartDelay(timeFadeInFirstBackground/2 - 500)
                 .setDuration(timeFadeInFirstBackground/2);
         left_guy.setAnimation(characterFadeOut);
 
         //Set de l'animation du mec de droite
         right_guy.animate()
-                .translationX((- (screenWidth)/17))
+                .translationX(- (tRightGuy*3))
                 .setStartDelay(timeFadeInFirstBackground/2 - 500)
                 .setDuration(timeFadeInFirstBackground/2);
         right_guy.setAnimation(characterFadeOut);

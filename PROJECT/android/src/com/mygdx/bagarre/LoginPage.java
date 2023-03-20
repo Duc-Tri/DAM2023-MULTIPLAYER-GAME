@@ -65,7 +65,7 @@ public class LoginPage extends AppCompatActivity {
         //Création de l'audio lancher
         audioLauncher = MediaPlayer.create(this, R.raw.connexion_theme);
         audioLauncher.setLooping(true);
-//        audioLauncher.start();
+        audioLauncher.start();
         volumeBtn.setImageResource(R.drawable.volume_on);
 
         //Création de l'audio manager
@@ -173,11 +173,6 @@ public class LoginPage extends AppCompatActivity {
             setContentView(R.layout.activity_login_page);
         }
 
-
-
-        //Initialisation de firebase gdx
-        /*GdxFIRApp.inst().configure();*/
-
         //Initialisation des vues
         initUi();
 
@@ -193,10 +188,10 @@ public class LoginPage extends AppCompatActivity {
         checkPref();
 
         //TEST : Vidage du fichier de préférence
-        editPref.remove("pseudo");
+        /*editPref.remove("pseudo");
         editPref.remove("userID");
         editPref.remove("img");
-        editPref.apply();
+        editPref.apply();*/
 
         //On lance la musique
         playMusic();
@@ -206,7 +201,7 @@ public class LoginPage extends AppCompatActivity {
         connectBase();
 
         //TEST : Vidage de la référence pseudo avec l'ancienne classe
-        /*db.deleteAllPseudos();*/
+        db.deleteAllPseudos();
 
         //Appel du setOnClick pour le fond gris
         grayedOutView = new View(this);
@@ -239,16 +234,12 @@ public class LoginPage extends AppCompatActivity {
 
                 //Test si le pseudo est nul
                 if (pseudo.isEmpty()) {
+
                     Toast.makeText(this, "Le pseudo ne peut pas être vide ! Mettez au moins une lettre !", Toast.LENGTH_SHORT).show();
                 } else {
+
                     //Enregistre des préférences pour la prochaine connexion
                     editPref.putString("pseudo", pseudo);
-
-                    /*//Ecriture en base avec la GDXApp
-                    DatabaseReference pseudoRefDatabase = (DatabaseReference) GdxFIRDatabase.inst().inReference("players").push()
-                            .setValue(pseudo);
-                    String pseudoRef = pseudoRefDatabase.toString().substring(pseudoRefDatabase.toString().lastIndexOf("/") + 1);
-                    Log.i("PSEUDO_REF", pseudoRef);*/
 
                     //Maj des préférences
                     editPref.putString("userID", db.registerUser(pseudo));
