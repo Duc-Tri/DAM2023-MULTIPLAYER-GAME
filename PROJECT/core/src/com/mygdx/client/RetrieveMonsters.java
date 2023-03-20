@@ -42,6 +42,13 @@ public class RetrieveMonsters implements Runnable {
             } else {
                 monsters.removeAllMobs(tempMobs);
             }
+
+            try {
+                Thread.sleep(100); ///////////////////
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 

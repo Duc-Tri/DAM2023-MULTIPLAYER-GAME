@@ -14,7 +14,7 @@ public class Game {
 	static String[] monsters = new String[POOLSIZE]; // les monstres sont agglomérés en string
 
 	static int cptLobby = 0;
-	private final static long TIMEOUT = 60000L; // 60000L = une minute
+	private final static long TIMEOUT = 160000L; // 60000L = une minute
 
 	public boolean possibleToScribe() {
 		if (staticIdCpt * cptLobby < POOLSIZE * LOBBYSIZE) {

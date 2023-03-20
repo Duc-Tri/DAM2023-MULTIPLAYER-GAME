@@ -22,6 +22,13 @@ public class UpdatePlayer implements Runnable {
         long runningTime  = 100000000L;
         while(System.currentTimeMillis() < initialTime+runningTime){
             requestServer(player);
+
+            try {
+                Thread.sleep(100); ///////////////////
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 

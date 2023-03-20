@@ -31,6 +31,13 @@ public class RetrieveMate implements Runnable {
             } else {
                 Mates.removeAllMates();
             }
+
+            try {
+                Thread.sleep(100); ///////////////////
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 

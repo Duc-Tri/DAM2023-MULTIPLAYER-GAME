@@ -31,6 +31,13 @@ public class RetrieveUpdatePlayer implements Runnable {
             for (int i = 0; i < Mates.getMates().size(); i++) {
                 requestServer(Mates.getMate(i));
             }
+
+            try {
+                Thread.sleep(100); ///////////////////
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 

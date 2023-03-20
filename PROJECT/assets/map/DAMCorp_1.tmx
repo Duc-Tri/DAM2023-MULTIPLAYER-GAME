@@ -110,7 +110,7 @@ BAT          ;5  ;spawn_03
 IMP          ;4  ;spawn_01
 DEVIL        ;1  ;spawn_02
 OCTOPUS      ;1  ;spawn_03
-BLOB         ;9  ;spawn_01
+BLOB         ;6  ;spawn_01
 LIVING_TREE  ;1  ;spawn_02
 </text>
   </object>

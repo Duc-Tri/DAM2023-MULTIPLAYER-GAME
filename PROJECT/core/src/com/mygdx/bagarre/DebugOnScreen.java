@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Align;
-import com.google.firebase.database.snapshot.Index;
 
-import org.graalvm.compiler.java.GraphBuilderPhase;
 
 public class DebugOnScreen {
     public static final int MAX_TEXTS = 30;
@@ -26,10 +24,8 @@ public class DebugOnScreen {
 
     public static DebugOnScreen getInstance() {
         if (instance == null) {
-            System.err.println("INSTANCE of DebugOnScreen is NULL !!!");
             instance = new DebugOnScreen(GameScreen.getCamera());
         }
-
 
         return instance;
     }

@@ -32,6 +32,11 @@ public class UpdateMonsters implements Runnable {
         long initialTime = System.currentTimeMillis();
 
         while (System.currentTimeMillis() < initialTime + RUNNING_TIME) {
+            try {
+                Thread.sleep(100); ///////////////////
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             requestServer();
             // System.out.println("UpdateMonsters:run +++++++++++++++++++++++++++++++++++++++");
         }
