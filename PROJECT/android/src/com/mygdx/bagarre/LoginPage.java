@@ -2,6 +2,7 @@ package com.mygdx.bagarre;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -15,8 +16,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,7 +74,7 @@ public class LoginPage extends AppCompatActivity {
 
         //Création de l'audio manager
         audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
-        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
+//        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
     }
 
     public void connectBase() {
@@ -128,26 +132,17 @@ public class LoginPage extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         float screenWidth = metrics.widthPixels;
         float screenHeight = metrics.heightPixels;
+        float screenDP = metrics.densityDpi;
         Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
-        Log.i("SCREEN_HEIGHT", String.valueOf(screenWidth));
+        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
+        Log.i("SCREEN_DP", String.valueOf(screenDP));
 
         //Gestion de l'animation
-        ivBackground.setTranslationY(-10);
-        ivBackground.setTranslationX((float) (screenWidth*1.3));
+//        ivBackground.setTranslationX((float) (screenWidth*1.3));
+        int Trans = ivBackground.getHeight();
         ivBackground.animate()
-                .translationX((float) (-screenWidth*1.3))
-                .setDuration(100000)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        ivBackground.setTranslationX((float) (screenWidth*1.3));
-                        ivBackground.animate()
-                                .translationX((float) (-screenWidth*1.3))
-                                .setDuration(100000)
-                                .start();
-                    }
-                })
+                .translationX((float) (- screenWidth*2.61))
+                .setDuration(3000)
                 .start();
     }
 
@@ -166,23 +161,54 @@ public class LoginPage extends AppCompatActivity {
         Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
         Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
 
-        if(screenWidthDp < 300.0f) {
-            isTablet = true;
+
+        if(isTablet) {
             setContentView(R.layout.tablet_login);
         } else {
             setContentView(R.layout.activity_login_page);
         }
 
+//        setContentView(R.layout.activity_login_page);
+
         //Initialisation des vues
         initUi();
 
         if (!isTablet) {
-            //Lancement de l'animation du fond
-            gestionAnimation();
+            HorizontalScrollView horizontalScrollView = findViewById(R.id.hsvBackground);
+
+            // Ajouter un écouteur pour détecter quand la vue est prête à être affichée
+            horizontalScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Récupérer la largeur effective de votre HorizontalScrollView
+                    int effectiveWidth = horizontalScrollView.getWidth();
+                    effectiveWidth -= screenWidth;
+
+                    // Utiliser la valeur de la largeur effective dans votre animation
+                    ObjectAnimator animator = ObjectAnimator.ofInt(ivBackground, "scrollX", 0, effectiveWidth);
+                    animator.setDuration(2000);
+                    animator.start();
+
+                    // Retirer l'écouteur pour éviter les appels répétés
+                    horizontalScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
         } else if (screenHeight < 800) {
             ivLogo.setTranslationY(-150);
             llPseudoBox.setTranslationY(-300);
+
+
         }
+
+//        TranslateAnimation anim = new TranslateAnimation(0, - screenWidth, 0, 0);
+//        anim.setDuration(3000);
+//
+//        ivBackground.startAnimation(anim);
+
+
+        // Récupérer une référence à votre HorizontalScrollView
+
+
 
         //Check de la preférence
         checkPref();
@@ -201,7 +227,7 @@ public class LoginPage extends AppCompatActivity {
         connectBase();
 
         //TEST : Vidage de la référence pseudo avec l'ancienne classe
-        db.deleteAllPseudos();
+//        db.deleteAllPseudos();
 
         //Appel du setOnClick pour le fond gris
         grayedOutView = new View(this);
@@ -382,6 +408,14 @@ public class LoginPage extends AppCompatActivity {
 
         // Mettre en pause la lecture de la musique
         audioLauncher.pause();
+        musicPos = audioLauncher.getCurrentPosition();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        audioLauncher.seekTo(musicPos);
+        audioLauncher.start();
     }
 
     @Override

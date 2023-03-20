@@ -19,6 +19,11 @@
     <string name="bouton_nouveau_pseudo">Bouton nouveau pseudo</string>
     <string name="ib_new_pseudo">Nouveau pseudo image bouton</string>
     <string name="ib_old_pseudo">Old pseudo image bouton</string>
+    <string name="left_guy">left guy</string>
+    <string name="right_guy">right guy</string>
+    <string name="left_guy_under_light">left guy under light</string>
+    <string name="right_guy_under_light">right guy under light</string>
+    <string name="touch_screen_to_go">Touchez l\'écran pour continuer</string>
 
     <string-array name="image_array">
         <item>profil1</item>
