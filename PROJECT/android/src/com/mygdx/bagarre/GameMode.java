@@ -1,5 +1,6 @@
 package com.mygdx.bagarre;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -23,7 +25,7 @@ public class GameMode extends AppCompatActivity {
     ImageView ivPseudo, background;
     Spinner imageSp;
     String userID;
-    ImageButton buttonSolo;
+    Button buttonSolo, buttonOnLine;
     List<ImageItem> imgList = new ArrayList<>();
     MediaPlayer audioLauncher;
     Intent itGameMode;
@@ -31,13 +33,16 @@ public class GameMode extends AppCompatActivity {
     boolean isMuted = false;
     int musicPos;
 
+    @SuppressLint("WrongViewCast")
     public void initUi() {
         tvPseudo = findViewById(R.id.tvPseudo);
         ivPseudo = findViewById(R.id.ivPseudo);
         imageSp = findViewById(R.id.imageSp);
         buttonSolo = findViewById(R.id.soloBtn);
+        buttonOnLine = findViewById(R.id.soloOnLine);
         background = findViewById(R.id.background);
         volumeBtn2 = findViewById(R.id.volumeBtn2);
+
     }
 
     @Override
@@ -142,6 +147,17 @@ public class GameMode extends AppCompatActivity {
             Intent itGame = new Intent(GameMode.this, AndroidLauncher.class);
             startActivity(itGame);
         });
+
+
+        buttonOnLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 

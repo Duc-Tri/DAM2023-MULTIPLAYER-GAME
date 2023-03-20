@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class ListPlayerActivity extends AppCompatActivity {
 
@@ -27,7 +30,34 @@ public class ListPlayerActivity extends AppCompatActivity {
         playerID = getResources().getStringArray((R.array.playerID));
 
         initRecyclerView();
+
+        setListenerForReturn();
+        setListenerForStartGame();
     }
+
+    private void setListenerForReturn() {
+        Button btnRetour = findViewById(R.id.btnRetourLobby);
+        btnRetour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ListPlayerActivity.this,MultiJoueurActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void setListenerForStartGame() {
+        Button btnStart = findViewById(R.id.btnLancezGame);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ListPlayerActivity.this,AndroidLauncher.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     private void initRecyclerView(){
         //On relie avec le design et on initialise le layout manager du RecyclerView

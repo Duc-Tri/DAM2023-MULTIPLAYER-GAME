@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bckgrnd_online"
     tools:context=".MultiJoueurActivity">
 
     <ImageView
@@ -21,7 +22,10 @@
         android:layout_width="314dp"
         android:layout_height="43dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/btn_change_create"
+        android:background="@drawable/btn_change"
+        android:fontFamily="@font/minecraft"
+        android:text="@string/create_game"
+        android:textColor="@color/font_change"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +36,10 @@
         android:layout_width="324dp"
         android:layout_height="45dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/btn_change_join"
+        android:background="@drawable/btn_change"
+        android:fontFamily="@font/minecraft"
+        android:text="@string/join_game"
+        android:textColor="@color/font_change"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
