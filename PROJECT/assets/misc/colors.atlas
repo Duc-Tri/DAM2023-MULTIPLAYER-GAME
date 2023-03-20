@@ -1,0 +1,75 @@
+colors.png
+size: 80, 16
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+BLACK
+  rotate: false
+  xy: 0,0
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+WHITE
+  rotate: false
+  xy: 0,8
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+RED
+  rotate: false
+  xy: 8,0
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+GREEN
+  rotate: false
+  xy: 8,8
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+BLUE
+  rotate: false
+  xy: 16,0
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+CYAN
+  rotate: false
+  xy: 16,8
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+MAGENTA
+  rotate: false
+  xy: 24,0
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+YELLOW
+  rotate: false
+  xy: 24,8
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+GREY
+  rotate: false
+  xy: 32,0
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+ORANGE
+  rotate: false
+  xy: 32,8
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1

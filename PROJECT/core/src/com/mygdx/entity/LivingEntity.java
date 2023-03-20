@@ -12,12 +12,18 @@ import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 
 //#################################################################################################
-// Entity qui possède des points de vie, des sprites, etc.
+// Entity qui possède:
 //=================================================================================================
+// - des points de vie
 //
+// - une animation dans 4 directions
+//
+// - un sprite
+//
+// - un hitbox pour les collisions
 //#################################################################################################
 public class LivingEntity implements Entity {
-    public static final boolean DEBUG_HITBOX = true;
+    public static final boolean DEBUG_HITBOX = false;
     protected TextureAtlas textureAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
@@ -53,9 +59,10 @@ public class LivingEntity implements Entity {
     public LivingEntity() {
         if (mainGame == null) mainGame = MainGame.getInstance();
 
-        //System.out.println("########## CONSTRUCTOR LivingEntity");
         numLivingEntity++;
+        spriteTint = new Color(0.5f, 0.25f, 0.1f, 1);
         lifeBar = new LifeBar(this);
+        //System.out.println("########## CONSTRUCTOR LivingEntity");
     }
 
     @Override
@@ -125,10 +132,8 @@ public class LivingEntity implements Entity {
 
     public void setY(float y) {
         entityY = y;
-        if (hitbox != null)
-            hitbox.setY(y + HITBOX_YOFFSET);
-        if (sprite != null)
-            sprite.setY(y);
+        hitbox.setY(y + HITBOX_YOFFSET);
+        sprite.setY(y);
     }
 
     public void setFootX(float x) {
@@ -165,10 +170,6 @@ public class LivingEntity implements Entity {
         this.findRegion = findRegion;
         textureRegion = textureAtlas.findRegion(this.findRegion);
         getSprite().setRegion(textureRegion);
-    }
-
-    public String getTextureAtlasPath() {
-        return MainGame.PLAYERS_ATLAS;
     }
 
     public String getServerUniqueID() {

@@ -22,8 +22,6 @@ public class MainGame extends Game {
     //---------------------------------------------------------------------------------------------
     private final static String mapFilename = "map/DAMCorp_1.tmx"; //"map/DAMCorp_test.tmx";
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
-    public final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
-    public final static String MONSTERS_ATLAS = "characters/RMXP_monsters.atlas";
 
     //==============================================================================================
 
@@ -40,9 +38,8 @@ public class MainGame extends Game {
         return instance;
     }
 
+    // private = singletion design pattern
     private MainGame() {
-        // private = singletion design pattern
-
         gameMode = GameMode.SOLO;
 //        gameMode = GameMode.MULTIPLAYER;
     }

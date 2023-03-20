@@ -14,8 +14,6 @@ import java.util.ArrayList;
 //=================================================================================================
 public class Monsters {
 
-    public static TextureAtlas allMonstersAtlas;
-
     public enum MonstersMode {
         SOLO_MODE, // MODE SOLO, display ET simulation
         SLAVE_MODE, // MULTIJOUEUR, display seulement, CLIENTS ET MASTER,
@@ -34,9 +32,6 @@ public class Monsters {
     private MonstersMode monstersMode;
 
     public Monsters() {
-
-        // TODO : spawn monsters from map TRIGGERS
-        allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
 
         /*
         for (int n = 0; n < MAX_RANDOM_MONSTERS; n++) {

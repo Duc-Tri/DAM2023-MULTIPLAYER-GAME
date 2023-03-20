@@ -11,8 +11,11 @@ import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 import com.mygdx.map.Map;
 
+//#################################################################################################
+//=================================================================================================
+//#################################################################################################
 public class Player extends LivingEntity {
-
+    private final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
     private static TextureAtlas allPlayersAtlas;
     private String lobbyPlayerId;
     private String numLobby = "";
@@ -23,8 +26,7 @@ public class Player extends LivingEntity {
     public Player() {
         // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
         if (allPlayersAtlas == null) {
-            //System.out.println("initializeSprite .......... " + MainGame.PLAYERS_ATLAS);
-            allPlayersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.PLAYERS_ATLAS));
+            allPlayersAtlas = new TextureAtlas(Gdx.files.internal(PLAYERS_ATLAS));
         }
 
         uniqueID = "player" + nextUniqueId();
@@ -41,7 +43,7 @@ public class Player extends LivingEntity {
 
         initializeSprite();
 
-        // to position everything well ----------
+        // to position correctly hitbox + sprite well -------------------------
         setX(getX());
         setY(getY());
 
@@ -55,16 +57,12 @@ public class Player extends LivingEntity {
 
     @Override
     public void initializeSprite() {
-
-        // TEXTURE LOCAL DE LIVINGENTITY --------------------------------------
         if (textureAtlas == null) {
-            textureAtlas = allPlayersAtlas;
+            textureAtlas = allPlayersAtlas; // texture locale de livingentity
         }
 
         textureRegion = textureAtlas.findRegion(findRegion);
-
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
-
         sprite = new Sprite(textureRegion);
         //sprite.setColor(spriteTint);
     }
@@ -115,5 +113,6 @@ public class Player extends LivingEntity {
 
     public void attack() {
         Monsters.killRandom();
+        // TODO: attaque avec une épée
     }
 }

@@ -1,0 +1,47 @@
+swords.png
+size: 345, 208
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+0
+  rotate: false
+  xy: 231, 31
+  size: 54, 175
+  orig: 54, 175
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 167, 36
+  size: 62, 170
+  orig: 62, 170
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 2, 2
+  size: 66, 204
+  orig: 66, 204
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 70, 10
+  size: 45, 196
+  orig: 45, 196
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 287, 41
+  size: 56, 165
+  orig: 56, 165
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 117, 19
+  size: 48, 187
+  orig: 48, 187
+  offset: 0, 0
+  index: -1

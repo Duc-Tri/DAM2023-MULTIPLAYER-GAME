@@ -341,6 +341,11 @@ public class Map {
     // Renvoie une position aléatoire à l'intérieur d'un spawnArea
     //---------------------------------------------------------------------------------------------
     public Vector2int randomPointAtSpawnArea(String spawnArea) {
+        Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
+        if (area != null)
+            return new Vector2int((int) (Math.random() * area.width + area.x),
+                    (int) (Math.random() * area.height + area.y));
+
         return new Vector2int(0, 0);
     }
 

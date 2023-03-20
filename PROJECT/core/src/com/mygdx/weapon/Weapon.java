@@ -2,17 +2,16 @@ package com.mygdx.weapon;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.entity.Item;
 import com.mygdx.entity.LivingEntity;
 
 //#################################################################################################
-//
+// Weapon, arme avec lequel le joueur attaque.
 //=================================================================================================
 //
 //#################################################################################################
-public abstract class Weapon {
+public abstract class Weapon extends Item {
 
-    protected Rectangle hitbox;
-    protected Sprite sprite;
     protected int damage;
     protected float slashTime; // le temps de présence dans le jeu, en milliseconds
     protected float scoolDownTime; // délai de refroidissement, avant de pouvoir réutiliser l'arme
