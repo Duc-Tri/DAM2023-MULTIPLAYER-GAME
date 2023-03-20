@@ -36,7 +36,7 @@ public class RetrieveUpdatePlayer implements Runnable {
 
     public static void requestServer(Player player) {
         String GET_URL = MainGame.URLServer + "RetrieveUpdatePlayer";
-        System.out.println("GET_URL " + GET_URL);
+//        System.out.println("GET_URL " + GET_URL);
         String paramString = buildParam(player);
 
         GET_URL = GET_URL + paramString;
