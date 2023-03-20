@@ -8,7 +8,7 @@
     tools:context=".ListPlayerActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/llRecyclerView"
         android:layout_width="676dp"
         android:layout_height="226dp"
         android:layout_margin="25dp"
@@ -23,6 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <include
+            layout="@layout/item_list_player_extended"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -34,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/llRecyclerView">
 
         <Button
             android:id="@+id/btnRetourLobby"

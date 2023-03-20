@@ -35,7 +35,7 @@ public class ListPlayerAdapter extends RecyclerView.Adapter<ListPlayerAdapter.My
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater  layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.item_list_player, parent , false);
+        View view = layoutInflater.inflate(R.layout.item_list_player_extended, parent , false);
 
         return new MyViewHolder(view);
     }

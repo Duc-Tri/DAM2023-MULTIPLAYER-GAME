@@ -27,6 +27,8 @@
     <string name="solo_game">Partie Solo</string>
     <string name="online_game">Partie en ligne</string>
     <string name="options">Options</string>
+    <string name="lobby">Lobby</string>
+    <string name="textview">TextView</string>
 
     <string-array name="image_array">
         <item>profil1</item>
