@@ -36,12 +36,14 @@ public class RetrieveUpdatePlayer implements Runnable {
 
     public static void requestServer(Player player) {
         String GET_URL = MainGame.URLServer + "RetrieveUpdatePlayer";
+        System.out.println("GET_URL " + GET_URL);
         String paramString = buildParam(player);
 
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
         URL url = null;
         try {
+
             url = new URL(GET_URL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
