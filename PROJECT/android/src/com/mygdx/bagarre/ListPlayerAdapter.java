@@ -1,8 +1,7 @@
 package com.mygdx.bagarre;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.HashMap;
 
 public class ListPlayerAdapter extends RecyclerView.Adapter<ListPlayerAdapter.MyViewHolder> {
 
@@ -46,8 +47,8 @@ public class ListPlayerAdapter extends RecyclerView.Adapter<ListPlayerAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull ListPlayerAdapter.MyViewHolder holder, int position) {
-        holder.ivIllu.setImageResource(illustrations[position]);
-        holder.tvPlayerID.setText(playerID[position]);
+        holder.ivIllu2.setImageResource(illustrations[position]);
+        holder.tvPlayerID2.setText(playerID[position]);
 
     }
 
@@ -59,49 +60,39 @@ public class ListPlayerAdapter extends RecyclerView.Adapter<ListPlayerAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView ivIllu;
-        private TextView tvPlayerID;
-        private LinearLayout llRecyclerView;
-        private ConstraintLayout extendedView;
+        private ImageView ivIllu2;
+        private TextView tvPlayerID2;
+        private LinearLayout llMainLinearLayout;
+        private View itemListExtended;
+        HashMap<Integer, Integer> imgEquivalence = new HashMap<>();
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivIllu = itemView.findViewById(R.id.ivIllu);
-            tvPlayerID = itemView.findViewById(R.id.tvPlayerID);
-            llRecyclerView = itemView.findViewById(R.id.llRecyclerView);
-            extendedView = itemView.findViewById(R.id.extendedView);
+            ivIllu2 = itemView.findViewById(R.id.ivIllu2);
+            tvPlayerID2 = itemView.findViewById(R.id.tvPlayerID2);
+            llMainLinearLayout= itemView.findViewById(R.id.llMainLinearLayout);
+            itemListExtended = itemView.findViewById(R.id.itemListExtended);
 
-            llRecyclerView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(extendedView.getVisibility() == View.GONE) {
-                        extendedView.setVisibility(View.VISIBLE);
+            llMainLinearLayout.setOnClickListener(v -> {
+                Log.i("onClick", "Je suis ans le setOnClick");
 
-                        ivIllu.setImageResource(imgEquivalence( ivIllu.getDrawable());
-                        android.view.animation.Animation anim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.slide_down);
-                        extendedView.startAnimation(anim);
-                    } else {
-                        extendedView.setVisibility(View.GONE);
-                        Animation anim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.slide_up);
-                    }
+                if(itemListExtended.getVisibility() == View.GONE) {
+                    itemListExtended.setVisibility(View.VISIBLE);
+                    Animation anim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.slide_down);
+                    itemListExtended.startAnimation(anim);
+                } else {
+                    itemListExtended.setVisibility(View.GONE);
+                    Animation anim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.slide_up);
+                    itemListExtended.startAnimation(anim);
                 }
             });
 
-        }
+            imgEquivalence.put(R.drawable.illu1, R.drawable.illu1_head);
+            imgEquivalence.put(R.drawable.illu2, R.drawable.illu2_head);
+            imgEquivalence.put(R.drawable.illu3, R.drawable.illu3_head);
+            imgEquivalence.put(R.drawable.illu4, R.drawable.illu4_head);
+            imgEquivalence.put(R.drawable.illu5, R.drawable.illu5_head);
 
-        public int imgEquivalence(Drawable draw) {
-            switch (draw) {
-                case R.drawable.illu1_head:
-                    return R.drawable.illu1;
-                case R.drawable.illu2_head:
-                    return R.drawable.illu2;
-                case R.drawable.illu3_head:
-                    return R.drawable.illu3;
-                case R.drawable.illu4_head:
-                    return R.drawable.illu4;
-                case R.drawable.illu5_head:
-                    return R.drawable.illu5;
-            }
-            return resIDhead;
         }
     }
 }

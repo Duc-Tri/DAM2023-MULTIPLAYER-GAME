@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ListPlayerActivity extends AppCompatActivity {
 
 
@@ -22,10 +25,13 @@ public class ListPlayerActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_player);
+
+
 
         playerID = getResources().getStringArray((R.array.playerID));
 

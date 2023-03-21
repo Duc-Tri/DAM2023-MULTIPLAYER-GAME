@@ -21,13 +21,13 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/ivIllu"
+            android:id="@+id/ivIllu2"
             android:layout_width="131dp"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/illu1" />
 
         <TextView
-            android:id="@+id/tvPlayerID"
+            android:id="@+id/tvPlayerID2"
             android:layout_width="406dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -43,7 +43,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnJoinLobby"
+                android:id="@+id/btnJoinLobby2"
                 android:layout_width="wrap_content"
                 android:layout_height="87dp"
                 android:background="@android:drawable/ic_menu_add"
@@ -51,7 +51,7 @@
                 android:paddingBottom="20dp" />
 
             <Button
-                android:id="@+id/btnRemoveLobby"
+                android:id="@+id/btnRemoveLobby2"
                 android:layout_width="83dp"
                 android:layout_height="83dp"
                 android:layout_marginStart="3dp"
