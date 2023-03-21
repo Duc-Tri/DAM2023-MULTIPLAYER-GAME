@@ -95,7 +95,6 @@ public class Player extends LivingEntity {
         } else {
 //            masterMobs.reset();
         }
-
     }
 
     public void move(String dirKeyword, int deltaX, int deltaY) {

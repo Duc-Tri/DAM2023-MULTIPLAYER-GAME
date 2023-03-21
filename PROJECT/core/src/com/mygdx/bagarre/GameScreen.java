@@ -33,14 +33,9 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean showJoystick = false;
     private static Map map;
     private static ClampedCamera clampedCamera;
-    private Viewport viewport;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
     private boolean showDebugTexts = true;
-
-    public SpriteBatch getBatch() {
-        return batch;
-    }
 
     private SpriteBatch batch;
     private int sizeOfStep = 8;
@@ -160,7 +155,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         monsters.update(deltaTime);
 
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -168,8 +163,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         batch.begin(); //======================================================
 
-        // une image test pour situer le 0/0
-        //batch.draw(testImage, 0, 0);
+        //batch.draw(testImage, 0, 0); // une image test pour situer le 0/0
 
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
@@ -191,7 +185,6 @@ public class GameScreen implements Screen, InputProcessor {
         debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
         debugOS.setText(25, "" + System.currentTimeMillis());
 
-
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
 
@@ -209,15 +202,15 @@ public class GameScreen implements Screen, InputProcessor {
 //
 //        }
         if (threadPoolExecutor0.getActiveCount() < 1) {
-            System.out.println("updatePlayer    RESTART");
+            //System.out.println("updatePlayer    RESTART");
             threadPoolExecutor0.submit(updatePlayer);
         }
         if (threadPoolExecutor1.getActiveCount() < 1) {
-            System.out.println("retrieveMate    RESTART");
+            //System.out.println("retrieveMate    RESTART");
             threadPoolExecutor1.submit(retrieveMate);
         }
         if (threadPoolExecutor2.getActiveCount() < 1) {
-            System.out.println("retrieveUpdatePlayer    RESTART");
+            //System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
         }
 
@@ -302,7 +295,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     //boolean[] keyOns = new boolean[200];
-    int lastKeyCode = Input.Keys.PRINT_SCREEN; // pour faire simple ...
+    int lastKeyCode = 999; // pour faire simple ...
 
     @Override
     public boolean keyDown(int keycode) {
@@ -373,6 +366,10 @@ public class GameScreen implements Screen, InputProcessor {
 
     public static Player getPlayer() {
         return player;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
     }
 
 }

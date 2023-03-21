@@ -9,14 +9,15 @@ import com.mygdx.entity.LivingEntity;
 
 import java.util.HashMap;
 
-public class Sword extends Weapon {
-
-    private static final Texture debugTarget8 = new Texture("misc/target8x8.png");
-
+//#################################################################################################
+// Sword < Weapon < Item (Entity)
+//=================================================================================================
+//
+//#################################################################################################
+public final class Sword extends Weapon {
     private final static String SWORDS_ATLAS = "weapons/swords.atlas";
     private static TextureAtlas allSwordsAtlas; // le même atlas pour toutes les épées
     private final SwordType swordType;
-
 
     public static enum SwordType {EVIL_SWORD, BROADSWORD, SCIMITAR, CLAYMORE, BASTARD, GLADIUS}
 
@@ -41,7 +42,7 @@ public class Sword extends Weapon {
     }};
 
     public Sword(LivingEntity owner) {
-        // random sword
+        // TODO: random sword, change it !
         this(owner, SwordType.values()[(int) (Math.random() * SwordType.values().length)]);
     }
 
@@ -77,6 +78,11 @@ public class Sword extends Weapon {
         HITBOXES_XOFFSET.put("RIGHT", 0);
         HITBOXES_XOFFSET.put("LEFT", 0);
 
+        SPRITE_YOFFSETS.put("UP", 0);
+        SPRITE_YOFFSETS.put("DOWN", 0);
+        SPRITE_YOFFSETS.put("RIGHT", -HITBOX_HEIGHT / 2);
+        SPRITE_YOFFSETS.put("LEFT", -HITBOX_HEIGHT / 2);
+
         // On scale le sprite de l'épée pour que sa taille correspond au Hitbox !!!
         float scale = Math.min((float) HITBOX_WIDTH / sprite.getRegionHeight(), (float) HITBOX_HEIGHT / sprite.getRegionWidth());
         sprite.setScale(scale, scale);
@@ -85,21 +91,12 @@ public class Sword extends Weapon {
 //                " / HW=" + HITBOX_WIDTH + " / sW=" + sprite.getWidth() + " ********** END initializeSprite " + scale);
     }
 
-    @Override
-    public void animate(String string) {
-        super.animate(string);
-
-    }
-
     public void drawAndUpdate(SpriteBatch batch) {
         update();
-        if (slashOn) {
-
-            //sprite.setRotation(90); //(float) (Math.random()*360));
-//            batch.draw(sprite, sprite.getX(), sprite.getY());
+        if (activated) {
             sprite.draw(batch);
             if (DEBUG_HITBOX)
-                batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+                batch.draw(debugTexture, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         }
     }
 

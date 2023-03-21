@@ -22,8 +22,10 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 //
 // - un hitbox pour les collisions
 //#################################################################################################
-public class LivingEntity implements Entity {
+public abstract class LivingEntity implements Entity {
     public static final boolean DEBUG_HITBOX = true;
+    protected static final Texture debugTexture = new Texture("misc/green64x64.png");
+
     protected TextureAtlas entityAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
@@ -178,8 +180,6 @@ public class LivingEntity implements Entity {
         this.serverUniqueID = serverUniqueID;
     }
 
-    private static final Texture debugTarget8 = new Texture("misc/target8x8.png");
-
     public void drawAndUpdate(SpriteBatch batch) {
         if (batch == null || sprite == null || sprite.getTexture() == null) return;
 
@@ -187,7 +187,7 @@ public class LivingEntity implements Entity {
         lifeBar.draw(batch);
 
         if (DEBUG_HITBOX)
-            batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+            batch.draw(debugTexture, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
 
     public float getMiddleOfHitboxX() {

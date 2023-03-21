@@ -401,7 +401,6 @@ public class Mob extends LivingEntity {
         return targetPlayer;
     }
 
-
     public void setTargetPlayer(Player player) {
         mapPathToTarget = null;
         oldTargetPos.x = -999;
@@ -412,14 +411,11 @@ public class Mob extends LivingEntity {
         }
     }
 
-    static final Texture debugTarget16 = new Texture("misc/target16x16.png");
-    static final Texture debugTarget8 = new Texture("misc/target8x8.png");
-
     public void drawAndUpdate(SpriteBatch batch) {
         super.drawAndUpdate(batch);
 
         if (AStarMap.DEBUG_ASTAR && mapPathToTarget != null) {
-            for (Vector2int v : mapPathToTarget) batch.draw(debugTarget16, v.x, v.y);
+            for (Vector2int v : mapPathToTarget) batch.draw(debugTexture, v.x, v.y);
         }
     }
 

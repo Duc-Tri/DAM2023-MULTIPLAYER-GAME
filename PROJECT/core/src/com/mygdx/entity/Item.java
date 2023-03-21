@@ -10,8 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 public abstract class Item implements Entity {
 
     //private static TextureAtlas allItemsAtlas; // tous les items pointent sur le même atlas
-    private static final Texture debugTarget8 = new Texture("misc/target8x8.png");
-
+    protected static final Texture debugTexture = new Texture("misc/yellow64x64.png");
 
     private TextureRegion textureRegion;
     public Sprite sprite;
@@ -21,6 +20,8 @@ public abstract class Item implements Entity {
     private static int numItem = 0;
     protected int HITBOX_YOFFSET = 0; // Y : aux pieds du sprite
     protected int HITBOX_XOFFSET = 0; // X : au mileu ?
+    protected int SPRITE_XOFFSET = 0;
+    protected int SPRITE_YOFFSET = 0;
     protected int HITBOX_WIDTH = 100;
     public int HITBOX_HEIGHT = 100;
 
@@ -29,31 +30,23 @@ public abstract class Item implements Entity {
     }
 
     public Item(float x, float y, float width, float height) {
-
     }
 
     public Item(Rectangle rect) {
-
     }
 
-    @Override
-    public void initializeSprite() {
-    }
-
-    @Override
-    public void animate(String string) {
-    }
-
+    /*
     public void setX(float x) {
-//        hitbox.setX(x + HITBOX_XOFFSET);
-////        hitbox.setWidth(sprite.getWidth());
-//        sprite.setX(x);
+        hitbox.setX(x + HITBOX_XOFFSET);
+        hitbox.setWidth(sprite.getWidth());
+        sprite.setX(x);
     }
 
     public void setY(float y) {
-//        hitbox.setY(y + HITBOX_YOFFSET);
-////        hitbox.setHeight(sprite.getHeight());
-//        sprite.setY(y);
+        hitbox.setY(y + HITBOX_YOFFSET);
+        hitbox.setHeight(sprite.getHeight());
+        sprite.setY(y);
     }
+    */
 
 }

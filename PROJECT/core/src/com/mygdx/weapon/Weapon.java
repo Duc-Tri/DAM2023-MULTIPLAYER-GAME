@@ -1,13 +1,14 @@
 package com.mygdx.weapon;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entity.Item;
 import com.mygdx.entity.LivingEntity;
 
 import java.util.HashMap;
 
 //#################################################################################################
-// Weapon, arme avec lequel le joueur attaque.
+// Weapon, arme avec laquelle le joueur attaque.
 //=================================================================================================
 //
 //#################################################################################################
@@ -15,29 +16,11 @@ public abstract class Weapon extends Item {
     public static final boolean DEBUG_HITBOX = true;
 
     protected int damage;
-    protected float SLASH_TIME = 200; // la durée active de l'arme pedant une attaque, en millis
+    protected boolean activated; // l'arme est activée ou pas
+    protected float ACTIVE_TIME = 200; // la durée active de l'arme pendant une attaque, en millis
     protected float COOLDOWN_TIME = 10; // délai avant de pouvoir réutiliser l'arme, en millis
-    protected boolean slashOn; // l'arme est lancée ou pas
     private long lastMillis;
-
     protected LivingEntity owner;
-
-    public Weapon(LivingEntity owner) {
-        lastMillis = System.currentTimeMillis();
-        slashOn = false;
-        this.owner = owner;
-    }
-
-    public void attack() {
-        // TODO: tenir compte du cooldown et du slashTime
-        long currMillis = System.currentTimeMillis();
-
-        if (!slashOn && currMillis - lastMillis > COOLDOWN_TIME) {
-            slashOn = true;
-            lastMillis = currMillis;
-            System.out.println(currMillis + " attack:SLASH ===== " + slashOn);
-        }
-    }
 
     // STATIC => POUR TOUTES LE ARMES !!!
     //---------------------------------------------------------------------------------------------
@@ -49,17 +32,38 @@ public abstract class Weapon extends Item {
             put("UP", 0);
         }
     };
-
-    // PAS STATIC => PROPRE À CHAQUE ARME !!!
-    //---------------------------------------------------------------------------------------------
+    // pas static => propre à chaque arme !!!
     protected HashMap<String, Rectangle> HITBOXES = new HashMap<>();
     protected HashMap<String, Integer> HITBOXES_XOFFSET = new HashMap<>();
+
+    protected HashMap<String, Integer> SPRITE_YOFFSETS = new HashMap<>();
+
+    public Weapon(LivingEntity owner) {
+        lastMillis = System.currentTimeMillis();
+        activated = false;
+        this.owner = owner;
+    }
+
+    public void attack() {
+        // TODO: tenir compte du cooldown et du slashTime
+        long currMillis = System.currentTimeMillis();
+
+        if (!activated && currMillis - lastMillis > COOLDOWN_TIME) {
+            activated = true;
+            lastMillis = currMillis;
+            System.out.println(currMillis + " attack:SLASH ===== " + activated);
+        }
+    }
 
     @Override
     public void animate(String dir) {
         //System.out.println("WEAPON:animate ===== " + dir);
 
         sprite.setRotation(WEAPON_ROTATIONS.get(dir));
+        SPRITE_YOFFSET = SPRITE_YOFFSETS.get(dir);
+
+//        sprite.setX(hitbox.x);
+//        sprite.setCenterY(hitbox.y + hitbox.height / 2);
         hitbox = HITBOXES.get(dir);
         HITBOX_XOFFSET = HITBOXES_XOFFSET.get(dir);
     }
@@ -67,18 +71,20 @@ public abstract class Weapon extends Item {
     public void update() {
         setX(owner.getFootX());
         setY(owner.getY() + owner.getSprite().getHeight() / 2);
-        //sprite.setRegionHeight(4);
 
-        long currMillis = System.currentTimeMillis();
-        if (slashOn && currMillis - lastMillis > SLASH_TIME) {
-            slashOn = false;
-            lastMillis = currMillis;
+        // est-ce que l'arme a épuisé son temps d'activation ?
+        if (activated) {
+            long currMillis = System.currentTimeMillis();
+            if (currMillis - lastMillis > ACTIVE_TIME) {
+                activated = false;
+                lastMillis = currMillis;
 //            System.out.println(currMillis + " animate:SLASH ===== " + slashOn);
+            }
         }
     }
 
     public boolean hitWith(LivingEntity ent) {
-        if (!slashOn)
+        if (!activated)
             return false;
 
         // TODO: check with hitboxes
@@ -86,16 +92,13 @@ public abstract class Weapon extends Item {
         return true;
     }
 
-
-    @Override
     public void setX(float x) {
         hitbox.setX(x + HITBOX_XOFFSET);
-        sprite.setX(x);
+        sprite.setX(x - sprite.getWidth() / 2);
     }
 
-    @Override
     public void setY(float y) {
-        hitbox.setY(y); // + HITBOX_YOFFSET);
-        sprite.setY(y);
+        hitbox.setY(y + HITBOX_YOFFSET);
+        sprite.setY(y + SPRITE_YOFFSET);
     }
 }

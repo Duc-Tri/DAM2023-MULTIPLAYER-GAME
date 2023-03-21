@@ -44,7 +44,8 @@ import java.util.List;
 //#################################################################################################
 public class Map {
 
-    public final static boolean DEBUG_MAP = false; // true = AFFICHE LE LAYER OBSTACLES (=> TOPMAP)
+    public final static boolean DEBUG_OBSTACLES = true; // true = affiche les OBSTACLES (=> TOPMAP)
+
     private final TiledMap tiledMap;
     private final int mapNumberLayers;
     private TiledMap groundMap; // contient que les sols, en dessous des joueurs
@@ -81,7 +82,7 @@ public class Map {
         playersLayer = (TiledMapTileLayer) getLayerAnyCase("PLAYERS");
 
         obstaclesLayer = (TiledMapTileLayer) getLayerAnyCase("OBSTACLES");
-        obstaclesLayer.setVisible(DEBUG_MAP);
+        obstaclesLayer.setVisible(DEBUG_OBSTACLES);
         //printLayer(obstaclesLayer);
         renameLayersToUpperCase();
 
@@ -122,14 +123,14 @@ public class Map {
     private void constructTopMap() {
 
         // si debug, on met les obstacles dans le topMap, pour qu'il soit au dessus de tout
-        if (DEBUG_MAP)
+        if (DEBUG_OBSTACLES)
             topMap.getLayers().add(obstaclesLayer);
         else
             addLayersToMap("TOP", topMap);
     }
 
     private void constructGroundMap() {
-        if (!DEBUG_MAP) addLayersToMap("GROUND", groundMap);
+        if (!DEBUG_OBSTACLES) addLayersToMap("GROUND", groundMap);
     }
 
     private void addLayersToMap(String prefixName, TiledMap map) {
@@ -225,7 +226,7 @@ public class Map {
 
         if (player != null) livingEntitiesList.add(player);
 
-        if (!DEBUG_MAP) renderGround();
+        if (!DEBUG_OBSTACLES) renderGround();
 
         // on trie les entités selon leur Y, pour faciliter la comparaison avec les tuiles
         Collections.sort(livingEntitiesList, livingEntityComparator);
@@ -247,7 +248,7 @@ public class Map {
 
             // affiche les tuiles de cette rangée tileY -------------------------------------------
             int realX = 0;
-            if (!DEBUG_MAP && playersLayer != null) {
+            if (!DEBUG_OBSTACLES && playersLayer != null) {
                 for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
                     Cell c = playersLayer.getCell(tileX, tileY);
                     if (c != null) {
