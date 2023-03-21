@@ -148,4 +148,23 @@ public class Game {
 		}
 		
 	}
+
+	public void removePlayer(String lobbyId, String mateId) {
+		// TODO Auto-generated method stub
+		
+		int lobby = -1;
+		int mate = -1;
+		
+		try {
+			lobby = Integer.parseInt(lobbyId);
+			mate = Integer.parseInt(mateId);
+			if(lobby>-1 && lobby< POOLSIZE && mate > -1 && mate<LOBBYSIZE) {
+				players[lobby][mate] = null;
+			}
+			
+		}catch(Exception e) {
+			
+		}
+		
+	}
 }

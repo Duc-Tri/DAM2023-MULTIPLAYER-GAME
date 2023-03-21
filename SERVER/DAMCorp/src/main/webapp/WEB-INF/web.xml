@@ -119,4 +119,14 @@
     <servlet-name>CancelGame</servlet-name>
     <url-pattern>/CancelGame</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RemovePlayers</display-name>
+    <servlet-name>RemovePlayers</servlet-name>
+    <servlet-class>servlet.RemovePlayers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemovePlayers</servlet-name>
+    <url-pattern>/RemovePlayers</url-pattern>
+  </servlet-mapping>
 </web-app>
