@@ -27,6 +27,11 @@
     <string name="solo_game">Partie Solo</string>
     <string name="online_game">Partie en ligne</string>
     <string name="options">Options</string>
+    <string name="left_guy">left guy</string>
+    <string name="right_guy">right guy</string>
+    <string name="left_guy_under_light">left guy under light</string>
+    <string name="right_guy_under_light">right guy under light</string>
+    <string name="touch_screen_to_go">Touchez l\'écran pour continuer</string>
 
     <string-array name="image_array">
         <item>profil1</item>

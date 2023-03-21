@@ -24,32 +24,29 @@
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ListLobbyActivity"
-
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ListPlayerActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity
             android:name=".MultiJoueurActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".BeginningAnimation"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+
+        </activity>
         <activity
             android:name=".GameMode"
             android:exported="true"
@@ -60,13 +57,11 @@
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".AndroidLauncher"
