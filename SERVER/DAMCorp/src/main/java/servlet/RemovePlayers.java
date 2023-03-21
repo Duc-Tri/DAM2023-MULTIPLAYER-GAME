@@ -1,27 +1,25 @@
 package servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 import game.Game;
 import game.entity.Player;
 
 /**
- * Servlet implementation class RetrieveMate
+ * Servlet implementation class AddPlayers
  */
-public class RetrieveMate extends HttpServlet {
+public class RemovePlayers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Game game = new Game();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public RetrieveMate() {
+	public RemovePlayers() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -32,14 +30,19 @@ public class RetrieveMate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String serverUniqueID = request.getParameter("serverUniqueID");
-		String numLobby = request.getParameter("numLobby");
-		if (serverUniqueID != null && !serverUniqueID.isEmpty() && !serverUniqueID.equals("null") && numLobby != null
-				&& !numLobby.isEmpty() && !numLobby.equals("null")) {
-//			System.out.print("serverUniqueID " + serverUniqueID);
-//			System.out.println("        numLobby " + numLobby);
-			Player player = game.retrievePlayer(serverUniqueID, numLobby);
-			response.getWriter().append(game.retrieveMate(player));
+		// TODO Auto-generated method stub
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+		if (request.getParameter("listPlayers") != null) {
+			String lobbyId = request.getParameter("lobbyId");
+			if (lobbyId != null && !lobbyId.isEmpty() && !lobbyId.equalsIgnoreCase("null")) {
+				String[] stringListPlayers = request.getParameter("listPlayers").split(";");	
+				for(int i = 0  ; i < stringListPlayers.length; i++) {
+					game.removePlayer(lobbyId,stringListPlayers[i]);			
+				}
+		
+			}
+		
 		}
 	}
 
@@ -49,6 +52,7 @@ public class RetrieveMate extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

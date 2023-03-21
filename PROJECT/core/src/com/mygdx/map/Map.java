@@ -1,8 +1,10 @@
 package com.mygdx.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
 import com.mygdx.entity.LivingEntity;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Monsters;
@@ -21,6 +24,8 @@ import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 //#################################################################################################
@@ -54,12 +59,17 @@ public class Map {
     public final int tileWidth;
     public final int tileHeight;
 
+    public final String monstersToSpawn;
+
     public Map(String mapFilename, SpriteBatch batch) {
         this.batch = batch;
         livingEntitiesList = new ArrayList<>();
 
         // Les maps + renderers ===================================================================
         tiledMap = new TmxMapLoader().load(mapFilename);
+
+        // on part du principe que le text contient les noms de monstres à spawn
+        monstersToSpawn = readTextFromMapObjectGroup(mapFilename);
 
         groundMap = new TiledMap();
         groundMapRenderer = new OrthogonalTiledMapRenderer(groundMap);
@@ -84,16 +94,27 @@ public class Map {
         // Reconstruction des sets de layers (ground / top), triggers ==============================
         constructGroundMap();
         constructTopMap();
-        retrieveTriggerRectangles();
+        retrieveTriggerObjects();
     }
 
-    // Charge les rectangles TRIGGERS
-    private void retrieveTriggerRectangles() {
-        // si le calque n'existe pas , ça plante !!!
-        Array<RectangleMapObject> mapRectangles = getLayerAnyCase("TRIGGERS").getObjects().getByType(RectangleMapObject.class);
-        for (RectangleMapObject r : mapRectangles) {
-            System.out.println("retrieveTriggerRectangles ========== rectTrigger=" + r.getName());
-        }
+    private String readTextFromMapObjectGroup(String mapFilename) {
+        XmlReader xmlreader = new XmlReader();
+        XmlReader.Element rootElement = xmlreader.parse(Gdx.files.internal(mapFilename));
+
+        //System.out.println(rootElement.toString());
+
+        // on prend le 1ER OBJECTGROUP seulement
+        String textMessage = rootElement.getChildrenByNameRecursively("objectgroup").first()
+                .getChildrenByNameRecursively("text").first().getText();
+
+        /*
+        System.out.println("########################## " + textMessage);
+        if (monstersToSpawn.toLowerCase().startsWith("spawn monsters"))
+            return monstersToSpawn;
+        else             return null;
+         */
+
+        return textMessage;
     }
 
     // Assemble les layers
@@ -214,12 +235,11 @@ public class Map {
         // Met à jour de la liste de tous les entités
         //-------------------------------------------------
         livingEntitiesList.clear();
-        if (monsters != null) livingEntitiesList.addAll(monsters.getMobs());
+        if (monsters != null) livingEntitiesList.addAll(monsters.getDrawMobs());
 
         if (mates != null) livingEntitiesList.addAll(Mates.getMates());
 
         if (player != null) livingEntitiesList.add(player);
-
 
         if (!DEBUG_MAP) renderGround();
 
@@ -282,8 +302,8 @@ public class Map {
             layer = tiledMap.getLayers().get(layerName.toLowerCase());
         }
 
-        System.out.println("getLayerAnyCase ___" + layerName + "_____" +
-                (layer == null ? " <not found>" : layer.getName()));
+//        System.out.println("getLayerAnyCase ___" + layerName + "_____" +
+//                (layer == null ? " <not found>" : layer.getName()));
 
         return layer;
     }
@@ -295,5 +315,52 @@ public class Map {
         }
     }
 
+
+    HashMap<String, Rectangle> spawnAreas;
+
+    // Charge les rectangles TRIGGERS
+    private void retrieveTriggerObjects() {
+        // si le calque TRIGGERS n'existe pas , ça plante !!!
+
+        spawnAreas = new HashMap<>();
+
+        MapObjects triggers = getLayerAnyCase("TRIGGERS").getObjects();
+
+        Array<RectangleMapObject> mapRectangles = triggers.getByType(RectangleMapObject.class);
+        for (RectangleMapObject area : mapRectangles) {
+//            System.out.println("retrieveTriggerObjects ############## rectTrigger=" + r.getName());
+
+            String areaName = area.getName().trim().toUpperCase();
+            if (areaName.startsWith("SPAWN_")) {
+                spawnAreas.put(areaName, area.getRectangle());
+            }
+
+            for (Iterator<String> it = area.getProperties().getKeys(); it.hasNext(); ) {
+                String k = it.next();
+//                System.out.println("     ========== " + k);
+            }
+        }
+
+    }
+
+    public String getMonstersToSpawn() {
+        return monstersToSpawn;
+    }
+
+    // Renvoie la position du centre d'un spawnArea
+    //---------------------------------------------------------------------------------------------
+    public Vector2int centerPointAtSpawnArea(String spawnArea) {
+        Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
+        if (area != null)
+            return new Vector2int(area.x + area.width / 2, area.y + area.height / 2);
+
+        return new Vector2int(0, 0);
+    }
+
+    // Renvoie une position aléatoire à l'intérieur d'un spawnArea
+    //---------------------------------------------------------------------------------------------
+    public Vector2int randomPointAtSpawnArea(String spawnArea) {
+        return new Vector2int(0, 0);
+    }
 }
 

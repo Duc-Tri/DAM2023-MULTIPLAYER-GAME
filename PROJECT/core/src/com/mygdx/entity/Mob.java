@@ -1,6 +1,5 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -8,17 +7,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.bagarre.MainGame;
+import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPAtlasGenerator;
-import com.mygdx.graphics.RMXPMonstersAtlas;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Mob extends LivingEntity {
+
+    public static enum MonsterType {IMP, BAT, DEVIL, SCORPION, OCTOPUS, BLOB, TROLL, LIVING_TREE}
+
     public static final boolean DEBUG_MOB = false;
 
     private static Map map; // la même carte pour tous les monstres
@@ -31,34 +33,70 @@ public class Mob extends LivingEntity {
     public Color spriteTint;
     Vector2int oldTargetPos;
 
-    public Mob() {
+    private static int numMob = 0;
+    private MonsterType monsterType;
+
+    // numéro des monstres selon l'ordre dans le fichier atlas
+    final static HashMap<MonsterType, Integer> MonstersNum = new HashMap<MonsterType, Integer>() {{
+        put(MonsterType.IMP, 0);
+        put(MonsterType.BAT, 1);
+        put(MonsterType.DEVIL, 2);
+        put(MonsterType.SCORPION, 3);
+        put(MonsterType.OCTOPUS, 4);
+        put(MonsterType.BLOB, 5);
+        put(MonsterType.TROLL, 6);
+        put(MonsterType.LIVING_TREE, 7);
+    }};
+
+    final static HashMap<MonsterType, Integer> MonstersHealth = new HashMap<MonsterType, Integer>() {{
+        put(MonsterType.IMP, 50);
+        put(MonsterType.BAT, 10);
+        put(MonsterType.DEVIL, 20);
+        put(MonsterType.SCORPION, 30);
+        put(MonsterType.OCTOPUS, 80);
+        put(MonsterType.BLOB, 40);
+        put(MonsterType.TROLL, 90);
+        put(MonsterType.LIVING_TREE, 100);
+    }};
+
+    public Mob(MonsterType type) {
+
+        // TEXTURE DE TOUS LES MOBS ---------------------------------------------------------------
         if (allMonstersAtlas == null) {
-            System.out.println("initializeSprite .......... " + MainGame.MONSTERS_ATLAS);
-            allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
+            allMonstersAtlas = Monsters.allMonstersAtlas;
+//            allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
         }
+
+        //System.out.println((numMob++) + " / " + type + " =============== CONSTRUCTOR Mob ... " + allMonstersAtlas);
+
+        uniqueID = "mob" + nextUniqueId();
 
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
-        uniqueID = "mob" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
         // TODO : remove randomness
-        RMXP_CHARACTER = (int) (Math.random() * RMXPMonstersAtlas.MAX_MONSTERS) + "_";
-
+        // (int) (Math.random() * RMXPMonstersAtlas.MAX_MONSTERS)
+        monsterType = type;
+        RMXP_CHARACTER = MonstersNum.get(monsterType) + "_";
         findRegion = RMXP_CHARACTER + "DOWN_0";
+        maxLife = MonstersHealth.get(monsterType);
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        currentLife = maxLife; // 1+(int)(Math.random() * (maxLife-1));
+        lifeBar.setBarRatio(maxLife);
 
         initializeSprite();
 
-        //System.out.println("---------------------------- CONSTRUCTOR Mob");
+        // System.out.println("---------------------------- CONSTRUCTOR Mob " + uniqueID);
 
-        // to position everything well ----------
+        // to position everything well !!!
         setFootX(getFootX());
         setY(getY());
 
         randomize(); // TODO : remove it after tests
-        nextPoint = new Vector2int(-99, -99);
-        oldTargetPos = new Vector2int(-99, -99);
+        nextPoint = new Vector2int(999, 999);
+        oldTargetPos = new Vector2int(999, 999);
     }
 
     public Mob(float x, float y, float width, float height) {
@@ -77,7 +115,7 @@ public class Mob extends LivingEntity {
     @Override
     public void initializeSprite() {
 
-        // TEXTURE LOCAL DE LIVING_ENTITY -------------------------------------
+        // texture statique mob => texture locale de living_entity --------------------------------
         if (textureAtlas == null) {
             textureAtlas = allMonstersAtlas;
         }
@@ -102,7 +140,7 @@ public class Mob extends LivingEntity {
     private int totalSteps; // pour timer le mouvement
     private int maximumSteps; // pour timer le mouvement
     private float currentTime; // pour timer le mouvement, maj ENTRE CHAQUE APPEL
-    private float moveTime; // pour timer le mouvement
+    private float moveDelay; // pour timer le mouvement
 
     private void randomize() {
         WAIT_FRAMES = 2 + (int) (Math.random() * 2);
@@ -110,7 +148,7 @@ public class Mob extends LivingEntity {
         randomDir = RMXPAtlasGenerator.randomDir();
 
         // pour la version movetoPLayer / moveToRandomDir(float deltaTime) ------------------------
-        moveTime = 0.05f + (float) (Math.random() * 0.2f);
+        moveDelay = 0.01f + (float) (Math.random() * 0.1f);
         currentTime = 0;
 
         // pour la version movetoPLayer() / moveToRandomDir() -------------------------------------
@@ -122,7 +160,7 @@ public class Mob extends LivingEntity {
     // move to random direction, until time reached
     public void moveToRandomDir(float deltaTime) {
         currentTime += deltaTime;
-        if (currentTime > moveTime) {
+        if (currentTime > moveDelay) {
             randomize();
         }
 
@@ -160,7 +198,7 @@ public class Mob extends LivingEntity {
 
         animate(dirKeyword);
 
-//        System.out.println(this.uniqueID + " d=" + dirKeyword + " t=" + moveTimeRandom + "/" + targetTimeRandom);
+        //System.out.println(this.uniqueID + " d=" + dirKeyword + " t=" + currentTime + "/" + moveDelay);
 
         if (collideWithObstacle && map.checkObstacle(this, deltaX, deltaY))
             return; // OBSTACLE ! on ne bouge pas !
@@ -194,6 +232,10 @@ public class Mob extends LivingEntity {
 
     public List<Vector2int> pathToTarget(LivingEntity target) {
 
+        //System.out.println("pathToTarget " + target.uniqueID);
+
+        if (target == null) return null;
+
         aStarCurrentPos = map.pixelsToMapTile(getFootX(), entityY);
         aStarGoal = map.pixelsToMapTile(target.getFootX(), target.getY());
 
@@ -222,14 +264,14 @@ public class Mob extends LivingEntity {
         if (forceNewPath || mapPathToTarget == null || mapPathToTarget.size() == 0) {
 
             mapPathToTarget = pathToTarget(targetPlayer);
-//            System.out.println("processPathToPlayer ---------- NEW PATH ---------- " + mapPathToTarget.size());
+            //System.out.println("processPathToPlayer --- NEW PATH --- " + mapPathToTarget.size());
         }
 
         if (mapPathToTarget != null) {
 
             nextPoint = mapPathToTarget.get(mapPathToTarget.size() - 1);
             mapPathToTarget.remove(mapPathToTarget.size() - 1);
-//            System.out.println("processPathToPlayer ----- same path ----- " + mapPathToTarget.size());
+            //System.out.println("processPathToPlayer -- same path -- " + mapPathToTarget.size());
         }
     }
 
@@ -250,8 +292,8 @@ public class Mob extends LivingEntity {
         boolean moved = playerHasMoved();
         if (moved || (Math.abs(deltaX) < spriteStep && Math.abs(deltaY) < spriteStep)) {
 
-            System.out.println("moveToPlayer :::::: " + moved +
-                    " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
+            // System.out.println("moveToPlayer :::::: " + moved +
+            //         " dx=" + Math.abs(deltaX) + " dy=" + Math.abs(deltaY) + " step=" + spriteStep);
 
             processPathToPlayer(moved);
         }
@@ -276,11 +318,18 @@ public class Mob extends LivingEntity {
         //                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
     }
 
+    public void moveToPlayer2(float deltaTime) {
+    }
+
     public void moveToPlayer(float deltaTime) {
-        if (playerReached() || ((currentTime += deltaTime) < moveTime))
+
+//        System.out.println(" moveToPlayer ............ mP2t=" + mapPathToTarget + " / m=" + map +
+//                " / pr=" + playerReached() + " / Ct=" + currentTime + " / pl=" + targetPlayer.uniqueID);
+
+        if (mapPathToTarget == null || map == null || playerReached() || ((currentTime += deltaTime) < moveDelay))
             return;
 
-        currentTime = moveTime - currentTime;
+        currentTime = moveDelay - currentTime;
 
         float deltaX = nextPoint.x - getFootX();
         float deltaY = nextPoint.y - getY();
@@ -312,12 +361,14 @@ public class Mob extends LivingEntity {
         // TEST : téléportation --------------------
         //        setX(nextPoint.x);        //        setY(nextPoint.y);
 
-        //        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
-        //                " entity={" + entityX + "/" + entityY + "} " +
-        //                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
+//        System.out.println(mapPathToTarget.size() + ") moveToPlayer ............ " +
+//                " entity={" + entityX + "/" + entityY + "} " +
+//                " nextP={" + nextPoint.x + "/" + nextPoint.y + "}");
     }
 
     private boolean playerHasMoved() {
+        if (targetPlayer == null) return true;
+
         Vector2int pos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
         if (pos.equals(oldTargetPos)) {
             return false;
@@ -325,11 +376,13 @@ public class Mob extends LivingEntity {
 
         // le joueur a bougé
         oldTargetPos = pos;
-//        System.out.println("playerHasMoved ###################################################");
+//        System.out.println("playerHasMoved ###########################################");
         return true;
     }
 
     private boolean playerReached() {
+        if (targetPlayer == null) return false;
+
         return hitbox.overlaps(targetPlayer.hitbox) ||
 
                 (Math.abs(entityX - targetPlayer.entityX) < spriteStep &&
@@ -345,9 +398,13 @@ public class Mob extends LivingEntity {
 
 
     public void setTargetPlayer(Player player) {
+        mapPathToTarget = null;
+        oldTargetPos.x = -999;
+
         targetPlayer = player;
-        if (map != null)
-            oldTargetPos = map.pixelsToMapTile(targetPlayer.getFootX(), targetPlayer.getY());
+        if (map != null && targetPlayer != null) {
+            mapPathToTarget = pathToTarget(targetPlayer);
+        }
     }
 
     static final Texture debugTarget16 = new Texture("test/target16x16.png");

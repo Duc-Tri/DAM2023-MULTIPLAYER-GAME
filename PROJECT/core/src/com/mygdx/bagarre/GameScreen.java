@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
+import com.mygdx.client.RetrieveMonsters;
 import com.mygdx.client.RetrieveUpdatePlayer;
+import com.mygdx.client.UpdateMonsters;
 import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Monsters;
@@ -24,25 +26,26 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class GameScreen implements Screen, InputProcessor {
-
     private static Player player; // main player
+    private final MainGame mainGame;
     private Mates mates;
     private Monsters monsters;
     private boolean showJoystick = false;
-    private int refreshValue = 0;
-    private int speedOfSprite = 3; //Plus c'est grand plus c'est lent
     private static Map map;
     private static ClampedCamera clampedCamera;
     private Viewport viewport;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
+    private boolean showDebugTexts = true;
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
     private SpriteBatch batch;
     private int sizeOfStep = 8;
     private Joystick joystick;
     private ShapeRenderer shapeRenderer;
-
-//    int mapPixelsWidth = 0;
-//    int mapPixelsHeight = 0;
 
     public static boolean lockOnListReadFromDB = false;
 
@@ -50,53 +53,57 @@ public class GameScreen implements Screen, InputProcessor {
     private Texture testImage = new Texture(testImageFile);
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
+    private DebugOnScreen debugOS;
 
     int threadPoolSize = 15;
     ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     ThreadPoolExecutor threadPoolExecutor1 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     ThreadPoolExecutor threadPoolExecutor2 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolExecutor3 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolExecutor4 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     UpdatePlayer updatePlayer;
     RetrieveMate retrieveMate;
     RetrieveUpdatePlayer retrieveUpdatePlayer;
+    private UpdateMonsters updateMonsters;
+    private RetrieveMonsters retrieveMonsters;
 
-    public GameScreen(String mapFilename) {
+    public GameScreen(String mapFilename, MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
+        mainGame = game;
         createPlayer();
-        mates = new Mates(player);
 
         batch = new SpriteBatch();
-
         map = loadMap(mapFilename, batch);
-
-        monsters = new Monsters(map);
-        monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
+        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
+        batch.setProjectionMatrix(clampedCamera.combined);
 
         shapeRenderer = new ShapeRenderer();
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.runOnDesktop() ? 0.5f : 0.25f);
+        joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
-        joystick = new Joystick(100, 100, MainGame.runOnAndroid() ? 200 : 100);
 
-        batch.setProjectionMatrix(clampedCamera.combined);
+        debugOS = DebugOnScreen.getInstance();
 
-        createThreadsPool();
+        monsters = new Monsters(map, player);
+
+        if (mainGame.isMultiplayerGameMode()) {
+            mates = new Mates(player);
+            createThreadsPool();
+        }
     }
 
     private void createPlayer() {
-        player = new Player();
+        player = new Player(map);
         player.setX(100); // temp
         player.setY(100); // temp
-        NewPlayer.requestServer(player);
-        System.out.println();
+        if (mainGame.isMultiplayerGameMode())
+            NewPlayer.requestServer(player);
     }
 
     private Map loadMap(String mapFilename, SpriteBatch sb) {
         Map m = new Map(mapFilename, sb);
-        //m.setView(clampedCamera);
-//        mapPixelsHeight = m.mapPixelsHeight();
-//        mapPixelsWidth = m.mapPixelsWidth();
 
         return m;
     }
@@ -110,33 +117,51 @@ public class GameScreen implements Screen, InputProcessor {
 
         retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
         threadPoolExecutor2.submit(retrieveUpdatePlayer);
+
+
+        // MASTER ONLY
+        if (player.isMaster()) {
+            System.out.println(player.getUniqueID() + " IS MASTER **********************");
+            updateMonsters = new UpdateMonsters(player, monsters);
+            threadPoolExecutor4.submit(updateMonsters);
+        }
+
+        // SLAVES & MASTER
+        retrieveMonsters = new RetrieveMonsters(player, monsters);
+        threadPoolExecutor3.submit(retrieveMonsters);
     }
 
     public static Map getMap() {
         return map;
     }
 
+    public float currentTime = 0;
+    public final float PLAYER_MOVE_DELAY = 0.05f; // en secondes
+
     @Override
     // deltaTime = temps depuis la dernière frame
     public void render(float deltaTime) {
 
-        submitThreadJobs();
+        if (mainGame.isMultiplayerGameMode())
+            submitThreadJobs();
 
         displayJoystick();
 
-        if (Gdx.input.isTouched(0)) {
-            refreshValue++;
-            if (refreshValue == speedOfSprite) {
-                refreshValue = 0;
+        currentTime += deltaTime;
+        if (currentTime > PLAYER_MOVE_DELAY) {
+            currentTime = currentTime - PLAYER_MOVE_DELAY;
+
+            if (Gdx.input.isTouched(0))
                 movePlayer(joystick.getDirectionInput());
+            else {
+                showJoystick = false;
+                movePlayer(lastKeyCode);
             }
-        } else {
-            showJoystick = false;
         }
 
-        monsters.moveToPlayer(deltaTime);
+        monsters.update(deltaTime);
 
-        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -151,12 +176,27 @@ public class GameScreen implements Screen, InputProcessor {
         map.setView(clampedCamera);
         map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
 
+        if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
+
         batch.end(); //========================================================
 
 
         if (showJoystick) {
             joystick.render(shapeRenderer);
         }
+    }
+
+    private void debugOnScreen() {
+        //debugOS.draw("Score AZER AZETGEZA REZA ", 0, 0);
+        debugOS.setText(0, mainGame.getGameMode() + " / " + monsters.getMonstersMode());
+        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
+        debugOS.setText(25, "" + System.currentTimeMillis());
+
+
+//        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
+//            debugOS.setText(i, i + "/" + System.currentTimeMillis());
+
+        debugOS.drawTexts(batch);
     }
 
     private void submitThreadJobs() {
@@ -178,8 +218,17 @@ public class GameScreen implements Screen, InputProcessor {
             threadPoolExecutor1.submit(retrieveMate);
         }
         if (threadPoolExecutor2.getActiveCount() < 1) {
-            //System.out.println("retrieveUpdatePlayer    RESTART");
+            System.out.println("retrieveUpdatePlayer    RESTART");
             threadPoolExecutor2.submit(retrieveUpdatePlayer);
+        }
+
+        if (threadPoolExecutor3.getActiveCount() < 1) {
+            //System.out.println("retrieveMonsters    RESTART");
+            threadPoolExecutor3.submit(retrieveMonsters);
+        }
+        if (player.isMaster() && threadPoolExecutor4.getActiveCount() < 1) {
+            //System.out.println("updateMonsters    RESTART");
+            threadPoolExecutor4.submit(updateMonsters);
         }
 
 //        retrieveMate = new RetrieveMate(player);
@@ -211,7 +260,7 @@ public class GameScreen implements Screen, InputProcessor {
         shapeRenderer.dispose();
     }
 
-    public static OrthographicCamera getCamera() {
+    public static ClampedCamera getCamera() {
         return clampedCamera;
     }
 
@@ -249,88 +298,38 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void movePlayer(String dirKeyword, int deltaX, int deltaY) {
 
-        player.animate(dirKeyword);
-
-        if (MainGame.getMap().checkObstacle(player, deltaX, deltaY))
-            return; // OBSTACLE ! on ne bouge pas !
-
-        if (deltaX != 0) {
-            player.setX(player.getX() + deltaX);
-        }
-
-        if (deltaY != 0) {
-            player.setY(player.getY() + deltaY);
-        }
-
+        player.move(dirKeyword, deltaX, deltaY);
         clampedCamera.centerOnPlayer();
-
-        /*
-
-            player.animate("LEFT");
-            player.setX(player.getX() - sizeOfStep);
-            if (player.getX() < SCREEN_WIDTH * 1.0 / 4.0) {
-                if (camera.position.x < SCREEN_WIDTH * 1.0 / 4.0) {
-                    if (player.getX() > 0) {
-                        player.setX(player.getX() + sizeOfStep);
-                    }
-                } else {
-                    player.setX(player.getX() + sizeOfStep);
-                    camera.position.x -= sizeOfStep;
-                }
-            }
-
-
-                    player.animate("RIGHT");
-            player.setX(player.getX() + sizeOfStep);
-            if (player.getX() > SCREEN_WIDTH * 3.0 / 4.0) {
-                if (camera.position.x > calculatedWidth - SCREEN_WIDTH * 1.0 / 4.0) {
-                    if (player.getX() < SCREEN_WIDTH) {
-                        player.setX(player.getX() - sizeOfStep);
-                    }
-                } else {
-                    player.setX(player.getX() - sizeOfStep);
-                    camera.position.x += sizeOfStep;
-                }
-            }
-
-            player.animate("UP");
-            player.setY(player.getY() + sizeOfStep);
-            if (player.getY() > SCREEN_HEIGHT * 3.0 / 4.0) {
-                if (camera.position.y > calculatedHeight - SCREEN_HEIGHT * 1.0 / 4.0) {
-                    if (player.getY() < SCREEN_HEIGHT) {
-                        player.setY(player.getY() - sizeOfStep);
-                    }
-                } else {
-                    player.setY(player.getY() - sizeOfStep);
-                    camera.position.y += sizeOfStep;
-                }
-            }
-
-                    player.animate("DOWN");
-            player.setY(player.getY() - sizeOfStep);
-            if (player.getY() < SCREEN_HEIGHT * 1.0 / 4.0) {
-                if (camera.position.y < SCREEN_HEIGHT * 1.0 / 4.0) {
-                    if (player.getY() > 0) {
-                        player.setY(player.getY() + sizeOfStep);
-                    }
-                } else {
-                    player.setY(player.getY() + sizeOfStep);
-                    camera.position.y -= sizeOfStep;
-                }
-            }
-
-         */
     }
+
+    //boolean[] keyOns = new boolean[200];
+    int lastKeyCode = Input.Keys.PRINT_SCREEN; // pour faire simple ...
 
     @Override
     public boolean keyDown(int keycode) {
-        showJoystick = true;
-        movePlayer(keycode);
+        showJoystick = false;
+
+        switch (keycode) {
+            case Input.Keys.ESCAPE:
+                showDebugTexts = !showDebugTexts;
+                break;
+            case Input.Keys.SPACE:
+                player.attack();
+                break;
+            default:
+                //keyOns[keycode] = true;
+                lastKeyCode = keycode;
+                break;
+        }
+
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        showJoystick = false;
+        //keyOns[keycode] = false;
+        lastKeyCode = Input.Keys.PRINT_SCREEN;
         return false;
     }
 
@@ -380,35 +379,6 @@ public class GameScreen implements Screen, InputProcessor {
 }
 
 /*
-
-    public boolean isDisplay() {
-        return display;
-    }
-
-    public void setDisplay(boolean display) {
-        this.display = display;
-    }
-
-    public int getRefreshValue() {
-        return refreshValue;
-    }
-
-    public void setRefreshValue(int refreshValue) {
-        this.refreshValue = refreshValue;
-    }
-
-    public int getSpeedOfSprite() {
-        return speedOfSprite;
-    }
-
-    public void setSpeedOfSprite(int speedOfSprite) {
-        this.speedOfSprite = speedOfSprite;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
     public static boolean isLockOnListReadFromDB() {
         return lockOnListReadFromDB;
     }
@@ -416,5 +386,4 @@ public class GameScreen implements Screen, InputProcessor {
     public static void setLockOnListReadFromDB(boolean lockOnListReadFromDB) {
         MainGame.lockOnListReadFromDB = lockOnListReadFromDB;
     }
-
  */

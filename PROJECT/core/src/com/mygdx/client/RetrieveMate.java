@@ -22,14 +22,20 @@ public class RetrieveMate implements Runnable {
     public void run() {
         long initialTime = System.currentTimeMillis();
         long runningTime = 100000000L;
-        int i=0;
+        int i = 0;
         while (System.currentTimeMillis() < initialTime + runningTime) {
             String[] tempMates = requestServer(player);
-            if(tempMates != null && tempMates.length > 0) {
+            if (tempMates != null && tempMates.length > 0) {
                 Mates.createNewMates(tempMates);
                 Mates.removeOldMates(tempMates);
-            }else{
+            } else {
                 Mates.removeAllMates();
+            }
+
+            try {
+                Thread.sleep(100); ///////////////////
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -41,6 +47,7 @@ public class RetrieveMate implements Runnable {
         String USER_AGENT = "Mozilla/5.0";
         URL url = null;
         try {
+//            System.out.println("GET_URL " + GET_URL);
             url = new URL(GET_URL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -54,7 +61,9 @@ public class RetrieveMate implements Runnable {
                     response.append(inputLine);
                 }
                 in.close();
+//                System.out.println("String.valueOf(response)  " + String.valueOf(response));
                 if (!String.valueOf(response).isEmpty()) {
+
                     String[] mates = String.valueOf(response).split(";");
                     return mates;
                 }

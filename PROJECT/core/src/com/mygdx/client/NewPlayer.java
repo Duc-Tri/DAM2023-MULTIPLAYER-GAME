@@ -33,9 +33,17 @@ public class NewPlayer {
                     response.append(inputLine);
                 }
                 in.close();
+
                 String[] resp = String.valueOf(response).split(";");
                 player.setServerUniqueID(resp[0]);
                 player.setNumLobby(resp[1]);
+
+                ///////////////////////////////////////////////////////////////////////////////////
+                //player.setMaster(true);
+                ///////////////////////////////////////////////////////////////////////////////////
+                player.setMaster(resp[2].trim().equalsIgnoreCase("true"));
+
+                System.out.println("NewPlayer ###### " + String.join(" / ", resp));
             }
 
         } catch (MalformedURLException e) {

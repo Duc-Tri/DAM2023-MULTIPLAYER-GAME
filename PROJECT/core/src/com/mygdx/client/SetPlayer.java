@@ -10,31 +10,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class UpdatePlayer implements Runnable {
-    Player player;
-
-    public UpdatePlayer(Player player) {
-        this.player = player;
-    }
-
-    @Override
-    public void run() {
-        long initialTime = System.currentTimeMillis();
-        long runningTime = 100000000L;
-        while (System.currentTimeMillis() < initialTime + runningTime) {
-            requestServer(player);
-
-            try {
-                Thread.sleep(100); ///////////////////
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-    }
+public class SetPlayer {
 
     public static void requestServer(Player player) {
-        String GET_URL = MainGame.URLServer + "UpdatePlayer";
+        String GET_URL = MainGame.URLServer + "SetPlayer";//
         String paramString = buildParam(player);
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
@@ -49,34 +28,40 @@ public class UpdatePlayer implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 String inputLine;
                 StringBuffer response = new StringBuffer();
+
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
                 in.close();
-            } else {
-                System.out.println("GET request did not work.");
+                String[] resp = String.valueOf(response).split(";");
+                player.setServerUniqueID(resp[0]);
+                player.setNumLobby(resp[1]);
             }
+
         } catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         } catch (IOException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         }
     }
 
     private static String buildParam(Player player) {
-        float realX = player.getX();
-        float realY = player.getY();
+
         String param = "?";
-        param = param + "x=" + realX;
-        param = param + "&y=" + realY;
-        param = param + "&serverUniqueID=" + player.getServerUniqueID();
+        param = param + "lobbyJoueurId=" + player.getLobbyPlayerId();
+        param = param + "&lobbyId=" + player.getNumLobby();
+        param = param + "&x=" + player.getX();
+        param = param + "&y=" + player.getY();
+        param = param + "&boxWidth=" + player.getHitbox().getWidth();
+        param = param + "&boxHeight=" + player.getHitbox().getHeight();
+        param = param + "&uniqueID=" + player.getUniqueID();
+        param = param + "&spriteColorInt=" + player.getSpriteTint();
         param = param + "&findRegion=" + player.getFindRegion();
+        param = param + "&textureAtlasPath=" + player.getTextureAtlasPath();
+        param = param + "&scale=" + 1;//+player.getScale();
         param = param + "&numLobby=" + player.getNumLobby();
+
+//        System.out.println("NewPlayer _____________________ buildParam : " + param);
 
         return param;
     }
-
 
 }

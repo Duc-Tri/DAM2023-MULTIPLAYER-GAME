@@ -59,6 +59,26 @@
     <servlet-name>RetrieveMate</servlet-name>
     <url-pattern>/RetrieveMate</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UpdateMonsters</servlet-name>
+    <url-pattern>/UpdateMonsters</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UpdateMonsters</display-name>
+    <servlet-name>UpdateMonsters</servlet-name>
+    <servlet-class>servlet.UpdateMonsters</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RetrieveMonsters</servlet-name>
+    <url-pattern>/RetrieveMonsters</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RetrieveMonsters</display-name>
+    <servlet-name>RetrieveMonsters</servlet-name>
+    <servlet-class>servlet.RetrieveMonsters</servlet-class>
+  </servlet>
   <servlet>
     <description></description>
     <display-name>TestServlet</display-name>
@@ -68,5 +88,45 @@
   <servlet-mapping>
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/TestServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddPlayers</display-name>
+    <servlet-name>AddPlayers</servlet-name>
+    <servlet-class>servlet.AddPlayers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddPlayers</servlet-name>
+    <url-pattern>/AddPlayers</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SetPlayer</display-name>
+    <servlet-name>SetPlayer</servlet-name>
+    <servlet-class>servlet.SetPlayer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SetPlayer</servlet-name>
+    <url-pattern>/SetPlayer</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CancelGame</display-name>
+    <servlet-name>CancelGame</servlet-name>
+    <servlet-class>servlet.CancelGame</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CancelGame</servlet-name>
+    <url-pattern>/CancelGame</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RemovePlayers</display-name>
+    <servlet-name>RemovePlayers</servlet-name>
+    <servlet-class>servlet.RemovePlayers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemovePlayers</servlet-name>
+    <url-pattern>/RemovePlayers</url-pattern>
   </servlet-mapping>
 </web-app>

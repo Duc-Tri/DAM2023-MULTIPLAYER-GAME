@@ -9,26 +9,29 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
+import com.mygdx.map.Map;
 
 public class Player extends LivingEntity {
 
     private static TextureAtlas allPlayersAtlas;
     private String lobbyPlayerId;
     private String numLobby = "";
+    private boolean isMaster;
+    private Monsters masterMobs; // simulation des monsters en mode MASTER
+    private static Map map;
 
     public Player() {
-
         // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
         if (allPlayersAtlas == null) {
-            System.out.println("initializeSprite .......... " + MainGame.PLAYERS_ATLAS);
+            //System.out.println("initializeSprite .......... " + MainGame.PLAYERS_ATLAS);
             allPlayersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.PLAYERS_ATLAS));
         }
 
-        System.out.println("---------------------------- CONSTRUCTOR Player");
+        uniqueID = "player" + nextUniqueId();
+
         final int R = 10 + (int) (Math.random() * 90);
         final int V = 10 + (int) (Math.random() * 90);
         final int B = 10 + (int) (Math.random() * 90);
-        uniqueID = "player" + R + V + B;
         spriteTint = new Color((float) R / 100, (float) V / 100, (float) B / 100, 1);
 
         // TODO : remove randomness
@@ -41,6 +44,13 @@ public class Player extends LivingEntity {
         // to position everything well ----------
         setX(getX());
         setY(getY());
+
+        System.out.println("---------------------------- CONSTRUCTOR Player " + uniqueID);
+    }
+
+    public Player(Map m) {
+        this();
+        map = m;
     }
 
     @Override
@@ -56,29 +66,7 @@ public class Player extends LivingEntity {
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
         sprite = new Sprite(textureRegion);
-
-        //sprite.scale(scale);
         //sprite.setColor(spriteTint);
-    }
-
-    private float getRealX() {
-        float relativePlayerX = entityX - GameScreen.SCREEN_WIDTH / 2.0f + GameScreen.getCamera().position.x;
-        return relativePlayerX;
-    }
-
-    private float getRealY() {
-        float relativePlayerY = entityY - GameScreen.SCREEN_HEIGHT / 2.0f + GameScreen.getCamera().position.y;// + 10;
-        return relativePlayerY;
-    }
-
-    public void setYFromRealY() {
-        float temp = getRealY() - GameScreen.getCamera().position.y + GameScreen.SCREEN_HEIGHT / 2.0f;
-        setY(temp);
-    }
-
-    public void setXFromRealX() {
-        float temp = getRealX() - GameScreen.getCamera().position.x + GameScreen.SCREEN_WIDTH / 2.0f; // + 10;
-        setX(temp);
     }
 
     public String getNumLobby() {
@@ -89,12 +77,43 @@ public class Player extends LivingEntity {
         this.numLobby = numLobby;
     }
 
-
     public String getLobbyPlayerId() {
         return lobbyPlayerId;
     }
 
     public void setLobbyPlayerId(String lobbyPlayerId) {
         this.lobbyPlayerId = lobbyPlayerId;
+    }
+
+    public boolean isMaster() {
+        return isMaster;
+    }
+
+    public void setMaster(boolean master) {
+        isMaster = master;
+        if (isMaster) {
+            System.out.println(uniqueID + " *** setMaster ========== " + isMaster +
+                    " / " + MainGame.getInstance().getGameMode());
+
+//            masterMobs = new Monsters(map, );
+        } else {
+//            masterMobs.reset();
+        }
+
+    }
+
+    public void move(String dirKeyword, int deltaX, int deltaY) {
+        animate(dirKeyword); // dans tous les cas, on anime
+
+        if (MainGame.getInstance().getMap().checkObstacle(this, deltaX, deltaY))
+            return; // OBSTACLE ! on ne bouge pas !
+
+        if (deltaX != 0) setX(entityX + deltaX);
+
+        if (deltaY != 0) setY(entityY + deltaY);
+    }
+
+    public void attack() {
+        Monsters.killRandom();
     }
 }

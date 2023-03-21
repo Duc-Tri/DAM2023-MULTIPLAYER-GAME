@@ -31,17 +31,26 @@ public class RetrieveUpdatePlayer implements Runnable {
             for (int i = 0; i < Mates.getMates().size(); i++) {
                 requestServer(Mates.getMate(i));
             }
+
+            try {
+                Thread.sleep(100); ///////////////////
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
     public static void requestServer(Player player) {
         String GET_URL = MainGame.URLServer + "RetrieveUpdatePlayer";
+//        System.out.println("GET_URL " + GET_URL);
         String paramString = buildParam(player);
 
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
         URL url = null;
         try {
+
             url = new URL(GET_URL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -91,7 +100,7 @@ public class RetrieveUpdatePlayer implements Runnable {
     private static String buildParam(Player player) {
         String param = "?";
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
-        param = param + "&numLobby=" +player.getNumLobby();
+        param = param + "&numLobby=" + player.getNumLobby();
         return param;
     }
 }

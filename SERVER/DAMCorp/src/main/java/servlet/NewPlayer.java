@@ -1,8 +1,6 @@
 package servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebInitParam;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +16,7 @@ public class NewPlayer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	static Game game = new Game();
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -39,6 +38,7 @@ public class NewPlayer extends HttpServlet {
 			if (request.getParameter("x") != null) {
 				player.setX(request.getParameter("x"));
 			}
+
 			if (request.getParameter("y") != null) {
 				player.setY(request.getParameter("y"));
 			}
@@ -66,26 +66,23 @@ public class NewPlayer extends HttpServlet {
 			if (request.getParameter("textureAtlasPath") != null) {
 				player.setTextureAtlasPath(request.getParameter("textureAtlasPath"));
 			}
-			if (request.getParameter("scale") != null) {
-				player.setScale(request.getParameter("scale"));
-			}
 
 			game.addPlayer(player);
 
-			
 			response.getWriter().append(player.getServerUniqueID());
-			response.getWriter().append(";"+player.getNumLobby());
-			
+			response.getWriter().append(";" + player.getNumLobby());
+			response.getWriter().append(";" + player.isMaster());
+
 			System.out.println("NewPlayer ========== " + player.getServerUniqueID() + " * " + player.getX() + " * "
 					+ player.getY() + " * " + player.getBoxWidth() + " * " + player.getBoxHeight() + " * "
 					+ player.getUniqueID() + " * " + player.getSpriteColorInt() + " * " + player.getFindRegion() + " * "
-					+ player.getTextureAtlasPath() + " * " + player.getScale() + " * " + player.getNumLobby());
+					+ player.getTextureAtlasPath() + " * " + player.isMaster() + " * " + player.getNumLobby());
 		} else {
 			System.out.println("NewPlayer - No available place");
 		}
 
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)

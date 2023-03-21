@@ -101,7 +101,7 @@ public class AStarMap {
 
         if (isValidNode(nodeBas)) Neighbours.add(nodeBas);
 
-//        System.out.println("getNeighbours::::::::::::::::: " + nodeGauche + " * " + nodeDroite + " * " + nodeHaut + " * " + nodeBas + " = " + Neighbours.size());
+//        System.out.println("getNeighbours:::::::::: " + nodeGauche + " * " + nodeDroite + " * " + nodeHaut + " * " + nodeBas + " = " + Neighbours.size());
 
         return Neighbours;
     }
@@ -127,8 +127,8 @@ public class AStarMap {
         return map;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMap(Map m) {
+        map = m;
     }
 
 }

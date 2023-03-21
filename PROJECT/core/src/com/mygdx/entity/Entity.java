@@ -7,6 +7,4 @@ public interface Entity {
 
     public abstract void animate(String string);
 
-
-
 }
