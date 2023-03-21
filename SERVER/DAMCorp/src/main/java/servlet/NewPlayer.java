@@ -18,17 +18,6 @@ public class NewPlayer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	static Game game = new Game();
-
-//    private float x;
-//    private float y;
-//    private float boxWidth;
-//    private float boxHeight;
-//    public String uniqueID;
-//    public String serverUniqueID;
-//    private float spriteColorInt;
-//    private String findRegion;
-//    private String textureAtlasPath;
-//    private float scale;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -46,13 +35,7 @@ public class NewPlayer extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		if (game.possibleToScribe()) {
-
 			Player player = new Player(request.getParameter("uniqueID"), "" + game.getNextId());
-
-			System.out.println("NewPlayer "+game+" =================== " + player.getServerUniqueID());
-
-			response.getWriter().append(player.getServerUniqueID());
-
 			if (request.getParameter("x") != null) {
 				player.setX(request.getParameter("x"));
 			}
@@ -89,25 +72,26 @@ public class NewPlayer extends HttpServlet {
 
 			game.addPlayer(player);
 
+			
+			response.getWriter().append(player.getServerUniqueID());
+			response.getWriter().append(";"+player.getNumLobby());
+			
 			System.out.println("NewPlayer ========== " + player.getServerUniqueID() + " * " + player.getX() + " * "
 					+ player.getY() + " * " + player.getBoxWidth() + " * " + player.getBoxHeight() + " * "
 					+ player.getUniqueID() + " * " + player.getSpriteColorInt() + " * " + player.getFindRegion() + " * "
-					+ player.getTextureAtlasPath() + " * " + player.getScale());
+					+ player.getTextureAtlasPath() + " * " + player.getScale() + " * " + player.getNumLobby());
 		} else {
 			System.out.println("NewPlayer - No available place");
 		}
 
-		System.out.println("NewPlayer - doGet");
-
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

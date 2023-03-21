@@ -23,28 +23,22 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name=".BeginningAnimation"
+            android:name=".ListLobbyActivity"
+
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" >
-
-
-        </activity>
+            android:theme="@style/AppTheme" />/>
         <activity
-            android:name=".Lobby"
-            android:exported="false" />
-        <activity
-            android:name=".GameMode"
+            android:name=".ListPlayerActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".LoginPage"
+            android:name=".MultiJoueurActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,12 +46,33 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".BeginningAnimation"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".GameMode"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".LoginPage"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
             android:name=".AndroidLauncher"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
             android:exported="true"
-            android:screenOrientation="landscape">
-
-        </activity>
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

@@ -8,10 +8,13 @@ public class Player {
 	private String boxHeight;
 	private String uniqueID;
 	private String serverUniqueID;
+	private String lobbyPlayerId;
 	private String spriteColorInt;
 	private String findRegion;
 	private String textureAtlasPath;
 	private String scale;
+	private String numLobby="";
+	private long lastUpdate;
 
 	public Player(String uniqueID, String serverUniqueID) {
 		super();
@@ -100,4 +103,35 @@ public class Player {
 		this.scale = scale;
 	}
 
+	public long getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(long lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	public String getNumLobby() {
+		return numLobby;
+	}
+
+	public void setNumLobby(String numLobby) {
+		this.numLobby = numLobby;
+	}
+
+	public String getLobbyPlayerId() {
+		return lobbyPlayerId;
+	}
+
+	public void setLobbyPlayerId(String lobbyPlayerId) {
+		this.lobbyPlayerId = lobbyPlayerId;
+	}
+
+	
+	
+	
+	
+	
+	
+	
 }

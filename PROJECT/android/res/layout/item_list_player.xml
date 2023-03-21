@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:foregroundGravity="center"
+    android:radius="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="211dp"
+        android:background="#C673D8FA"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="92dp">
+
+        <ImageView
+            android:id="@+id/ivIllu"
+            android:layout_width="131dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/illu1" />
+
+        <TextView
+            android:id="@+id/tvPlayerID"
+            android:layout_width="406dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textAppearance="@style/NomJoueur"
+
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnJoinLobby"
+                android:layout_width="wrap_content"
+                android:layout_height="87dp"
+                android:background="@android:drawable/ic_menu_add"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
+
+            <Button
+                android:id="@+id/btnRemoveLobby"
+                android:layout_width="83dp"
+                android:layout_height="83dp"
+                android:layout_marginStart="3dp"
+                android:background="@android:drawable/ic_menu_delete" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,24 +3,24 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "DAMCorp_1.tmx",
+    "activeFile": "DAMCorp_tuiles.tsx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
         "DAMCorp_1.tmx": {
-            "scale": 4,
+            "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 798.25,
-                "y": 83
+                "x": 684,
+                "y": 193.33333333333337
             }
         },
         "DAMCorp_2.tmx": {
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 503.5,
+                "x": 502,
                 "y": 283
             }
         },
@@ -57,10 +57,10 @@
     ],
     "project": "DAMCorp.tiled-project",
     "recentFiles": [
-        "DAMCorp_tuiles.tsx",
-        "DAMCorp_2.tmx",
-        "DAMCorp_test.tmx",
         "DAMCorp_1.tmx",
+        "DAMCorp_test.tmx",
+        "DAMCorp_2.tmx",
+        "DAMCorp_tuiles.tsx",
         "DAMCorp_test - Copie.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"

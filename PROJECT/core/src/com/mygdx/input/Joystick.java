@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Circle;
 public class Joystick {
     Circle circle0, circle1;
     boolean positionFixe = false;
-    int directionInput = -1;
+    int directionInput = 0;
 
     public Joystick(float x, float y, float radius) {
         circle0 = new Circle(x, y, radius);
@@ -26,21 +26,26 @@ public class Joystick {
             y = (float) (circle0.y + deltaY0 * ratio);
         }
         circle1.setPosition(x, y);
-
+        int tmpDirection;
         double deltaX = circle1.x - circle0.x;
         double deltaY = circle1.y - circle0.y;
+        double distDeuxcentre = Math.pow(Math.pow(deltaX,2.0)+Math.pow(deltaY,2.0),1.0/2.0);
         double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
-        if (-45 < angle && angle < 45) {
-            directionInput = Input.Keys.RIGHT;
-        }
-        else if (45 < angle && angle < 135) {
-            directionInput = Input.Keys.UP;
-        }
-        else if (angle < -135 || angle > 135) {
-            directionInput = Input.Keys.LEFT;
-        }
-        else if (-135 < angle && angle < -45) {
-            directionInput = Input.Keys.DOWN;
+        if(distDeuxcentre < 50){
+            directionInput=-1;
+        }else {
+            if (-45 < angle && angle < 45) {
+                directionInput = Input.Keys.RIGHT;
+            }
+            else if (45 < angle && angle < 135) {
+                directionInput = Input.Keys.UP;
+            }
+            else if (angle < -135 || angle > 135) {
+                directionInput = Input.Keys.LEFT;
+            }
+            else if (-135 < angle && angle < -45) {
+                directionInput = Input.Keys.DOWN;
+            }
         }
     }
 

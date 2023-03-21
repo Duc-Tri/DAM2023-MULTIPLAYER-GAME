@@ -22,16 +22,21 @@ public class RetrieveMate implements Runnable {
     public void run() {
         long initialTime = System.currentTimeMillis();
         long runningTime = 100000000L;
+        int i=0;
         while (System.currentTimeMillis() < initialTime + runningTime) {
             String[] tempMates = requestServer(player);
-            Mates.createNewMates(tempMates);
+            if(tempMates != null && tempMates.length > 0) {
+                Mates.createNewMates(tempMates);
+                Mates.removeOldMates(tempMates);
+            }else{
+                Mates.removeAllMates();
+            }
         }
     }
 
     public static String[] requestServer(Player player) {
         String GET_URL = MainGame.URLServer + "RetrieveMate";//
         String paramString = buildParam(player);
-
         GET_URL = GET_URL + paramString;
         String USER_AGENT = "Mozilla/5.0";
         URL url = null;
@@ -58,11 +63,7 @@ public class RetrieveMate implements Runnable {
                 System.out.println("GET request did not work.");
             }
         } catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         } catch (IOException e) {
-//            throw new RuntimeException(e);
-//            e.printStackTrace();
         }
         return null;
     }
@@ -70,6 +71,7 @@ public class RetrieveMate implements Runnable {
     private static String buildParam(Player player) {
         String param = "?";
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
+        param = param + "&numLobby=" + player.getNumLobby();
         return param;
     }
 

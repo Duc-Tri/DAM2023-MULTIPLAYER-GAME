@@ -30,7 +30,7 @@ public class UpdatePlayer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Player player =game.retrievePlayer(request.getParameter("serverUniqueID"));
+		Player player =game.retrievePlayer(request.getParameter("serverUniqueID"), request.getParameter("numLobby"));
 		if(player != null) {
 			if( request.getParameter("x")!=null) {
 				player.setX( request.getParameter("x"));	
@@ -41,11 +41,11 @@ public class UpdatePlayer extends HttpServlet {
 			if( request.getParameter("findRegion")!=null ) {
 				player.setFindRegion(request.getParameter("findRegion"));	
 			}
-//			System.out.println("player.x " + player.getX());
-//			System.out.println("player.y " + player.getY());
+			player.setLastUpdate(System.currentTimeMillis());
 		}
-
 	}
+		
+		
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

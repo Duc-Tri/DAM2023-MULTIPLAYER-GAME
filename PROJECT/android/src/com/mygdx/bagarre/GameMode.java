@@ -1,14 +1,15 @@
 package com.mygdx.bagarre;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -21,75 +22,35 @@ import java.util.List;
 
 public class GameMode extends AppCompatActivity {
     TextView tvPseudo;
-    ImageView ivPseudo, background, fleau, sword_left, sword_right, ecrou;
+    ImageView ivPseudo, background;
     Spinner imageSp;
     String userID;
-    ImageButton buttonSolo,volumeBtn2, optionsBtn, multiBtn;
+    Button buttonSolo, buttonOnLine;
     List<ImageItem> imgList = new ArrayList<>();
     MediaPlayer audioLauncher;
     Intent itGameMode;
-    boolean isMuted = false, isTablet = false;
-    int musicPos, layoutId;
+    ImageButton volumeBtn2;
+    boolean isMuted = false;
+    int musicPos;
 
+    @SuppressLint("WrongViewCast")
     public void initUi() {
-        multiBtn = findViewById(R.id.multiBtn);
-        fleau = findViewById(R.id.fleau);
-        sword_left = findViewById(R.id.sword_left);
-        sword_right = findViewById(R.id.sword_right);
-        ecrou = findViewById(R.id.ecrou);
         tvPseudo = findViewById(R.id.tvPseudo);
         ivPseudo = findViewById(R.id.ivPseudo);
         imageSp = findViewById(R.id.imageSp);
         buttonSolo = findViewById(R.id.soloBtn);
+        buttonOnLine = findViewById(R.id.soloOnLine);
         background = findViewById(R.id.background);
         volumeBtn2 = findViewById(R.id.volumeBtn2);
-        optionsBtn = findViewById(R.id.optionsBtn);
-    }
 
-    public void cleanHudNewTab () {
-        background.setTranslationX(-95);
-        background.setTranslationY(-110);
-        buttonSolo.setTranslationY(-180);
-        multiBtn.setTranslationY(-180);
-        fleau.setTranslationY(-180);
-        sword_right.setTranslationY(-180);
-        sword_left.setTranslationY(-180);
-        ecrou.setTranslationY(-180);
-        optionsBtn.setTranslationY(-180);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float screenHeight = metrics.heightPixels;
-        float screenWidthDp = metrics.densityDpi;
-        float screenWidth = metrics.widthPixels;
-        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
-        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
-        Log.i("SCREEN_WIDTH_DP", String.valueOf(screenWidthDp));
-        float minimalDpForPhone = 300.0f;
-
-        if (screenWidthDp < minimalDpForPhone) {
-            setContentView(R.layout.tablet_gamemode);
-            Log.i("TABLET_LAYOUT_USED", "Utilisation du layout de la tablette");
-            isTablet = true;
-        } else {
-            setContentView(R.layout.activity_game_mode);
-            Log.i("PHONE_LAYOUT_USED", "Utilisation du layout du téléphone");
-            isTablet = false;
-        }
+        setContentView(R.layout.activity_game_mode);
 
         initUi();
-
-        if(!isTablet) {
-            background.setTranslationY(-200);
-        } else if (screenHeight < 800.0f) {
-            cleanHudNewTab();
-        }
-
         itGameMode = getIntent();
 
         SharedPreferences prefs = getSharedPreferences("pref_pseudo", this.MODE_PRIVATE);
@@ -186,6 +147,17 @@ public class GameMode extends AppCompatActivity {
             Intent itGame = new Intent(GameMode.this, AndroidLauncher.class);
             startActivity(itGame);
         });
+
+
+        buttonOnLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 

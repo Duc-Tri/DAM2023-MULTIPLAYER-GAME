@@ -1,3 +1,4 @@
+
 package com.mygdx.entity;
 
 import com.badlogic.gdx.Gdx;
@@ -9,10 +10,11 @@ import com.mygdx.bagarre.GameScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 
-
 public class Player extends LivingEntity {
 
     private static TextureAtlas allPlayersAtlas;
+    private String lobbyPlayerId;
+    private String numLobby = "";
 
     public Player() {
 
@@ -79,4 +81,20 @@ public class Player extends LivingEntity {
         setX(temp);
     }
 
+    public String getNumLobby() {
+        return numLobby;
+    }
+
+    public void setNumLobby(String numLobby) {
+        this.numLobby = numLobby;
+    }
+
+
+    public String getLobbyPlayerId() {
+        return lobbyPlayerId;
+    }
+
+    public void setLobbyPlayerId(String lobbyPlayerId) {
+        this.lobbyPlayerId = lobbyPlayerId;
+    }
 }
