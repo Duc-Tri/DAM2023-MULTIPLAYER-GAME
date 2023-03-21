@@ -20,15 +20,15 @@ import com.mygdx.bagarre.GameScreen;
 //#################################################################################################
 public class HUDManager {
 
-    private static final Texture gameOverScreen = new Texture("misc/bloody_screen2.png");
     private static float SCREEN_HEIGHT, SCREEN_WIDTH;
     private static float SCREEN_HALF_WIDTH, SCREEN_HALF_HEIGHT;
+    private static BitmapFont fontDead;
+    private static ClampedCamera cam;
 
-    BitmapFont fontDead;
-    ClampedCamera cam;
-    Sprite bloodyScreen;
-    static final String gameOverText = "Vous êtes mort !";
-
+    // GAME OVER --------------------------------
+    private static Sprite bloodyScreen;
+    private static final String gameOverText = "Vous êtes mort !";
+    private static final Texture gameOverScreen = new Texture("misc/bloody_screen2.png");
 
     private static HUDManager instance;
 
@@ -62,18 +62,12 @@ public class HUDManager {
 
         // GAME OVER ==========================================================
         bloodyScreen = new Sprite(gameOverScreen);
+        bloodyScreen.setOriginCenter();
         bloodyScreen.setScale(cam.zoom * (SCREEN_WIDTH / bloodyScreen.getWidth()), cam.zoom * (SCREEN_HEIGHT / bloodyScreen.getHeight()));
+        bloodyScreen.setScale(1.4f, 1.4f);
     }
 
-    public void draw(SpriteBatch spriteBatch, String text, int x, int y) {
-        fontDead.draw(spriteBatch, text, x, y, SCREEN_WIDTH, Align.left, true);
-    }
-
-    public void drawTexts(SpriteBatch batch) {
-
-
-//        batch.draw(gameOverScreen, 0, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+    public void drawHUD(SpriteBatch batch) {
         if (!GameScreen.getPlayer().isAlive())
             gameOverScreen(batch);
     }

@@ -1,24 +1,20 @@
 package game.entity;
 
-public class Player {
+public class Mob{
 
 	private String x;
 	private String y;
-	private String boxWidth;
-	private String boxHeight;
 	private String uniqueID;
 	private String serverUniqueID;
 	private String lobbyPlayerId;
 	private String spriteColorInt;
 	private String findRegion;
-	private String textureAtlasPath;
 	private String numLobby = "";
-	private String life;
+	private int life;
 
 	private long lastUpdate;
-	private boolean isMaster;
 
-	public Player(String uniqueID, String serverUniqueID) {
+	public Mob(String uniqueID, String serverUniqueID) {
 		super();
 		this.uniqueID = uniqueID;
 
@@ -39,22 +35,6 @@ public class Player {
 
 	public void setY(String y) {
 		this.y = y;
-	}
-
-	public String getBoxWidth() {
-		return boxWidth;
-	}
-
-	public void setBoxWidth(String boxWidth) {
-		this.boxWidth = boxWidth;
-	}
-
-	public String getBoxHeight() {
-		return boxHeight;
-	}
-
-	public void setBoxHeight(String boxHeight) {
-		this.boxHeight = boxHeight;
 	}
 
 	public String getUniqueID() {
@@ -89,14 +69,6 @@ public class Player {
 		this.findRegion = findRegion;
 	}
 
-	public String getTextureAtlasPath() {
-		return textureAtlasPath;
-	}
-
-	public void setTextureAtlasPath(String textureAtlasPath) {
-		this.textureAtlasPath = textureAtlasPath;
-	}
-
 	public long getLastUpdate() {
 		return lastUpdate;
 	}
@@ -119,26 +91,6 @@ public class Player {
 
 	public void setLobbyPlayerId(String lobbyPlayerId) {
 		this.lobbyPlayerId = lobbyPlayerId;
-	}
-
-	public boolean isMaster() {
-		return isMaster;
-	}
-
-	public void setMaster(boolean isMaster) {
-		this.isMaster = isMaster;
-	}
-
-	public void setMaster(String master) {
-		this.isMaster = master.trim().toUpperCase().equalsIgnoreCase("true");
-	}
-
-	public String getLife() {
-		return life;
-	}
-
-	public void setLife(String life) {
-		this.life = life;
 	}
 
 }

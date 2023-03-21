@@ -24,7 +24,7 @@ import com.mygdx.weapon.Sword;
 // - le MASTER gère l'IA des monstres
 //#################################################################################################
 public class Player extends LivingEntity {
-    private final static int MAX_LIFE = 10;
+    private final static int MAX_LIFE = 50; // pour tous les joueurs !
     private final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
     private static TextureAtlas allPlayersAtlas;
     private String lobbyPlayerId;
@@ -116,7 +116,7 @@ public class Player extends LivingEntity {
     }
 
     public void move(String dirKeyword, int deltaX, int deltaY, float deltaTime) {
-        if(!isAlive()) return;
+        if (!isAlive()) return;
 
         currentTime += deltaTime;
         if (currentTime > PLAYER_MOVE_DELAY) {
@@ -151,7 +151,7 @@ public class Player extends LivingEntity {
     int frames = 0;
 
     public void drawAndUpdate(SpriteBatch batch) {
-        if(!isAlive()) return;
+        if (!isAlive()) return;
 
         super.drawAndUpdate(batch);
         sword.drawAndUpdate(batch);

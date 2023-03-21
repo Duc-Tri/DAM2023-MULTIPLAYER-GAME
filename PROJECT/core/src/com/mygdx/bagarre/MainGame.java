@@ -38,8 +38,8 @@ public class MainGame extends Game {
 
     // private = singletion design pattern
     private MainGame() {
-        gameMode = GameMode.SOLO;
-//        gameMode = GameMode.MULTIPLAYER;
+//        gameMode = GameMode.SOLO;
+        gameMode = GameMode.MULTIPLAYER;
     }
 
     public void setConfig(String c) {

@@ -147,6 +147,7 @@ public class Mob extends LivingEntity {
         textureRegion = entityAtlas.findRegion(findRegion);
         sprite = new Sprite(textureRegion);
 
+        HITBOX_HEIGHT = 32;
         HITBOX_WIDTH = (int) (sprite.getWidth() - 16); // temp
         HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);

@@ -79,7 +79,7 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         map = loadMap(mapFilename, batch);
         createPlayer();
-        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
+        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.5f);
         batch.setProjectionMatrix(clampedCamera.combined);
 
         shapeRenderer = new ShapeRenderer();
@@ -169,7 +169,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
 
-        hudManager.drawTexts(batch);
+        hudManager.drawHUD(batch);
 
         batch.end(); //========================================================
 
