@@ -167,4 +167,21 @@ public class Game {
 		}
 		
 	}
+
+	public String getMaster(String numLobby) {
+		// TODO Auto-generated method stub
+		int lobby = -1;
+				
+		try {
+			lobby = Integer.parseInt(numLobby);
+			if(lobby > -1 && lobby<POOLSIZE && players[lobby][0]!= null) {
+				return players[lobby][0].getLobbyPlayerId();
+			}
+		}catch(Exception e) {
+			
+		}
+		
+		
+		return "";
+	}
 }

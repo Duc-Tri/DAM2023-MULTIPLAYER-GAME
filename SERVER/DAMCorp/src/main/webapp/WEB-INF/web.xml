@@ -129,4 +129,14 @@
     <servlet-name>RemovePlayers</servlet-name>
     <url-pattern>/RemovePlayers</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RetrieveMaster</display-name>
+    <servlet-name>RetrieveMaster</servlet-name>
+    <servlet-class>servlet.RetrieveMaster</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RetrieveMaster</servlet-name>
+    <url-pattern>/RetrieveMaster</url-pattern>
+  </servlet-mapping>
 </web-app>
