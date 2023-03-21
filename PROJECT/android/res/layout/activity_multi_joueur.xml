@@ -52,6 +52,7 @@
         android:layout_height="34dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/btn_change"
+        android:fontFamily="@font/minecraft"
         android:text="@string/retour"
         android:textColor="@color/font_change"
         app:layout_constraintEnd_toEndOf="parent"

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,13 +49,13 @@ public class LoginPage extends AppCompatActivity {
     FirebaseAndroid db;
     SharedPreferences prefs;
     SharedPreferences.Editor editPref;
-    Intent itGameMode;
+    Intent itGameMode, itConnexion;
     View grayedOutView;
     DisplayMetrics metrics;
+    HorizontalScrollView horizontalScrollView;
     private final View.OnClickListener onClickGreyBackgroundListener = v -> onClickGreyBackground();
 
     public void initUi(){
-
         ivLogo = findViewById(R.id.ivLogo);
         tiPseudo = findViewById(R.id.tiPseudo);
         volumeBtn = findViewById(R.id.volumeBtn);
@@ -62,19 +63,7 @@ public class LoginPage extends AppCompatActivity {
         llPseudoBox = findViewById(R.id.llPseudoBox);
         connexionBtn = findViewById(R.id.connexionBtn);
         ivBackground = findViewById(R.id.ivBackground);
-
-    }
-
-    public void playMusic() {
-        //Création de l'audio lancher
-        audioLauncher = MediaPlayer.create(this, R.raw.connexion_theme);
-        audioLauncher.setLooping(true);
-        audioLauncher.start();
-        volumeBtn.setImageResource(R.drawable.volume_on);
-
-        //Création de l'audio manager
-        audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
-//        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
+        horizontalScrollView = findViewById(R.id.hsvBackground);
     }
 
     public void connectBase() {
@@ -126,31 +115,52 @@ public class LoginPage extends AppCompatActivity {
         }
     }
 
-    public void gestionAnimation() {
-        // Obtenez la taille de l'écran en pixels
-        metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float screenWidth = metrics.widthPixels;
-        float screenHeight = metrics.heightPixels;
-        float screenDP = metrics.densityDpi;
-        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
-        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
-        Log.i("SCREEN_DP", String.valueOf(screenDP));
+    public void gestionAnim(int screenWidth) {
+        horizontalScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // Récupérer la largeur effective de votre HorizontalScrollView
+                int effectiveWidth = horizontalScrollView.getWidth();
+                effectiveWidth -= screenWidth;
 
-        //Gestion de l'animation
-//        ivBackground.setTranslationX((float) (screenWidth*1.3));
-        int Trans = ivBackground.getHeight();
-        ivBackground.animate()
-                .translationX((float) (- screenWidth*2.61))
-                .setDuration(3000)
-                .start();
+                // Utiliser la valeur de la largeur effective dans votre animation
+                ObjectAnimator animator = ObjectAnimator.ofInt(ivBackground, "scrollX", 0, effectiveWidth);
+                animator.setDuration(20000);
+                animator.start();
+
+                // Retirer l'écouteur pour éviter les appels répétés
+                horizontalScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
+    public void playMusic() {
+        itConnexion = getIntent();
+        musicPos = itConnexion.getIntExtra("musicPos", 0);
 
+        //Création de l'audio lancher
+        audioLauncher = MediaPlayer.create(this, R.raw.ken);
+        audioLauncher.seekTo(musicPos);
+        audioLauncher.setLooping(true);
+        audioLauncher.start();
+        volumeBtn.setImageResource(R.drawable.volume_on);
 
+        //Création de l'audio manager
+        audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        isMuted = itConnexion.getBooleanExtra("isMuted", false);
+        if (isMuted) {
+            volumeBtn.setImageResource(R.drawable.volume_off);
+            audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        } else {
+            volumeBtn.setImageResource(R.drawable.volume_on);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_login_page);
 
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -161,54 +171,11 @@ public class LoginPage extends AppCompatActivity {
         Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
         Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
 
-
-        if(isTablet) {
-            setContentView(R.layout.tablet_login);
-        } else {
-            setContentView(R.layout.activity_login_page);
-        }
-
-//        setContentView(R.layout.activity_login_page);
-
         //Initialisation des vues
         initUi();
 
-        if (!isTablet) {
-            HorizontalScrollView horizontalScrollView = findViewById(R.id.hsvBackground);
-
-            // Ajouter un écouteur pour détecter quand la vue est prête à être affichée
-            horizontalScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    // Récupérer la largeur effective de votre HorizontalScrollView
-                    int effectiveWidth = horizontalScrollView.getWidth();
-                    effectiveWidth -= screenWidth;
-
-                    // Utiliser la valeur de la largeur effective dans votre animation
-                    ObjectAnimator animator = ObjectAnimator.ofInt(ivBackground, "scrollX", 0, effectiveWidth);
-                    animator.setDuration(2000);
-                    animator.start();
-
-                    // Retirer l'écouteur pour éviter les appels répétés
-                    horizontalScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
-        } else if (screenHeight < 800) {
-            ivLogo.setTranslationY(-150);
-            llPseudoBox.setTranslationY(-300);
-
-
-        }
-
-//        TranslateAnimation anim = new TranslateAnimation(0, - screenWidth, 0, 0);
-//        anim.setDuration(3000);
-//
-//        ivBackground.startAnimation(anim);
-
-
-        // Récupérer une référence à votre HorizontalScrollView
-
-
+        //Gestion de l'animation
+        gestionAnim((int) screenWidth);
 
         //Check de la preférence
         checkPref();
@@ -219,9 +186,7 @@ public class LoginPage extends AppCompatActivity {
         editPref.remove("img");
         editPref.apply();*/
 
-        //On lance la musique
         playMusic();
-
 
         //Connexion base
         connectBase();
@@ -300,7 +265,6 @@ public class LoginPage extends AppCompatActivity {
                 } else {
                     dialogAndGrayBackground();
                 }
-
                 break;
         }
 
@@ -391,6 +355,7 @@ public class LoginPage extends AppCompatActivity {
 
         //Ecriture en base et mise a jour des préférences
         editPref.putString("userID", db.registerUser(pseudo));
+        editPref.remove("img");
         editPref.apply();
 
         //Changement d'activité en envoyant le pseudo pour l'afficher dans la prochaine activité et l'état de la musique
@@ -409,12 +374,15 @@ public class LoginPage extends AppCompatActivity {
         // Mettre en pause la lecture de la musique
         audioLauncher.pause();
         musicPos = audioLauncher.getCurrentPosition();
+        Log.i("MUSIC_POS", "onPause: "+ musicPos);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("MUSIC_POS", "onResume: "+ musicPos);
         audioLauncher.seekTo(musicPos);
+        audioLauncher.setLooping(true);
         audioLauncher.start();
     }
 

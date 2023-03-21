@@ -1,13 +1,21 @@
 package com.mygdx.bagarre;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.badlogic.gdx.backends.android.AndroidFiles;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mygdx.firebase.Firebase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirebaseAndroid {
 
@@ -52,6 +60,33 @@ public class FirebaseAndroid {
                 Log.i("UNUSED_PSEUDO_DELETED", "Le pseudo " + oldPseudo + " n'était plus utilisé et a été supprimé de la base de donnée");
             }
         });
+    }
+
+    public interface OnListReadyListener {
+        void onListReady(List<String> listPseudo);
+    }
+
+    public void getListRecycler(OnListReadyListener listener) {
+        final List<String> listPseudo = new ArrayList<>();
+        refPseudo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot snap : snapshot.getChildren()) {
+                    String pseudoPlayers = (String) snap.getValue(Object.class);
+                    Log.i("PSEUDO", pseudoPlayers);
+                    listPseudo.add(pseudoPlayers);
+                    Log.i("PSEUDO_IN_LIST", listPseudo.get(0));
+                }
+                listener.onListReady(listPseudo);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("LIST_FAILED", "Erreur de lecture des données");
+            }
+        });
+
     }
 
 }

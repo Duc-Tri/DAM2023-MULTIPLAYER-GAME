@@ -32,6 +32,8 @@
     <string name="left_guy_under_light">left guy under light</string>
     <string name="right_guy_under_light">right guy under light</string>
     <string name="touch_screen_to_go">Touchez l\'écran pour continuer</string>
+    <string name="volume">Volume</string>
+    <string name="musique">Musique</string>
 
     <string-array name="image_array">
         <item>profil1</item>
