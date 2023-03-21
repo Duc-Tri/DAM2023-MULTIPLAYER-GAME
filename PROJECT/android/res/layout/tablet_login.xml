@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginPage">
+
+    <ImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="2000dp"
+        android:layout_height="800dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/map_login_page" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="316dp"
+        android:layout_height="179dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/logo_du_jeu"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/titre_solo" />
+
+    <LinearLayout
+        android:id="@+id/llPseudoBox"
+        android:layout_width="345dp"
+        android:layout_height="215dp"
+        android:layout_marginTop="124dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo">
+
+
+        <EditText
+            android:id="@+id/tiPseudo"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/minecraft"
+            android:hint="@string/pseudo"
+            android:maxLength="11"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/registerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:fontFamily="@font/minecraft"
+            android:maxWidth="300dp"
+            android:maxHeight="50dp"
+            android:onClick="register"
+            android:text="@string/s_enregistrer"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/connexionBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:fontFamily="@font/minecraft"
+            android:maxWidth="300dp"
+            android:maxHeight="50dp"
+            android:onClick="continuer"
+            android:text="@string/s_enregistrer"
+            android:textAllCaps="false"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/volumeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/volume_on"
+        android:maxHeight="50dp"
+        android:minHeight="50dp"
+        android:onClick="toggleMute"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

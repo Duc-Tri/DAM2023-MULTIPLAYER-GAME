@@ -19,6 +19,19 @@
     <string name="bouton_nouveau_pseudo">Bouton nouveau pseudo</string>
     <string name="ib_new_pseudo">Nouveau pseudo image bouton</string>
     <string name="ib_old_pseudo">Old pseudo image bouton</string>
+    <string name="retour">Retour</string>
+    <string name="debut_game">Lancez la partie</string>
+    <string name="join_lobby">Rejoindre le lobby</string>
+    <string name="create_game">Créer partie</string>
+    <string name="join_game">Rejoindre une partie</string>
+    <string name="solo_game">Partie Solo</string>
+    <string name="online_game">Partie en ligne</string>
+    <string name="options">Options</string>
+    <string name="left_guy">left guy</string>
+    <string name="right_guy">right guy</string>
+    <string name="left_guy_under_light">left guy under light</string>
+    <string name="right_guy_under_light">right guy under light</string>
+    <string name="touch_screen_to_go">Touchez l\'écran pour continuer</string>
 
     <string-array name="image_array">
         <item>profil1</item>
@@ -27,4 +40,21 @@
         <item>profil4</item>
     </string-array>
 
+    <string-array name="playerID">
+        <item>Tri</item>
+        <item>Philippe</item>
+        <item>Mathias</item>
+        <item>Inan</item>
+        <item>PetitCailloux</item>
+
+    </string-array>
+
+
+    <integer-array name="numLobby">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    </integer-array>
 </resources>

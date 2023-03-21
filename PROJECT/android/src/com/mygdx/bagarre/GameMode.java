@@ -1,43 +1,65 @@
 package com.mygdx.bagarre;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameMode extends AppCompatActivity {
     TextView tvPseudo;
-    ImageView ivPseudo, background;
+    ImageView ivPseudo, fleau, sword_left, sword_right, ecrou;
     Spinner imageSp;
     String userID;
-    ImageButton buttonSolo;
+    ImageButton volumeBtn2;
+    ConstraintLayout background;
+    Button buttonSolo, buttonOnLine, optionsBtn;
     List<ImageItem> imgList = new ArrayList<>();
     MediaPlayer audioLauncher;
     Intent itGameMode;
-    ImageButton volumeBtn2;
-    boolean isMuted = false;
+    boolean isMuted = false, isTablet = false;
     int musicPos;
 
+    @SuppressLint("WrongViewCast")
     public void initUi() {
+        background = findViewById(R.id.background);
+        fleau = findViewById(R.id.fleau);
+        sword_left = findViewById(R.id.sword_left);
+        sword_right = findViewById(R.id.sword_right);
+        ecrou = findViewById(R.id.ecrou);
         tvPseudo = findViewById(R.id.tvPseudo);
         ivPseudo = findViewById(R.id.ivPseudo);
         imageSp = findViewById(R.id.imageSp);
         buttonSolo = findViewById(R.id.soloBtn);
-        background = findViewById(R.id.background);
+        buttonOnLine = findViewById(R.id.soloOnLine);
         volumeBtn2 = findViewById(R.id.volumeBtn2);
+        optionsBtn = findViewById(R.id.optionsBtn);
+    }
+
+    public void cleanHudNewTab () {
+        buttonSolo.setTranslationY(-180);
+        buttonOnLine.setTranslationY(-180);
+        fleau.setTranslationY(-180);
+        sword_right.setTranslationY(-180);
+        sword_left.setTranslationY(-180);
+        ecrou.setTranslationY(-180);
+        optionsBtn.setTranslationY(-180);
     }
 
     @Override
@@ -45,7 +67,24 @@ public class GameMode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_mode);
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float screenHeight = metrics.heightPixels;
+        float screenWidthDp = metrics.densityDpi;
+        float screenWidth = metrics.widthPixels;
+        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
+        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
+        Log.i("SCREEN_WIDTH_DP", String.valueOf(screenWidthDp));
+        float minimalDpForPhone = 300.0f;
+
+        isTablet = screenWidthDp < minimalDpForPhone;
+
         initUi();
+
+        if(isTablet) {
+            background.setBackgroundResource(R.drawable.background_gamemode);
+        }
+
         itGameMode = getIntent();
 
         SharedPreferences prefs = getSharedPreferences("pref_pseudo", this.MODE_PRIVATE);
@@ -142,6 +181,14 @@ public class GameMode extends AppCompatActivity {
             Intent itGame = new Intent(GameMode.this, AndroidLauncher.class);
             startActivity(itGame);
         });
+
+
+        buttonOnLine.setOnClickListener(v -> {
+            Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);
+            startActivity(intent);
+        });
+
+
 
     }
 

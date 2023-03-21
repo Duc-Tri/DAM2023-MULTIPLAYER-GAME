@@ -2,6 +2,7 @@ package com.mygdx.bagarre;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -15,16 +16,21 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -33,9 +39,10 @@ public class LoginPage extends AppCompatActivity {
     MediaPlayer audioLauncher;
     private Button registerBtn, connexionBtn;
     private ImageButton volumeBtn;
-    private TextInputEditText tiPseudo;
-    private boolean isMuted = false;
-    private ImageView ivBackground;
+    private EditText tiPseudo;
+    private boolean isMuted = false, isTablet = false;
+    private ImageView ivBackground, ivLogo;
+    LinearLayout llPseudoBox;
     String pseudo, oldPseudo, userID;
     int img, state = 0, musicPos;
     FirebaseAndroid db;
@@ -43,11 +50,16 @@ public class LoginPage extends AppCompatActivity {
     SharedPreferences.Editor editPref;
     Intent itGameMode;
     View grayedOutView;
+    DisplayMetrics metrics;
+    private final View.OnClickListener onClickGreyBackgroundListener = v -> onClickGreyBackground();
 
     public void initUi(){
+
+        ivLogo = findViewById(R.id.ivLogo);
         tiPseudo = findViewById(R.id.tiPseudo);
         volumeBtn = findViewById(R.id.volumeBtn);
         registerBtn = findViewById(R.id.registerBtn);
+        llPseudoBox = findViewById(R.id.llPseudoBox);
         connexionBtn = findViewById(R.id.connexionBtn);
         ivBackground = findViewById(R.id.ivBackground);
 
@@ -62,17 +74,11 @@ public class LoginPage extends AppCompatActivity {
 
         //Création de l'audio manager
         audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
-        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
+//        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
     }
 
     public void connectBase() {
-        //Initialisation de Firebase
-        db = new FirebaseAndroid("https://test-e782f-default-rtdb.europe-west1.firebasedatabase.app", "json/keyTest782f.json", this);
-
-        //Test de connexion
-        if(db.connect()) {
-            Log.i("CONNEXION_ENABLED", "La connexion a étée établie");
-        }
+        db = new FirebaseAndroid();
     }
 
     public void checkPref() {
@@ -122,40 +128,87 @@ public class LoginPage extends AppCompatActivity {
 
     public void gestionAnimation() {
         // Obtenez la taille de l'écran en pixels
-        DisplayMetrics metrics = new DisplayMetrics();
+        metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         float screenWidth = metrics.widthPixels;
+        float screenHeight = metrics.heightPixels;
+        float screenDP = metrics.densityDpi;
         Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
+        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
+        Log.i("SCREEN_DP", String.valueOf(screenDP));
 
         //Gestion de l'animation
-        ivBackground.setTranslationY(-10);
-        ivBackground.setTranslationX((float) (screenWidth*1.3));
+//        ivBackground.setTranslationX((float) (screenWidth*1.3));
+        int Trans = ivBackground.getHeight();
         ivBackground.animate()
-                .translationX((float) (-screenWidth*1.3))
-                .setDuration(100000)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        ivBackground.setTranslationX((float) (screenWidth*1.3));
-                        ivBackground.animate()
-                                .translationX((float) (-screenWidth*1.3))
-                                .setDuration(100000)
-                                .start();
-                    }
-                })
+                .translationX((float) (- screenWidth*2.61))
+                .setDuration(3000)
                 .start();
     }
 
-    private final View.OnClickListener onClickGreyBackgroundListener = v -> onClickGreyBackground();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_page);
+
+        metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float screenWidthDp = metrics.densityDpi;
+        float screenWidth = metrics.widthPixels;
+        float screenHeight = metrics.heightPixels;
+        Log.i("SCREEN_WIDTH_DP", String.valueOf(screenWidthDp));
+        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
+        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
+
+
+        if(isTablet) {
+            setContentView(R.layout.tablet_login);
+        } else {
+            setContentView(R.layout.activity_login_page);
+        }
+
+//        setContentView(R.layout.activity_login_page);
 
         //Initialisation des vues
         initUi();
+
+        if (!isTablet) {
+            HorizontalScrollView horizontalScrollView = findViewById(R.id.hsvBackground);
+
+            // Ajouter un écouteur pour détecter quand la vue est prête à être affichée
+            horizontalScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Récupérer la largeur effective de votre HorizontalScrollView
+                    int effectiveWidth = horizontalScrollView.getWidth();
+                    effectiveWidth -= screenWidth;
+
+                    // Utiliser la valeur de la largeur effective dans votre animation
+                    ObjectAnimator animator = ObjectAnimator.ofInt(ivBackground, "scrollX", 0, effectiveWidth);
+                    animator.setDuration(2000);
+                    animator.start();
+
+                    // Retirer l'écouteur pour éviter les appels répétés
+                    horizontalScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        } else if (screenHeight < 800) {
+            ivLogo.setTranslationY(-150);
+            llPseudoBox.setTranslationY(-300);
+
+
+        }
+
+//        TranslateAnimation anim = new TranslateAnimation(0, - screenWidth, 0, 0);
+//        anim.setDuration(3000);
+//
+//        ivBackground.startAnimation(anim);
+
+
+        // Récupérer une référence à votre HorizontalScrollView
+
+
 
         //Check de la preférence
         checkPref();
@@ -169,14 +222,12 @@ public class LoginPage extends AppCompatActivity {
         //On lance la musique
         playMusic();
 
-        //Lancement de l'animation du fond
-        gestionAnimation();
 
         //Connexion base
         connectBase();
 
-        //TEST : Vidage de la référence pseudo
-        /*db.deleteAllPseudos();*/
+        //TEST : Vidage de la référence pseudo avec l'ancienne classe
+//        db.deleteAllPseudos();
 
         //Appel du setOnClick pour le fond gris
         grayedOutView = new View(this);
@@ -209,12 +260,14 @@ public class LoginPage extends AppCompatActivity {
 
                 //Test si le pseudo est nul
                 if (pseudo.isEmpty()) {
+
                     Toast.makeText(this, "Le pseudo ne peut pas être vide ! Mettez au moins une lettre !", Toast.LENGTH_SHORT).show();
                 } else {
+
                     //Enregistre des préférences pour la prochaine connexion
                     editPref.putString("pseudo", pseudo);
 
-                    //Ecriture en base
+                    //Maj des préférences
                     editPref.putString("userID", db.registerUser(pseudo));
                     editPref.apply();
 
@@ -355,6 +408,14 @@ public class LoginPage extends AppCompatActivity {
 
         // Mettre en pause la lecture de la musique
         audioLauncher.pause();
+        musicPos = audioLauncher.getCurrentPosition();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        audioLauncher.seekTo(musicPos);
+        audioLauncher.start();
     }
 
     @Override

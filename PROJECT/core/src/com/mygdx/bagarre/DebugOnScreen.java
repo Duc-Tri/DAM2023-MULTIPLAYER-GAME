@@ -24,7 +24,8 @@ public class DebugOnScreen {
 
     public static DebugOnScreen getInstance() {
         if (instance == null) {
-            instance = new DebugOnScreen(GameScreen.getCamera());
+            //TODO : debug the error of Gdx.files
+            //instance = new DebugOnScreen(GameScreen.getCamera());
         }
 
         return instance;
