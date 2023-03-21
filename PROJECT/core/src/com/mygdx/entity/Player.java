@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.bagarre.DebugOnScreen;
+import com.mygdx.hud.DebugOnScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 import com.mygdx.map.Map;
@@ -24,7 +24,7 @@ import com.mygdx.weapon.Sword;
 // - le MASTER gère l'IA des monstres
 //#################################################################################################
 public class Player extends LivingEntity {
-    private final static int MAX_LIFE = 200;
+    private final static int MAX_LIFE = 10;
     private final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
     private static TextureAtlas allPlayersAtlas;
     private String lobbyPlayerId;
@@ -33,6 +33,8 @@ public class Player extends LivingEntity {
     private static Map map; // même carte pour tout le monde !
     private Sword sword;
     private static final int NO_HURT_TIME = 1000; // temps durant lequel on est intouchable, en millis
+    public float currentTime = 0;
+    public final float PLAYER_MOVE_DELAY = 0.05f; // en secondes
 
     public Player() {
         // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
@@ -66,7 +68,7 @@ public class Player extends LivingEntity {
         this();
         map = m;
         Vector2int startPoint = map.randomPointAtSpawnArea("START");
-        setX(startPoint.x- sprite.getWidth()/2);
+        setX(startPoint.x - sprite.getWidth() / 2);
         setY(startPoint.y);
     }
 
@@ -113,15 +115,22 @@ public class Player extends LivingEntity {
         }
     }
 
-    public void move(String dirKeyword, int deltaX, int deltaY) {
-        animate(dirKeyword); // dans tous les cas, on anime
+    public void move(String dirKeyword, int deltaX, int deltaY, float deltaTime) {
+        if(!isAlive()) return;
 
-        if (MainGame.getInstance().getMap().checkObstacle(this, deltaX, deltaY))
-            return; // OBSTACLE ! on ne bouge pas !
+        currentTime += deltaTime;
+        if (currentTime > PLAYER_MOVE_DELAY) {
+            currentTime = currentTime - PLAYER_MOVE_DELAY;
 
-        if (deltaX != 0) setX(entityX + deltaX);
+            animate(dirKeyword); // dans tous les cas, on anime
 
-        if (deltaY != 0) setY(entityY + deltaY);
+            if (MainGame.getInstance().getMap().checkObstacle(this, deltaX, deltaY))
+                return; // OBSTACLE ! on ne bouge pas !
+
+            if (deltaX != 0) setX(entityX + deltaX);
+
+            if (deltaY != 0) setY(entityY + deltaY);
+        }
     }
 
     public void attack() {
@@ -142,6 +151,8 @@ public class Player extends LivingEntity {
     int frames = 0;
 
     public void drawAndUpdate(SpriteBatch batch) {
+        if(!isAlive()) return;
+
         super.drawAndUpdate(batch);
         sword.drawAndUpdate(batch);
         // TODO : clignote en rouge

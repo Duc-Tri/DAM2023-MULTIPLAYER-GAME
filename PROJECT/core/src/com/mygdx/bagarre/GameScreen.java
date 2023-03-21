@@ -17,6 +17,8 @@ import com.mygdx.client.UpdatePlayer;
 import com.mygdx.entity.Mates;
 import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
+import com.mygdx.hud.DebugOnScreen;
+import com.mygdx.hud.HUDManager;
 import com.mygdx.input.Joystick;
 import com.mygdx.map.Map;
 
@@ -53,6 +55,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
     private DebugOnScreen debugOS;
+    private HUDManager hudManager;
+
 
     int threadPoolSize = 15;
     ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
@@ -72,7 +76,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         mainGame = game;
 
-
         batch = new SpriteBatch();
         map = loadMap(mapFilename, batch);
         createPlayer();
@@ -83,8 +86,8 @@ public class GameScreen implements Screen, InputProcessor {
 
         joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
-
         debugOS = DebugOnScreen.getInstance();
+        hudManager = HUDManager.getInstance();
 
         monstersInstance = Monsters.getInstance();
         monstersInstance.init(map, player);
@@ -134,9 +137,6 @@ public class GameScreen implements Screen, InputProcessor {
         return map;
     }
 
-    public float currentTime = 0;
-    public final float PLAYER_MOVE_DELAY = 0.05f; // en secondes
-
     @Override
     // deltaTime = temps depuis la dernière frame
     public void render(float deltaTime) {
@@ -146,16 +146,12 @@ public class GameScreen implements Screen, InputProcessor {
 
         displayJoystick();
 
-        currentTime += deltaTime;
-        if (currentTime > PLAYER_MOVE_DELAY) {
-            currentTime = currentTime - PLAYER_MOVE_DELAY;
 
-            if (Gdx.input.isTouched(0))
-                movePlayer(joystick.getDirectionInput());
-            else {
-                showJoystick = false;
-                movePlayer(lastKeyCode);
-            }
+        if (Gdx.input.isTouched(0))
+            movePlayer(joystick.getDirectionInput(), deltaTime);
+        else {
+            showJoystick = false;
+            movePlayer(lastKeyCode, deltaTime);
         }
 
         monstersInstance.update(deltaTime);
@@ -163,12 +159,9 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         batch.setProjectionMatrix(clampedCamera.combined);
 
         batch.begin(); //======================================================
-
-        //batch.draw(testImage, 0, 0); // une image test pour situer le 0/0
 
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
@@ -176,8 +169,9 @@ public class GameScreen implements Screen, InputProcessor {
 
         if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
 
-        batch.end(); //========================================================
+        hudManager.drawTexts(batch);
 
+        batch.end(); //========================================================
 
         if (showJoystick) {
             joystick.render(shapeRenderer);
@@ -281,21 +275,20 @@ public class GameScreen implements Screen, InputProcessor {
         joystick.update(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY());
     }
 
-    private void movePlayer(int keycode) {
+    private void movePlayer(int keycode, float deltaTime) {
         if (keycode == Input.Keys.LEFT) {
-            movePlayer("LEFT", -sizeOfStep, 0);
+            movePlayer("LEFT", -sizeOfStep, 0, deltaTime);
         } else if (keycode == Input.Keys.RIGHT) {
-            movePlayer("RIGHT", +sizeOfStep, 0);
+            movePlayer("RIGHT", +sizeOfStep, 0, deltaTime);
         } else if (keycode == Input.Keys.UP) {
-            movePlayer("UP", 0, +sizeOfStep);
+            movePlayer("UP", 0, +sizeOfStep, deltaTime);
         } else if (keycode == Input.Keys.DOWN) {
-            movePlayer("DOWN", 0, -sizeOfStep);
+            movePlayer("DOWN", 0, -sizeOfStep, deltaTime);
         }
     }
 
-    private void movePlayer(String dirKeyword, int deltaX, int deltaY) {
-
-        player.move(dirKeyword, deltaX, deltaY);
+    private void movePlayer(String dirKeyword, int deltaX, int deltaY, float deltaTime) {
+        player.move(dirKeyword, deltaX, deltaY, deltaTime);
         clampedCamera.centerOnPlayer();
     }
 

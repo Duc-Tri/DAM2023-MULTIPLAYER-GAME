@@ -1,4 +1,4 @@
-package com.mygdx.bagarre;
+package com.mygdx.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.bagarre.ClampedCamera;
+import com.mygdx.bagarre.GameScreen;
 
 //#################################################################################################
 // Debug à l'écran

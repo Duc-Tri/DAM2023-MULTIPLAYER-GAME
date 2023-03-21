@@ -1,6 +1,6 @@
 package com.mygdx.entity;
 
-import com.mygdx.bagarre.DebugOnScreen;
+import com.mygdx.hud.DebugOnScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;

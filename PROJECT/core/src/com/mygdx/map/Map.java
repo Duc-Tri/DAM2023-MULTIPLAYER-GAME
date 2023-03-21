@@ -239,7 +239,7 @@ public class Map {
             // on affiche les sprites qui sont au dessus de ce realY ------------------------------
             for (int ent = livingEntitiesList.size() - 1; ent >= 0; ent--) {
                 LivingEntity currentEntity = livingEntitiesList.get(ent);
-                if (currentEntity != null && currentEntity.getY() > realY) {
+                if (currentEntity != null && currentEntity.getY() + 1 > realY) {
                     currentEntity.drawAndUpdate(batch);
                     livingEntitiesList.remove(currentEntity);
                 } else
@@ -336,12 +336,12 @@ public class Map {
 
         Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
         if (area != null) {
-            System.out.println("centerPointAtSpawnArea =============== " + spawnArea);
+            // System.out.println("centerPointAtSpawnArea =============== " + spawnArea);
 
             return new Vector2int(area.x + area.width / 2, area.y + area.height / 2);
         }
 
-        return new Vector2int(200, 200);
+        return new Vector2int(100, 100);
     }
 
     // Renvoie une position aléatoire à l'intérieur d'un rectangle spawnArea

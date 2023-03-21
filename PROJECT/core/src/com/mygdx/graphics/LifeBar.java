@@ -33,7 +33,7 @@ public class LifeBar {
 
     public void draw(SpriteBatch batch) {
         float x = owner.getFootX() - WIDTH / 2;
-        float y = owner.getY() + 1;
+        float y = owner.getY() + owner.getSprite().getHeight() + 1;
         int life = owner.getCurrentLife();
 
         //System.out.println("draw lifeBar ===== " + livingEntity.getUniqueID() + " / " + livingEntity.getCurrentLife() + " / " + ratio);
@@ -45,10 +45,10 @@ public class LifeBar {
         else
             colorRegion = colorsAtlas.findRegion("GREEN");
 
-        // background
+        // BACKGROUND ---------------------------
         batch.draw(blackRegion, x, y, WIDTH, HEIGHT);
 
-        // foreground
+        // FOREGROUND ---------------------------
         if (life > 0)
             batch.draw(colorRegion, x, y, life / ratio, HEIGHT);
     }

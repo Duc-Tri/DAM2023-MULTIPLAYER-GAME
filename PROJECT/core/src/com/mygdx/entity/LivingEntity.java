@@ -23,8 +23,8 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 // - un hitbox pour les collisions
 //#################################################################################################
 public abstract class LivingEntity implements Entity {
-    public static final boolean DEBUG_HITBOX = false;
-    protected static final Texture debugTexture = new Texture("misc/green64x64.png");
+    public static final boolean DEBUG_HITBOX = true;
+    protected static final Texture debugTexture = new Texture("misc/yellow64x64.png");
     protected TextureAtlas entityAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
