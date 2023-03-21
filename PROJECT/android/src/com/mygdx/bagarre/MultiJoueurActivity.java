@@ -16,6 +16,19 @@ public class MultiJoueurActivity extends AppCompatActivity {
 
         setListenerForCreateGame();
         setListenerForJoinGame();
+        setListenerForReturnMainMenu();
+    }
+
+    private void setListenerForReturnMainMenu() {
+        Button btnRetourMainMenu = findViewById(R.id.btnRetourMainMenu);
+        btnRetourMainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MultiJoueurActivity.this,GameMode.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

@@ -89,7 +89,7 @@
         android:id="@+id/fleau"
         android:layout_width="50dp"
         android:layout_height="70dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="56dp"
         android:contentDescription="@string/fl_au_du_bouton_partie_solo"
         android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="@+id/soloBtn"
@@ -103,24 +103,23 @@
         android:id="@+id/soloBtn"
         android:layout_width="282dp"
         android:layout_height="40dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="75dp"
         android:background="@drawable/btn_change"
         android:contentDescription="@string/partie_solo"
         android:fontFamily="@font/minecraft"
         android:minHeight="48dp"
         android:text="@string/partie_solo"
         android:textColor="@color/font_change"
-        app:layout_constraintBottom_toTopOf="@+id/soloOnLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/background" />
 
     <Button
         android:id="@+id/soloOnLine"
         android:layout_width="280dp"
         android:layout_height="38dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/btn_change"
         android:contentDescription="@string/partie_solo"
         android:fontFamily="@font/minecraft"
@@ -129,9 +128,9 @@
         android:textColor="@color/font_change"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvBrawlerBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn" />
 
     <TextView
         android:id="@+id/tvBrawlerBtn"
@@ -148,44 +147,48 @@
         tools:layout_editor_absoluteX="399dp"
         tools:layout_editor_absoluteY="122dp" />
 
+
     <ImageView
         android:id="@+id/perso_left"
         android:layout_width="68dp"
         android:layout_height="110dp"
-        android:layout_marginEnd="80dp"
-        app:layout_constraintEnd_toStartOf="@+id/soloOnLine"
-        app:srcCompat="@drawable/perso1"
-        tools:layout_editor_absoluteY="202dp" />
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/perso1" />
 
     <ImageView
         android:id="@+id/perso_right"
         android:layout_width="69dp"
         android:layout_height="110dp"
-        android:layout_marginStart="104dp"
-        app:layout_constraintStart_toEndOf="@+id/soloOnLine"
-        app:srcCompat="@drawable/perso2"
-        tools:layout_editor_absoluteY="202dp" />
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/perso2" />
 
     <ImageView
         android:id="@+id/sword_left"
         android:layout_width="0dp"
         android:layout_height="78dp"
-        android:layout_marginEnd="212dp"
+        android:layout_marginTop="136dp"
+        android:layout_marginEnd="216dp"
         android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="@+id/soloOnLine"
-        app:srcCompat="@drawable/swords_left"
-        tools:layout_editor_absoluteY="157dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/swords_left" />
 
     <ImageView
         android:id="@+id/sword_right"
         android:layout_width="0dp"
         android:layout_height="78dp"
-        android:layout_marginStart="228dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginTop="136dp"
         android:elevation="10dp"
         app:layout_constraintStart_toStartOf="@+id/soloOnLine"
-        app:srcCompat="@drawable/swords_right"
-        tools:layout_editor_absoluteY="157dp" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/swords_right" />
 
     <Button
         android:id="@+id/optionsBtn"

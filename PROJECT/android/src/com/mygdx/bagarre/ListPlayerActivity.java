@@ -47,6 +47,12 @@ public class ListPlayerActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity( new Intent(ListPlayerActivity.this,MultiJoueurActivity.class));
+    }
+
     private void setListenerForStartGame() {
         Button btnStart = findViewById(R.id.btnLancezGame);
         btnStart.setOnClickListener(new View.OnClickListener() {
