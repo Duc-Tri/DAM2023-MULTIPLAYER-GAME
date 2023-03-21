@@ -13,6 +13,7 @@ public class Player {
 	private String findRegion;
 	private String textureAtlasPath;
 	private String numLobby = "";
+	private Invitation[] invitations = new Invitation[10];
 
 	private long lastUpdate;
 	private boolean isMaster;
@@ -131,5 +132,18 @@ public class Player {
 	public void setMaster(String master) {
 		this.isMaster = master.trim().toUpperCase().equalsIgnoreCase("true");
 	}
+
+	public Invitation[] getInvitations() {
+		return invitations;
+	}
+
+	public void setInvitations(Invitation[] invitations) {
+		this.invitations = invitations;
+	}
+
+
+	
+	
+	
 
 }

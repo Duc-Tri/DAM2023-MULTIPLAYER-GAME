@@ -139,4 +139,14 @@
     <servlet-name>RetrieveMaster</servlet-name>
     <url-pattern>/RetrieveMaster</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>NewInvitation</display-name>
+    <servlet-name>NewInvitation</servlet-name>
+    <servlet-class>servlet.NewInvitation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NewInvitation</servlet-name>
+    <url-pattern>/NewInvitation</url-pattern>
+  </servlet-mapping>
 </web-app>
