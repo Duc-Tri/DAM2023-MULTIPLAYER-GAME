@@ -53,7 +53,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Texture testImage = new Texture(testImageFile);
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
-    private DebugOnScreen debugOS;
+    //private DebugOnScreen debugOS;
 
     int threadPoolSize = 15;
     ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
@@ -84,7 +84,7 @@ public class GameScreen implements Screen, InputProcessor {
         joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
 
-        debugOS = DebugOnScreen.getInstance();
+        //debugOS = DebugOnScreen.getInstance();
 
         monsters = new Monsters(map, player);
 
@@ -187,16 +187,15 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     private void debugOnScreen() {
-        //debugOS.draw("Score AZER AZETGEZA REZA ", 0, 0);
-        debugOS.setText(0, mainGame.getGameMode() + " / " + monsters.getMonstersMode());
-        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
-        debugOS.setText(25, "" + System.currentTimeMillis());
+//        debugOS.setText(0, mainGame.getGameMode() + " / " + monsters.getMonstersMode());
+//        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
+//        debugOS.setText(25, "" + System.currentTimeMillis());
 
 
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
 
-        debugOS.drawTexts(batch);
+//        debugOS.drawTexts(batch);
     }
 
     private void submitThreadJobs() {
