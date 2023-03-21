@@ -1,6 +1,5 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.bagarre.DebugOnScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.map.Map;
@@ -29,7 +28,7 @@ public class Monsters {
     private static Map map;
     private static AStarMap aStarMap;
     private static final int MAX_RANDOM_MONSTERS = 10;
-    private static Player targetPlayer;
+    private static Player mainPlayer;
     private GameMode gameMode;
 
     private Monsters() {
@@ -56,7 +55,7 @@ public class Monsters {
     }
 
     public void init(Map m, Player p) {
-        targetPlayer = p;
+        mainPlayer = p;
         setMap(m);
 
         if (MainGame.getInstance().isSoloGameMode()) {
@@ -64,7 +63,7 @@ public class Monsters {
             gameMode = GameMode.SOLO_MODE;
         } else {
             // MODE MULTIJOUEUR
-            gameMode = (targetPlayer.isMaster() ? GameMode.MASTER_MODE
+            gameMode = (mainPlayer.isMaster() ? GameMode.MASTER_MODE
                     : GameMode.SLAVE_MODE);
         }
 
@@ -129,7 +128,7 @@ public class Monsters {
     }
 
     public void setTargetPlayer(Player player) {
-        targetPlayer = player;
+        mainPlayer = player;
         for (Mob m : simulationMobs) {
             m.setTargetPlayer(player);
             // System.out.println("setTargetPlayer ======================== " + player.uniqueID);
@@ -220,6 +219,20 @@ public class Monsters {
             case MASTER_MODE:
                 moveToPlayer(deltaTime);
                 break;
+        }
+
+        checkHitWithPlayer();
+    }
+
+    private void checkHitWithPlayer() {
+
+        if (mainPlayer.canBeHurt()) {
+            for (Mob mob : drawMobs) {
+                // TODO : faire le check pour tous les mates ? ou pas ?
+                if (mob.hitbox.overlaps(mainPlayer.hitbox)) {
+                    mainPlayer.applyDamage(mob.getDamage());
+                }
+            }
         }
     }
 
@@ -325,7 +338,7 @@ public class Monsters {
             if (mob.hitbox.overlaps(weapon.hitbox)) {
                 hitCount++;
 
-                System.out.println("checkAttackHit >>>>>>>>>> " + mob.uniqueID);
+                // System.out.println("checkAttackHit >>>>>>>>>>>>>>>>>>>>>>>>>> " + mob.uniqueID);
                 if (mob.applyDamage(weapon.getDamage())) {
                     // mort brutale, sans animation !
                     simulationMobs.remove(mob);

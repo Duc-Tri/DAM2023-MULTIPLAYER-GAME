@@ -23,6 +23,13 @@ import com.mygdx.map.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+//#################################################################################################
+// GameScreen (Screen, InputProcessor)
+//=================================================================================================
+// - gère l'affichage générale
+//
+// - gère les inputs (tactile & clavier)
+//#################################################################################################
 public class GameScreen implements Screen, InputProcessor {
     private static Player player; // main player
     private final MainGame mainGame;
@@ -64,10 +71,11 @@ public class GameScreen implements Screen, InputProcessor {
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
         mainGame = game;
-        createPlayer();
+
 
         batch = new SpriteBatch();
         map = loadMap(mapFilename, batch);
+        createPlayer();
         clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
         batch.setProjectionMatrix(clampedCamera.combined);
 
@@ -89,8 +97,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void createPlayer() {
         player = new Player(map);
-        player.setX(100); // temp
-        player.setY(100); // temp
         if (mainGame.isMultiplayerGameMode())
             NewPlayer.requestServer(player);
     }

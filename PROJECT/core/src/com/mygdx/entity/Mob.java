@@ -17,9 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 
 //#################################################################################################
-// Monster
+// Mob
 //=================================================================================================
+// - ne porte pas d'arme
 //
+// - blesse le joueur en le touchant
 //#################################################################################################
 public class Mob extends LivingEntity {
     private final static String MONSTERS_ATLAS = "characters/RMXP_monsters.atlas";
@@ -36,6 +38,7 @@ public class Mob extends LivingEntity {
     private TextureRegion textureRegion;
     public Color spriteTint;
     private static int numMob = 0;
+    private int damage;
 
     private int WAIT_FRAMES = 0; // OBSOLETE: pour régler la vitesse de moveToPlayer
 
@@ -65,6 +68,18 @@ public class Mob extends LivingEntity {
         put(MonsterType.LIVING_TREE, 100);
     }};
 
+    // DOMMAGES DES MONSTRES =================================================================
+    final static HashMap<MonsterType, Integer> MonstersDamage = new HashMap<MonsterType, Integer>() {{
+        put(MonsterType.IMP, 1);
+        put(MonsterType.BAT, 2);
+        put(MonsterType.DEVIL, 3);
+        put(MonsterType.SCORPION, 4);
+        put(MonsterType.OCTOPUS, 5);
+        put(MonsterType.BLOB, 1);
+        put(MonsterType.TROLL, 8);
+        put(MonsterType.LIVING_TREE, 10);
+    }};
+
     public Mob(MonsterType type) {
         // TEXTURE DE TOUS LES MOBS ---------------------------------------------------------------
         if (allMonstersAtlas == null) {
@@ -85,6 +100,8 @@ public class Mob extends LivingEntity {
         monsterType = type;
         RMXP_CHARACTER = MonstersNum.get(monsterType) + "_";
         findRegion = RMXP_CHARACTER + "DOWN_0";
+
+        damage = MonstersDamage.get(monsterType);
         maxLife = MonstersHealth.get(monsterType);
 
         currentLife = maxLife;
@@ -155,7 +172,7 @@ public class Mob extends LivingEntity {
         randomDir = RMXPAtlasGenerator.randomDir();
 
         // pour la version movetoPLayer / moveToRandomDir(float deltaTime) ------------------------
-        moveDelay = 0.01f + (float) (Math.random() * 0.1f);
+        moveDelay = 0.05f + (float) (Math.random() * 0.1f);
         currentTime = 0;
 
         // pour la version movetoPLayer() / moveToRandomDir() -------------------------------------
@@ -419,6 +436,10 @@ public class Mob extends LivingEntity {
         if (AStarMap.DEBUG_ASTAR && mapPathToTarget != null) {
             for (Vector2int v : mapPathToTarget) batch.draw(debugTexture, v.x, v.y);
         }
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
 }

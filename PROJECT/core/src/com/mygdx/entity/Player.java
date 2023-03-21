@@ -11,15 +11,20 @@ import com.mygdx.bagarre.DebugOnScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 import com.mygdx.map.Map;
+import com.mygdx.pathfinding.Vector2int;
 import com.mygdx.weapon.Sword;
 
-import java.util.SortedMap;
-
 //#################################################################################################
-//
+// PLayer < LivingEntity (Entity)
 //=================================================================================================
+// - possède un Sword (d'autres armes pourront être rajoutées ...)
+//
+// - en MULTIJOUEUR, peut être MASTER ou SLAVE
+//
+// - le MASTER gère l'IA des monstres
 //#################################################################################################
 public class Player extends LivingEntity {
+    private final static int MAX_LIFE = 200;
     private final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
     private static TextureAtlas allPlayersAtlas;
     private String lobbyPlayerId;
@@ -27,6 +32,7 @@ public class Player extends LivingEntity {
     private boolean isMaster;
     private static Map map; // même carte pour tout le monde !
     private Sword sword;
+    private static final int NO_HURT_TIME = 1000; // temps durant lequel on est intouchable, en millis
 
     public Player() {
         // TEXTURE DE TOUS LES OBJETS PLAYER ----------------------------------
@@ -34,6 +40,7 @@ public class Player extends LivingEntity {
             allPlayersAtlas = new TextureAtlas(Gdx.files.internal(PLAYERS_ATLAS));
         }
 
+        currentLife = maxLife = MAX_LIFE;
         uniqueID = "player" + nextUniqueId();
 
         final int R = 10 + (int) (Math.random() * 90);
@@ -45,6 +52,7 @@ public class Player extends LivingEntity {
         RMXP_CHARACTER = (int) (Math.random() * RMXPCharactersAtlas.MAX_CHARACTERS) + "_";
 
         sword = new Sword(this);
+        lastHurtTime = 0;
         initializeSprite();
 
         // to position correctly hitbox + sprite well -------------------------
@@ -57,6 +65,9 @@ public class Player extends LivingEntity {
     public Player(Map m) {
         this();
         map = m;
+        Vector2int startPoint = map.randomPointAtSpawnArea("START");
+        setX(startPoint.x- sprite.getWidth()/2);
+        setY(startPoint.y);
     }
 
     @Override
@@ -67,6 +78,7 @@ public class Player extends LivingEntity {
         //sprite.setColor(spriteTint);
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
         animate("DOWN"); // au départ, le perso regarde vers le bas
+        lifeBar.setBarRatio(MAX_LIFE);
     }
 
     public String getNumLobby() {
@@ -127,10 +139,21 @@ public class Player extends LivingEntity {
         sword.animate(string);
     }
 
+    int frames = 0;
+
     public void drawAndUpdate(SpriteBatch batch) {
         super.drawAndUpdate(batch);
         sword.drawAndUpdate(batch);
-        if (!sword.isActivated())
-            DebugOnScreen.getInstance().setText(10, "no attack.....");
+        // TODO : clignote en rouge
+        frames++;
+        if (!canBeHurt())
+
+            sprite.setColor((frames % 10 == 0 || frames % 4 == 0) ? Color.RED : Color.BLACK);
+        else
+            sprite.setColor(Color.WHITE);
+    }
+
+    public boolean canBeHurt() {
+        return (System.currentTimeMillis() - lastHurtTime > NO_HURT_TIME);
     }
 }

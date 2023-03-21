@@ -12,7 +12,7 @@ import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 
 //#################################################################################################
-// Entity qui possède:
+// LivingEntity
 //=================================================================================================
 // - des points de vie
 //
@@ -55,6 +55,7 @@ public abstract class LivingEntity implements Entity {
     protected int currentLife = 1; // points de vie actuels
     protected int maxLife = 1; // le max en PV
     protected LifeBar lifeBar;
+    protected long lastHurtTime;
 
     public LivingEntity() {
         //if (mainGame == null) mainGame = MainGame.getInstance();
@@ -221,6 +222,7 @@ public abstract class LivingEntity implements Entity {
 
     // Renvoi true si mort du MOB
     public boolean applyDamage(int damage) {
+        lastHurtTime = System.currentTimeMillis();
         currentLife -= damage;
         return !isAlive();
     }

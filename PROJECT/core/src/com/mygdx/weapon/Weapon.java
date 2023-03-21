@@ -53,7 +53,7 @@ public abstract class Weapon extends Item {
         if (!activated && currMillis - lastMillis > COOLDOWN_TIME) {
             activated = true;
             lastMillis = currMillis;
-            System.out.println(currMillis + " attack:SLASH ===== " + activated);
+            // System.out.println(currMillis + " attack:SLASH ================= " + activated);
         }
         return activated;
     }

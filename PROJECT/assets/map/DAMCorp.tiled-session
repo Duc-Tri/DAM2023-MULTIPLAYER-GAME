@@ -8,12 +8,20 @@
         "."
     ],
     "fileStates": {
+        "DAMCorp_0.tmx": {
+            "scale": 1.08953125,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 480.48185859744723,
+                "y": 118.39954108705001
+            }
+        },
         "DAMCorp_1.tmx": {
             "scale": 1,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 499.5,
-                "y": 141
+                "x": 480.5,
+                "y": 241
             }
         },
         "DAMCorp_2.tmx": {
@@ -52,12 +60,14 @@
     "openFiles": [
         "DAMCorp_2.tmx",
         "DAMCorp_test.tmx",
-        "DAMCorp_1.tmx"
+        "DAMCorp_1.tmx",
+        "DAMCorp_0.tmx"
     ],
     "project": "DAMCorp.tiled-project",
     "recentFiles": [
         "DAMCorp_2.tmx",
         "DAMCorp_test.tmx",
+        "DAMCorp_0.tmx",
         "DAMCorp_1.tmx",
         "DAMCorp_tuiles.tsx",
         "DAMCorp_test - Copie.tmx"

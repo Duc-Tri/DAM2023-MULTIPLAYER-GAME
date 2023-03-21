@@ -44,7 +44,7 @@ import java.util.List;
 //#################################################################################################
 public class Map {
 
-    public final static boolean DEBUG_OBSTACLES = true; // true = affiche les OBSTACLES (=> TOPMAP)
+    public final static boolean DEBUG_OBSTACLES = false; // true = affiche les OBSTACLES (=> TOPMAP)
 
     private final TiledMap tiledMap;
     private final int mapNumberLayers;
@@ -313,7 +313,7 @@ public class Map {
 //            System.out.println("retrieveTriggerObjects ############## rectTrigger=" + r.getName());
 
             String areaName = area.getName().trim().toUpperCase();
-            if (areaName.startsWith("SPAWN_")) {
+            if (areaName.startsWith("SPAWN_") || areaName.startsWith("START") || areaName.startsWith("EXIT")) {
                 spawnAreas.put(areaName, area.getRectangle());
             }
 
@@ -332,14 +332,19 @@ public class Map {
     // Renvoie la position du centre d'un spawnArea
     //---------------------------------------------------------------------------------------------
     public Vector2int centerPointAtSpawnArea(String spawnArea) {
-        Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
-        if (area != null)
-            return new Vector2int(area.x + area.width / 2, area.y + area.height / 2);
 
-        return new Vector2int(0, 0);
+
+        Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
+        if (area != null) {
+            System.out.println("centerPointAtSpawnArea =============== " + spawnArea);
+
+            return new Vector2int(area.x + area.width / 2, area.y + area.height / 2);
+        }
+
+        return new Vector2int(200, 200);
     }
 
-    // Renvoie une position aléatoire à l'intérieur d'un spawnArea
+    // Renvoie une position aléatoire à l'intérieur d'un rectangle spawnArea
     //---------------------------------------------------------------------------------------------
     public Vector2int randomPointAtSpawnArea(String spawnArea) {
         Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
