@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entity.Item;
 import com.mygdx.entity.LivingEntity;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.HashMap;
 
@@ -13,9 +14,10 @@ import java.util.HashMap;
 //
 //#################################################################################################
 public abstract class Weapon extends Item {
-    public static final boolean DEBUG_HITBOX = true;
+    public static final boolean DEBUG_HITBOX = false;
 
     protected int damage;
+
     protected boolean activated; // l'arme est activée ou pas
     protected float ACTIVE_TIME = 200; // la durée active de l'arme pendant une attaque, en millis
     protected float COOLDOWN_TIME = 10; // délai avant de pouvoir réutiliser l'arme, en millis
@@ -34,7 +36,7 @@ public abstract class Weapon extends Item {
     };
     // pas static => propre à chaque arme !!!
     protected HashMap<String, Rectangle> HITBOXES = new HashMap<>();
-    protected HashMap<String, Integer> HITBOXES_XOFFSET = new HashMap<>();
+    protected HashMap<String, Vector2int> HITBOX_OFFSETS = new HashMap<>();
 
     protected HashMap<String, Integer> SPRITE_YOFFSETS = new HashMap<>();
 
@@ -44,7 +46,7 @@ public abstract class Weapon extends Item {
         this.owner = owner;
     }
 
-    public void attack() {
+    public boolean attack() {
         // TODO: tenir compte du cooldown et du slashTime
         long currMillis = System.currentTimeMillis();
 
@@ -53,6 +55,7 @@ public abstract class Weapon extends Item {
             lastMillis = currMillis;
             System.out.println(currMillis + " attack:SLASH ===== " + activated);
         }
+        return activated;
     }
 
     @Override
@@ -65,12 +68,13 @@ public abstract class Weapon extends Item {
 //        sprite.setX(hitbox.x);
 //        sprite.setCenterY(hitbox.y + hitbox.height / 2);
         hitbox = HITBOXES.get(dir);
-        HITBOX_XOFFSET = HITBOXES_XOFFSET.get(dir);
+        HITBOX_XOFFSET = HITBOX_OFFSETS.get(dir).x;
+        HITBOX_YOFFSET = HITBOX_OFFSETS.get(dir).y;
     }
 
     public void update() {
         setX(owner.getFootX());
-        setY(owner.getY() + owner.getSprite().getHeight() / 2);
+        setY(owner.getY() + owner.getHalfHeight());
 
         // est-ce que l'arme a épuisé son temps d'activation ?
         if (activated) {
@@ -101,4 +105,13 @@ public abstract class Weapon extends Item {
         hitbox.setY(y + HITBOX_YOFFSET);
         sprite.setY(y + SPRITE_YOFFSET);
     }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
 }

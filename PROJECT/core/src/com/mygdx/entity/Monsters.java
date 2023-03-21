@@ -1,20 +1,21 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.bagarre.DebugOnScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
+import com.mygdx.weapon.Weapon;
 
 import java.util.ArrayList;
 
 //=================================================================================================
-// Gestion des monstres (appliquée à une carte et donc un AStar
+// Gestion des monstres, appliquée à une carte (et donc un AStar)
 //=================================================================================================
 public class Monsters {
 
-    public enum MonstersMode {
+    public enum GameMode {
         SOLO_MODE, // MODE SOLO, display ET simulation
         SLAVE_MODE, // MULTIJOUEUR, display seulement, CLIENTS ET MASTER,
         MASTER_MODE // MULTIJOUEUR, simulation seulement, MASTER
@@ -29,10 +30,10 @@ public class Monsters {
     private static AStarMap aStarMap;
     private static final int MAX_RANDOM_MONSTERS = 10;
     private static Player targetPlayer;
-    private MonstersMode monstersMode;
+    private GameMode gameMode;
 
-    public Monsters() {
-
+    private Monsters() {
+        // private = SINGLETON pattern
         /*
         for (int n = 0; n < MAX_RANDOM_MONSTERS; n++) {
 
@@ -46,23 +47,28 @@ public class Monsters {
         */
     }
 
-    public Monsters(Map m, Player p) {
-        this();
+    private static Monsters instance;
 
+    public static Monsters getInstance() {
+        if (instance == null) instance = new Monsters();
+
+        return instance;
+    }
+
+    public void init(Map m, Player p) {
         targetPlayer = p;
-        aStarMap = new AStarMap(m);
         setMap(m);
 
         if (MainGame.getInstance().isSoloGameMode()) {
             // MODE SOLO
-            monstersMode = MonstersMode.SOLO_MODE;
+            gameMode = GameMode.SOLO_MODE;
         } else {
             // MODE MULTIJOUEUR
-            monstersMode = (targetPlayer.isMaster() ? Monsters.MonstersMode.MASTER_MODE
-                    : Monsters.MonstersMode.SLAVE_MODE);
+            gameMode = (targetPlayer.isMaster() ? GameMode.MASTER_MODE
+                    : GameMode.SLAVE_MODE);
         }
 
-        switch (monstersMode) {
+        switch (gameMode) {
             case SOLO_MODE:
                 drawMobs = simulationMobs = new ArrayList<>(); // IMPORTANT ! pointent sur les même data
                 spawnMonsters(map.getMonstersToSpawn());
@@ -116,7 +122,10 @@ public class Monsters {
 
         if (Mob.getMap() != map) Mob.setMap(map); // carte globale à tous les monstres
 
-        if (aStarMap.getMap() != map) aStarMap.setMap(map);
+        if (aStarMap == null)
+            aStarMap = new AStarMap(map);
+        else if (aStarMap.getMap() != map)
+            aStarMap.setMap(map);
     }
 
     public void setTargetPlayer(Player player) {
@@ -183,8 +192,8 @@ public class Monsters {
 
     }
 
-    public MonstersMode getMonstersMode() {
-        return monstersMode;
+    public GameMode getMonstersMode() {
+        return gameMode;
     }
 
     public void reset() {
@@ -201,7 +210,7 @@ public class Monsters {
 
     public void update(float deltaTime) {
         //moveToPlayer(deltaTime);
-        switch (monstersMode) {
+        switch (gameMode) {
             case SOLO_MODE:
                 moveToPlayer(deltaTime);
                 break;
@@ -301,5 +310,31 @@ public class Monsters {
 //                }
 //            }
 //    }
+
+    public Mob checkAttackHit(Weapon weapon) {
+        int hitCount = 0;
+        Mob lastmob = null;
+        for (int m = drawMobs.size() - 1; m >= 0; m--) {
+
+            Mob mob = drawMobs.get(m);
+
+            DebugOnScreen.getInstance().setText(21, weapon.hitbox.toString());
+            DebugOnScreen.getInstance().setText(22, mob.uniqueID + " / " + mob.hitbox.toString());
+
+            // attention aux hitbox negatifs !!!
+            if (mob.hitbox.overlaps(weapon.hitbox)) {
+                hitCount++;
+
+                System.out.println("checkAttackHit >>>>>>>>>> " + mob.uniqueID);
+                if (mob.applyDamage(weapon.getDamage())) {
+                    // mort brutale, sans animation !
+                    simulationMobs.remove(mob);
+                }
+                lastmob = mob;
+            }
+        }
+
+        return lastmob;
+    }
 
 }

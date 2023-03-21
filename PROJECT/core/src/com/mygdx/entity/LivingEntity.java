@@ -23,9 +23,8 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 // - un hitbox pour les collisions
 //#################################################################################################
 public abstract class LivingEntity implements Entity {
-    public static final boolean DEBUG_HITBOX = true;
+    public static final boolean DEBUG_HITBOX = false;
     protected static final Texture debugTexture = new Texture("misc/green64x64.png");
-
     protected TextureAtlas entityAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
@@ -53,13 +52,12 @@ public abstract class LivingEntity implements Entity {
     protected String serverUniqueID;
     protected String RMXP_CHARACTER; // non de la région texture dans l'atlas
     private static int numLivingEntity = 0;
-    protected int currentLife = 1;
-    protected int maxLife = 1;
-    private static MainGame mainGame;
+    protected int currentLife = 1; // points de vie actuels
+    protected int maxLife = 1; // le max en PV
     protected LifeBar lifeBar;
 
     public LivingEntity() {
-        if (mainGame == null) mainGame = MainGame.getInstance();
+        //if (mainGame == null) mainGame = MainGame.getInstance();
 
         numLivingEntity++;
         spriteTint = new Color(0.5f, 0.25f, 0.1f, 1);
@@ -87,8 +85,8 @@ public abstract class LivingEntity implements Entity {
             findRegion = RMXP_CHARACTER + "DOWN_" + compteurDown;
         }
 
-        textureRegion = entityAtlas.findRegion(findRegion);
         //System.out.println("animate _______________ " + findRegion);
+        textureRegion = entityAtlas.findRegion(findRegion);
         sprite.setRegion(textureRegion);
     }
 
@@ -98,6 +96,14 @@ public abstract class LivingEntity implements Entity {
 
     public float getFootX() {
         return entityX + sprite.getWidth() / 2;
+    }
+
+    public float getMiddleY() {
+        return entityY + sprite.getHeight() / 2;
+    }
+
+    public float getHalfHeight() {
+        return sprite.getHeight() / 2;
     }
 
     public float getY() {
@@ -202,7 +208,7 @@ public abstract class LivingEntity implements Entity {
 
         // protected = uniquement pour les classes filles
         //return Math.abs(System.currentTimeMillis() + (int) (Math.random() * 1000000));
-        return numLivingEntity + (int) (Math.random() * 10000);
+        return numLivingEntity + (int) (Math.random() * 1000000);
     }
 
     public int getCurrentLife() {
@@ -213,8 +219,17 @@ public abstract class LivingEntity implements Entity {
         currentLife = l;
     }
 
+    // Renvoi true si mort du MOB
+    public boolean applyDamage(int damage) {
+        currentLife -= damage;
+        return !isAlive();
+    }
+
+    public boolean isAlive() {
+        return currentLife > 0;
+    }
+
     public int getMaxLife() {
         return maxLife;
     }
-
 }

@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.bagarre.DebugOnScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 import com.mygdx.map.Map;
 import com.mygdx.weapon.Sword;
 
+import java.util.SortedMap;
+
 //#################################################################################################
+//
 //=================================================================================================
 //#################################################################################################
 public class Player extends LivingEntity {
@@ -111,7 +115,10 @@ public class Player extends LivingEntity {
     public void attack() {
         // Monsters.killRandom();
         // TODO: attaque avec une épée
-        sword.attack();
+        if (sword.attack()) {
+            Mob mob = Monsters.getInstance().checkAttackHit(sword);
+            DebugOnScreen.getInstance().setText(10, (mob == null ? "NULL" : mob.uniqueID));
+        }
     }
 
     @Override
@@ -123,5 +130,7 @@ public class Player extends LivingEntity {
     public void drawAndUpdate(SpriteBatch batch) {
         super.drawAndUpdate(batch);
         sword.drawAndUpdate(batch);
+        if (!sword.isActivated())
+            DebugOnScreen.getInstance().setText(10, "no attack.....");
     }
 }

@@ -5,11 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
 import com.mygdx.client.RetrieveMonsters;
@@ -29,7 +27,7 @@ public class GameScreen implements Screen, InputProcessor {
     private static Player player; // main player
     private final MainGame mainGame;
     private Mates mates;
-    private Monsters monsters;
+    private Monsters monstersInstance;
     private boolean showJoystick = false;
     private static Map map;
     private static ClampedCamera clampedCamera;
@@ -80,7 +78,8 @@ public class GameScreen implements Screen, InputProcessor {
 
         debugOS = DebugOnScreen.getInstance();
 
-        monsters = new Monsters(map, player);
+        monstersInstance = Monsters.getInstance();
+        monstersInstance.init(map, player);
 
         if (mainGame.isMultiplayerGameMode()) {
             mates = new Mates(player);
@@ -116,12 +115,12 @@ public class GameScreen implements Screen, InputProcessor {
         // MASTER ONLY
         if (player.isMaster()) {
             System.out.println(player.getUniqueID() + " IS MASTER **********************");
-            updateMonsters = new UpdateMonsters(player, monsters);
+            updateMonsters = new UpdateMonsters(player, monstersInstance);
             threadPoolExecutor4.submit(updateMonsters);
         }
 
         // SLAVES & MASTER
-        retrieveMonsters = new RetrieveMonsters(player, monsters);
+        retrieveMonsters = new RetrieveMonsters(player, monstersInstance);
         threadPoolExecutor3.submit(retrieveMonsters);
     }
 
@@ -153,7 +152,7 @@ public class GameScreen implements Screen, InputProcessor {
             }
         }
 
-        monsters.update(deltaTime);
+        monstersInstance.update(deltaTime);
 
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -167,7 +166,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         // dessine le PLAYER,  les MATES et les LAYERS ------------------------
         map.setView(clampedCamera);
-        map.renderAllLivingEntitiesAndTiles(player, mates, monsters);
+        map.renderAllLivingEntitiesAndTiles(player, mates, monstersInstance);
 
         if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
 
@@ -181,7 +180,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void debugOnScreen() {
         //debugOS.draw("Score AZER AZETGEZA REZA ", 0, 0);
-        debugOS.setText(0, mainGame.getGameMode() + " / " + monsters.getMonstersMode());
+        debugOS.setText(0, mainGame.getGameMode() + " / " + monstersInstance.getMonstersMode());
         debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
         debugOS.setText(25, "" + System.currentTimeMillis());
 

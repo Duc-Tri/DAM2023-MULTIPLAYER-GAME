@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.entity.LivingEntity;
+import com.mygdx.pathfinding.Vector2int;
 
 import java.util.HashMap;
 
@@ -33,12 +34,12 @@ public final class Sword extends Weapon {
 
     // POINTS DE DOMMAGES DES ÉPÉES ===============================================================
     final static HashMap<SwordType, Integer> SwordsDamage = new HashMap() {{
-        put(SwordType.EVIL_SWORD, 50);
-        put(SwordType.BROADSWORD, 20);
-        put(SwordType.SCIMITAR, 15);
-        put(SwordType.CLAYMORE, 12);
-        put(SwordType.BASTARD, 8);
-        put(SwordType.GLADIUS, 5);
+        put(SwordType.EVIL_SWORD, 20);
+        put(SwordType.BROADSWORD, 16);
+        put(SwordType.SCIMITAR, 8);
+        put(SwordType.CLAYMORE, 4);
+        put(SwordType.BASTARD, 2);
+        put(SwordType.GLADIUS, 1);
     }};
 
     public Sword(LivingEntity owner) {
@@ -53,6 +54,7 @@ public final class Sword extends Weapon {
         }
         this.owner = owner;
         swordType = type;
+        damage = SwordsDamage.get(type);
 
         initializeSprite();
     }
@@ -60,23 +62,24 @@ public final class Sword extends Weapon {
     @Override
     public void initializeSprite() {
         sprite = new Sprite(allSwordsAtlas.findRegion("" + SwordsNum.get(swordType)));
-        sprite.setOrigin(sprite.getWidth() / 2, 0);
+        sprite.setOrigin(sprite.getWidth() / 2, 0); // IMPORTANT
 
-        HITBOX_WIDTH = 60; //(int) (sprite.getWidth() - 16); // temp
-        HITBOX_XOFFSET = 0; // (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
-        HITBOX_HEIGHT = 20; //(int) (sprite.getHeight() - 16); // temp
-        HITBOX_YOFFSET = 0;
-        hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
+        HITBOX_WIDTH = 60; // fixe
+        HITBOX_HEIGHT = 20; // fixe
+
+        HITBOX_XOFFSET = 0; // recalculé à chaque changement de direction
+        HITBOX_YOFFSET = 0; // recalculé à chaque changement de direction
+        hitbox = null; // recalculé à chaque changement de direction
 
         HITBOXES.put("UP", new Rectangle(0, 0, HITBOX_HEIGHT, HITBOX_WIDTH));
-        HITBOXES.put("DOWN", new Rectangle(0, 0, -HITBOX_HEIGHT, -HITBOX_WIDTH));
-        HITBOXES.put("RIGHT", new Rectangle(0, 0, HITBOX_WIDTH, -HITBOX_HEIGHT));
-        HITBOXES.put("LEFT", new Rectangle(0, 0, -HITBOX_WIDTH, -HITBOX_HEIGHT));
+        HITBOXES.put("DOWN", new Rectangle(0, 0, HITBOX_HEIGHT, HITBOX_WIDTH));
+        HITBOXES.put("RIGHT", new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT));
+        HITBOXES.put("LEFT", new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT));
 
-        HITBOXES_XOFFSET.put("UP", -HITBOX_HEIGHT / 2);
-        HITBOXES_XOFFSET.put("DOWN", HITBOX_HEIGHT / 2);
-        HITBOXES_XOFFSET.put("RIGHT", 0);
-        HITBOXES_XOFFSET.put("LEFT", 0);
+        HITBOX_OFFSETS.put("UP", new Vector2int(-HITBOX_HEIGHT / 2, 0));
+        HITBOX_OFFSETS.put("DOWN", new Vector2int(-HITBOX_HEIGHT / 2, -HITBOX_WIDTH));
+        HITBOX_OFFSETS.put("RIGHT", new Vector2int(0, -HITBOX_HEIGHT));
+        HITBOX_OFFSETS.put("LEFT", new Vector2int(-HITBOX_WIDTH, -HITBOX_HEIGHT));
 
         SPRITE_YOFFSETS.put("UP", 0);
         SPRITE_YOFFSETS.put("DOWN", 0);

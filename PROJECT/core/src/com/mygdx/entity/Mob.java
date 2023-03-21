@@ -86,9 +86,11 @@ public class Mob extends LivingEntity {
         RMXP_CHARACTER = MonstersNum.get(monsterType) + "_";
         findRegion = RMXP_CHARACTER + "DOWN_0";
         maxLife = MonstersHealth.get(monsterType);
-        ///////////////////////////////////////////////////////////////
+
         currentLife = maxLife;
-        currentLife = 1 + (int) (Math.random() * (maxLife - 1));
+        ///////////////////////////////////////////////////////////////
+        //currentLife = 1 + (int) (Math.random() * (maxLife - 1));
+
         lifeBar.setBarRatio(maxLife);
 
         initializeSprite();
