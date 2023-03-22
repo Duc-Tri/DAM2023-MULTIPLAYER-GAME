@@ -3,27 +3,21 @@ package com.mygdx.bagarre;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-<<<<<<< Updated upstream
 
 import com.badlogic.gdx.backends.android.AndroidFiles;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.firebase.FirebaseApp;
-=======
 import androidx.annotation.Nullable;
 
 import com.google.firebase.database.ChildEventListener;
->>>>>>> Stashed changes
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-<<<<<<< Updated upstream
 import com.google.firebase.database.ValueEventListener;
 import com.mygdx.firebase.Firebase;
-=======
 
 import java.util.List;
->>>>>>> Stashed changes
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +68,6 @@ public class FirebaseAndroid {
         });
     }
 
-<<<<<<< Updated upstream
     public interface OnListReadyListener {
         void onListReady(List<String> listPseudo);
     }
@@ -85,14 +78,23 @@ public class FirebaseAndroid {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot snap : snapshot.getChildren()) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
                     String pseudoPlayers = (String) snap.getValue(Object.class);
                     Log.i("PSEUDO", pseudoPlayers);
                     listPseudo.add(pseudoPlayers);
                     Log.i("PSEUDO_IN_LIST", listPseudo.get(0));
                 }
                 listener.onListReady(listPseudo);
-=======
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
     public String majLobbyPseudo(String pseudo, int NumLobby) {
 
         DatabaseReference refLobby = db.getReference("Lobby" + NumLobby);
@@ -133,22 +135,20 @@ public class FirebaseAndroid {
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
->>>>>>> Stashed changes
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-<<<<<<< Updated upstream
+
                 Log.e("LIST_FAILED", "Erreur de lecture des données");
             }
         });
 
-=======
-
-            }
-        });
          return listPseudo;
->>>>>>> Stashed changes
+
     }
 
 }
+
+
