@@ -34,7 +34,6 @@ public class ListPlayerActivity extends AppCompatActivity implements FirebaseAnd
         setContentView(R.layout.activity_liste_player);
         playerID = getResources().getStringArray((R.array.playerID));
         db.getListRecycler(this);
-        initRecyclerView();
         setListenerForReturn();
         setListenerForStartGame();
     }

@@ -66,19 +66,6 @@ public class LoginPage extends AppCompatActivity {
         ivBackground = findViewById(R.id.ivBackground);
         horizontalScrollView = findViewById(R.id.hsvBackground);
     }
-
-    public void playMusic() {
-        //Création de l'audio lancher
-        audioLauncher = MediaPlayer.create(this, R.raw.connexion_theme);
-        audioLauncher.setLooping(true);
-        audioLauncher.start();
-        volumeBtn.setImageResource(R.drawable.volume_on);
-
-        //Création de l'audio manager
-        audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
-		
-    }
-
     public void connectBase() {
         db = new FirebaseAndroid();
     }
@@ -145,26 +132,7 @@ public class LoginPage extends AppCompatActivity {
                 horizontalScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-		
-    /*public void gestionAnimation() {
-        // Obtenez la taille de l'écran en pixels
-        metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float screenWidth = metrics.widthPixels;
-        float screenHeight = metrics.heightPixels;
-        float screenDP = metrics.densityDpi;
-        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
-        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
-        Log.i("SCREEN_DP", String.valueOf(screenDP));
-
-        //Gestion de l'animation
-//        ivBackground.setTranslationX((float) (screenWidth*1.3));
-        int Trans = ivBackground.getHeight();
-        ivBackground.animate()
-                .translationX((float) (- screenWidth*2.61))
-                .setDuration(3000)
-                .start();
-    }*/
+    }
 	
     public void playMusic() {
         itConnexion = getIntent();
@@ -212,15 +180,6 @@ public class LoginPage extends AppCompatActivity {
         }*/
 
 		setContentView(R.layout.activity_login_page);
-
-        metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float screenWidthDp = metrics.densityDpi;
-        float screenWidth = metrics.widthPixels;
-        float screenHeight = metrics.heightPixels;
-        Log.i("SCREEN_WIDTH_DP", String.valueOf(screenWidthDp));
-        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
-        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
 
         //Initialisation des vues
         initUi();

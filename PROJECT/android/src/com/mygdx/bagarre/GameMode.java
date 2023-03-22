@@ -168,15 +168,6 @@ public class GameMode extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-
-    }
-
-        buttonOnLine.setOnClickListener(v -> {
-            Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);
-            startActivity(intent);
-        });
-
         optionsBtn.setOnClickListener(v -> {
             alertOptions();
         });

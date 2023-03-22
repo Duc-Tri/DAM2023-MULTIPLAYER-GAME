@@ -25,9 +25,10 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     }
 
 
-    public ListLobbyAdapter(Context context,int[] numLobby/*, int[] nbrJoueur*/ ) {
+    public ListLobbyAdapter(Context context,String[] numLobby/*, int[] nbrJoueur*/ ) {
         this.context = context;
         this.numLobby = numLobby;
+    }
 //        this.nbrJoueur = nbrJoueur;
 
     /*public ListLobbyAdapter(Context context,String[] numLobby ) {

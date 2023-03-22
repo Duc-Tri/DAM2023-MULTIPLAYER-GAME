@@ -23,10 +23,6 @@ public class ListLobbyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_lobby_view);
 
-        numLobby = getResources().getIntArray(R.array.numLobby);
-
-        initRecyclerView();
-
         setListenerForRetour();
         setListenerForJoinLobby();
         setContentView(R.layout.activity_lobby_view);

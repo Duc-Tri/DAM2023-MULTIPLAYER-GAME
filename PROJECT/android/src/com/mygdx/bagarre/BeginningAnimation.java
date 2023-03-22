@@ -38,10 +38,6 @@ public class BeginningAnimation extends AppCompatActivity {
     long timeFadeInFirstBackground, timeFadeInLight, timeTitleApparition, timeAnimationDude;
     boolean clickable = false, isMuted;
     int musicPos;
-    long timeFadeInFirstBackground, timeFadeInLight, timeTitleApparition, timeAnimationDude;
-    int tLeftGuy, tRightGuy;
-    float coeffCharaLeft = 1.873f, coeffCharaRight = 1.781f;
-    boolean clickable = false;
 
     public void initUI() {
         flBackLight = findViewById(R.id.flBackLight);
