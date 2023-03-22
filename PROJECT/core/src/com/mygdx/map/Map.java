@@ -241,11 +241,13 @@ public class Map {
 
                 LivingEntity currentEntity = livingEntitiesList.get(ent);
 
-                if (currentEntity != null &&  currentEntity.isAlive() && currentEntity.getY() + 1 > realY) {
-                    currentEntity.drawAndUpdate(batch);
-                    livingEntitiesList.remove(currentEntity);
-                } else
-                    break; // si personne n'est au dessus de ce Y, on sort !
+                if (currentEntity != null) {
+                    if (currentEntity.getY() + 1 > realY && currentEntity.isAlive()) {
+                        currentEntity.drawAndUpdate(batch);
+                        livingEntitiesList.remove(currentEntity);
+                    }
+                    //else break; // si personne n'est au dessus de ce Y, on sort !
+                }
             }
 
             // affiche les tuiles de cette rangée tileY -------------------------------------------

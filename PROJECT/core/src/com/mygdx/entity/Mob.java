@@ -302,7 +302,7 @@ public class Mob extends LivingEntity {
     int waitBeforeMove = WAIT_FRAMES + 1;
 
     public void moveToPlayer() {
-        if (playerReached() || (waitBeforeMove++ < WAIT_FRAMES))
+        if (!isAlive() || playerReached() || (waitBeforeMove++ < WAIT_FRAMES))
             return;
         else
             waitBeforeMove = 0;
