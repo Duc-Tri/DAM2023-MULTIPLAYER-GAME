@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.client.AttackMonsters;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.client.RetrieveMate;
 import com.mygdx.client.RetrieveMonsters;
@@ -58,16 +59,18 @@ public class GameScreen implements Screen, InputProcessor {
     private HUDManager hudManager;
 
     int threadPoolSize = 15;
-    ThreadPoolExecutor threadPoolExecutor0 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-    ThreadPoolExecutor threadPoolExecutor1 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-    ThreadPoolExecutor threadPoolExecutor2 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-    ThreadPoolExecutor threadPoolExecutor3 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-    ThreadPoolExecutor threadPoolExecutor4 = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolUpdatePlayer = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolRetrieveMate = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolRetrieveUpdatePlayer = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolRetrieveMonsters = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolUpdateMonsters = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+    ThreadPoolExecutor threadPoolAttackMonsters = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
     UpdatePlayer updatePlayer;
     RetrieveMate retrieveMate;
     RetrieveUpdatePlayer retrieveUpdatePlayer;
     private UpdateMonsters updateMonsters;
     private RetrieveMonsters retrieveMonsters;
+    private AttackMonsters attackMonsters;
 
     public GameScreen(String mapFilename, MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -111,25 +114,31 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void createThreadsPool() {
         updatePlayer = new UpdatePlayer(player);
-        threadPoolExecutor0.submit(updatePlayer);
+        threadPoolUpdatePlayer.submit(updatePlayer);
+
 
         retrieveMate = new RetrieveMate(player);
-        threadPoolExecutor1.submit(retrieveMate);
+        threadPoolRetrieveMate.submit(retrieveMate);
 
         retrieveUpdatePlayer = new RetrieveUpdatePlayer(player);
-        threadPoolExecutor2.submit(retrieveUpdatePlayer);
-
+        threadPoolRetrieveUpdatePlayer.submit(retrieveUpdatePlayer);
 
         // MASTER ONLY --------------------------
         if (player.isMaster()) {
             System.out.println(player.getUniqueID() + " IS MASTER **********************");
             updateMonsters = new UpdateMonsters(player, monstersInstance);
-            threadPoolExecutor4.submit(updateMonsters);
+            threadPoolUpdateMonsters.submit(updateMonsters);
         }
 
         // SLAVES & MASTER ----------------------
         retrieveMonsters = new RetrieveMonsters(player, monstersInstance);
-        threadPoolExecutor3.submit(retrieveMonsters);
+        threadPoolRetrieveMonsters.submit(retrieveMonsters);
+
+        if(mainGame.isMultiplayerGameMode())
+        {
+            attackMonsters = new AttackMonsters(player, monstersInstance);
+            threadPoolAttackMonsters.submit(attackMonsters);
+        }
     }
 
     public static Map getMap() {
@@ -198,26 +207,36 @@ public class GameScreen implements Screen, InputProcessor {
 //            threadPoolExecutor.submit(retrieveMate);
 //
 //        }
-        if (threadPoolExecutor0.getActiveCount() < 1) {
+
+        if (threadPoolUpdatePlayer.getActiveCount() < 1) {
             //System.out.println("updatePlayer    RESTART");
-            threadPoolExecutor0.submit(updatePlayer);
-        }
-        if (threadPoolExecutor1.getActiveCount() < 1) {
-            //System.out.println("retrieveMate    RESTART");
-            threadPoolExecutor1.submit(retrieveMate);
-        }
-        if (threadPoolExecutor2.getActiveCount() < 1) {
-            //System.out.println("retrieveUpdatePlayer    RESTART");
-            threadPoolExecutor2.submit(retrieveUpdatePlayer);
+            threadPoolUpdatePlayer.submit(updatePlayer);
         }
 
-        if (threadPoolExecutor3.getActiveCount() < 1) {
-            //System.out.println("retrieveMonsters    RESTART");
-            threadPoolExecutor3.submit(retrieveMonsters);
+        if (threadPoolRetrieveMate.getActiveCount() < 1) {
+            //System.out.println("retrieveMate    RESTART");
+            threadPoolRetrieveMate.submit(retrieveMate);
         }
-        if (player.isMaster() && threadPoolExecutor4.getActiveCount() < 1) {
+
+        if (threadPoolRetrieveUpdatePlayer.getActiveCount() < 1) {
+            //System.out.println("retrieveUpdatePlayer    RESTART");
+            threadPoolRetrieveUpdatePlayer.submit(retrieveUpdatePlayer);
+        }
+
+        if (threadPoolRetrieveMonsters.getActiveCount() < 1) {
+            //System.out.println("retrieveMonsters    RESTART");
+            threadPoolRetrieveMonsters.submit(retrieveMonsters);
+        }
+
+        if (player.isMaster() && threadPoolUpdateMonsters.getActiveCount() < 1) {
             //System.out.println("updateMonsters    RESTART");
-            threadPoolExecutor4.submit(updateMonsters);
+            threadPoolUpdateMonsters.submit(updateMonsters);
+        }
+
+
+        if (mainGame.isMultiplayerGameMode() && threadPoolUpdateMonsters.getActiveCount() < 1) {
+            //System.out.println("updateMonsters    RESTART");
+            threadPoolAttackMonsters.submit(attackMonsters);
         }
 
 //        retrieveMate = new RetrieveMate(player);

@@ -1,7 +1,6 @@
 package com.mygdx.client;
 
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.entity.Mob;
 import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
 
@@ -11,19 +10,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
-public class UpdateMonsters implements Runnable {
+public class AttackMonsters implements Runnable {
     private static Player player;
-
-    private static Monsters simulationMobs;
-    private final static String GET_URL = MainGame.URLServer + "UpdateMonsters";
+    private static Monsters monsters;
+    private final static String GET_URL = MainGame.URLServer + "AttackMonsters";
     private final static String USER_AGENT = "Mozilla/5.0";
     private final static long RUNNING_TIME = 100000000L;
 
-    public UpdateMonsters(Player p, Monsters mobs) {
+    public AttackMonsters(Player p, Monsters mobs) {
         player = p;
-        simulationMobs = mobs;
+        monsters = mobs;
     }
 
     @Override
@@ -33,11 +30,15 @@ public class UpdateMonsters implements Runnable {
         while (System.currentTimeMillis() < initialTime + RUNNING_TIME) {
             try {
                 Thread.sleep(100); ///////////////////
+
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            requestServer();
-            //System.out.println("UpdateMonsters:run +++++++++++++++++++++++++++++++++++++");
+
+            if (monsters.hasAttackedMonsters()) {
+                System.out.println("AttackMonsters:run $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                requestServer();
+            }
         }
     }
 
@@ -63,10 +64,10 @@ public class UpdateMonsters implements Runnable {
                 }
                 in.close();
 
-                System.out.println("UpdateMonsters:requestServer " + response);
+                System.out.println("AttackMonsters:requestServer " + response);
 
             } else {
-                System.out.println("UpdateMonsters:requestServer did not work.");
+                System.out.println("AttackMonsters:requestServer did not work.");
             }
         } catch (MalformedURLException e) {
 //            e.printStackTrace();
@@ -83,14 +84,14 @@ public class UpdateMonsters implements Runnable {
         sbMonsters.append("?");
         sbMonsters.append("&serverUniqueID=" + player.getServerUniqueID());
         sbMonsters.append("&numLobby=" + player.getNumLobby());
-        sbMonsters.append("&monsters=");
+        sbMonsters.append("&attacked=");
 
         int len0 = sbMonsters.length();
 
-        sbMonsters.append(simulationMobs.buildMonstersHttpParam());
+        sbMonsters.append(monsters.buildAttackedHttpParam());
 
         // FLOOD !!!
-        System.out.println((sbMonsters.length() - len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);
+        System.out.println((sbMonsters.length() - len0) + " __________ AttackMonsters:buildParam " + sbMonsters);
 
         return sbMonsters.toString();
     }

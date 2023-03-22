@@ -34,7 +34,7 @@ public class Mob extends LivingEntity {
     private static AStarMap aStarMap; // le pathfinding, le même pour tous
     private Player targetPlayer; // chaque monstre peut poursuivre un joueur différent !
     private Vector2int oldTargetPos; // ancienne position du joueur poursuivi
-    public String mobID;
+    //public String mobID;
     private MonsterType monsterType;
     private TextureRegion textureRegion;
     public Color spriteTint;
@@ -59,14 +59,14 @@ public class Mob extends LivingEntity {
 
     // POINTS DE VIE DES MONSTRES =================================================================
     final static HashMap<MonsterType, Integer> MonstersHealth = new HashMap<MonsterType, Integer>() {{
-        put(MonsterType.IMP, 50);
-        put(MonsterType.BAT, 10);
-        put(MonsterType.DEVIL, 20);
-        put(MonsterType.SCORPION, 30);
-        put(MonsterType.OCTOPUS, 80);
-        put(MonsterType.BLOB, 40);
-        put(MonsterType.TROLL, 90);
-        put(MonsterType.LIVING_TREE, 100);
+        put(MonsterType.IMP, 10);
+        put(MonsterType.BAT, 5);
+        put(MonsterType.DEVIL, 10);
+        put(MonsterType.SCORPION, 15);
+        put(MonsterType.OCTOPUS, 40);
+        put(MonsterType.BLOB, 1);
+        put(MonsterType.TROLL, 50);
+        put(MonsterType.LIVING_TREE, 45);
     }};
 
     // DOMMAGES DES MONSTRES =================================================================
@@ -156,10 +156,6 @@ public class Mob extends LivingEntity {
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
         //System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
-    }
-
-    public String getMobID() {
-        return mobID;
     }
 
     // TEST DATA ==================================================================================
@@ -447,6 +443,12 @@ public class Mob extends LivingEntity {
     }
 
     public String toString() {
+        // ne pas utiliser pour transmettre au serveur !!!
         return uniqueID + "|" + getFootX() + "|" + getY() + "|" + findRegion + "|" + currentLife;
     }
+
+    public String builMobHttpParam() {
+        return uniqueID + ";" + getFootX() + ";" + getY() + ";" + findRegion + ";" + currentLife + "!"; // pas * pas ~ pas # !!!
+    }
+
 }

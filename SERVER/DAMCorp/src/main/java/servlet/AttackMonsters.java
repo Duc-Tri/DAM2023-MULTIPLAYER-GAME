@@ -12,11 +12,11 @@ import game.entity.Player;
 /**
  * Servlet implementation class UpdateMonsters
  */
-public class UpdateMonsters extends HttpServlet {
+public class AttackMonsters extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Game game = new Game();
 
-	public UpdateMonsters() {
+	public AttackMonsters() {
 		super();
 	}
 
@@ -26,12 +26,13 @@ public class UpdateMonsters extends HttpServlet {
 		Player player = game.retrievePlayer(request.getParameter("serverUniqueID"), request.getParameter("numLobby"));
 		if (player != null) {
 
-			String mobs = request.getParameter("monsters");
+			String attacked = request.getParameter("attacked");
+
 			int nLobby = Integer.parseInt(player.getNumLobby());
 
-			//System.out.println(mobs.length() + " ### UPDATE MONSTERS of " + nLobby);
+			System.out.println(attacked.length() + " AttackMonsters +++++++++++++++++++++++++++ " + attacked);
 
-			game.setMonsters(nLobby, mobs);
+			game.setAttackedMonsters(nLobby, attacked);
 		}
 
 	}

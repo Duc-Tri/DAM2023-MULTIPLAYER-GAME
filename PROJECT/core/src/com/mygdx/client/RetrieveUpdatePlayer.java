@@ -86,8 +86,6 @@ public class RetrieveUpdatePlayer implements Runnable {
         if (tempString[0] != null && !tempString[0].isEmpty()) {
             float tempX = Float.parseFloat(tempString[0]);
             float tempY = Float.parseFloat(tempString[1]);
-            //player.setRealX(tempX);
-            //player.setRealY(tempY);
 
 //            System.out.println("updatePlayer " + player.getX() + " / " + player.getY());
 

@@ -1,6 +1,6 @@
 package game.entity;
 
-public class Mob {
+public class Monster {
 
 	private String x;
 	private String y;
@@ -9,11 +9,11 @@ public class Mob {
 	private String spriteColorInt;
 	private String findRegion;
 	private String numLobby = "";
-	private int life;
+	private int life=999999; // bidouille magique ....
 
 	private long lastUpdate;
 
-	public Mob(String uniqueID) {
+	public Monster(String uniqueID) {
 		super();
 		this.uniqueID = uniqueID;
 	}
@@ -86,8 +86,19 @@ public class Mob {
 		return life;
 	}
 
-	public void setCurrentLife(int l) {
-		life = l;
+	public void setCurrentLife(int newLife) {
+		// au cas où des dommages ont été appliqués .................................
+		if (newLife < life)
+			life = newLife;
+	}
+
+	public String buildHttpResponse() {
+		return uniqueID + ";" + getFootX() + ";" + getY() + ";" + findRegion + ";" + life + "!";
+		// pas * pas ~ pas # !!!
+	}
+
+	public void applyDamage(int damage) {
+		life -= damage;
 	}
 
 }

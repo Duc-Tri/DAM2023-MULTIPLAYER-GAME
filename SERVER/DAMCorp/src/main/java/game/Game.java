@@ -1,7 +1,7 @@
 package game;
 
 import game.entity.Player;
-import game.entity.Monsters;
+import game.entity.MonstersManager;
 
 public class Game {
 
@@ -12,7 +12,7 @@ public class Game {
 
 	static Player[][] players = new Player[POOLSIZE][LOBBYSIZE];
 
-	static Monsters[] monsters = new Monsters[POOLSIZE];
+	static MonstersManager[] monsters = new MonstersManager[POOLSIZE];
 
 	static int cptLobby = 0;
 	private final static long TIMEOUT = 60000L; // 60000L = une minute
@@ -116,7 +116,10 @@ public class Game {
 
 		if (player != null) {
 			int nLobby = Integer.parseInt(player.getNumLobby());
-			lobbyMonstersStr = monsters[nLobby].toString();
+
+			if (monsters[nLobby] != null) {
+				lobbyMonstersStr = monsters[nLobby].buildMonstersHttpResponse();
+			}
 
 			// System.out.println(nLobby + " / " + tempString.length() + "
 			// Game::retrieveMonsters === " + tempString);
@@ -126,19 +129,31 @@ public class Game {
 	}
 
 	// =============================================================================================
+	// Met à jour les monstres (création / update / delete)
 	// =============================================================================================
 	public void setMonsters(int nLobby, String mobsStr) {
 
-		// TODO : faire lé découpage dans la classe
-
 		if (monsters[nLobby] == null) {
-			monsters[nLobby] = new Monsters(nLobby);
+			monsters[nLobby] = new MonstersManager(nLobby);
 		}
 
 		monsters[nLobby].setMonstersStr(mobsStr);
 
 		// System.out.println(nLobby + " / " + mobs.length() + " Game::setMonsters === "
 		// + mobs);
+	}
+
+	// =============================================================================================
+	// Met à jour les monstres (création / update / delete)
+	// =============================================================================================
+	public void setAttackedMonsters(int nLobby, String attackedStr) {
+
+		// on ne peut pas appliquer les attaques sur les monstres d'un lobby qui
+		// n'existe pas
+		if (monsters[nLobby] == null)
+			return;
+
+		monsters[nLobby].setAttackedMonsters(attackedStr);
 	}
 
 	public int getId() {

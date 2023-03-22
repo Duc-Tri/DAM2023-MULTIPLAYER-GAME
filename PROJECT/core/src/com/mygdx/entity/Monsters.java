@@ -25,6 +25,8 @@ public class Monsters {
     // MULTIJOUEUR et SLAVE : drawMobs pour l'affichage, simulationMobs est nul !
     private static ArrayList<Mob> drawMobs; // update render
     private static ArrayList<Mob> simulationMobs; // update data
+
+    private static ArrayList<AttackedMob> attackedMobs = new ArrayList<>();
     private static Map map;
     private static AStarMap aStarMap;
     private static final int MAX_RANDOM_MONSTERS = 10;
@@ -229,23 +231,18 @@ public class Monsters {
         if (mainPlayer.canBeHurt()) {
             for (Mob mob : drawMobs) {
                 // TODO : faire le check pour tous les mates ? ou pas ?
-                if (mob.hitbox.overlaps(mainPlayer.hitbox)) {
+                if (mob.isAlive() && mob.hitbox.overlaps(mainPlayer.hitbox)) {
                     mainPlayer.applyDamage(mob.getDamage());
                 }
             }
         }
     }
 
-    public void removeOldMobs(String[] tempMobs) {
-
-    }
-
     public void removeAllMobs(String[] tempMobs) {
-//        simulationMobs.clear();
-//        drawMobs.clear();
+        drawMobs.clear();
     }
 
-    public static void createNewMobs(String[] tempMobs) {
+    public static void updateOrCreateNewMobs(String[] tempMobs, ArrayList<String> updatedMonsters) {
 
         // FLOOD !!!
         //System.out.println("createNewMobs >>>>> tempMobs{" + tempMobs.length + "}=" + String.join("_@_", tempMobs)
@@ -266,7 +263,8 @@ public class Monsters {
                         if (oneMobId.equalsIgnoreCase(drawMob.uniqueID)) {
                             found = true;
 
-                            if (life > 0) {
+                            if (life != 999999)
+                            {
                                 drawMob.setFootX(Float.parseFloat(oneMob[1]));
                                 drawMob.setY(Float.parseFloat(oneMob[2]));
                                 drawMob.setFindRegion(oneMob[3]);
@@ -274,8 +272,11 @@ public class Monsters {
 
                                 // FLOOD !
                                 //System.out.println("createNewMobs >>>>> UPDATE MOB >>>>> " + drawMob.toString());
+                            } else {
+                                // Mob mort ???
+                                drawMobs.remove(i);
                             }
-
+                            updatedMonsters.add(oneMobId); ////////////////////////////////////////
                             // System.out.println("createNewMobs >>>>> FOUND " + oneMobId);
 
                             break;
@@ -297,6 +298,7 @@ public class Monsters {
                         newMob.setCurrentLife(Integer.parseInt(oneMob[4]));
 
                         drawMobs.add(newMob);
+                        updatedMonsters.add(newMob.uniqueID); /////////////////////////////////////
 
                         System.out.println("createNewMobs >>>>> CREATE MOB >>>>> " + newMob.toString());
                     }
@@ -331,29 +333,97 @@ public class Monsters {
     public Mob checkAttackHit(Weapon weapon) {
         ArrayList<Mob> listMobs = mainPlayer.isMaster() ? simulationMobs : drawMobs;
 
+        attackedMobs.clear();
+
         int hitCount = 0;
         Mob lastmob = null;
         for (int m = listMobs.size() - 1; m >= 0; m--) {
 
             Mob mob = listMobs.get(m);
 
-            DebugOnScreen.getInstance().setText(21, weapon.hitbox.toString());
-            DebugOnScreen.getInstance().setText(22, mob.uniqueID + " / " + mob.hitbox.toString());
+            if (mob.isAlive()) {
+                DebugOnScreen.getInstance().setText(21, weapon.hitbox.toString());
+                DebugOnScreen.getInstance().setText(22, mob.uniqueID + " / " + mob.hitbox.toString());
 
-            // attention aux hitbox negatifs !!!
-            if (mob.hitbox.overlaps(weapon.hitbox)) {
-                hitCount++;
+                // attention aux hitbox negatifs !!!
+                if (mob.hitbox.overlaps(weapon.hitbox)) {
+                    hitCount++;
 
-                // System.out.println("checkAttackHit >>>>>>>>>>>>>>>>>>>>>>>>>> " + mob.uniqueID);
-                if (mob.applyDamage(weapon.getDamage())) {
-                    // mort brutale, sans animation !
-                    listMobs.remove(mob);
+                    // System.out.println("checkAttackHit >>>>>>>>>> " + mob.uniqueID);
+
+
+                    if (MainGame.getInstance().isSoloGameMode()) {
+                        if (mob.applyDamage(weapon.getDamage())) {
+                            // mort brutale, sans animation !
+                            /////////// listMobs.remove(mob); // PAS ENCORE
+                        }
+                    } else {
+                        // POUR ENVOYER VERS LE SERVEUR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        attackedMobs.add(new AttackedMob(mob.uniqueID, weapon.getDamage()));
+                    }
+
+                    lastmob = mob;
                 }
-                lastmob = mob;
             }
         }
 
         return lastmob;
     }
 
+    public String buildMonstersHttpParam() {
+        StringBuilder sbMonsters = new StringBuilder();
+        for (int i = simulationMobs.size() - 1; i >= 0; i--) {
+            Mob mob = simulationMobs.get(i);
+
+            // ON ENVOIE QUAND MÊME LES MONSTRES MORTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            if (mob.getCurrentLife() > 0)
+                sbMonsters.append(mob.builMobHttpParam());
+            else
+                simulationMobs.remove(i); // PAS ENCORE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+
+        return sbMonsters.toString();
+    }
+
+    public void removeOldMobs00000(ArrayList<String> updatedMonsters) {
+        for (int i = drawMobs.size(); i >= 0; i--) {
+            if (!updatedMonsters.contains(drawMobs.get(i).uniqueID)) ;
+            {
+                System.out.println("removeOldMobs ################# REMOVE drawMobs @" + drawMobs.get(i).uniqueID);
+                drawMobs.remove(i);
+            }
+        }
+        for (int i = simulationMobs.size(); i >= 0; i--) {
+            if (!updatedMonsters.contains(simulationMobs.get(i).uniqueID)) ;
+            {
+                System.out.println("removeOldMobs ################# REMOVE removeOldMobs @" + drawMobs.get(i).uniqueID);
+                simulationMobs.remove(i);
+            }
+        }
+    }
+
+    public boolean hasAttackedMonsters() {
+        return attackedMobs.size() > 0;
+    }
+
+    public String buildAttackedHttpParam() {
+        if (attackedMobs.size() == 0)
+            return "";
+
+        StringBuilder sbMonsters = new StringBuilder();
+        for (int i = attackedMobs.size() - 1; i >= 0; i--) {
+            AttackedMob mob = attackedMobs.get(i);
+
+            sbMonsters.append(mob.buildHttpParam()+"!");
+
+            attackedMobs.remove(i);
+        }
+        attackedMobs.clear(); // ceinture, bretelles ....
+
+        return sbMonsters.toString();
+    }
+
 }
+
+

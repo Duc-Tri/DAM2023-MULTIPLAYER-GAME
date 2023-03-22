@@ -238,8 +238,10 @@ public class Map {
 
             // on affiche les sprites qui sont au dessus de ce realY ------------------------------
             for (int ent = livingEntitiesList.size() - 1; ent >= 0; ent--) {
+
                 LivingEntity currentEntity = livingEntitiesList.get(ent);
-                if (currentEntity != null && currentEntity.getY() + 1 > realY) {
+
+                if (currentEntity != null &&  currentEntity.isAlive() && currentEntity.getY() + 1 > realY) {
                     currentEntity.drawAndUpdate(batch);
                     livingEntitiesList.remove(currentEntity);
                 } else
