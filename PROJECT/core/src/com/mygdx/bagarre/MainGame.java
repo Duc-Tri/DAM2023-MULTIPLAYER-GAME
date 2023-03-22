@@ -25,7 +25,6 @@ public class MainGame extends Game {
     //==============================================================================================
 
     public enum GameMode {SOLO, MULTIPLAYER, BRAWLER}
-
     private String config; // "android" or "desktop";
     private final GameMode gameMode;
     private GameScreen gameScreen;
@@ -43,6 +42,19 @@ public class MainGame extends Game {
         gameMode = GameMode.MULTIPLAYER;
     }
 
+    @Override
+    public void create() {
+        FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
+
+        // chargement des atlas ici, ce qui évite certains bugs par la suite...
+        Mob.allMonstersAtlas = new TextureAtlas(Gdx.files.internal(Mob.MONSTERS_ATLAS));
+        Player.allPlayersAtlas = new TextureAtlas(Gdx.files.internal(Player.PLAYERS_ATLAS));
+
+        gameScreen = new GameScreen(mapFilename, this);
+        setScreen(gameScreen);
+        Gdx.input.setInputProcessor(gameScreen);
+    }
+
     public void setConfig(String c) {
         config = c;
     }
@@ -53,17 +65,6 @@ public class MainGame extends Game {
 
     public boolean runOnDesktop() {
         return config.equalsIgnoreCase("Desktop");
-    }
-
-    @Override
-    public void create() {
-        FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
-
-        Mob.allMonstersAtlas = new TextureAtlas(Gdx.files.internal(Mob.MONSTERS_ATLAS));
-
-        gameScreen = new GameScreen(mapFilename, this);
-        setScreen(gameScreen);
-        Gdx.input.setInputProcessor(gameScreen);
     }
 
     @Override

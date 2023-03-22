@@ -25,8 +25,8 @@ import com.mygdx.weapon.Sword;
 //#################################################################################################
 public class Player extends LivingEntity {
     private final static int MAX_LIFE = 50; // pour tous les joueurs !
-    private final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
-    private static TextureAtlas allPlayersAtlas;
+    public final static String PLAYERS_ATLAS = "characters/RMXP_humans.atlas";
+    public static TextureAtlas allPlayersAtlas;
     private String lobbyPlayerId;
     private String numLobby = "";
     private boolean isMaster;

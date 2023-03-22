@@ -19,8 +19,6 @@ import com.mygdx.bagarre.GameScreen;
 // - organisé en lignes séparées, on peut donc "réserver" une ligne pour un log spécifique
 //#################################################################################################
 public class HUDManager {
-
-    /*
     private static float SCREEN_HEIGHT, SCREEN_WIDTH;
     private static float SCREEN_HALF_WIDTH, SCREEN_HALF_HEIGHT;
     private static BitmapFont fontDead;
@@ -29,7 +27,7 @@ public class HUDManager {
     // GAME OVER --------------------------------
     private static Sprite bloodyScreen;
     private static final String gameOverText = "Vous êtes mort !";
-    //private static final Texture gameOverScreen = new Texture("misc/bloody_screen2.png");
+    private static final Texture gameOverScreen = new Texture("misc/bloody_screen2.png");
 
     private static HUDManager instance;
 
@@ -40,9 +38,8 @@ public class HUDManager {
 
         return instance;
     }
-*/
+
     private HUDManager(ClampedCamera clampedCamera) {
-        /*
         cam = clampedCamera;
 
         // create bitmap font ----------------------------------------------------------------------
@@ -67,11 +64,8 @@ public class HUDManager {
         bloodyScreen.setOriginCenter();
         bloodyScreen.setScale(cam.zoom * (SCREEN_WIDTH / bloodyScreen.getWidth()), cam.zoom * (SCREEN_HEIGHT / bloodyScreen.getHeight()));
         bloodyScreen.setScale(1.4f, 1.4f);
-
-         */
     }
 
-    /*
     public void drawHUD(SpriteBatch batch) {
         if (!GameScreen.getPlayer().isAlive())
             gameOverScreen(batch);
@@ -90,5 +84,4 @@ public class HUDManager {
 
     public void setText(int textIndex, String text) {
     }
-     */
 }

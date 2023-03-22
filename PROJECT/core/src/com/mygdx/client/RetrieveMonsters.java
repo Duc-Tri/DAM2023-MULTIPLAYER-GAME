@@ -48,7 +48,6 @@ public class RetrieveMonsters implements Runnable {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 

@@ -98,5 +98,4 @@ public class UpdateMonsters implements Runnable {
         return sbMonsters.toString();
     }
 
-
 }

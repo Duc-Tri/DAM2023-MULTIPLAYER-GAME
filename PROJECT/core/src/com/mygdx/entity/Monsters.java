@@ -148,9 +148,9 @@ public class Monsters {
 
                 // exemple de texte reçu depuis le TiledMap
                 //-------------------------------------------------
-                // OCTOPUS      ;1 ;spawn_01
-                // BLOB         ;3 ;spawn_02
-                // LIVING_TREE  ;0 ;spawn_03
+                // OCTOPUS      ;1  ;spawn_01
+                // BLOB         ;3  ;spawn_02
+                // LIVING_TREE  ;0  ;spawn_03
 
                 String[] mob_num_spawn = line.split(";"); // TYPE_MONSTRE; NOMBRE; SPAWN_PT
 
@@ -329,11 +329,13 @@ public class Monsters {
 //    }
 
     public Mob checkAttackHit(Weapon weapon) {
+        ArrayList<Mob> listMobs = mainPlayer.isMaster() ? simulationMobs : drawMobs;
+
         int hitCount = 0;
         Mob lastmob = null;
-        for (int m = drawMobs.size() - 1; m >= 0; m--) {
+        for (int m = listMobs.size() - 1; m >= 0; m--) {
 
-            Mob mob = drawMobs.get(m);
+            Mob mob = listMobs.get(m);
 
             DebugOnScreen.getInstance().setText(21, weapon.hitbox.toString());
             DebugOnScreen.getInstance().setText(22, mob.uniqueID + " / " + mob.hitbox.toString());
@@ -345,7 +347,7 @@ public class Monsters {
                 // System.out.println("checkAttackHit >>>>>>>>>>>>>>>>>>>>>>>>>> " + mob.uniqueID);
                 if (mob.applyDamage(weapon.getDamage())) {
                     // mort brutale, sans animation !
-                    simulationMobs.remove(mob);
+                    listMobs.remove(mob);
                 }
                 lastmob = mob;
             }
