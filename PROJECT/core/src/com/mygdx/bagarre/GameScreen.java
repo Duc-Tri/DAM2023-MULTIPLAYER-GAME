@@ -54,8 +54,8 @@ public class GameScreen implements Screen, InputProcessor {
     private Texture testImage = new Texture("test/tiny_16x16.png");
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
-    private DebugOnScreen debugOS;
-    private HUDManager hudManager;
+//    private DebugOnScreen debugOS;
+//    private HUDManager hudManager;
 
 
     int threadPoolSize = 15;
@@ -79,6 +79,9 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         map = loadMap(mapFilename, batch);
         createPlayer();
+        monstersInstance = Monsters.getInstance();
+        monstersInstance.init(map, player);
+
         clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.5f);
         batch.setProjectionMatrix(clampedCamera.combined);
 
@@ -86,11 +89,9 @@ public class GameScreen implements Screen, InputProcessor {
 
         joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
-        debugOS = DebugOnScreen.getInstance();
-        hudManager = HUDManager.getInstance();
+//        debugOS = DebugOnScreen.getInstance();
+        //hudManager = HUDManager.getInstance();
 
-        monstersInstance = Monsters.getInstance();
-        monstersInstance.init(map, player);
 
         if (mainGame.isMultiplayerGameMode()) {
             mates = new Mates(player);
@@ -167,9 +168,9 @@ public class GameScreen implements Screen, InputProcessor {
         map.setView(clampedCamera);
         map.renderAllLivingEntitiesAndTiles(player, mates, monstersInstance);
 
-        if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
+//        if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
 
-        hudManager.drawHUD(batch);
+//        hudManager.drawHUD(batch);
 
         batch.end(); //========================================================
 
@@ -179,15 +180,16 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     private void debugOnScreen() {
-        //debugOS.draw("Score AZER AZETGEZA REZA ", 0, 0);
+        /*
         debugOS.setText(0, mainGame.getGameMode() + " / " + monstersInstance.getMonstersMode());
         debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
         debugOS.setText(25, "" + System.currentTimeMillis());
+         */
 
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
 
-        debugOS.drawTexts(batch);
+//        debugOS.drawTexts(batch);
     }
 
     private void submitThreadJobs() {

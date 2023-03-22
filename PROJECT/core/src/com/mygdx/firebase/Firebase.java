@@ -27,11 +27,13 @@ public class Firebase {
         filehandle= Gdx.files.internal(jsonPath);
         byteArray = filehandle.readBytes();
     }
+
+    @Deprecated
     public boolean connect(){
         try {
             InputStream inputStream = new ByteArrayInputStream(byteArray);
             try {
-                options = new FirebaseOptions.Builder()
+                options = FirebaseOptions.builder()
                         .setCredentials(GoogleCredentials.fromStream(inputStream))
                         .setDatabaseUrl(url)
                         .build();

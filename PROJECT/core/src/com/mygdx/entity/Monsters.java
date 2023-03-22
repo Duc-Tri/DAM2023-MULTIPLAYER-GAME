@@ -262,17 +262,19 @@ public class Monsters {
                     int life = Integer.parseInt(oneMob[4]);
 
                     for (int i = drawMobs.size() - 1; i >= 0; i--) {
-                        Mob m = drawMobs.get(i);
-                        if (oneMobId.equalsIgnoreCase(m.uniqueID)) {
+                        Mob drawMob = drawMobs.get(i);
+                        if (oneMobId.equalsIgnoreCase(drawMob.uniqueID)) {
                             found = true;
 
                             if (life > 0) {
-                                m.setFootX(Float.parseFloat(oneMob[1]));
-                                m.setY(Float.parseFloat(oneMob[2]));
-                                m.setFindRegion(oneMob[3]);
-                                m.setCurrentLife(life);
-                            } else
-                                drawMobs.remove(m);
+                                drawMob.setFootX(Float.parseFloat(oneMob[1]));
+                                drawMob.setY(Float.parseFloat(oneMob[2]));
+                                drawMob.setFindRegion(oneMob[3]);
+                                drawMob.setCurrentLife(life);
+
+                                // FLOOD !
+                                //System.out.println("createNewMobs >>>>> UPDATE MOB >>>>> " + drawMob.toString());
+                            }
 
                             // System.out.println("createNewMobs >>>>> FOUND " + oneMobId);
 
@@ -295,6 +297,8 @@ public class Monsters {
                         newMob.setCurrentLife(Integer.parseInt(oneMob[4]));
 
                         drawMobs.add(newMob);
+
+                        System.out.println("createNewMobs >>>>> CREATE MOB >>>>> " + newMob.toString());
                     }
 
                     // System.out.println("createNewMobs::oneMob=" + strMob);

@@ -43,7 +43,7 @@ public class NewPlayer {
                 ///////////////////////////////////////////////////////////////////////////////////
                 player.setMaster(resp[2].trim().equalsIgnoreCase("true"));
 
-                System.out.println("NewPlayer ###### " + String.join(" / ", resp));
+                System.out.println("NewPlayer ###### " +  resp[0]+"/"+resp[1]+"/"+resp[2]);
             }
 
         } catch (MalformedURLException e) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.client.NewPlayer;
+import com.mygdx.entity.Mob;
 import com.mygdx.entity.Player;
 import com.mygdx.firebase.FirebaseHelper;
 import com.mygdx.map.Map;
@@ -57,6 +58,9 @@ public class MainGame extends Game {
     @Override
     public void create() {
         FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
+
+        Mob.allMonstersAtlas = new TextureAtlas(Gdx.files.internal(Mob.MONSTERS_ATLAS));
+
         gameScreen = new GameScreen(mapFilename, this);
         setScreen(gameScreen);
         Gdx.input.setInputProcessor(gameScreen);

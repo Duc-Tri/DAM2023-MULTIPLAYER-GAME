@@ -1,5 +1,6 @@
 package com.mygdx.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,8 +25,8 @@ import java.util.List;
 // - blesse le joueur en le touchant
 //#################################################################################################
 public class Mob extends LivingEntity {
-    private final static String MONSTERS_ATLAS = "characters/RMXP_monsters.atlas";
-    private static TextureAtlas allMonstersAtlas; // le même atlas pour tous les monstres
+    public final static String MONSTERS_ATLAS = "characters/RMXP_monsters.atlas";
+    public static TextureAtlas allMonstersAtlas; // le même atlas pour tous les monstres
 
     //public static final boolean DEBUG_MOB = false;
     private static Map map; // la même carte pour tous les monstres
@@ -83,7 +84,9 @@ public class Mob extends LivingEntity {
     public Mob(MonsterType type) {
         // TEXTURE DE TOUS LES MOBS ---------------------------------------------------------------
         if (allMonstersAtlas == null) {
-            allMonstersAtlas = new TextureAtlas(MONSTERS_ATLAS);
+            //allMonstersAtlas = new TextureAtlas(MONSTERS_ATLAS);
+            allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MONSTERS_ATLAS));
+            System.out.println("allMonstersAtlas REGIONS ======== " + allMonstersAtlas.getRegions().size);
         }
 
         //System.out.println((numMob++) + " / " + type + " =============== CONSTRUCTOR Mob ... " + allMonstersAtlas);
@@ -443,4 +446,7 @@ public class Mob extends LivingEntity {
         return damage;
     }
 
+    public String toString() {
+        return uniqueID + "|" + getFootX() + "|" + getY() + "|" + findRegion + "|" + currentLife;
+    }
 }

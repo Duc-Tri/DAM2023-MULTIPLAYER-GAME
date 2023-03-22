@@ -74,7 +74,8 @@ public class RetrieveMonsters implements Runnable {
                 String res = String.valueOf(response);
                 if (res != null && !res.isEmpty()) {
 
-//                    System.out.println("RetrieveMonsters:requestServer " + res);
+                    // FLOOD !
+                    //System.out.println("RetrieveMonsters:requestServer " + res);
 
                     String[] monsters = res.split("!");
                     return monsters;
