@@ -12,19 +12,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.mygdx.client.RetrieveMonsters;
 
 public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyViewHolder> {
 
     Context context;
     int[] numLobby;
 
+//    int[] nbrJoueur;
+
     public ListLobbyAdapter() {
     }
 
-    public ListLobbyAdapter(Context context,int[] numLobby ) {
+    public ListLobbyAdapter(Context context,int[] numLobby/*, int[] nbrJoueur*/ ) {
         this.context = context;
         this.numLobby = numLobby;
-
+//        this.nbrJoueur = nbrJoueur;
     }
 
     @NonNull
@@ -40,6 +43,7 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tvNomLobby.setText("Lobby n° "+numLobby[position]);
+        /*holder.tvNbrJoueur.setText(nbrJoueur[position]);*/
 
 
     }
@@ -53,12 +57,13 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvNomLobby;
+        private TextView tvNomLobby, tvNbrJoueur;
         private Button btnJoinLobby;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNomLobby = itemView.findViewById(R.id.tvNomLobby);
+            tvNbrJoueur = itemView.findViewById(R.id.tvNbrJoueur);
             btnJoinLobby = itemView.findViewById(R.id.btnJoinLobby);
         }
     }
