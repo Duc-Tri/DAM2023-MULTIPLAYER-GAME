@@ -1,4 +1,7 @@
 sourceCompatibility = 1.7
+dependencies {
+    implementation fileTree(dir: 'C:\\Users\\DAM_003\\Documents\\GitHub\\DAM2023-MULTIPLAYER-GAME\\PROJECT\\lib\\jdom-2.0.6', include: ['*.aar', '*.jar'], exclude: [])
+}
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]

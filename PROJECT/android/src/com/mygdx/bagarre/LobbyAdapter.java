@@ -7,25 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder>{
 
     Context context;
-
     private List<String> joueursPseudo;
+    /*String[] numLobby;*/
 
     public LobbyAdapter() {
     }
-
+	
     public LobbyAdapter(Context context,List<String> joueursPseudo ) {
         this.context = context;
         this.joueursPseudo = joueursPseudo;
-    }
+
+    /*public LobbyAdapter(Context context,String[] numLobby ) {
+        this.context = context;
+        this.numLobby = numLobby;
+    }*/
 
     @NonNull
     @Override
@@ -35,27 +37,40 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder
         return new LobbyAdapter.MyViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull LobbyAdapter.MyViewHolder holder, int position) {
         String pseudo = joueursPseudo.get(position);
         holder.tvPlayerID2.setText(pseudo);
+		
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onBindViewHolder(@NonNull ListLobbyAdapter.MyViewHolder holder, int position) {
+        holder.tvNomLobby.setText("Lobby n° "+numLobby[position]);
     }
-
-
 
     @Override
     public int getItemCount() {
+		
         return joueursPseudo.size();
+        /*return numLobby.length;*/
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-
+		
         private TextView tvPlayerID2;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvPlayerID2 = itemView.findViewById(R.id.tvPlayerID2);
+			
+        /*private TextView tvNomLobby;
+        private Button btnJoinLobby;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvNomLobby = itemView.findViewById(R.id.tvNomLobby);
+            btnJoinLobby = itemView.findViewById(R.id.btnJoinLobby);*/
+			
         }
     }
 }

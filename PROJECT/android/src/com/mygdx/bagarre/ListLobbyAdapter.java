@@ -12,30 +12,35 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.mygdx.client.RetrieveMonsters;
+import com.mygdx.client.RetrieveLobbies;
+import java.net.MalformedURLException;
 
 public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyViewHolder> {
 
     Context context;
-    int[] numLobby;
-
 //    int[] nbrJoueur;
+    String[] numLobby;
 
     public ListLobbyAdapter() {
     }
+
 
     public ListLobbyAdapter(Context context,int[] numLobby/*, int[] nbrJoueur*/ ) {
         this.context = context;
         this.numLobby = numLobby;
 //        this.nbrJoueur = nbrJoueur;
-    }
+
+    /*public ListLobbyAdapter(Context context,String[] numLobby ) {
+        this.context = context;
+        this.numLobby = numLobby;
+		
+    }*/
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.item_list_lobby,parent,false);
-
         return new MyViewHolder(view);
     }
 
@@ -44,8 +49,6 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tvNomLobby.setText("Lobby n° "+numLobby[position]);
         /*holder.tvNbrJoueur.setText(nbrJoueur[position]);*/
-
-
     }
 
 
@@ -56,7 +59,7 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-
+		
         private TextView tvNomLobby, tvNbrJoueur;
         private Button btnJoinLobby;
 

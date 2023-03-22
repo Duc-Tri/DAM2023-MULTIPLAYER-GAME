@@ -23,19 +23,18 @@ public class ListPlayerActivity extends AppCompatActivity implements FirebaseAnd
             R.drawable.illu3,
             R.drawable.illu4,
             R.drawable.illu5};
-
-
+			
     private List<String> listPseudoCompleted;
+	
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_liste_player);
-
         playerID = getResources().getStringArray((R.array.playerID));
-
         db.getListRecycler(this);
+        initRecyclerView();
         setListenerForReturn();
         setListenerForStartGame();
     }
@@ -69,8 +68,8 @@ public class ListPlayerActivity extends AppCompatActivity implements FirebaseAnd
         });
     }
 
-
     private void initRecyclerView(List<String> listPseudoCompleted){
+    /*private void initRecyclerView(){*/
         //On relie avec le design et on initialise le layout manager du RecyclerView
 
         RecyclerView rvListPlayer = findViewById(R.id.rvListPlayer);
@@ -80,6 +79,7 @@ public class ListPlayerActivity extends AppCompatActivity implements FirebaseAnd
 
         //Création de l'adapter
         ListPlayerAdapter adapter = new ListPlayerAdapter(this,illustrations,listPseudoCompleted);
+        /*ListPlayerAdapter adapter = new ListPlayerAdapter(this,illustrations,playerID);*/
 
         //Association avec le RecyclerView
         rvListPlayer.setAdapter(adapter);

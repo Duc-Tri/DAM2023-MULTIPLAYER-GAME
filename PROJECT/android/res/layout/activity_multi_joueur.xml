@@ -59,4 +59,5 @@
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rejoindrePartie" />
+		
 </androidx.constraintlayout.widget.ConstraintLayout>

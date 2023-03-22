@@ -6,10 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class ListPlayerAdapter extends RecyclerView.Adapter<ListPlayerAdapter.MyViewHolder> {
@@ -18,19 +16,17 @@ public class ListPlayerAdapter extends RecyclerView.Adapter<ListPlayerAdapter.My
     private Context context;
     private int[] illustrations;
     private List<String> playerID;
-
+    /*private String[] playerID;*/
 
     public ListPlayerAdapter() {
-    }
-
+	}
+	
     public ListPlayerAdapter(Context context, int[] illustrations, List<String> playerID){
+    /*public ListPlayerAdapter(Context context, int[] illustrations, String[] playerID){*/
         this.context = context ;
         this.illustrations = illustrations;
         this.playerID = playerID;
-
-
     }
-
 
     @NonNull
     @Override
@@ -45,13 +41,15 @@ public class ListPlayerAdapter extends RecyclerView.Adapter<ListPlayerAdapter.My
     @Override
     public void onBindViewHolder(@NonNull ListPlayerAdapter.MyViewHolder holder, int position) {
         holder.ivIllu.setImageResource(illustrations[position]);
+		
         holder.tvPlayerID.setText(playerID.get(position));
-
+        /*holder.tvPlayerID.setText(playerID[position]);*/
     }
 
     @Override
     public int getItemCount() {
         return playerID.size();
+        /*return playerID.length;*/
     }
 
 

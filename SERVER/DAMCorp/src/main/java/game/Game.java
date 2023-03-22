@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import game.entity.Player;
 
 public class Game {
@@ -166,5 +168,36 @@ public class Game {
 			
 		}
 		
+	}
+
+	public String getMaster(String numLobby) {
+		// TODO Auto-generated method stub
+		int lobby = -1;
+				
+		try {
+			lobby = Integer.parseInt(numLobby);
+			if(lobby > -1 && lobby<POOLSIZE && players[lobby][0]!= null) {
+				return players[lobby][0].getLobbyPlayerId();
+			}
+		}catch(Exception e) {
+			
+		}
+		
+		
+		return "";
+	}
+	
+	
+	public String retreiveLobbies() {
+		String listLobbies="";
+		for(int i = 0;i<POOLSIZE;i++) {
+			for(int j =0;j<LOBBYSIZE;j++) {
+				if(players[i][j] ==null) {
+					listLobbies =i+";" ;
+					j=LOBBYSIZE;
+				}
+			}
+		}
+		return listLobbies;
 	}
 }

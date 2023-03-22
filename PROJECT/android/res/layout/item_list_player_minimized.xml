@@ -31,7 +31,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                app:srcCompat="@drawable/illu1_head" />
+                app:srcCompat="@drawable/illu1" />
 
             <TextView
                 android:id="@+id/tvPlayerID2"

@@ -61,18 +61,6 @@ public class GameMode extends AppCompatActivity {
         optionsBtn = findViewById(R.id.optionsBtn);
     }
 
-    public void cleanHudNewTab () {
-        buttonSolo.setTranslationY(-180);
-        buttonOnLine.setTranslationY(-180);
-        fleau.setTranslationY(-180);
-        sword_right.setTranslationY(-180);
-        sword_left.setTranslationY(-180);
-        ecrou.setTranslationY(-180);
-        optionsBtn.setTranslationY(-180);
-    }
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,6 +163,14 @@ public class GameMode extends AppCompatActivity {
             startActivity(itGame);
         });
 
+        buttonOnLine.setOnClickListener(v -> {
+            Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);
+            startActivity(intent);
+        });
+
+
+
+    }
 
         buttonOnLine.setOnClickListener(v -> {
             Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);

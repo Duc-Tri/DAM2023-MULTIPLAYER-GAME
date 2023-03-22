@@ -17,6 +17,16 @@
         android:gravity="center">
 
         <TextView
+        android:layout_height="90dp"
+        android:background="#C673D8FA"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="91dp">
+
+        
+
+            <TextView
                 android:id="@+id/tvNomLobby"
                 android:layout_width="169dp"
                 android:layout_height="73dp"
@@ -45,6 +55,6 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp" />
 
-        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

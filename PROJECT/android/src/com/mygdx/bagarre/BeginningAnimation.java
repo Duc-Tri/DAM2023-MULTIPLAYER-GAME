@@ -38,6 +38,10 @@ public class BeginningAnimation extends AppCompatActivity {
     long timeFadeInFirstBackground, timeFadeInLight, timeTitleApparition, timeAnimationDude;
     boolean clickable = false, isMuted;
     int musicPos;
+    long timeFadeInFirstBackground, timeFadeInLight, timeTitleApparition, timeAnimationDude;
+    int tLeftGuy, tRightGuy;
+    float coeffCharaLeft = 1.873f, coeffCharaRight = 1.781f;
+    boolean clickable = false;
 
     public void initUI() {
         flBackLight = findViewById(R.id.flBackLight);
@@ -217,40 +221,6 @@ public class BeginningAnimation extends AppCompatActivity {
                 touch_screen.setAnimation(touchScreenFadeIn);
                 touch_screen.setVisibility(View.VISIBLE);
                 clickable = true;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        touchScreenFadeIn.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                touch_screen.setAnimation(touchScreenFadeOut);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        touchScreenFadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                touch_screen.setAnimation(touchScreenFadeIn);
             }
 
             @Override
