@@ -8,7 +8,7 @@ public class Game {
 
 	private final static int POOLSIZE = 10;
 	static int staticIdCpt;
-	private final static int LOBBYSIZE = 20;
+	private final static int LOBBYSIZE = 4;
 	static int numLobby = 0;
 
 	static Player[][] players = new Player[POOLSIZE][LOBBYSIZE];
@@ -192,8 +192,11 @@ public class Game {
 		String listLobbies="";
 		for(int i = 0;i<POOLSIZE;i++) {
 			for(int j =0;j<LOBBYSIZE;j++) {
-				if(players[i][j] ==null) {
-					listLobbies =i+";" ;
+				System.out.println("Je suis avant le if et je vaut : "+players[i][j]);
+				if(players[i][j] == null) {
+					System.out.println("Je suis validé null je vais afficher listlobby apres lavoir rempli");
+					listLobbies =listLobbies + i+";" ;
+					System.out.println("c'esst les lobbies : "+listLobbies);
 					j=LOBBYSIZE;
 				}
 			}

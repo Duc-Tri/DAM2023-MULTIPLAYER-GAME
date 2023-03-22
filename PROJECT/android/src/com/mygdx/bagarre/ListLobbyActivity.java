@@ -48,7 +48,10 @@ public class ListLobbyActivity extends AppCompatActivity {
         setListenerForRetour();
         setListenerForJoinLobby();
 
+
     }
+
+
 
     private void setListenerForJoinLobby() {
         Button btnJoinLobby = findViewById(R.id.btnJoinLobbyGame);
