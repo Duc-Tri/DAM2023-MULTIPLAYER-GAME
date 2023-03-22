@@ -20,18 +20,15 @@ import java.net.MalformedURLException;
 public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyViewHolder> {
 
     Context context;
-    int[] numLobby;
+    String[] numLobby;
 
 
     public ListLobbyAdapter() {
     }
 
-    public ListLobbyAdapter(Context context,int[] numLobby ) {
+    public ListLobbyAdapter(Context context,String[] numLobby ) {
         this.context = context;
         this.numLobby = numLobby;
-
-
-
     }
 
     @NonNull
@@ -39,7 +36,6 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.item_list_lobby,parent,false);
-
         return new MyViewHolder(view);
     }
 
@@ -47,8 +43,6 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tvNomLobby.setText("Lobby n° "+numLobby[position]);
-
-
     }
 
 

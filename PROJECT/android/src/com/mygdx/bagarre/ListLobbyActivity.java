@@ -5,29 +5,46 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.mygdx.client.RetrieveLobbies;
 
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 
 public class ListLobbyActivity extends AppCompatActivity {
 
-    int[] numLobby;
+    String[] numLobby;
 
+    String[] listLobby;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby_view);
 
-        numLobby = getResources().getIntArray(R.array.numLobby);
+        new HttpTask(new HttpTask.OnHttpResultListener() {
+            @Override
+            public void onHttpResult(String[] result) {
 
+                listLobby = result;
 
-        initRecyclerView();
+                System.out.println("Taille du tableau : " + listLobby.length);
+
+                for(int i = 0; i < listLobby.length; i++) {
+                    System.out.println("lobby libre : " + listLobby[i]);
+                }
+
+                initRecyclerView(listLobby);
+            }
+        }).execute();
+
         setListenerForRetour();
         setListenerForJoinLobby();
 
@@ -64,8 +81,9 @@ public class ListLobbyActivity extends AppCompatActivity {
     }
 
 
-    private void initRecyclerView(){
+    private void initRecyclerView(String[] ListLobby){
 
+        numLobby = ListLobby;
         RecyclerView rvListLobby = findViewById(R.id.rvListLobby);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
