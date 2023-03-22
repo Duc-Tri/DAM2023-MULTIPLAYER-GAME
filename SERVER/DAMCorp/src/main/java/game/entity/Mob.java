@@ -1,11 +1,10 @@
 package game.entity;
 
-public class Mob{
+public class Mob {
 
 	private String x;
 	private String y;
 	private String uniqueID;
-	private String serverUniqueID;
 	private String lobbyPlayerId;
 	private String spriteColorInt;
 	private String findRegion;
@@ -14,18 +13,16 @@ public class Mob{
 
 	private long lastUpdate;
 
-	public Mob(String uniqueID, String serverUniqueID) {
+	public Mob(String uniqueID) {
 		super();
 		this.uniqueID = uniqueID;
-
-		this.serverUniqueID = serverUniqueID;
 	}
 
-	public String getX() {
+	public String getFootX() {
 		return x;
 	}
 
-	public void setX(String x) {
+	public void setFootX(String x) {
 		this.x = x;
 	}
 
@@ -43,14 +40,6 @@ public class Mob{
 
 	public void setUniqueID(String uniqueID) {
 		this.uniqueID = uniqueID;
-	}
-
-	public String getServerUniqueID() {
-		return serverUniqueID;
-	}
-
-	public void setServerUniqueID(String serverUniqueID) {
-		this.serverUniqueID = serverUniqueID;
 	}
 
 	public String getSpriteColorInt() {
@@ -91,6 +80,14 @@ public class Mob{
 
 	public void setLobbyPlayerId(String lobbyPlayerId) {
 		this.lobbyPlayerId = lobbyPlayerId;
+	}
+
+	public int getCurrentLife() {
+		return life;
+	}
+
+	public void setCurrentLife(int l) {
+		life = l;
 	}
 
 }

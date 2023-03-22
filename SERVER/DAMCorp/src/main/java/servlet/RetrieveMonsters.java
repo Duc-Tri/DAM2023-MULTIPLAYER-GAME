@@ -35,7 +35,7 @@ public class RetrieveMonsters extends HttpServlet {
 
 		if (player != null) {
 
-			String mobs = game.retrieveMonsters(player);
+			String mobs = game.retrieveMonstersStr(player);
 
 			// System.out.println(mobs.length() + " ### UPDATE MONSTERS === " + mobs);
 

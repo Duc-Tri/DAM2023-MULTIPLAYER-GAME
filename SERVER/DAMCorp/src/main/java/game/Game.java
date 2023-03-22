@@ -1,6 +1,7 @@
 package game;
 
 import game.entity.Player;
+import game.entity.Monsters;
 
 public class Game {
 
@@ -11,7 +12,7 @@ public class Game {
 
 	static Player[][] players = new Player[POOLSIZE][LOBBYSIZE];
 
-	static String[] monsters = new String[POOLSIZE]; // les monstres sont agglomérés en string
+	static Monsters[] monsters = new Monsters[POOLSIZE];
 
 	static int cptLobby = 0;
 	private final static long TIMEOUT = 60000L; // 60000L = une minute
@@ -107,22 +108,34 @@ public class Game {
 		return tempString;
 	}
 
-	public String retrieveMonsters(Player player) {
-		String tempString = "";
+	// =============================================================================================
+	// Renvoie les monstres du lobby (voir Monsters.toString())
+	// =============================================================================================
+	public String retrieveMonstersStr(Player player) {
+		String lobbyMonstersStr = "";
 
 		if (player != null) {
 			int nLobby = Integer.parseInt(player.getNumLobby());
-			tempString = monsters[nLobby];
+			lobbyMonstersStr = monsters[nLobby].toString();
 
 			// System.out.println(nLobby + " / " + tempString.length() + "
 			// Game::retrieveMonsters === " + tempString);
 		}
 
-		return tempString;
+		return lobbyMonstersStr;
 	}
 
-	public void setMonsters(int nLobby, String mobs) {
-		monsters[nLobby] = mobs;
+	// =============================================================================================
+	// =============================================================================================
+	public void setMonsters(int nLobby, String mobsStr) {
+
+		// TODO : faire lé découpage dans la classe
+
+		if (monsters[nLobby] == null) {
+			monsters[nLobby] = new Monsters(nLobby);
+		}
+
+		monsters[nLobby].setMonstersStr(mobsStr);
 
 		// System.out.println(nLobby + " / " + mobs.length() + " Game::setMonsters === "
 		// + mobs);
