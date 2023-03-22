@@ -13,10 +13,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mygdx.client.RetrieveLobbies;
+
+import java.net.MalformedURLException;
+
 public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyViewHolder> {
 
     Context context;
     int[] numLobby;
+
 
     public ListLobbyAdapter() {
     }
@@ -24,6 +29,8 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     public ListLobbyAdapter(Context context,int[] numLobby ) {
         this.context = context;
         this.numLobby = numLobby;
+
+
 
     }
 

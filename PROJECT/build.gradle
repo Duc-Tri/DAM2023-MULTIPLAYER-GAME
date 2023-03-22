@@ -74,7 +74,7 @@ project(":android") {
         /*implementation "pl.mk5.gdx-fireapp:gdx-fireapp-core:$gdxFireappVersion"*/
 
         //Implémentation des librairie locales
-        /*implementation fileTree(dir : '../libs/firebase', include: '*.jar')*/
+        implementation fileTree(dir : '../lib/jdom-2.0.6', include: '*.jar')
 
     }
 }

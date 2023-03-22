@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import game.entity.Player;
 
 public class Game {
@@ -183,5 +185,19 @@ public class Game {
 		
 		
 		return "";
+	}
+	
+	
+	public String retreiveLobbies() {
+		String listLobbies="";
+		for(int i = 0;i<POOLSIZE;i++) {
+			for(int j =0;j<LOBBYSIZE;j++) {
+				if(players[i][j] ==null) {
+					listLobbies =i+";" ;
+					j=LOBBYSIZE;
+				}
+			}
+		}
+		return listLobbies;
 	}
 }

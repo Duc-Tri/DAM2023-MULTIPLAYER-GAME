@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.mygdx.client.RetrieveLobbies;
+
+import java.net.MalformedURLException;
+
 
 public class ListLobbyActivity extends AppCompatActivity {
 
@@ -22,21 +26,27 @@ public class ListLobbyActivity extends AppCompatActivity {
 
         numLobby = getResources().getIntArray(R.array.numLobby);
 
-        initRecyclerView();
 
+        initRecyclerView();
         setListenerForRetour();
         setListenerForJoinLobby();
+
     }
 
     private void setListenerForJoinLobby() {
         Button btnJoinLobby = findViewById(R.id.btnJoinLobbyGame);
+
         btnJoinLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(ListLobbyActivity.this,AndroidLauncher.class);
                 startActivity(intent);
+
             }
         });
+
+
+
     }
 
 

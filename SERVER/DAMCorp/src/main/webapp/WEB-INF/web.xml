@@ -139,4 +139,14 @@
     <servlet-name>RetrieveMaster</servlet-name>
     <url-pattern>/RetrieveMaster</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RetreiveLobbies</display-name>
+    <servlet-name>RetreiveLobbies</servlet-name>
+    <servlet-class>servlet.RetreiveLobbies</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RetreiveLobbies</servlet-name>
+    <url-pattern>/RetreiveLobbies</url-pattern>
+  </servlet-mapping>
 </web-app>
