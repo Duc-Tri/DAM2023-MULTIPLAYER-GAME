@@ -3,10 +3,8 @@ package com.mygdx.bagarre;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Mob;
 import com.mygdx.entity.Player;
-import com.mygdx.firebase.FirebaseHelper;
 import com.mygdx.map.Map;
 
 public class MainGame extends Game {
@@ -19,7 +17,7 @@ public class MainGame extends Game {
     //    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
 //     public final static String URLServer = "http://192.168.0.49:6565/DAMCorp/";
     //---------------------------------------------------------------------------------------------
-    private final static String mapFilename = "map/DAMCorp_1.tmx"; //"map/DAMCorp_test.tmx";
+    private final static String mapFilename = "map/DAMCorp_0.tmx"; //"map/DAMCorp_test.tmx";
     private final static String firebaseURL = "https://damcorp-bc7bc-default-rtdb.firebaseio.com/";
 
     //==============================================================================================
@@ -27,9 +25,9 @@ public class MainGame extends Game {
     public enum GameMode {SOLO, MULTIPLAYER, BRAWLER}
 
     private String config; // "android" or "desktop";
-    private final GameMode gameMode;
+    private GameMode gameMode;
     private GameScreen gameScreen;
-    private LobbiesScreen lobbiesScreen;
+    private WelcomeScreen welcomeScreen;
     private static MainGame instance;
 
     public static MainGame getInstance() {
@@ -42,29 +40,24 @@ public class MainGame extends Game {
     private MainGame() {
 //        gameMode = GameMode.SOLO;
         gameMode = GameMode.MULTIPLAYER;
-
-        System.out.println("MainGame #######################################################");
+//        gameMode = null;
     }
 
     @Override
     public void create() {
-        FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
+        //FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
 
         // chargement des atlas ici, ce qui évite certains bugs par la suite...
         Mob.allMonstersAtlas = new TextureAtlas(Gdx.files.internal(Mob.MONSTERS_ATLAS));
         Player.allPlayersAtlas = new TextureAtlas(Gdx.files.internal(Player.PLAYERS_ATLAS));
 
-
-        if (gameMode == GameMode.SOLO) {
-            gameScreen = new GameScreen(mapFilename, this);
-            setScreen(gameScreen);
-            Gdx.input.setInputProcessor(gameScreen);
-        } else if (gameMode == GameMode.MULTIPLAYER) {
-            lobbiesScreen = new LobbiesScreen(this);
-            setScreen(lobbiesScreen);
-            //Gdx.input.setInputProcessor(lobbiesScreen); // NON !
+        if (runOnDesktop()) {
+            showGameScreen(GameMode.MULTIPLAYER);
+        } else {
+            welcomeScreen = new WelcomeScreen(this);
+            setScreen(welcomeScreen);
         }
-
+        //Gdx.input.setInputProcessor(lobbiesScreen); // NON !
     }
 
     public void setConfig(String c) {
@@ -116,14 +109,13 @@ public class MainGame extends Game {
 
     public void showGameScreen(GameMode mode) {
 
+        if (welcomeScreen != null)
+            welcomeScreen.dispose();
 
+        gameMode = mode;
         gameScreen = new GameScreen(mapFilename, this);
         setScreen(gameScreen);
         Gdx.input.setInputProcessor(gameScreen);
-
-//        if(lobbiesScreen!=null)
-//            lobbiesScreen.dispose();
-
     }
 
 }

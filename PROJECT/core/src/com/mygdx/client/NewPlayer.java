@@ -35,6 +35,9 @@ public class NewPlayer {
                 in.close();
 
                 String[] resp = String.valueOf(response).split(";");
+
+                System.out.println("NewPlayer ####### " + resp[0] + "/" + resp[1] + "/" + resp[2]);
+
                 player.setServerUniqueID(resp[0]);
                 player.setNumLobby(resp[1]);
 
@@ -42,8 +45,6 @@ public class NewPlayer {
                 //player.setMaster(true);
                 ///////////////////////////////////////////////////////////////////////////////////
                 player.setMaster(resp[2].trim().equalsIgnoreCase("true"));
-
-                System.out.println("NewPlayer ###### " +  resp[0]+"/"+resp[1]+"/"+resp[2]);
             }
 
         } catch (MalformedURLException e) {

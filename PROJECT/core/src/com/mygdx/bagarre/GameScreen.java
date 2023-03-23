@@ -134,8 +134,7 @@ public class GameScreen implements Screen, InputProcessor {
         retrieveMonsters = new RetrieveMonsters(player, monstersInstance);
         threadPoolRetrieveMonsters.submit(retrieveMonsters);
 
-        if(mainGame.isMultiplayerGameMode())
-        {
+        if (mainGame.isMultiplayerGameMode()) {
             attackMonsters = new AttackMonsters(player, monstersInstance);
             threadPoolAttackMonsters.submit(attackMonsters);
         }
@@ -189,7 +188,6 @@ public class GameScreen implements Screen, InputProcessor {
     private void debugOnScreen() {
         debugOS.setText(0, mainGame.getGameMode() + " / " + monstersInstance.getMonstersMode());
         debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
-        debugOS.setText(25, "" + System.currentTimeMillis());
 
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
@@ -320,6 +318,7 @@ public class GameScreen implements Screen, InputProcessor {
             case Input.Keys.ESCAPE:
                 showDebugTexts = !showDebugTexts;
                 break;
+            case Input.Keys.SPACE:
             case Input.Keys.CONTROL_LEFT:
                 player.attack();
                 break;

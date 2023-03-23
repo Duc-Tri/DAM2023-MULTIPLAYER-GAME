@@ -33,6 +33,7 @@ public class RetrievePlayer {
                     response.append(inputLine);
                 }
                 in.close();
+
                 String[] tempString = String.valueOf(response).split(";");
                 updatePlayer(player, tempString);
             } else {

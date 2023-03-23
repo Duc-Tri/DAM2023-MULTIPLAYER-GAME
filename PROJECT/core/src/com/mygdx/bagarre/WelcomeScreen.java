@@ -5,19 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.mygdx.hud.DebugOnScreen;
-import com.mygdx.hud.HUDManager;
 
 //#################################################################################################
 // GameScreen (Screen, InputProcessor)
@@ -26,7 +22,7 @@ import com.mygdx.hud.HUDManager;
 //
 // - gère les inputs (tactile & clavier)
 //#################################################################################################
-public class LobbiesScreen implements Screen, InputProcessor {
+public class WelcomeScreen implements Screen, InputProcessor {
     private final MainGame mainGame;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
@@ -34,7 +30,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
     private SpriteBatch batch;
 
-    private Texture testImage = new Texture("misc/bloody_screen2.png");
+    private Texture background = new Texture("misc/ocean.png");
 
 
     //===========================================================================================
@@ -51,13 +47,14 @@ public class LobbiesScreen implements Screen, InputProcessor {
     TextureAtlas buttonAtlas;
 
 
-    public LobbiesScreen(MainGame game) {
+    public WelcomeScreen(MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
         mainGame = game;
 
         batch = new SpriteBatch();
+
 
 
         initStageButtons();
@@ -123,7 +120,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
         batch.begin(); //======================================================
 
         //if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
-        batch.draw(testImage, 0, 0);
+        batch.draw(background, 0, 0,SCREEN_WIDTH,SCREEN_HEIGHT);
 
         //hudManager.drawHUD(batch);
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.bagarre.ClampedCamera;
 import com.mygdx.bagarre.GameScreen;
+import com.mygdx.entity.Monsters;
 
 //#################################################################################################
 // Affichage du texte à l'écran
@@ -25,9 +26,13 @@ public class HUDManager {
     private static ClampedCamera cam;
 
     // GAME OVER --------------------------------
-    private static Sprite bloodyScreen;
+    private static Sprite gameoverSprite;
+
+    private static Sprite victorySprite;
     private static final String gameOverText = "Vous êtes mort !";
+    private static final String victoryText = "Bravo ! Vous avez tué tous les monstres !";
     private static final Texture gameOverScreen = new Texture("misc/bloody_screen2.png");
+    private static final Texture victoryScreen = new Texture("misc/clouds.png");
 
     private static HUDManager instance;
 
@@ -45,12 +50,12 @@ public class HUDManager {
         // create bitmap font ----------------------------------------------------------------------
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("misc/jack_input.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        if(cam!=null)
-        fontParameter.size = (int) (60 * cam.zoom);
+        if (cam != null)
+            fontParameter.size = (int) (60 * cam.zoom);
         else
             fontParameter.size = 60;
         fontParameter.borderWidth = 2.6f;
-        fontParameter.color = Color.RED;
+        fontParameter.color = Color.WHITE;
         fontParameter.borderColor = new Color(0, 0, 0, 0.8f);
         fontParameter.spaceX = 1;
 
@@ -63,25 +68,42 @@ public class HUDManager {
         SCREEN_HALF_HEIGHT = SCREEN_HEIGHT / 2f;
 
         // GAME OVER ==========================================================
-        bloodyScreen = new Sprite(gameOverScreen);
-        bloodyScreen.setOriginCenter();
-        bloodyScreen.setScale(cam.zoom * (SCREEN_WIDTH / bloodyScreen.getWidth()), cam.zoom * (SCREEN_HEIGHT / bloodyScreen.getHeight()));
-        bloodyScreen.setScale(1.4f, 1.4f);
+        gameoverSprite = new Sprite(gameOverScreen);
+        gameoverSprite.setOriginCenter();
+        gameoverSprite.setScale(cam.zoom * (SCREEN_WIDTH / gameOverScreen.getWidth()), cam.zoom * (SCREEN_HEIGHT / gameOverScreen.getHeight()));
+        gameoverSprite.setScale(1.4f, 1.4f);
+
+        victorySprite = new Sprite(victoryScreen);
+        victorySprite.setOriginCenter();
+        victorySprite.setScale(cam.zoom * (SCREEN_WIDTH / victoryScreen.getWidth()), cam.zoom * (SCREEN_HEIGHT / victoryScreen.getHeight()));
+        victorySprite.setScale(4f, 4f);
     }
 
     public void drawHUD(SpriteBatch batch) {
         if (!GameScreen.getPlayer().isAlive())
             gameOverScreen(batch);
+        else if (Monsters.getInstance().allMonstersKilled())
+            victoryScreen(batch);
     }
 
     private void gameOverScreen(SpriteBatch batch) {
-        bloodyScreen.setX(cam.position.x - SCREEN_HALF_WIDTH + 50); // pourquoi 50 ???
-        bloodyScreen.setY(cam.position.y - SCREEN_HALF_HEIGHT);
-        bloodyScreen.draw(batch, 0.4f);
+        gameoverSprite.setX(cam.position.x - SCREEN_HALF_WIDTH + 50); // pourquoi 50 ???
+        gameoverSprite.setY(cam.position.y - SCREEN_HALF_HEIGHT);
+        gameoverSprite.draw(batch, 0.4f);
 
         float x = cam.position.x - SCREEN_HALF_WIDTH * cam.zoom;
         float y = cam.position.y;
         fontDead.draw(batch, gameOverText, x, y, cam.zoom * SCREEN_WIDTH, Align.center, true);
+    }
+
+    private void victoryScreen(SpriteBatch batch) {
+        victorySprite.setX(cam.position.x - SCREEN_HALF_WIDTH + 50); // pourquoi 50 ???
+        victorySprite.setY(cam.position.y - SCREEN_HALF_HEIGHT);
+        victorySprite.draw(batch, 0.6f);
+
+        float x = cam.position.x - SCREEN_HALF_WIDTH * cam.zoom;
+        float y = cam.position.y;
+        fontDead.draw(batch, victoryText, x, y, cam.zoom * SCREEN_WIDTH, Align.center, true);
     }
 
 

@@ -23,7 +23,7 @@ import com.mygdx.graphics.RMXPCharactersAtlas;
 // - un hitbox pour les collisions
 //#################################################################################################
 public abstract class LivingEntity implements Entity {
-    public static final boolean DEBUG_HITBOX = true;
+    public static final boolean DEBUG_HITBOX = false;
     protected static final Texture debugTexture = new Texture("misc/yellow64x64.png");
     protected TextureAtlas entityAtlas;
 
@@ -216,8 +216,8 @@ public abstract class LivingEntity implements Entity {
         return currentLife;
     }
 
-    public void setCurrentLife(int l) {
-        currentLife = l;
+    public void setCurrentLife(int life) {
+        currentLife = life;
     }
 
     // Renvoi true si mort du MOB
