@@ -16,18 +16,11 @@ public class RetrieveMonsters extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Game game = new Game();
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public RetrieveMonsters() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -35,19 +28,15 @@ public class RetrieveMonsters extends HttpServlet {
 
 		if (player != null) {
 
-			String mobs = game.retrieveMonsters(player);
+			String mobs = game.retrieveMonstersStr(player);
 
-			// System.out.println(mobs.length() + " ### UPDATE MONSTERS === " + mobs);
+			//System.out.println(mobs.length() + " RetrieveMonsters " + player.getUniqueID() + " ////////// " + mobs);
 
 			response.getWriter().append(mobs);
 		}
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);

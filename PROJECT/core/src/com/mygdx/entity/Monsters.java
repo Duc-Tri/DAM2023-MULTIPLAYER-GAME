@@ -1,22 +1,20 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.mygdx.hud.DebugOnScreen;
 import com.mygdx.bagarre.MainGame;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
 import com.mygdx.pathfinding.Vector2int;
+import com.mygdx.weapon.Weapon;
 
 import java.util.ArrayList;
 
 //=================================================================================================
-// Gestion des monstres (appliquée à une carte et donc un AStar
+// Gestion des monstres, appliquée à une carte (et donc un AStar)
 //=================================================================================================
 public class Monsters {
 
-    public static TextureAtlas allMonstersAtlas;
-
-    public enum MonstersMode {
+    public enum GameMode {
         SOLO_MODE, // MODE SOLO, display ET simulation
         SLAVE_MODE, // MULTIJOUEUR, display seulement, CLIENTS ET MASTER,
         MASTER_MODE // MULTIJOUEUR, simulation seulement, MASTER
@@ -27,17 +25,16 @@ public class Monsters {
     // MULTIJOUEUR et SLAVE : drawMobs pour l'affichage, simulationMobs est nul !
     private static ArrayList<Mob> drawMobs; // update render
     private static ArrayList<Mob> simulationMobs; // update data
+
+    private static ArrayList<AttackedMob> attackedMobs = new ArrayList<>();
     private static Map map;
     private static AStarMap aStarMap;
     private static final int MAX_RANDOM_MONSTERS = 10;
-    private static Player targetPlayer;
-    private MonstersMode monstersMode;
+    private static Player mainPlayer;
+    private GameMode gameMode;
 
-    public Monsters() {
-
-        // TODO : spawn monsters from map TRIGGERS
-        allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
-
+    private Monsters() {
+        // private = SINGLETON pattern
         /*
         for (int n = 0; n < MAX_RANDOM_MONSTERS; n++) {
 
@@ -51,23 +48,28 @@ public class Monsters {
         */
     }
 
-    public Monsters(Map m, Player p) {
-        this();
+    private static Monsters instance;
 
-        targetPlayer = p;
-        aStarMap = new AStarMap(m);
+    public static Monsters getInstance() {
+        if (instance == null) instance = new Monsters();
+
+        return instance;
+    }
+
+    public void init(Map m, Player p) {
+        mainPlayer = p;
         setMap(m);
 
         if (MainGame.getInstance().isSoloGameMode()) {
             // MODE SOLO
-            monstersMode = MonstersMode.SOLO_MODE;
+            gameMode = GameMode.SOLO_MODE;
         } else {
             // MODE MULTIJOUEUR
-            monstersMode = (targetPlayer.isMaster() ? Monsters.MonstersMode.MASTER_MODE
-                    : Monsters.MonstersMode.SLAVE_MODE);
+            gameMode = (mainPlayer.isMaster() ? GameMode.MASTER_MODE
+                    : GameMode.SLAVE_MODE);
         }
 
-        switch (monstersMode) {
+        switch (gameMode) {
             case SOLO_MODE:
                 drawMobs = simulationMobs = new ArrayList<>(); // IMPORTANT ! pointent sur les même data
                 spawnMonsters(map.getMonstersToSpawn());
@@ -121,11 +123,14 @@ public class Monsters {
 
         if (Mob.getMap() != map) Mob.setMap(map); // carte globale à tous les monstres
 
-        if (aStarMap.getMap() != map) aStarMap.setMap(map);
+        if (aStarMap == null)
+            aStarMap = new AStarMap(map);
+        else if (aStarMap.getMap() != map)
+            aStarMap.setMap(map);
     }
 
     public void setTargetPlayer(Player player) {
-        targetPlayer = player;
+        mainPlayer = player;
         for (Mob m : simulationMobs) {
             m.setTargetPlayer(player);
             // System.out.println("setTargetPlayer ======================== " + player.uniqueID);
@@ -145,9 +150,9 @@ public class Monsters {
 
                 // exemple de texte reçu depuis le TiledMap
                 //-------------------------------------------------
-                // OCTOPUS      ;1 ;spawn_01
-                // BLOB         ;3 ;spawn_02
-                // LIVING_TREE  ;0 ;spawn_03
+                // OCTOPUS      ;1  ;spawn_01
+                // BLOB         ;3  ;spawn_02
+                // LIVING_TREE  ;0  ;spawn_03
 
                 String[] mob_num_spawn = line.split(";"); // TYPE_MONSTRE; NOMBRE; SPAWN_PT
 
@@ -188,8 +193,8 @@ public class Monsters {
 
     }
 
-    public MonstersMode getMonstersMode() {
-        return monstersMode;
+    public GameMode getMonstersMode() {
+        return gameMode;
     }
 
     public void reset() {
@@ -206,7 +211,7 @@ public class Monsters {
 
     public void update(float deltaTime) {
         //moveToPlayer(deltaTime);
-        switch (monstersMode) {
+        switch (gameMode) {
             case SOLO_MODE:
                 moveToPlayer(deltaTime);
                 break;
@@ -217,18 +222,27 @@ public class Monsters {
                 moveToPlayer(deltaTime);
                 break;
         }
+
+        checkHitWithPlayer();
     }
 
-    public void removeOldMobs(String[] tempMobs) {
+    private void checkHitWithPlayer() {
 
+        if (mainPlayer.canBeHurt()) {
+            for (Mob mob : drawMobs) {
+                // TODO : faire le check pour tous les mates ? ou pas ?
+                if (mob.isAlive() && mob.hitbox.overlaps(mainPlayer.hitbox)) {
+                    mainPlayer.applyDamage(mob.getDamage());
+                }
+            }
+        }
     }
 
     public void removeAllMobs(String[] tempMobs) {
-//        simulationMobs.clear();
-//        drawMobs.clear();
+        drawMobs.clear();
     }
 
-    public static void createNewMobs(String[] tempMobs) {
+    public static void updateOrCreateNewMobs(String[] tempMobs, ArrayList<String> updatedMonsters) {
 
         // FLOOD !!!
         //System.out.println("createNewMobs >>>>> tempMobs{" + tempMobs.length + "}=" + String.join("_@_", tempMobs)
@@ -245,18 +259,24 @@ public class Monsters {
                     int life = Integer.parseInt(oneMob[4]);
 
                     for (int i = drawMobs.size() - 1; i >= 0; i--) {
-                        Mob m = drawMobs.get(i);
-                        if (oneMobId.equalsIgnoreCase(m.uniqueID)) {
+                        Mob drawMob = drawMobs.get(i);
+                        if (oneMobId.equalsIgnoreCase(drawMob.uniqueID)) {
                             found = true;
 
-                            if (life > 0) {
-                                m.setFootX(Float.parseFloat(oneMob[1]));
-                                m.setY(Float.parseFloat(oneMob[2]));
-                                m.setFindRegion(oneMob[3]);
-                                m.setCurrentLife(life);
-                            } else
-                                drawMobs.remove(m);
+                            if (life != 999999)
+                            {
+                                drawMob.setFootX(Float.parseFloat(oneMob[1]));
+                                drawMob.setY(Float.parseFloat(oneMob[2]));
+                                drawMob.setFindRegion(oneMob[3]);
+                                drawMob.setCurrentLife(life);
 
+                                // FLOOD !
+                                //System.out.println("createNewMobs >>>>> UPDATE MOB >>>>> " + drawMob.toString());
+                            } else {
+                                // Mob mort ???
+                                drawMobs.remove(i);
+                            }
+                            updatedMonsters.add(oneMobId); ////////////////////////////////////////
                             // System.out.println("createNewMobs >>>>> FOUND " + oneMobId);
 
                             break;
@@ -278,6 +298,9 @@ public class Monsters {
                         newMob.setCurrentLife(Integer.parseInt(oneMob[4]));
 
                         drawMobs.add(newMob);
+                        updatedMonsters.add(newMob.uniqueID); /////////////////////////////////////
+
+                        System.out.println("createNewMobs >>>>> CREATE MOB >>>>> " + newMob.toString());
                     }
 
                     // System.out.println("createNewMobs::oneMob=" + strMob);
@@ -307,4 +330,100 @@ public class Monsters {
 //            }
 //    }
 
+    public Mob checkAttackHit(Weapon weapon) {
+        ArrayList<Mob> listMobs = mainPlayer.isMaster() ? simulationMobs : drawMobs;
+
+        attackedMobs.clear();
+
+        int hitCount = 0;
+        Mob lastmob = null;
+        for (int m = listMobs.size() - 1; m >= 0; m--) {
+
+            Mob mob = listMobs.get(m);
+
+            if (mob.isAlive()) {
+                DebugOnScreen.getInstance().setText(21, weapon.hitbox.toString());
+                DebugOnScreen.getInstance().setText(22, mob.uniqueID + " / " + mob.hitbox.toString());
+
+                // attention aux hitbox negatifs !!!
+                if (mob.hitbox.overlaps(weapon.hitbox)) {
+                    hitCount++;
+
+                    // System.out.println("checkAttackHit >>>>>>>>>> " + mob.uniqueID);
+
+
+                    if (MainGame.getInstance().isSoloGameMode()) {
+                        if (mob.applyDamage(weapon.getDamage())) {
+                            // mort brutale, sans animation !
+                            /////////// listMobs.remove(mob); // PAS ENCORE
+                        }
+                    } else {
+                        // POUR ENVOYER VERS LE SERVEUR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        attackedMobs.add(new AttackedMob(mob.uniqueID, weapon.getDamage()));
+                    }
+
+                    lastmob = mob;
+                }
+            }
+        }
+
+        return lastmob;
+    }
+
+    public String buildMonstersHttpParam() {
+        StringBuilder sbMonsters = new StringBuilder();
+        for (int i = simulationMobs.size() - 1; i >= 0; i--) {
+            Mob mob = simulationMobs.get(i);
+
+            // ON ENVOIE QUAND MÊME LES MONSTRES MORTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            if (mob.getCurrentLife() > 0)
+                sbMonsters.append(mob.builMobHttpParam());
+            else
+                simulationMobs.remove(i); // PAS ENCORE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+
+        return sbMonsters.toString();
+    }
+
+    public void removeOldMobs00000(ArrayList<String> updatedMonsters) {
+        for (int i = drawMobs.size(); i >= 0; i--) {
+            if (!updatedMonsters.contains(drawMobs.get(i).uniqueID)) ;
+            {
+                System.out.println("removeOldMobs ################# REMOVE drawMobs @" + drawMobs.get(i).uniqueID);
+                drawMobs.remove(i);
+            }
+        }
+        for (int i = simulationMobs.size(); i >= 0; i--) {
+            if (!updatedMonsters.contains(simulationMobs.get(i).uniqueID)) ;
+            {
+                System.out.println("removeOldMobs ################# REMOVE removeOldMobs @" + drawMobs.get(i).uniqueID);
+                simulationMobs.remove(i);
+            }
+        }
+    }
+
+    public boolean hasAttackedMonsters() {
+        return attackedMobs.size() > 0;
+    }
+
+    public String buildAttackedHttpParam() {
+        if (attackedMobs.size() == 0)
+            return "";
+
+        StringBuilder sbMonsters = new StringBuilder();
+        for (int i = attackedMobs.size() - 1; i >= 0; i--) {
+            AttackedMob mob = attackedMobs.get(i);
+
+            sbMonsters.append(mob.buildHttpParam()+"!");
+
+            attackedMobs.remove(i);
+        }
+        attackedMobs.clear(); // ceinture, bretelles ....
+
+        return sbMonsters.toString();
+    }
+
 }
+
+

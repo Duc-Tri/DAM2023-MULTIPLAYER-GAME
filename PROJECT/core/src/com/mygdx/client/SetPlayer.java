@@ -55,7 +55,6 @@ public class SetPlayer {
         param = param + "&uniqueID=" + player.getUniqueID();
         param = param + "&spriteColorInt=" + player.getSpriteTint();
         param = param + "&findRegion=" + player.getFindRegion();
-        param = param + "&textureAtlasPath=" + player.getTextureAtlasPath();
         param = param + "&scale=" + 1;//+player.getScale();
         param = param + "&numLobby=" + player.getNumLobby();
 

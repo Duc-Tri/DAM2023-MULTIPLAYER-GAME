@@ -1,35 +1,28 @@
 package game.entity;
 
-public class Player {
+public class Monster {
 
 	private String x;
 	private String y;
-	private String boxWidth;
-	private String boxHeight;
 	private String uniqueID;
-	private String serverUniqueID;
 	private String lobbyPlayerId;
 	private String spriteColorInt;
 	private String findRegion;
-	private String textureAtlasPath;
 	private String numLobby = "";
-	private String life;
+	private int life=999999; // bidouille magique ....
 
 	private long lastUpdate;
-	private boolean isMaster;
 
-	public Player(String uniqueID, String serverUniqueID) {
+	public Monster(String uniqueID) {
 		super();
 		this.uniqueID = uniqueID;
-
-		this.serverUniqueID = serverUniqueID;
 	}
 
-	public String getX() {
+	public String getFootX() {
 		return x;
 	}
 
-	public void setX(String x) {
+	public void setFootX(String x) {
 		this.x = x;
 	}
 
@@ -41,36 +34,12 @@ public class Player {
 		this.y = y;
 	}
 
-	public String getBoxWidth() {
-		return boxWidth;
-	}
-
-	public void setBoxWidth(String boxWidth) {
-		this.boxWidth = boxWidth;
-	}
-
-	public String getBoxHeight() {
-		return boxHeight;
-	}
-
-	public void setBoxHeight(String boxHeight) {
-		this.boxHeight = boxHeight;
-	}
-
 	public String getUniqueID() {
 		return uniqueID;
 	}
 
 	public void setUniqueID(String uniqueID) {
 		this.uniqueID = uniqueID;
-	}
-
-	public String getServerUniqueID() {
-		return serverUniqueID;
-	}
-
-	public void setServerUniqueID(String serverUniqueID) {
-		this.serverUniqueID = serverUniqueID;
 	}
 
 	public String getSpriteColorInt() {
@@ -87,14 +56,6 @@ public class Player {
 
 	public void setFindRegion(String findRegion) {
 		this.findRegion = findRegion;
-	}
-
-	public String getTextureAtlasPath() {
-		return textureAtlasPath;
-	}
-
-	public void setTextureAtlasPath(String textureAtlasPath) {
-		this.textureAtlasPath = textureAtlasPath;
 	}
 
 	public long getLastUpdate() {
@@ -121,24 +82,23 @@ public class Player {
 		this.lobbyPlayerId = lobbyPlayerId;
 	}
 
-	public boolean isMaster() {
-		return isMaster;
-	}
-
-	public void setMaster(boolean isMaster) {
-		this.isMaster = isMaster;
-	}
-
-	public void setMaster(String master) {
-		this.isMaster = master.trim().toUpperCase().equalsIgnoreCase("true");
-	}
-
-	public String getLife() {
+	public int getCurrentLife() {
 		return life;
 	}
 
-	public void setLife(String life) {
-		this.life = life;
+	public void setCurrentLife(int newLife) {
+		// au cas où des dommages ont été appliqués .................................
+		if (newLife < life)
+			life = newLife;
+	}
+
+	public String buildHttpResponse() {
+		return uniqueID + ";" + getFootX() + ";" + getY() + ";" + findRegion + ";" + life + "!";
+		// pas * pas ~ pas # !!!
+	}
+
+	public void applyDamage(int damage) {
+		life -= damage;
 	}
 
 }

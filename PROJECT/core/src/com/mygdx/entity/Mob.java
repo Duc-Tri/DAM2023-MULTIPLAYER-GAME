@@ -1,5 +1,6 @@
 package com.mygdx.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -7,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPAtlasGenerator;
 import com.mygdx.map.Map;
 import com.mygdx.pathfinding.AStarMap;
@@ -17,26 +17,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//#################################################################################################
+// Mob
+//=================================================================================================
+// - ne porte pas d'arme
+//
+// - blesse le joueur en le touchant
+//#################################################################################################
 public class Mob extends LivingEntity {
+    public final static String MONSTERS_ATLAS = "characters/RMXP_monsters.atlas";
+    public static TextureAtlas allMonstersAtlas; // le même atlas pour tous les monstres
+
+    //public static final boolean DEBUG_MOB = false;
+    private static Map map; // la même carte pour tous les monstres
+
+    private static AStarMap aStarMap; // le pathfinding, le même pour tous
+    private Player targetPlayer; // chaque monstre peut poursuivre un joueur différent !
+    private Vector2int oldTargetPos; // ancienne position du joueur poursuivi
+    //public String mobID;
+    private MonsterType monsterType;
+    private TextureRegion textureRegion;
+    public Color spriteTint;
+    private static int numMob = 0;
+    private int damage;
+
+    private int WAIT_FRAMES = 0; // OBSOLETE: pour régler la vitesse de moveToPlayer
 
     public static enum MonsterType {IMP, BAT, DEVIL, SCORPION, OCTOPUS, BLOB, TROLL, LIVING_TREE}
 
-    public static final boolean DEBUG_MOB = false;
-
-    private static Map map; // la même carte pour tous les monstres
-    private static AStarMap aStarMap; // le pathfinding, le même pour tous
-    private Player targetPlayer; // chaque monstre peut poursuivre un joueur différent !
-    private static TextureAtlas allMonstersAtlas; // le même atlas pour tous les monstres
-    private int WAIT_FRAMES = 0; // pour régler la vitesse de moveToPlayer
-    private TextureRegion textureRegion;
-    public String mobID;
-    public Color spriteTint;
-    Vector2int oldTargetPos;
-
-    private static int numMob = 0;
-    private MonsterType monsterType;
-
-    // numéro des monstres selon l'ordre dans le fichier atlas
+    // NUMÉRO DES MONSTRES SELON L'ORDRE DANS LE FICHIER ATLAS ====================================
     final static HashMap<MonsterType, Integer> MonstersNum = new HashMap<MonsterType, Integer>() {{
         put(MonsterType.IMP, 0);
         put(MonsterType.BAT, 1);
@@ -48,23 +57,36 @@ public class Mob extends LivingEntity {
         put(MonsterType.LIVING_TREE, 7);
     }};
 
+    // POINTS DE VIE DES MONSTRES =================================================================
     final static HashMap<MonsterType, Integer> MonstersHealth = new HashMap<MonsterType, Integer>() {{
-        put(MonsterType.IMP, 50);
-        put(MonsterType.BAT, 10);
-        put(MonsterType.DEVIL, 20);
-        put(MonsterType.SCORPION, 30);
-        put(MonsterType.OCTOPUS, 80);
-        put(MonsterType.BLOB, 40);
-        put(MonsterType.TROLL, 90);
-        put(MonsterType.LIVING_TREE, 100);
+        put(MonsterType.IMP, 10);
+        put(MonsterType.BAT, 5);
+        put(MonsterType.DEVIL, 10);
+        put(MonsterType.SCORPION, 15);
+        put(MonsterType.OCTOPUS, 40);
+        put(MonsterType.BLOB, 1);
+        put(MonsterType.TROLL, 50);
+        put(MonsterType.LIVING_TREE, 45);
+    }};
+
+    // DOMMAGES DES MONSTRES =================================================================
+    final static HashMap<MonsterType, Integer> MonstersDamage = new HashMap<MonsterType, Integer>() {{
+        put(MonsterType.IMP, 1);
+        put(MonsterType.BAT, 2);
+        put(MonsterType.DEVIL, 3);
+        put(MonsterType.SCORPION, 4);
+        put(MonsterType.OCTOPUS, 5);
+        put(MonsterType.BLOB, 1);
+        put(MonsterType.TROLL, 8);
+        put(MonsterType.LIVING_TREE, 10);
     }};
 
     public Mob(MonsterType type) {
-
         // TEXTURE DE TOUS LES MOBS ---------------------------------------------------------------
         if (allMonstersAtlas == null) {
-            allMonstersAtlas = Monsters.allMonstersAtlas;
-//            allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MainGame.MONSTERS_ATLAS));
+            //allMonstersAtlas = new TextureAtlas(MONSTERS_ATLAS);
+            allMonstersAtlas = new TextureAtlas(Gdx.files.internal(MONSTERS_ATLAS));
+            System.out.println("allMonstersAtlas REGIONS ======== " + allMonstersAtlas.getRegions().size);
         }
 
         //System.out.println((numMob++) + " / " + type + " =============== CONSTRUCTOR Mob ... " + allMonstersAtlas);
@@ -81,9 +103,14 @@ public class Mob extends LivingEntity {
         monsterType = type;
         RMXP_CHARACTER = MonstersNum.get(monsterType) + "_";
         findRegion = RMXP_CHARACTER + "DOWN_0";
+
+        damage = MonstersDamage.get(monsterType);
         maxLife = MonstersHealth.get(monsterType);
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        currentLife = maxLife; // 1+(int)(Math.random() * (maxLife-1));
+
+        currentLife = maxLife;
+        ///////////////////////////////////////////////////////////////
+        //currentLife = 1 + (int) (Math.random() * (maxLife - 1));
+
         lifeBar.setBarRatio(maxLife);
 
         initializeSprite();
@@ -97,6 +124,7 @@ public class Mob extends LivingEntity {
         randomize(); // TODO : remove it after tests
         nextPoint = new Vector2int(999, 999);
         oldTargetPos = new Vector2int(999, 999);
+        //sprite.setColor(spriteTint);
     }
 
     public Mob(float x, float y, float width, float height) {
@@ -114,24 +142,20 @@ public class Mob extends LivingEntity {
 
     @Override
     public void initializeSprite() {
-
         // texture statique mob => texture locale de living_entity --------------------------------
-        if (textureAtlas == null) {
-            textureAtlas = allMonstersAtlas;
+        if (entityAtlas == null) {
+            entityAtlas = allMonstersAtlas;
         }
 
-        textureRegion = textureAtlas.findRegion(findRegion);
+        textureRegion = entityAtlas.findRegion(findRegion);
         sprite = new Sprite(textureRegion);
 
+        HITBOX_HEIGHT = 32;
         HITBOX_WIDTH = (int) (sprite.getWidth() - 16); // temp
         HITBOX_XOFFSET = (int) ((sprite.getWidth() - HITBOX_WIDTH) / 2); // X :au mileu
         hitbox = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
         //System.out.println("************** END initializeSprite " + findRegion + " / " + sprite);
-    }
-
-    public String getMobID() {
-        return mobID;
     }
 
     // TEST DATA ==================================================================================
@@ -148,7 +172,7 @@ public class Mob extends LivingEntity {
         randomDir = RMXPAtlasGenerator.randomDir();
 
         // pour la version movetoPLayer / moveToRandomDir(float deltaTime) ------------------------
-        moveDelay = 0.01f + (float) (Math.random() * 0.1f);
+        moveDelay = 0.05f + (float) (Math.random() * 0.1f);
         currentTime = 0;
 
         // pour la version movetoPLayer() / moveToRandomDir() -------------------------------------
@@ -278,7 +302,7 @@ public class Mob extends LivingEntity {
     int waitBeforeMove = WAIT_FRAMES + 1;
 
     public void moveToPlayer() {
-        if (playerReached() || (waitBeforeMove++ < WAIT_FRAMES))
+        if (!isAlive() || playerReached() || (waitBeforeMove++ < WAIT_FRAMES))
             return;
         else
             waitBeforeMove = 0;
@@ -396,7 +420,6 @@ public class Mob extends LivingEntity {
         return targetPlayer;
     }
 
-
     public void setTargetPlayer(Player player) {
         mapPathToTarget = null;
         oldTargetPos.x = -999;
@@ -407,15 +430,25 @@ public class Mob extends LivingEntity {
         }
     }
 
-    static final Texture debugTarget16 = new Texture("test/target16x16.png");
-    static final Texture debugTarget8 = new Texture("test/target8x8.png");
-
     public void drawAndUpdate(SpriteBatch batch) {
         super.drawAndUpdate(batch);
 
         if (AStarMap.DEBUG_ASTAR && mapPathToTarget != null) {
-            for (Vector2int v : mapPathToTarget) batch.draw(debugTarget16, v.x, v.y);
+            for (Vector2int v : mapPathToTarget) batch.draw(debugTexture, v.x, v.y);
         }
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public String toString() {
+        // ne pas utiliser pour transmettre au serveur !!!
+        return uniqueID + "|" + getFootX() + "|" + getY() + "|" + findRegion + "|" + currentLife;
+    }
+
+    public String builMobHttpParam() {
+        return uniqueID + ";" + getFootX() + ";" + getY() + ";" + findRegion + ";" + currentLife + "!"; // pas * pas ~ pas # !!!
     }
 
 }

@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 
 import game.entity.Player;
+import game.entity.MonstersManager;
 
 public class Game {
 
@@ -13,7 +14,7 @@ public class Game {
 
 	static Player[][] players = new Player[POOLSIZE][LOBBYSIZE];
 
-	static String[] monsters = new String[POOLSIZE]; // les monstres sont agglomérés en string
+	static MonstersManager[] monsters = new MonstersManager[POOLSIZE];
 
 	static int cptLobby = 0;
 	private final static long TIMEOUT = 60000L; // 60000L = une minute
@@ -109,25 +110,52 @@ public class Game {
 		return tempString;
 	}
 
-	public String retrieveMonsters(Player player) {
-		String tempString = "";
+	// =============================================================================================
+	// Renvoie les monstres du lobby (voir Monsters.toString())
+	// =============================================================================================
+	public String retrieveMonstersStr(Player player) {
+		String lobbyMonstersStr = "";
 
 		if (player != null) {
 			int nLobby = Integer.parseInt(player.getNumLobby());
-			tempString = monsters[nLobby];
+
+			if (monsters[nLobby] != null) {
+				lobbyMonstersStr = monsters[nLobby].buildMonstersHttpResponse();
+			}
 
 			// System.out.println(nLobby + " / " + tempString.length() + "
 			// Game::retrieveMonsters === " + tempString);
 		}
 
-		return tempString;
+		return lobbyMonstersStr;
 	}
 
-	public void setMonsters(int nLobby, String mobs) {
-		monsters[nLobby] = mobs;
+	// =============================================================================================
+	// Met à jour les monstres (création / update / delete)
+	// =============================================================================================
+	public void setMonsters(int nLobby, String mobsStr) {
+
+		if (monsters[nLobby] == null) {
+			monsters[nLobby] = new MonstersManager(nLobby);
+		}
+
+		monsters[nLobby].setMonstersStr(mobsStr);
 
 		// System.out.println(nLobby + " / " + mobs.length() + " Game::setMonsters === "
 		// + mobs);
+	}
+
+	// =============================================================================================
+	// Met à jour les monstres (création / update / delete)
+	// =============================================================================================
+	public void setAttackedMonsters(int nLobby, String attackedStr) {
+
+		// on ne peut pas appliquer les attaques sur les monstres d'un lobby qui
+		// n'existe pas
+		if (monsters[nLobby] == null)
+			return;
+
+		monsters[nLobby].setAttackedMonsters(attackedStr);
 	}
 
 	public int getId() {

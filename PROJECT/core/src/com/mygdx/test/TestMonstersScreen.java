@@ -51,7 +51,7 @@ public class TestMonstersScreen extends ApplicationAdapter implements InputProce
         createPlayer();
 
         map = new Map(mapFilename, batch);
-        monsters = new Monsters();
+        monsters = Monsters.getInstance();
         monsters.setTargetPlayer(player); // ici tous les monstres poursuivent le même joueur
 
         loadMap(mapFilename, batch);
