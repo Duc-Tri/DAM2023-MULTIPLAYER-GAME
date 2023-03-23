@@ -7,11 +7,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mygdx.hud.DebugOnScreen;
 import com.mygdx.hud.HUDManager;
-import com.mygdx.input.Joystick;
 
 //#################################################################################################
 // GameScreen (Screen, InputProcessor)
@@ -22,24 +28,23 @@ import com.mygdx.input.Joystick;
 //#################################################################################################
 public class LobbiesScreen implements Screen, InputProcessor {
     private final MainGame mainGame;
-    private static OrthographicCamera clampedCamera;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
     private boolean showDebugTexts = true;
 
     private SpriteBatch batch;
-    private Joystick joystick;
-    private ShapeRenderer shapeRenderer;
-
-    public static boolean lockOnListReadFromDB = false;
 
     private Texture testImage = new Texture("misc/bloody_screen2.png");
 
-    private static float cameraZoom = 1; // plus c'est gros, plus on est loin
-//    private DebugOnScreen debugOS;
-//    private HUDManager hudManager;
 
-    int threadPoolSize = 15;
+    //===========================================================================================
+    Stage stage;
+    TextButton button;
+    TextButton.TextButtonStyle textButtonStyle;
+    BitmapFont font;
+    Skin skin;
+    TextureAtlas buttonAtlas;
+
 
     public LobbiesScreen(MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -49,15 +54,40 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
 
-        clampedCamera = new OrthographicCamera(); // ClampedCamera( MainGame.getInstance().runOnDesktop() ? 1f : 0.5f);
-        batch.setProjectionMatrix(clampedCamera.combined);
 
-        shapeRenderer = new ShapeRenderer();
+        initStageButtons();
 
-        joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
+    }
 
-//        debugOS = DebugOnScreen.getInstance();
-//        hudManager = HUDManager.getInstance();
+    private void initStageButtons() {
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        font = new BitmapFont();
+        skin = new Skin();
+        buttonAtlas = new TextureAtlas(Gdx.files.internal("misc/buttons.atlas"));
+        skin.addRegions(buttonAtlas);
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        textButtonStyle.up = skin.getDrawable("up-button");
+        textButtonStyle.down = skin.getDrawable("down-button");
+        textButtonStyle.checked = skin.getDrawable("checked-button");
+        button = new TextButton("Button1", textButtonStyle);
+        button.setPosition(SCREEN_WIDTH / 2 - button.getWidth() / 2, SCREEN_HEIGHT / 2);
+        stage.addActor(button);
+
+        button.addListener(new EventListener() {
+
+
+
+            @Override
+            public boolean handle(Event event) {
+                //Handle the input event.
+                System.out.println(button.getName() + " DOWN !");
+                mainGame.showGameScreen();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -67,16 +97,17 @@ public class LobbiesScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(clampedCamera.combined);
 
         batch.begin(); //======================================================
 
-        if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
+        //if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
+        batch.draw(testImage, 0, 0);
 
-//        hudManager.drawHUD(batch);
+        //hudManager.drawHUD(batch);
 
         batch.end(); //========================================================
 
+        stage.draw();
     }
 
     private void debugOnScreen() {
@@ -109,7 +140,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         batch.dispose();
-        shapeRenderer.dispose();
+//        shapeRenderer.dispose();
     }
 
 
@@ -117,7 +148,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
     public boolean keyDown(int keycode) {
 
         switch (keycode) {
-            case Input.Keys.ESCAPE:
+            case Input.Keys.SPACE:
                 mainGame.showGameScreen();
                 break;
         }
@@ -165,9 +196,6 @@ public class LobbiesScreen implements Screen, InputProcessor {
         //viewport.update(width, height);
     }
 
-    public static void setCameraZoom(float cameraZoom) {
-        LobbiesScreen.cameraZoom = cameraZoom;
-    }
 
 
 }
