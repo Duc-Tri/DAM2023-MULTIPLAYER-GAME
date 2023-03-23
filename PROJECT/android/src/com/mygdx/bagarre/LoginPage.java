@@ -125,7 +125,7 @@ public class LoginPage extends AppCompatActivity {
 
                 // Utiliser la valeur de la largeur effective dans votre animation
                 ObjectAnimator animator = ObjectAnimator.ofInt(ivBackground, "scrollX", 0, effectiveWidth);
-                animator.setDuration(20000);
+                animator.setDuration(30000);
                 animator.start();
 
                 // Retirer l'écouteur pour éviter les appels répétés
@@ -186,41 +186,6 @@ public class LoginPage extends AppCompatActivity {
 		
         //Gestion de l'animation
         gestionAnim((int) screenWidth);
-		
-        if (!isTablet) {
-            HorizontalScrollView horizontalScrollView = findViewById(R.id.hsvBackground);
-
-            // Ajouter un écouteur pour détecter quand la vue est prête à être affichée
-            horizontalScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    // Récupérer la largeur effective de votre HorizontalScrollView
-                    int effectiveWidth = horizontalScrollView.getWidth();
-                    effectiveWidth -= screenWidth;
-
-                    // Utiliser la valeur de la largeur effective dans votre animation
-                    ObjectAnimator animator = ObjectAnimator.ofInt(ivBackground, "scrollX", 0, effectiveWidth);
-                    animator.setDuration(2000);
-                    animator.start();
-
-                    // Retirer l'écouteur pour éviter les appels répétés
-                    horizontalScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
-        } else if (screenHeight < 800) {
-            ivLogo.setTranslationY(-150);
-            llPseudoBox.setTranslationY(-300);
-
-
-        }
-
-//        TranslateAnimation anim = new TranslateAnimation(0, - screenWidth, 0, 0);
-//        anim.setDuration(3000);
-//
-//        ivBackground.startAnimation(anim);
-
-
-        // Récupérer une référence à votre HorizontalScrollView
 
         //Check de la preférence
         checkPref();
