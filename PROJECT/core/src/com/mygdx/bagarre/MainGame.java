@@ -114,7 +114,7 @@ public class MainGame extends Game {
         return gameMode == GameMode.BRAWLER;
     }
 
-    public void showGameScreen() {
+    public void showGameScreen(GameMode mode) {
 
 
         gameScreen = new GameScreen(mapFilename, this);

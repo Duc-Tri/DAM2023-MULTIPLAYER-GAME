@@ -39,7 +39,12 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
     //===========================================================================================
     Stage stage;
-    TextButton button;
+    TextButton buttonSolo;
+    TextButton buttonMulti;
+    TextButton buttonLobby1;
+    TextButton buttonLobby2;
+    TextButton buttonLobby3;
+    TextButton buttonLobby4;
     TextButton.TextButtonStyle textButtonStyle;
     BitmapFont font;
     Skin skin;
@@ -64,6 +69,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(stage);
 
         font = new BitmapFont();
+
         skin = new Skin();
         buttonAtlas = new TextureAtlas(Gdx.files.internal("misc/buttons.atlas"));
         skin.addRegions(buttonAtlas);
@@ -72,22 +78,38 @@ public class LobbiesScreen implements Screen, InputProcessor {
         textButtonStyle.up = skin.getDrawable("up-button");
         textButtonStyle.down = skin.getDrawable("down-button");
         textButtonStyle.checked = skin.getDrawable("checked-button");
-        button = new TextButton("Button1", textButtonStyle);
-        button.setPosition(SCREEN_WIDTH / 2 - button.getWidth() / 2, SCREEN_HEIGHT / 2);
-        stage.addActor(button);
 
-        button.addListener(new EventListener() {
+        buttonSolo = new TextButton("JEU SOLO", textButtonStyle);
+        buttonSolo.setPosition(SCREEN_WIDTH / 2 - buttonSolo.getWidth() / 2, SCREEN_HEIGHT / 2);
 
+        buttonMulti = new TextButton("JEU MULTIJOUEUR", textButtonStyle);
+        buttonMulti.setPosition(buttonSolo.getX(), buttonSolo.getY() + 200);
 
+        stage.addActor(buttonSolo);
+        stage.addActor(buttonMulti);
+
+        buttonSolo.addListener(new EventListener() {
 
             @Override
             public boolean handle(Event event) {
                 //Handle the input event.
-                System.out.println(button.getName() + " DOWN !");
-                mainGame.showGameScreen();
+                System.out.println(buttonSolo.getName() + " DOWN !");
+                mainGame.showGameScreen(MainGame.GameMode.SOLO);
                 return false;
             }
         });
+
+        buttonMulti.addListener(new EventListener() {
+
+            @Override
+            public boolean handle(Event event) {
+                //Handle the input event.
+                System.out.println(buttonMulti.getName() + " DOWN !");
+                mainGame.showGameScreen(MainGame.GameMode.MULTIPLAYER);
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -149,7 +171,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
         switch (keycode) {
             case Input.Keys.SPACE:
-                mainGame.showGameScreen();
+                //mainGame.showGameScreen();
                 break;
         }
 
@@ -195,7 +217,6 @@ public class LobbiesScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         //viewport.update(width, height);
     }
-
 
 
 }
