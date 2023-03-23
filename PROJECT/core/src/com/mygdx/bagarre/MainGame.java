@@ -13,10 +13,10 @@ public class MainGame extends Game {
     // CONSTANTES DU JEU ==========================================================================/
 //    public final static String URLServer = "http://localhost:8080/DAMCorp/"; // marche UNIQUEMENT en DESKTOP
 //    public final static String URLServer = "http://192.168.1.101:8080/DAMCorp/"; // tri maison 1
-    public final static String URLServer = "http://172.16.200.237:8080/DAMCorp/"; // tri maison 2
+//    public final static String URLServer = "http://172.16.200.237:8080/DAMCorp/"; // tri maison 2
     /*public final static String URLServer = "http://172.16.200.239:8080/DAMCorp/";*/ // tri maison 2
 
-//    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/";
+    public final static String URLServer = "http://172.16.200.105:8080/DAMCorp/";
 
     //    public final static String URLServer = "http://91.161.85.206:49153/DAMCorp/"; // philippe maison
 //     public final static String URLServer = "http://192.168.0.49:6565/DAMCorp/";
