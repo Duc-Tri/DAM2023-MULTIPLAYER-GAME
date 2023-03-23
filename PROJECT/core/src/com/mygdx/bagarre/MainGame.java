@@ -26,7 +26,7 @@ public class MainGame extends Game {
     public enum GameMode {SOLO, MULTIPLAYER, BRAWLER}
 
     private String config; // "android" or "desktop";
-    private final GameMode gameMode;
+    private GameMode gameMode;
     private GameScreen gameScreen;
     private LobbiesScreen lobbiesScreen;
     private static MainGame instance;
@@ -113,6 +113,8 @@ public class MainGame extends Game {
     }
 
     public void showGameScreen(GameMode mode) {
+
+        gameMode = mode;
 
 
         gameScreen = new GameScreen(mapFilename, this);
