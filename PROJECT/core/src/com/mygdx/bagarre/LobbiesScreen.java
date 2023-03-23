@@ -34,7 +34,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
     private SpriteBatch batch;
 
-    private Texture testImage = new Texture("misc/bloody_screen2.png");
+    private Texture testImage = new Texture("misc/bckgrnd_online.png");
 
 
     //===========================================================================================
