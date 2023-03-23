@@ -45,7 +45,10 @@ public class HUDManager {
         // create bitmap font ----------------------------------------------------------------------
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("misc/jack_input.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        if(cam!=null)
         fontParameter.size = (int) (60 * cam.zoom);
+        else
+            fontParameter.size = 60;
         fontParameter.borderWidth = 2.6f;
         fontParameter.color = Color.RED;
         fontParameter.borderColor = new Color(0, 0, 0, 0.8f);

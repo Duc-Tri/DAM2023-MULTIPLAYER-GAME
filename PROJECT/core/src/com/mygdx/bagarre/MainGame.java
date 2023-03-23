@@ -25,9 +25,11 @@ public class MainGame extends Game {
     //==============================================================================================
 
     public enum GameMode {SOLO, MULTIPLAYER, BRAWLER}
+
     private String config; // "android" or "desktop";
     private final GameMode gameMode;
     private GameScreen gameScreen;
+    private LobbiesScreen lobbiesScreen;
     private static MainGame instance;
 
     public static MainGame getInstance() {
@@ -40,6 +42,8 @@ public class MainGame extends Game {
     private MainGame() {
 //        gameMode = GameMode.SOLO;
         gameMode = GameMode.MULTIPLAYER;
+
+        System.out.println("MainGame #######################################################");
     }
 
     @Override
@@ -50,9 +54,17 @@ public class MainGame extends Game {
         Mob.allMonstersAtlas = new TextureAtlas(Gdx.files.internal(Mob.MONSTERS_ATLAS));
         Player.allPlayersAtlas = new TextureAtlas(Gdx.files.internal(Player.PLAYERS_ATLAS));
 
-        gameScreen = new GameScreen(mapFilename, this);
-        setScreen(gameScreen);
-        Gdx.input.setInputProcessor(gameScreen);
+
+        if (gameMode == GameMode.SOLO) {
+            gameScreen = new GameScreen(mapFilename, this);
+            setScreen(gameScreen);
+            Gdx.input.setInputProcessor(gameScreen);
+        } else if (gameMode == GameMode.MULTIPLAYER) {
+            lobbiesScreen = new LobbiesScreen(this);
+            setScreen(lobbiesScreen);
+            //Gdx.input.setInputProcessor(lobbiesScreen); // NON !
+        }
+
     }
 
     public void setConfig(String c) {
@@ -69,7 +81,7 @@ public class MainGame extends Game {
 
     @Override
     public void dispose() {
-        gameScreen.dispose();
+        //gameScreen.dispose();
     }
 
     @Override
@@ -79,7 +91,7 @@ public class MainGame extends Game {
 
     @Override
     public void resize(int width, int height) {
-        gameScreen.resize(width, height);
+        //gameScreen.resize(width, height);
     }
 
     public Map getMap() {
@@ -100,6 +112,18 @@ public class MainGame extends Game {
 
     public boolean isBrawlerGameMode() {
         return gameMode == GameMode.BRAWLER;
+    }
+
+    public void showGameScreen() {
+
+
+        gameScreen = new GameScreen(mapFilename, this);
+        setScreen(gameScreen);
+        Gdx.input.setInputProcessor(gameScreen);
+
+//        if(lobbiesScreen!=null)
+//            lobbiesScreen.dispose();
+
     }
 
 }
