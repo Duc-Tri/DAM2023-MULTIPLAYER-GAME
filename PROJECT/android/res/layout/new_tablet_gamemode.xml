@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameMode">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="1280dp"
+        android:layout_height="800dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background_gamemode" />
+
+    <ImageButton
+        android:id="@+id/volumeBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/volume_on"
+        android:maxHeight="50dp"
+        android:minHeight="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivPanoPseudo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pano_flat" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="198dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivPseudo"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/image_de_profil"
+            app:srcCompat="@android:drawable/btn_star_big_on"
+            tools:ignore="ImageContrastCheck" />
+
+        <TextView
+            android:id="@+id/tvPseudo"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_weight="1"
+            android:fontFamily="@font/minecraft"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="@string/pseudo"
+            android:textAlignment="viewEnd"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/imageSp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <ImageButton
+        android:id="@+id/soloBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="416dp"
+        android:background="@null"
+        android:contentDescription="@string/partie_solo"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/partie_solo_btn_tiny"
+        tools:ignore="VisualLintBounds" />
+
+    <ImageView
+        android:id="@+id/fleau"
+        android:layout_width="50dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="404dp"
+        android:contentDescription="@string/fl_au_du_bouton_partie_solo"
+        app:layout_constraintStart_toStartOf="@+id/soloBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fleau"
+        tools:ignore="VisualLintBounds" />
+
+    <ImageButton
+        android:id="@+id/optionsBtn"
+        android:layout_width="136dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        android:contentDescription="@string/option"
+        android:minWidth="50dp"
+        android:minHeight="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/multiBtn"
+        app:srcCompat="@drawable/option_tiny" />
+
+    <ImageView
+        android:id="@+id/perso_left"
+        android:layout_width="68dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="456dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/perso_right"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.588"
+        app:srcCompat="@drawable/perso1" />
+
+    <ImageButton
+        android:id="@+id/multiBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:background="@null"
+        android:contentDescription="@string/partie_solo"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/partie_en_ligne_btn_tiny"
+        tools:ignore="VisualLintBounds" />
+
+    <ImageButton
+        android:id="@+id/soloBtn3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="104dp"
+        android:background="@null"
+        android:contentDescription="@string/partie_solo"
+        android:minHeight="48dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/pano_flat"
+        tools:ignore="VisualLintBounds" />
+
+    <TextView
+        android:id="@+id/tvBrawlerBtn"
+        android:layout_width="175dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/minecraft"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Mode Brawler"
+        android:textAllCaps="true"
+        android:textColor="#F4EDED"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/soloBtn3"
+        app:layout_constraintEnd_toEndOf="@+id/soloBtn3"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="@+id/soloBtn3"
+        app:layout_constraintTop_toTopOf="@+id/soloBtn3"
+        app:layout_constraintVertical_bias="0.611" />
+
+    <ImageView
+        android:id="@+id/perso_right"
+        android:layout_width="69dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sword_right"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.602"
+        app:srcCompat="@drawable/perso2" />
+
+    <ImageView
+        android:id="@+id/sword_left"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="212dp"
+        app:layout_constraintEnd_toEndOf="@+id/multiBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/swords_left" />
+
+    <ImageView
+        android:id="@+id/sword_right"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/multiBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        app:srcCompat="@drawable/swords_right" />
+
+    <ImageView
+        android:id="@+id/ecrou"
+        android:layout_width="27dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/optionsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/multiBtn"
+        app:srcCompat="@drawable/ecrou" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

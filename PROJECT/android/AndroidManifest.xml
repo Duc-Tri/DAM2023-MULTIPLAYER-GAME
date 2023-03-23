@@ -23,30 +23,39 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
         <activity
+            android:name=".MultijoueurActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Lobby"
+            android:exported="false" />
+        <activity
+            android:name=".ListPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListLobbyActivity"
+            android:exported="false" />
+        <activity
             android:name=".BeginningAnimation"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" >
-
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".GameMode"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".LoginPage"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".AndroidLauncher"

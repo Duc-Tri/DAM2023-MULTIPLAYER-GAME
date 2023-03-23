@@ -2,18 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gamemode_split"
     tools:context=".GameMode">
-
-    <ImageView
-        android:id="@+id/background"
-        android:layout_width="935dp"
-        android:layout_height="345dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/part8" />
 
     <ImageButton
         android:id="@+id/volumeBtn2"
@@ -84,110 +77,83 @@
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <ImageButton
-        android:id="@+id/soloBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="76dp"
-        android:background="@null"
-        android:contentDescription="@string/partie_solo"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/partie_solo_btn_tiny"
-        tools:ignore="VisualLintBounds" />
-
-    <ImageButton
-        android:id="@+id/soloBtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:background="@null"
-        android:contentDescription="@string/partie_solo"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
-        app:srcCompat="@drawable/partie_en_ligne_btn_tiny"
-        tools:ignore="VisualLintBounds" />
-
-    <ImageButton
-        android:id="@+id/soloBtn3"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="104dp"
-        android:background="@null"
-        android:contentDescription="@string/partie_solo"
-        android:minHeight="48dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
-        app:srcCompat="@drawable/pano_flat"
-        tools:ignore="VisualLintBounds" />
-
-    <TextView
-        android:id="@+id/tvBrawlerBtn"
-        android:layout_width="175dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/minecraft"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Mode Brawler"
-        android:textAllCaps="true"
-        android:textColor="#F4EDED"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/soloBtn3"
-        app:layout_constraintEnd_toEndOf="@+id/soloBtn3"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="@+id/soloBtn3"
-        app:layout_constraintTop_toTopOf="@+id/soloBtn3"
-        app:layout_constraintVertical_bias="0.611" />
 
     <ImageView
         android:id="@+id/fleau"
         android:layout_width="50dp"
         android:layout_height="70dp"
-        android:layout_marginStart="240dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="252dp"
+        android:layout_marginBottom="20dp"
         android:contentDescription="@string/fl_au_du_bouton_partie_solo"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/soloOnLine"
         app:layout_constraintStart_toStartOf="@+id/soloBtn"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/fleau"
         tools:ignore="VisualLintBounds" />
 
+    <Button
+        android:id="@+id/soloBtn"
+        android:layout_width="282dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_change"
+        android:contentDescription="@string/partie_solo"
+        android:fontFamily="@font/minecraft"
+        android:minHeight="48dp"
+        android:text="@string/partie_solo"
+        android:textColor="@color/font_change"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.455"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.011" />
+
+    <Button
+        android:id="@+id/soloOnLine"
+        android:layout_width="280dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/btn_change"
+        android:contentDescription="@string/partie_solo"
+        android:fontFamily="@font/minecraft"
+        android:minHeight="48dp"
+        android:text="@string/online_game"
+        android:textColor="@color/font_change"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/soloBtn"
+        app:layout_constraintStart_toStartOf="@+id/soloBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloBtn" />
+
+
     <ImageView
         android:id="@+id/perso_left"
-        android:layout_width="68dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="80dp"
-        app:layout_constraintEnd_toStartOf="@+id/soloBtn2"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        android:layout_width="55dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="76dp"
+        app:layout_constraintEnd_toStartOf="@+id/optionsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloOnLine"
         app:srcCompat="@drawable/perso1" />
 
     <ImageView
         android:id="@+id/perso_right"
-        android:layout_width="69dp"
-        android:layout_height="110dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintStart_toEndOf="@+id/soloBtn2"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn"
+        android:layout_width="57dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toEndOf="@+id/optionsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/soloOnLine"
         app:srcCompat="@drawable/perso2" />
 
     <ImageView
         android:id="@+id/sword_left"
         android:layout_width="0dp"
         android:layout_height="78dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="212dp"
-        app:layout_constraintEnd_toEndOf="@+id/soloBtn2"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="204dp"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/soloOnLine"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
         app:srcCompat="@drawable/swords_left" />
 
@@ -195,35 +161,40 @@
         android:id="@+id/sword_right"
         android:layout_width="0dp"
         android:layout_height="78dp"
-        android:layout_marginStart="224dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@+id/soloBtn2"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="12dp"
+        android:elevation="10dp"
+        app:layout_constraintStart_toStartOf="@+id/soloOnLine"
         app:layout_constraintTop_toBottomOf="@+id/soloBtn"
         app:srcCompat="@drawable/swords_right" />
 
-    <ImageButton
+    <Button
         android:id="@+id/optionsBtn"
-        android:layout_width="136dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="28dp"
-        android:background="@null"
+        android:layout_width="165dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_change"
         android:contentDescription="@string/option"
+        android:fontFamily="@font/minecraft"
         android:minWidth="50dp"
         android:minHeight="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn2"
-        app:srcCompat="@drawable/option_tiny" />
+        android:onClick="alertOptions"
+        android:text="@string/options"
+        android:textColor="@color/font_change"
+        app:layout_constraintEnd_toEndOf="@+id/soloOnLine"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="@+id/soloOnLine"
+        app:layout_constraintTop_toBottomOf="@+id/soloOnLine" />
 
     <ImageView
         android:id="@+id/ecrou"
-        android:layout_width="27dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="45dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="24dp"
+        android:elevation="10dp"
         app:layout_constraintStart_toStartOf="@+id/optionsBtn"
-        app:layout_constraintTop_toBottomOf="@+id/soloBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/soloOnLine"
         app:srcCompat="@drawable/ecrou" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

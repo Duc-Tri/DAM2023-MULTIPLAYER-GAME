@@ -1,68 +1,104 @@
 package com.mygdx.bagarre;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameMode extends AppCompatActivity {
     TextView tvPseudo;
-    ImageView ivPseudo, background;
+    ImageView ivPseudo, fleau, sword_left, sword_right, ecrou;
     Spinner imageSp;
     String userID;
-    ImageButton buttonSolo;
+    ImageButton volumeBtn2;
+    ConstraintLayout background;
+    Button buttonSolo, buttonOnLine, optionsBtn;
     List<ImageItem> imgList = new ArrayList<>();
     MediaPlayer audioLauncher;
+    AudioManager audioPlayer;
     Intent itGameMode;
-    ImageButton volumeBtn2;
-    boolean isMuted = false;
+    View grayedOutView;
+    boolean isMuted = false, isTablet = false;
     int musicPos;
 
+    @SuppressLint("WrongViewCast")
     public void initUi() {
+        background = findViewById(R.id.background);
+        fleau = findViewById(R.id.fleau);
+        sword_left = findViewById(R.id.sword_left);
+        sword_right = findViewById(R.id.sword_right);
+        ecrou = findViewById(R.id.ecrou);
         tvPseudo = findViewById(R.id.tvPseudo);
         ivPseudo = findViewById(R.id.ivPseudo);
         imageSp = findViewById(R.id.imageSp);
         buttonSolo = findViewById(R.id.soloBtn);
-        background = findViewById(R.id.background);
+        buttonOnLine = findViewById(R.id.soloOnLine);
         volumeBtn2 = findViewById(R.id.volumeBtn2);
+        optionsBtn = findViewById(R.id.optionsBtn);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game_mode);
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float screenHeight = metrics.heightPixels;
+        float screenWidthDp = metrics.densityDpi;
+        float screenWidth = metrics.widthPixels;
+        Log.i("SCREEN_HEIGHT", String.valueOf(screenHeight));
+        Log.i("SCREEN_WIDTH", String.valueOf(screenWidth));
+        Log.i("SCREEN_WIDTH_DP", String.valueOf(screenWidthDp));
+        float minimalDpForPhone = 300.0f;
+
+        isTablet = screenWidthDp < minimalDpForPhone;
+
         initUi();
+
+        if(isTablet) {
+            background.setBackgroundResource(R.drawable.background_gamemode);
+        }
+
         itGameMode = getIntent();
 
         SharedPreferences prefs = getSharedPreferences("pref_pseudo", this.MODE_PRIVATE);
         SharedPreferences.Editor editPref = prefs.edit();
 
-        audioLauncher = MediaPlayer.create(this, R.raw.connexion_theme);
+        audioLauncher = MediaPlayer.create(this, R.raw.ken);
         musicPos = itGameMode.getIntExtra("musicPos", 0);
-        Log.i("MUSIC_POS_ACT_GM", String.valueOf(musicPos));
         audioLauncher.seekTo(musicPos);
         audioLauncher.setLooping(true);
         audioLauncher.start();
 
         //Création de l'audio manager
-        AudioManager audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
-        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
+        audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-        Log.i("IS_MUTED", String.valueOf(itGameMode.getBooleanExtra("isMuted", false)));
         isMuted = itGameMode.getBooleanExtra("isMuted", false);
         if (isMuted) {
             volumeBtn2.setImageResource(R.drawable.volume_off);
@@ -85,22 +121,6 @@ public class GameMode extends AppCompatActivity {
                 isMuted = true;
             }
         });
-
-
-
-        userID = prefs.getString("userID", null);
-        if(userID != null){
-            Log.i("PREFS_USERID", userID);
-        } else {
-            Log.i("PREFS_USERID_NULL", "User ID est nul");
-        }
-
-        int idImg = prefs.getInt("img", 0);
-        Log.i("PREFS_IMG", String.valueOf(idImg));
-        if(idImg != 0) {
-            ivPseudo.setImageResource(idImg);
-            Log.i("PREFS_IMG_NULL", "Il n'y a pas encore d'icone de profil enregistrée");
-        }
 
         imgList.add(new ImageItem(R.drawable.profil1, "profil1"));
         imgList.add(new ImageItem(R.drawable.profil2, "profil2"));
@@ -143,11 +163,16 @@ public class GameMode extends AppCompatActivity {
             startActivity(itGame);
         });
 
-    }
+        buttonOnLine.setOnClickListener(v -> {
+            Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);
+            startActivity(intent);
+        });
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        optionsBtn.setOnClickListener(v -> {
+            alertOptions();
+        });
+
+
     }
 
     // Méthode pour récupérer la ressource ID de l'image sélectionnée
@@ -166,42 +191,116 @@ public class GameMode extends AppCompatActivity {
         }
     }
 
-    private List<ImageItem> getList (int choice) {
+    public void alertOptions(View v) {
+        //Création de l'alerte builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        switch(choice) {
-            case 2131230883:
-                imgList.add(new ImageItem(R.drawable.profil1, "profil1"));
-                imgList.add(new ImageItem(R.drawable.profil2, "profil2"));
-                imgList.add(new ImageItem(R.drawable.profil3, "profil3"));
-                imgList.add(new ImageItem(R.drawable.profil4, "profil4"));
-                break;
-            case 2131230884:
-                imgList.add(new ImageItem(R.drawable.profil2, "profil2"));
-                imgList.add(new ImageItem(R.drawable.profil3, "profil3"));
-                imgList.add(new ImageItem(R.drawable.profil4, "profil4"));
-                imgList.add(new ImageItem(R.drawable.profil1, "profil1"));
-                break;
-            case 2131230885:
-                imgList.add(new ImageItem(R.drawable.profil3, "profil3"));
-                imgList.add(new ImageItem(R.drawable.profil4, "profil4"));
-                imgList.add(new ImageItem(R.drawable.profil1, "profil1"));
-                imgList.add(new ImageItem(R.drawable.profil2, "profil2"));
-                break;
-            case 2131230886:
-                imgList.add(new ImageItem(R.drawable.profil4, "profil4"));
-                imgList.add(new ImageItem(R.drawable.profil1, "profil1"));
-                imgList.add(new ImageItem(R.drawable.profil2, "profil2"));
-                imgList.add(new ImageItem(R.drawable.profil3, "profil3"));
-                break;
-        }
+        //XML du dialog
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_options,null);
 
-        return imgList;
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        View rootView = getWindow().getDecorView().getRootView();
+
+        grayedOutView = new View(this);
+        grayedOutView.setBackgroundColor(Color.parseColor("#88000000"));
+        grayedOutView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        // Ajoutez le layout semi-transparent à la View racine de l'activité
+        ((ViewGroup) rootView).addView(grayedOutView);
+        grayedOutView.setVisibility(View.GONE);
+
+        SeekBar sbVol = dialogView.findViewById(R.id.sbVol);
+        SeekBar sbPos = dialogView.findViewById(R.id.sbPos);
+        Button backBtn = dialogView.findViewById(R.id.retourBtn);
+
+        sbPos.setMax(audioLauncher.getDuration());
+
+        sbPos.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                audioLauncher.pause();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                audioLauncher.start();
+                audioLauncher.seekTo(sbPos.getProgress());
+            }
+        });
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+                                            @Override
+                                            public void run() {
+                                                sbPos.setProgress(audioLauncher.getCurrentPosition());
+                                            }
+                                        },0,
+                300);
+
+
+        int volumeMax = audioPlayer.getStreamMaxVolume(audioPlayer.STREAM_MUSIC);
+        sbVol.setMax(volumeMax);
+
+        int currentVolume = audioPlayer.getStreamVolume(AudioManager.STREAM_MUSIC);
+        sbVol.setProgress(currentVolume);
+
+        sbVol.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.hide();
+                grayedOutView.setVisibility(View.GONE);
+            }
+        });
+
+        grayedOutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                grayedOutView.setVisibility(View.GONE);
+            }
+        });
+
+        dialog.show();
+        grayedOutView.setVisibility((View.VISIBLE));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        audioLauncher.seekTo(musicPos);
+        audioLauncher.setLooping(true);
+        audioLauncher.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         audioLauncher.pause();
+        musicPos = audioLauncher.getCurrentPosition();
     }
 
     @Override
