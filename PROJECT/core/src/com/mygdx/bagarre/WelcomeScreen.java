@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,10 +32,8 @@ public class WelcomeScreen implements Screen, InputProcessor {
 
     private SpriteBatch batch;
 
-    private Texture background = new Texture("misc/ocean.png");
+    private Texture background = new Texture("misc/ecran_accueil.png");
 
-
-    //===========================================================================================
     Stage stage;
     TextButton buttonSolo;
     TextButton buttonMulti;
@@ -55,17 +55,22 @@ public class WelcomeScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
 
-
-
         initStageButtons();
-
     }
 
     private void initStageButtons() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        font = new BitmapFont();
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("misc/jack_input.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 30;
+        fontParameter.borderWidth = 2.6f;
+        fontParameter.color = Color.WHITE;
+        fontParameter.borderColor = new Color(0, 0, 0, 0.8f);
+        fontParameter.spaceX = 1;
+
+        font = fontGenerator.generateFont(fontParameter);
 
         skin = new Skin();
         buttonAtlas = new TextureAtlas(Gdx.files.internal("misc/buttons.atlas"));
@@ -77,10 +82,10 @@ public class WelcomeScreen implements Screen, InputProcessor {
         textButtonStyle.checked = skin.getDrawable("checked-button");
 
         buttonSolo = new TextButton("JEU SOLO", textButtonStyle);
-        buttonSolo.setPosition(SCREEN_WIDTH / 2 - buttonSolo.getWidth() / 2, SCREEN_HEIGHT / 2);
+        buttonSolo.setPosition(SCREEN_WIDTH / 2 - buttonSolo.getWidth() / 2, SCREEN_HEIGHT / 2 - 150);
 
         buttonMulti = new TextButton("JEU MULTIJOUEUR", textButtonStyle);
-        buttonMulti.setPosition(buttonSolo.getX(), buttonSolo.getY() + 200);
+        buttonMulti.setPosition(buttonSolo.getX(), buttonSolo.getY() - 150);
 
         stage.addActor(buttonSolo);
         stage.addActor(buttonMulti);
@@ -107,6 +112,7 @@ public class WelcomeScreen implements Screen, InputProcessor {
             }
         });
 
+
     }
 
     @Override
@@ -119,9 +125,13 @@ public class WelcomeScreen implements Screen, InputProcessor {
 
         batch.begin(); //======================================================
 
-        //if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
-        batch.draw(background, 0, 0,SCREEN_WIDTH,SCREEN_HEIGHT);
+        float backWidthRatioed = background.getWidth() * (SCREEN_HEIGHT / background.getHeight());
+        float backgX = (SCREEN_WIDTH - backWidthRatioed) / 2;
 
+        //batch.draw(background, backgX, 0, backWidthRatioed, SCREEN_HEIGHT);
+        batch.draw(background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        //if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
         //hudManager.drawHUD(batch);
 
         batch.end(); //========================================================

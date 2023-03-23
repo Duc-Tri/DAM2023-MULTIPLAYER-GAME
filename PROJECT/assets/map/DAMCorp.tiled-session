@@ -18,10 +18,10 @@
         },
         "DAMCorp_1.tmx": {
             "scale": 1,
-            "selectedLayer": 5,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 455,
-                "y": 241
+                "x": 486,
+                "y": 80
             }
         },
         "DAMCorp_2.tmx": {
@@ -45,7 +45,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 800,
-                "y": 799
+                "y": 801
             }
         },
         "DAMCorp_tuiles.tsx": {

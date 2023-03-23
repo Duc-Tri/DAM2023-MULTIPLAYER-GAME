@@ -54,6 +54,7 @@ public class HUDManager {
             fontParameter.size = (int) (60 * cam.zoom);
         else
             fontParameter.size = 60;
+
         fontParameter.borderWidth = 2.6f;
         fontParameter.color = Color.WHITE;
         fontParameter.borderColor = new Color(0, 0, 0, 0.8f);
@@ -105,7 +106,6 @@ public class HUDManager {
         float y = cam.position.y;
         fontDead.draw(batch, victoryText, x, y, cam.zoom * SCREEN_WIDTH, Align.center, true);
     }
-
 
     public void setText(int textIndex, String text) {
     }

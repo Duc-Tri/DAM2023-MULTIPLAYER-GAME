@@ -148,12 +148,14 @@ public class GameScreen implements Screen, InputProcessor {
     // deltaTime = temps depuis la dernière frame
     public void render(float deltaTime) {
 
-        if (mainGame.isMultiplayerGameMode())
-            submitThreadJobs();
+        if (player.isAlive() && !monstersInstance.allMonstersKilled()) {
+            if (mainGame.isMultiplayerGameMode())
+                submitThreadJobs();
 
-        updateInput(deltaTime);
+            updateInput(deltaTime);
 
-        monstersInstance.update(deltaTime);
+            monstersInstance.update(deltaTime);
+        }
 
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -263,7 +265,6 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     private void updateInput(float deltaTime) {
-
 
         if (Gdx.input.isTouched(0)) {
             int touchX = Gdx.input.getX(0);

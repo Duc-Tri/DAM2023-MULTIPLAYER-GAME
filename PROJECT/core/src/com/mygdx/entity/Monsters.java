@@ -179,7 +179,7 @@ public class Monsters {
                             type.toString() + " === " + num + " @@@ " + spawnArea);
 
                     for (int i = 0; i < num; i++) {
-                        Mob m = new Mob(type);
+                        Mob m = new Mob(type, System.currentTimeMillis() + i*4000);
                         Vector2int pos = map.centerPointAtSpawnArea(spawnArea);
                         m.setX(pos.x);
                         m.setY(pos.y);
@@ -436,18 +436,18 @@ public class Monsters {
 
             case MASTER_MODE:
 
-                for (int i=  simulationMobs.size()-1; i>=0;i--) {
+                for (int i = simulationMobs.size() - 1; i >= 0; i--) {
                     Mob m = simulationMobs.get(i);
 
                     if (m.getCurrentLife() > 0) {
-                        System.out.println(m.uniqueID+" simulationMobs/Mob:"+m.getCurrentLife());
+                        System.out.println(m.uniqueID + " simulationMobs/Mob:" + m.getCurrentLife());
                         return false;
                     }
                 }
 
                 for (Mob m : drawMobs) {
                     if (m.getCurrentLife() > 0) {
-                        System.out.println(m.uniqueID+" drawMobs/Mob:"+m.getCurrentLife());
+                        System.out.println(m.uniqueID + " drawMobs/Mob:" + m.getCurrentLife());
                         return false;
                     }
                 }

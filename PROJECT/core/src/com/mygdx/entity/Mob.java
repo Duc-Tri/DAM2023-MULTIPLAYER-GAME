@@ -43,6 +43,8 @@ public class Mob extends LivingEntity {
 
     private int WAIT_FRAMES = 0; // OBSOLETE: pour régler la vitesse de moveToPlayer
 
+    private long timeWakeup = 0;
+
     public static enum MonsterType {IMP, BAT, DEVIL, SCORPION, OCTOPUS, BLOB, TROLL, LIVING_TREE}
 
     // NUMÉRO DES MONSTRES SELON L'ORDRE DANS LE FICHIER ATLAS ====================================
@@ -59,14 +61,14 @@ public class Mob extends LivingEntity {
 
     // POINTS DE VIE DES MONSTRES =================================================================
     final static HashMap<MonsterType, Integer> MonstersHealth = new HashMap<MonsterType, Integer>() {{
-        put(MonsterType.IMP, 10);
-        put(MonsterType.BAT, 5);
-        put(MonsterType.DEVIL, 10);
-        put(MonsterType.SCORPION, 15);
-        put(MonsterType.OCTOPUS, 40);
-        put(MonsterType.BLOB, 1);
-        put(MonsterType.TROLL, 50);
-        put(MonsterType.LIVING_TREE, 45);
+        put(MonsterType.IMP, 150);
+        put(MonsterType.BAT, 80);
+        put(MonsterType.DEVIL, 100);
+        put(MonsterType.SCORPION, 200);
+        put(MonsterType.OCTOPUS, 250);
+        put(MonsterType.BLOB, 100);
+        put(MonsterType.TROLL, 300);
+        put(MonsterType.LIVING_TREE, 400);
     }};
 
     // DOMMAGES DES MONSTRES =================================================================
@@ -80,6 +82,11 @@ public class Mob extends LivingEntity {
         put(MonsterType.TROLL, 8);
         put(MonsterType.LIVING_TREE, 10);
     }};
+
+    public Mob(MonsterType type, long time) {
+        this(type);
+        timeWakeup = time;
+    }
 
     public Mob(MonsterType type) {
         // TEXTURE DE TOUS LES MOBS ---------------------------------------------------------------
