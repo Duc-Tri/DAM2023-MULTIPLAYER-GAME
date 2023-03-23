@@ -69,30 +69,31 @@ public class MonstersManager {
 
 					int damage = Integer.parseInt(attackedSplit[1]);
 
-					// System.out.println(numLobby + "@ applyDamagesOnMonsters @@@@@@@@@@@@@@@ " +
-					// oneMobId + "/" + damage + " => #" + lobbyMobs.size());
+					System.out.println(numLobby + "@ applyDamagesOnMonsters @@@@@@@@@@@@@@@ " + oneMobId + "/" + damage
+							+ " => #" + lobbyMobs.size());
 
 					// UPDATE MOBS LIFE -------------------------------------------------
 					for (int i = lobbyMobs.size() - 1; i >= 0; i--) {
 
-						Monster oneMob = lobbyMobs.get(i);
+						Monster lobbyMob = lobbyMobs.get(i);
 
-						if (oneMobId.equalsIgnoreCase(oneMob.getUniqueID())) {
+						if (oneMobId.equalsIgnoreCase(lobbyMob.getUniqueID())) {
 							found = true;
 
-							oneMob.applyDamage(damage);
+							lobbyMob.applyDamage(damage);
 
 							// FLOOD !
 							// System.out.println("recreateMonsters >>>>> UPDATE MOB >>>>> " +
 							// updateMob.toString());
 
-							System.out.println(numLobby + "@ applyDamagesOnMonsters @@@@@@@@@@@@@@@ UPDATE "
-									+ oneMob.getUniqueID() + "=" + oneMob.getCurrentLife());
+							System.out.println(numLobby + "/" + lobbyMobs.size()
+									+ "@ applyDamagesOnMonsters @@@@@@@@@@@@@@@ UPDATE " + lobbyMob.getUniqueID() + "="
+									+ lobbyMob.getCurrentLife());
 
 						} else {
-							// NON EXISTING MOB???????????????
-							System.err.println(numLobby + " applyDamagesOnMonsters @@@@@@@@@@@@@@@ DONT EXIST  "
-									+ oneMobId + "/" + damage);
+							// NON EXISTING MOB ???
+							System.err.println(numLobby + "/" + lobbyMobs.size()
+									+ " applyDamagesOnMonsters @@@@@@@@@@@@@@@ DONT EXIST " + oneMobId + "<>" + damage);
 						}
 
 						// System.out.println("createNewMobs >>>>> FOUND " + oneMobId);
@@ -127,7 +128,8 @@ public class MonstersManager {
 
 					int life = Integer.parseInt(strMobSplit[4]);
 
-					System.out.println(numLobby + "@ recreateMonsters ### " + oneMobId + " => #" + lobbyMobs.size());
+					// System.out.println(numLobby + "@ recreateMonsters ### " + oneMobId + " => #"
+					// + lobbyMobs.size());
 
 					// UPDATE OR REMOVE DEAD MOBS -------------------------------------------------
 					for (int i = lobbyMobs.size() - 1; i >= 0; i--) {
@@ -149,8 +151,8 @@ public class MonstersManager {
 
 								tempMobs.add(updateMob);
 
-								System.out
-										.println(numLobby + "@ recreateMonsters ### UPDATE " + updateMob.getUniqueID());
+								// System.out.println(numLobby + "@ recreateMonsters ### UPDATE " +
+								// updateMob.getUniqueID());
 
 							} else {
 								lobbyMobs.remove(i); // dead mob
@@ -175,8 +177,9 @@ public class MonstersManager {
 
 						tempMobs.add(newMob);
 
-						System.out.println(numLobby + "@ recreateMonsters ### NEW " + newMob.getUniqueID() + "/"
-								+ newMob.getCurrentLife() + " => " + tempMobs.size());
+						// System.out.println(numLobby + "@ recreateMonsters ### NEW " +
+						// newMob.getUniqueID() + "/"
+						// + newMob.getCurrentLife() + " => " + tempMobs.size());
 
 						// lobbyMobs.add(newMob);
 
@@ -191,7 +194,8 @@ public class MonstersManager {
 
 		lobbyMobs.clear();
 		lobbyMobs = tempMobs;
-		System.out.println(numLobby + "@ recreateMonsters ### lobbyMobs.size=" + lobbyMobs.size());
+		// System.out.println(numLobby + "@ recreateMonsters ### lobbyMobs.size=" +
+		// lobbyMobs.size());
 	}
 
 	// ============================================================================================
@@ -202,7 +206,9 @@ public class MonstersManager {
 		for (int i = lobbyMobs.size() - 1; i >= 0; i--) {
 			Monster mob = lobbyMobs.get(i);
 
-			System.out.println(numLobby + "@ buildMonstersHttpResponse ---------- mob.life=" + mob.getCurrentLife());
+			// FLOOD
+			// System.out.println(numLobby + "@ buildMonstersHttpResponse ----------
+			// mob.life=" + mob.getCurrentLife());
 
 			if (mob.getCurrentLife() != 999999) {
 				sbMonsters.append(mob.buildHttpResponse());

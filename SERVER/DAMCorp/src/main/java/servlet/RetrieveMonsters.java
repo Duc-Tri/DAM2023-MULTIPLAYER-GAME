@@ -30,8 +30,7 @@ public class RetrieveMonsters extends HttpServlet {
 
 			String mobs = game.retrieveMonstersStr(player);
 
-			System.out.println(
-					mobs.length() + " RetrieveMonsters " + player.getUniqueID() + " ////////// " + mobs);
+			//System.out.println(mobs.length() + " RetrieveMonsters " + player.getUniqueID() + " ////////// " + mobs);
 
 			response.getWriter().append(mobs);
 		}
