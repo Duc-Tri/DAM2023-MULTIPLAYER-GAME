@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.hud.DebugOnScreen;
 import com.mygdx.hud.HUDManager;
 
@@ -35,6 +37,10 @@ public class LobbiesScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
 
     private Texture testImage = new Texture("misc/bckgrnd_online.png");
+//    private StretchViewport viewport = new StretchViewport(testImage.getWidth(), testImage.getHeight());
+
+    FreeTypeFontGenerator genFont = new FreeTypeFontGenerator((Gdx.files.internal("misc/minecraft.ttf")));
+    FreeTypeFontGenerator.FreeTypeFontParameter paramFont = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
 
     //===========================================================================================
@@ -68,8 +74,13 @@ public class LobbiesScreen implements Screen, InputProcessor {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        font = new BitmapFont();
+        paramFont.size = 42;
+//        font = new BitmapFont(Gdx.files.internal("misc/minecraft.tff"));
+//        font.getData().setScale(2);
 
+        font = new BitmapFont();
+        font = genFont.generateFont(paramFont);
+        genFont.dispose();
         skin = new Skin();
         buttonAtlas = new TextureAtlas(Gdx.files.internal("misc/buttons.atlas"));
         skin.addRegions(buttonAtlas);
@@ -123,7 +134,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
         batch.begin(); //======================================================
 
         //if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
-        batch.draw(testImage, 0, 0);
+        batch.draw(testImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         //hudManager.drawHUD(batch);
 
@@ -162,6 +173,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         batch.dispose();
+        testImage.dispose();
 //        shapeRenderer.dispose();
     }
 
@@ -215,7 +227,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        //viewport.update(width, height);
+//        viewport.update(width, height, true);
     }
 
 

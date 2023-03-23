@@ -20,14 +20,14 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     private int lastCheckedPosition = -1;
 
     Context context;
-    //    int[] nbrJoueur;
+    //    int[] numLobby;
     String[] numLobby;
 
     public ListLobbyAdapter() {
     }
 
 
-    public ListLobbyAdapter(Context context,String[] numLobby/*, int[] nbrJoueur*/ ) {
+    public ListLobbyAdapter(Context context,String[] numLobby/*, int[] numLobbyr*/ ) {
         this.context = context;
         this.numLobby = numLobby;
     }
@@ -41,7 +41,6 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
         return new MyViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
 	
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
