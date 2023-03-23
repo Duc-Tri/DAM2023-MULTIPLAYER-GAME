@@ -36,8 +36,8 @@ public class LobbiesScreen implements Screen, InputProcessor {
     private Texture testImage = new Texture("misc/bloody_screen2.png");
 
     private static float cameraZoom = 1; // plus c'est gros, plus on est loin
-    private DebugOnScreen debugOS;
-    private HUDManager hudManager;
+//    private DebugOnScreen debugOS;
+//    private HUDManager hudManager;
 
     int threadPoolSize = 15;
 
@@ -56,8 +56,8 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
         joystick = new Joystick(100, 100, MainGame.getInstance().runOnAndroid() ? 200 : 100);
 
-        debugOS = DebugOnScreen.getInstance();
-        hudManager = HUDManager.getInstance();
+//        debugOS = DebugOnScreen.getInstance();
+//        hudManager = HUDManager.getInstance();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
         if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
 
-        hudManager.drawHUD(batch);
+//        hudManager.drawHUD(batch);
 
         batch.end(); //========================================================
 
@@ -87,7 +87,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
 
-        debugOS.drawTexts(batch);
+//        debugOS.drawTexts(batch);
     }
 
     @Override
