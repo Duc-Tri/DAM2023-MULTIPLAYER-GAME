@@ -57,6 +57,7 @@ public class MainGame extends Game {
             welcomeScreen = new WelcomeScreen(this);
             setScreen(welcomeScreen);
         }
+
         //Gdx.input.setInputProcessor(lobbiesScreen); // NON !
     }
 

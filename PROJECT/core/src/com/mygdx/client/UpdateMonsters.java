@@ -63,10 +63,10 @@ public class UpdateMonsters implements Runnable {
                 }
                 in.close();
 
-                System.out.println("UpdateMonsters:requestServer " + response);
+                //System.out.println("UpdateMonsters:requestServer " + response);
 
             } else {
-                System.out.println("UpdateMonsters:requestServer did not work.");
+                //System.out.println("UpdateMonsters:requestServer did not work.");
             }
         } catch (MalformedURLException e) {
 //            e.printStackTrace();
@@ -90,7 +90,7 @@ public class UpdateMonsters implements Runnable {
         sbMonsters.append(simulationMobs.buildMonstersHttpParam());
 
         // FLOOD !!!
-        System.out.println((sbMonsters.length() - len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);
+        //System.out.println((sbMonsters.length() - len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);
 
         return sbMonsters.toString();
     }

@@ -15,7 +15,7 @@ public class DesktopLauncher {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
         config.setTitle("DESKTOP");
-        config.setWindowedMode(900, 600);
+        config.setWindowedMode(1800, 900);
 
         MainGame.getInstance().setConfig("desktop");
 

@@ -84,7 +84,7 @@ public class GameScreen implements Screen, InputProcessor {
         monstersInstance = Monsters.getInstance();
         monstersInstance.init(map, player);
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.5f);
+        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 0.5f : 0.5f);
         batch.setProjectionMatrix(clampedCamera.combined);
 
         shapeRenderer = new ShapeRenderer();
@@ -187,12 +187,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void debugOnScreen() {
         debugOS.setText(0, mainGame.getGameMode() + " / " + monstersInstance.getMonstersMode());
-        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
+        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby()); // + " / " + player.getLobbyPlayerId());
 
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
 
-        debugOS.drawTexts(batch);
+        //debugOS.drawTexts(batch);
     }
 
     private void submitThreadJobs() {

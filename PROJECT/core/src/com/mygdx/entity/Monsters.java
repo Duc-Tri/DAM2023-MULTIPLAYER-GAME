@@ -435,7 +435,22 @@ public class Monsters {
                 break;
 
             case MASTER_MODE:
-                for (Mob m : simulationMobs) if (m.currentLife > 0) return false;
+
+                for (int i=  simulationMobs.size()-1; i>=0;i--) {
+                    Mob m = simulationMobs.get(i);
+
+                    if (m.getCurrentLife() > 0) {
+                        System.out.println(m.uniqueID+" simulationMobs/Mob:"+m.getCurrentLife());
+                        return false;
+                    }
+                }
+
+                for (Mob m : drawMobs) {
+                    if (m.getCurrentLife() > 0) {
+                        System.out.println(m.uniqueID+" drawMobs/Mob:"+m.getCurrentLife());
+                        return false;
+                    }
+                }
 
                 break;
         }
