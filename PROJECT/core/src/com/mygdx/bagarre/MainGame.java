@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Mob;
 import com.mygdx.entity.Player;
-import com.mygdx.firebase.FirebaseHelper;
 import com.mygdx.map.Map;
 
 public class MainGame extends Game {
@@ -48,7 +47,6 @@ public class MainGame extends Game {
 
     @Override
     public void create() {
-        FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
 
         // chargement des atlas ici, ce qui évite certains bugs par la suite...
         Mob.allMonstersAtlas = new TextureAtlas(Gdx.files.internal(Mob.MONSTERS_ATLAS));
