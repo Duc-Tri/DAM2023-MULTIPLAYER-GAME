@@ -8,38 +8,44 @@
     android:elevation="20dp"
     android:foregroundGravity="center"
     android:paddingBottom="10dp"
-    android:radius="10dp"
-    android:background="@drawable/fond_bleu"
-    android:layout_marginBottom="8dp">
+    android:radius="10dp">
 
     <LinearLayout
-        android:id="@+id/ll_mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent"
+        android:background="#C673D8FA"
+        android:gravity="center">
+
 
         <TextView
-            android:id="@+id/tvNomLobby"
-            android:layout_width="169dp"
+                android:id="@+id/tvNomLobby"
+                android:layout_width="169dp"
+                android:layout_height="73dp"
+                android:layout_marginStart="50dp"
+                android:layout_weight="30"
+                android:gravity="center|start"
+                android:text="Lobby"
+                android:textAppearance="@style/NomJoueur" />
+
+        <TextView
+            android:id="@+id/tvNbrJoueur"
+            style="@style/NomJoueur"
+            android:layout_width="wrap_content"
             android:layout_height="73dp"
-            android:layout_marginStart="50dp"
             android:layout_weight="1"
-            android:gravity="center|start"
-            android:text="Lobby"
-            android:textAppearance="@style/NomJoueur" />
+            android:gravity="center"
+            android:text="0/4"
+            android:textSize="24sp"
+            android:visibility="gone" />
 
         <Button
-            android:id="@+id/btnJoinLobby"
-            android:layout_width="wrap_content"
-            android:layout_height="87dp"
-            android:layout_marginEnd="30dp"
-            android:background="@android:drawable/ic_menu_add"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp" />
-
+                android:id="@+id/btnJoinLobby"
+                android:layout_width="wrap_content"
+                android:layout_height="87dp"
+                android:layout_marginEnd="30dp"
+                android:background="@android:drawable/ic_menu_add"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />    
 
     </LinearLayout>
 

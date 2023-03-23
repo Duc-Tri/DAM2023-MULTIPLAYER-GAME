@@ -178,10 +178,10 @@
         android:fontFamily="@font/minecraft"
         android:minWidth="50dp"
         android:minHeight="50dp"
+        android:onClick="alertOptions"
         android:text="@string/options"
         android:textColor="@color/font_change"
         app:layout_constraintEnd_toEndOf="@+id/soloOnLine"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="@+id/soloOnLine"
         app:layout_constraintTop_toBottomOf="@+id/soloOnLine" />
 

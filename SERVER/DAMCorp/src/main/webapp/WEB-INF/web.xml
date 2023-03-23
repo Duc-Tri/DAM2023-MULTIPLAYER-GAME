@@ -149,4 +149,16 @@
     <servlet-name>RetreiveLobbies</servlet-name>
     <url-pattern>/RetreiveLobbies</url-pattern>
   </servlet-mapping>
+  
+    <servlet>
+    <description></description>
+    <display-name>AttackMonsters</display-name>
+    <servlet-name>AttackMonsters</servlet-name>
+    <servlet-class>servlet.AttackMonsters</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>AttackMonsters</servlet-name>
+    <url-pattern>/AttackMonsters</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -12,12 +12,20 @@ import com.mygdx.graphics.LifeBar;
 import com.mygdx.graphics.RMXPCharactersAtlas;
 
 //#################################################################################################
-// Entity qui possède des points de vie, des sprites, etc.
+// LivingEntity
+//=================================================================================================
+// - des points de vie
 //
+// - une animation dans 4 directions
+//
+// - un sprite
+//
+// - un hitbox pour les collisions
 //#################################################################################################
-public class LivingEntity implements Entity {
-    public static final boolean DEBUG_HITBOX = false;
-    protected TextureAtlas textureAtlas;
+public abstract class LivingEntity implements Entity {
+    public static final boolean DEBUG_HITBOX = true;
+    protected static final Texture debugTexture = new Texture("misc/yellow64x64.png");
+    protected TextureAtlas entityAtlas;
 
     // TEMPORAIRE : un personnage fait 32x48 pixels, la hitbox est très petite, elle est aux pieds
     private static final int CHAR_WIDTH = 32;
@@ -44,17 +52,18 @@ public class LivingEntity implements Entity {
     protected String serverUniqueID;
     protected String RMXP_CHARACTER; // non de la région texture dans l'atlas
     private static int numLivingEntity = 0;
-    protected int currentLife = 1;
-    protected int maxLife = 1;
-    private static MainGame mainGame;
+    protected int currentLife = 1; // points de vie actuels
+    protected int maxLife = 1; // le max en PV
     protected LifeBar lifeBar;
+    protected long lastHurtTime;
 
     public LivingEntity() {
-        if (mainGame == null) mainGame = MainGame.getInstance();
+        //if (mainGame == null) mainGame = MainGame.getInstance();
 
-        //System.out.println("########## CONSTRUCTOR LivingEntity");
         numLivingEntity++;
+        spriteTint = new Color(0.5f, 0.25f, 0.1f, 1);
         lifeBar = new LifeBar(this);
+        //System.out.println("########## CONSTRUCTOR LivingEntity");
     }
 
     @Override
@@ -77,8 +86,8 @@ public class LivingEntity implements Entity {
             findRegion = RMXP_CHARACTER + "DOWN_" + compteurDown;
         }
 
-        textureRegion = textureAtlas.findRegion(findRegion);
         //System.out.println("animate _______________ " + findRegion);
+        textureRegion = entityAtlas.findRegion(findRegion);
         sprite.setRegion(textureRegion);
     }
 
@@ -87,9 +96,15 @@ public class LivingEntity implements Entity {
     }
 
     public float getFootX() {
-        if (sprite == null) return 0;
-
         return entityX + sprite.getWidth() / 2;
+    }
+
+    public float getMiddleY() {
+        return entityY + sprite.getHeight() / 2;
+    }
+
+    public float getHalfHeight() {
+        return sprite.getHeight() / 2;
     }
 
     public float getY() {
@@ -124,10 +139,8 @@ public class LivingEntity implements Entity {
 
     public void setY(float y) {
         entityY = y;
-        if (hitbox != null)
-            hitbox.setY(y + HITBOX_YOFFSET);
-        if (sprite != null)
-            sprite.setY(y);
+        hitbox.setY(y + HITBOX_YOFFSET);
+        sprite.setY(y);
     }
 
     public void setFootX(float x) {
@@ -162,12 +175,8 @@ public class LivingEntity implements Entity {
 
     public void setFindRegion(String findRegion) {
         this.findRegion = findRegion;
-        textureRegion = textureAtlas.findRegion(this.findRegion);
+        textureRegion = entityAtlas.findRegion(this.findRegion);
         getSprite().setRegion(textureRegion);
-    }
-
-    public String getTextureAtlasPath() {
-        return MainGame.PLAYERS_ATLAS;
     }
 
     public String getServerUniqueID() {
@@ -178,8 +187,6 @@ public class LivingEntity implements Entity {
         this.serverUniqueID = serverUniqueID;
     }
 
-    private static final Texture debugTarget8 = new Texture("test/target8x8.png");
-
     public void drawAndUpdate(SpriteBatch batch) {
         if (batch == null || sprite == null || sprite.getTexture() == null) return;
 
@@ -187,7 +194,7 @@ public class LivingEntity implements Entity {
         lifeBar.draw(batch);
 
         if (DEBUG_HITBOX)
-            batch.draw(debugTarget8, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+            batch.draw(debugTexture, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
 
     public float getMiddleOfHitboxX() {
@@ -202,7 +209,7 @@ public class LivingEntity implements Entity {
 
         // protected = uniquement pour les classes filles
         //return Math.abs(System.currentTimeMillis() + (int) (Math.random() * 1000000));
-        return numLivingEntity + (int) (Math.random() * 10000);
+        return numLivingEntity + (int) (Math.random() * 1000000);
     }
 
     public int getCurrentLife() {
@@ -213,8 +220,18 @@ public class LivingEntity implements Entity {
         currentLife = l;
     }
 
+    // Renvoi true si mort du MOB
+    public boolean applyDamage(int damage) {
+        lastHurtTime = System.currentTimeMillis();
+        currentLife -= damage;
+        return !isAlive();
+    }
+
+    public boolean isAlive() {
+        return currentLife > 0;
+    }
+
     public int getMaxLife() {
         return maxLife;
     }
-
 }

@@ -1,43 +1,55 @@
 package com.mygdx.graphics;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.entity.LivingEntity;
 
+import java.util.Currency;
+
+import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
+
 public class LifeBar {
-    private final static Texture green = new Texture("test/green.png");
-    private final static Texture black = new Texture("test/black.png");
-    private LivingEntity livingEntity;
-    private Sprite sprite;
-    private static final int WIDTH = 40;
+    private final static TextureAtlas colorsAtlas = new TextureAtlas("misc/colors.atlas");
+    private final static TextureRegion blackRegion = colorsAtlas.findRegion("BLACK");
+    private TextureRegion colorRegion;
+    private LivingEntity owner;
+    private static final int WIDTH = 32;
     private static final int HEIGHT = 4;
     private float ratio;
+    private int maxLife;
 
     public LifeBar(LivingEntity e) {
-        livingEntity = e;
-        sprite = new Sprite(green);
+        owner = e;
+        colorRegion = colorsAtlas.findRegion("GREY");
     }
 
     public void setBarRatio(int maxLife) {
+        this.maxLife = maxLife;
         ratio = (float) maxLife / WIDTH;
+//        System.out.println("LifeBar +++++++++++++++++ " + owner.getUniqueID() +
+//                " #" + owner.getCurrentLife() + " / " + owner.getMaxLife());
     }
 
-
     public void draw(SpriteBatch batch) {
+        float x = owner.getFootX() - WIDTH / 2;
+        float y = owner.getY() + owner.getSprite().getHeight() + 1;
+        int life = owner.getCurrentLife();
 
         //System.out.println("draw lifeBar ===== " + livingEntity.getUniqueID() + " / " + livingEntity.getCurrentLife() + " / " + ratio);
 
-        sprite.setColor(1, 0, 0, 1); // ?????
+        if (life < maxLife / 3f)
+            colorRegion = colorsAtlas.findRegion("RED");
+        else if (life < 2f * maxLife / 3f)
+            colorRegion = colorsAtlas.findRegion("ORANGE");
+        else
+            colorRegion = colorsAtlas.findRegion("GREEN");
 
-        float x = livingEntity.getFootX() - WIDTH / 2;
-        float y = livingEntity.getY() + 1;
+        // BACKGROUND ---------------------------
+        batch.draw(blackRegion, x, y, WIDTH, HEIGHT);
 
-        // background
-        batch.draw(black, x, y, WIDTH, HEIGHT);
-
-        // foreground
-        batch.draw(green, x, y, livingEntity.getCurrentLife() / ratio, HEIGHT);
+        // FOREGROUND ---------------------------
+        if (life > 0)
+            batch.draw(colorRegion, x, y, life / ratio, HEIGHT);
     }
 }

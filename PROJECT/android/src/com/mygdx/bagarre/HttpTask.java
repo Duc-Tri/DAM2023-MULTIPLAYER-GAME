@@ -17,8 +17,10 @@ public class HttpTask extends AsyncTask<Void, Void, String[]> {
 
     @Override
     protected String[] doInBackground(Void... voids) {
-
-        String[] listLobby = new String[0];
+		
+        //String[] listLobby = new String[0];
+        String[] listLobby;
+		
         try {
             listLobby = RetrieveLobbies.requestServer();
         } catch (MalformedURLException e) {

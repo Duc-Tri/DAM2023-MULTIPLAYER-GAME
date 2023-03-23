@@ -39,13 +39,11 @@ public class RetrievePlayer extends HttpServlet {
 			if (player != null) {
 				response.getWriter().append(player.getX());
 				response.getWriter().append(";" + player.getY());
-				response.getWriter().append(";" + player.getBoxWidth());
-				response.getWriter().append(";" + player.getBoxHeight());
 				response.getWriter().append(";" + player.getUniqueID());
 				response.getWriter().append(";" + player.getServerUniqueID());
 				response.getWriter().append(";" + player.getFindRegion());
-				response.getWriter().append(";" + player.getTextureAtlasPath());
 				response.getWriter().append(";" + player.getNumLobby());
+				response.getWriter().append(";" + player.getLife());
 				response.getWriter().append(";" + player.isMaster());
 
 //				 System.out.println();

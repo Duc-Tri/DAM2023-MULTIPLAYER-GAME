@@ -15,16 +15,15 @@ import java.util.ArrayList;
 
 public class UpdateMonsters implements Runnable {
     private static Player player;
-    private Monsters monsters;
-    private static ArrayList<Mob> simulationMobs;
+
+    private static Monsters simulationMobs;
     private final static String GET_URL = MainGame.URLServer + "UpdateMonsters";
     private final static String USER_AGENT = "Mozilla/5.0";
     private final static long RUNNING_TIME = 100000000L;
 
     public UpdateMonsters(Player p, Monsters mobs) {
         player = p;
-        monsters = mobs;
-        simulationMobs = monsters.getSimulationMobs();
+        simulationMobs = mobs;
     }
 
     @Override
@@ -38,7 +37,7 @@ public class UpdateMonsters implements Runnable {
                 throw new RuntimeException(e);
             }
             requestServer();
-            // System.out.println("UpdateMonsters:run +++++++++++++++++++++++++++++++++++++++");
+            //System.out.println("UpdateMonsters:run +++++++++++++++++++++++++++++++++++++");
         }
     }
 
@@ -47,10 +46,11 @@ public class UpdateMonsters implements Runnable {
         String paramString = buildParam();
 
         URL url = null;
+
         try {
             url = new URL(GET_URL + paramString);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
+            con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", USER_AGENT);
 
             int responseCode = con.getResponseCode();
@@ -63,7 +63,7 @@ public class UpdateMonsters implements Runnable {
                 }
                 in.close();
 
-                // System.out.println("UpdateMonsters:requestServer " + response);
+                System.out.println("UpdateMonsters:requestServer " + response);
 
             } else {
                 System.out.println("UpdateMonsters:requestServer did not work.");
@@ -73,30 +73,26 @@ public class UpdateMonsters implements Runnable {
         } catch (IOException e) {
 //            e.printStackTrace();
         }
+
     }
 
     private static String buildParam() {
+
+        ///////////////////////////////////////////////////////////////////////////////// BUG SERVER
         StringBuilder sbMonsters = new StringBuilder();
         sbMonsters.append("?");
         sbMonsters.append("&serverUniqueID=" + player.getServerUniqueID());
         sbMonsters.append("&numLobby=" + player.getNumLobby());
         sbMonsters.append("&monsters=");
+
         int len0 = sbMonsters.length();
 
-        for (Mob m : simulationMobs)
-            if (m.getCurrentLife() > 0) {
-                sbMonsters.append(m.getUniqueID() + ";");
-                sbMonsters.append(m.getFootX() + ";");
-                sbMonsters.append(m.getY() + ";");
-                sbMonsters.append(m.getFindRegion() + ";");
-                sbMonsters.append(m.getCurrentLife() + "!"); // pas * pas ~ pas # !!!
-            }
+        sbMonsters.append(simulationMobs.buildMonstersHttpParam());
 
         // FLOOD !!!
-        //System.out.println((sbMonsters.length()-len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);
+        System.out.println((sbMonsters.length() - len0) + " ########## UpdateMonsters:buildParam " + sbMonsters);
 
         return sbMonsters.toString();
     }
-
 
 }

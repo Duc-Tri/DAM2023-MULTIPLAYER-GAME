@@ -43,7 +43,7 @@ public class NewPlayer {
                 ///////////////////////////////////////////////////////////////////////////////////
                 player.setMaster(resp[2].trim().equalsIgnoreCase("true"));
 
-                System.out.println("NewPlayer ###### " + String.join(" / ", resp));
+                System.out.println("NewPlayer ###### " +  resp[0]+"/"+resp[1]+"/"+resp[2]);
             }
 
         } catch (MalformedURLException e) {
@@ -61,7 +61,6 @@ public class NewPlayer {
         param = param + "&uniqueID=" + player.getUniqueID();
         param = param + "&spriteColorInt=" + player.getSpriteTint();
         param = param + "&findRegion=" + player.getFindRegion();
-        param = param + "&textureAtlasPath=" + player.getTextureAtlasPath();
         param = param + "&scale=" + 1;//+player.getScale();
         param = param + "&numLobby=" + player.getNumLobby();
 

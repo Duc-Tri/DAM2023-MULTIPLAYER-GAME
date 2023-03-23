@@ -11,29 +11,27 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.mygdx.client.RetrieveLobbies;
-
 import java.net.MalformedURLException;
 
 public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyViewHolder> {
     private int lastCheckedPosition = -1;
 
-
     Context context;
+    //    int[] nbrJoueur;
     String[] numLobby;
-
 
     public ListLobbyAdapter() {
     }
 
-    public ListLobbyAdapter(Context context,String[] numLobby ) {
+
+    public ListLobbyAdapter(Context context,String[] numLobby/*, int[] nbrJoueur*/ ) {
         this.context = context;
         this.numLobby = numLobby;
     }
+	
 
     @NonNull
     @Override
@@ -45,6 +43,7 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
 
     @SuppressLint("SetTextI18n")
     @Override
+	
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tvNomLobby.setText("Lobby n° "+numLobby[position]);
         holder.btnJoinLobby.setOnClickListener(new View.OnClickListener() {
@@ -54,11 +53,13 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
                 notifyDataSetChanged();
             }
         });
+		
         if(lastCheckedPosition==position){
             holder.linearLayout.setBackgroundResource(R.drawable.fond_bleu_fonce);
         }else{
             holder.linearLayout.setBackgroundResource(R.drawable.fond_bleu);
         }
+		
     }
 
 
@@ -69,7 +70,7 @@ public class ListLobbyAdapter extends RecyclerView.Adapter<ListLobbyAdapter.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-
+		
         private TextView tvNomLobby;
         private Button btnJoinLobby;
         private LinearLayout linearLayout;

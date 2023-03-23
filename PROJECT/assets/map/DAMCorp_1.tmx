@@ -96,7 +96,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="TRIGGERS">
+ <objectgroup id="6" name="TRIGGERS" locked="1">
   <object id="1" name="START" x="84.6667" y="300" width="117.333" height="60.3333"/>
   <object id="3" name="EXIT" x="779.667" y="120.091" width="73.8182" height="45.0303"/>
   <object id="4" name="SPAWN_01" x="50" y="89" width="81" height="45"/>
@@ -104,13 +104,13 @@
   <object id="7" name="spawner" x="358" y="-218.5" width="282" height="208">
    <text fontfamily="Source Code Pro" wrap="1">SPAWN MONSTERS
 
-SCORPION     ;3  ;spawn_01
-TROLL        ;2  ;spawn_02
-BAT          ;5  ;spawn_03
-IMP          ;4  ;spawn_01
+SCORPION     ;1  ;spawn_01
+TROLL        ;1  ;spawn_02
+BAT          ;1  ;spawn_03
+IMP          ;1  ;spawn_01
 DEVIL        ;1  ;spawn_02
 OCTOPUS      ;1  ;spawn_03
-BLOB         ;6  ;spawn_01
+BLOB         ;1  ;spawn_01
 LIVING_TREE  ;1  ;spawn_02
 </text>
   </object>

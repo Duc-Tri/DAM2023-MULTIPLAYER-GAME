@@ -29,8 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 
 //#################################################################################################
+// Map: wrapper d'un TiledMap.
 // Structure attendue d'une carte (TiledMap) fait avec TILED :
-//-------------------------------------------------------------------------------------------------
+//=================================================================================================
 // - un calque OBLIGATOIRE TRIGGERS (qui contient les points de spawn START, EXIT & ENEMY)
 //
 // - un calque optionnel PLAYERS (tuiles au même niveau que les joueurs)
@@ -43,7 +44,8 @@ import java.util.List;
 //#################################################################################################
 public class Map {
 
-    public final static boolean DEBUG_MAP = false; // true = AFFICHE LE LAYER OBSTACLES (=> TOPMAP)
+    public final static boolean DEBUG_OBSTACLES = false; // true = affiche les OBSTACLES (=> TOPMAP)
+
     private final TiledMap tiledMap;
     private final int mapNumberLayers;
     private TiledMap groundMap; // contient que les sols, en dessous des joueurs
@@ -58,8 +60,8 @@ public class Map {
     public final int mapHeightInTiles;
     public final int tileWidth;
     public final int tileHeight;
-
     public final String monstersToSpawn;
+    private HashMap<String, Rectangle> spawnAreas;
 
     public Map(String mapFilename, SpriteBatch batch) {
         this.batch = batch;
@@ -80,7 +82,7 @@ public class Map {
         playersLayer = (TiledMapTileLayer) getLayerAnyCase("PLAYERS");
 
         obstaclesLayer = (TiledMapTileLayer) getLayerAnyCase("OBSTACLES");
-        obstaclesLayer.setVisible(DEBUG_MAP);
+        obstaclesLayer.setVisible(DEBUG_OBSTACLES);
         //printLayer(obstaclesLayer);
         renameLayersToUpperCase();
 
@@ -121,14 +123,14 @@ public class Map {
     private void constructTopMap() {
 
         // si debug, on met les obstacles dans le topMap, pour qu'il soit au dessus de tout
-        if (DEBUG_MAP)
+        if (DEBUG_OBSTACLES)
             topMap.getLayers().add(obstaclesLayer);
         else
             addLayersToMap("TOP", topMap);
     }
 
     private void constructGroundMap() {
-        if (!DEBUG_MAP) addLayersToMap("GROUND", groundMap);
+        if (!DEBUG_OBSTACLES) addLayersToMap("GROUND", groundMap);
     }
 
     private void addLayersToMap(String prefixName, TiledMap map) {
@@ -170,23 +172,6 @@ public class Map {
 
     public void setGroundMapRenderer(TiledMapRenderer groundMapRenderer) {
         this.groundMapRenderer = groundMapRenderer;
-    }
-
-    // imprime dans la console le layer OBSTACLES
-    private void printLayer(TiledMapTileLayer layer) {
-        int layerHeight = layer.getHeight();
-        int layerWidth = layer.getWidth();
-
-        String temp = "";
-        for (int cellY = layerHeight; cellY >= 0; cellY--) {
-            for (int cellX = 0; cellX < layerWidth; cellX++) {
-
-                temp += (layer.getCell(cellX, cellY) == null ? " " : "#");
-
-            }
-            temp += "\n";
-        }
-        System.out.println(temp);
     }
 
     public boolean checkObstacle(float pixelX, float pixelY) {
@@ -241,7 +226,7 @@ public class Map {
 
         if (player != null) livingEntitiesList.add(player);
 
-        if (!DEBUG_MAP) renderGround();
+        if (!DEBUG_OBSTACLES) renderGround();
 
         // on trie les entités selon leur Y, pour faciliter la comparaison avec les tuiles
         Collections.sort(livingEntitiesList, livingEntityComparator);
@@ -253,17 +238,21 @@ public class Map {
 
             // on affiche les sprites qui sont au dessus de ce realY ------------------------------
             for (int ent = livingEntitiesList.size() - 1; ent >= 0; ent--) {
+
                 LivingEntity currentEntity = livingEntitiesList.get(ent);
-                if (currentEntity != null && currentEntity.getY() > realY) {
-                    currentEntity.drawAndUpdate(batch);
-                    livingEntitiesList.remove(currentEntity);
-                } else
-                    break; // si personne n'est au dessus de ce Y, on sort !
+
+                if (currentEntity != null) {
+                    if (currentEntity.getY() + 1 > realY && currentEntity.isAlive()) {
+                        currentEntity.drawAndUpdate(batch);
+                        livingEntitiesList.remove(currentEntity);
+                    }
+                    //else break; // si personne n'est au dessus de ce Y, on sort !
+                }
             }
 
             // affiche les tuiles de cette rangée tileY -------------------------------------------
             int realX = 0;
-            if (playersLayer != null) {
+            if (!DEBUG_OBSTACLES && playersLayer != null) {
                 for (int tileX = 0; tileX < mapWidthInTiles; tileX++) {
                     Cell c = playersLayer.getCell(tileX, tileY);
                     if (c != null) {
@@ -277,7 +266,7 @@ public class Map {
             realY -= tileHeight; // on "va vers le bas" pour l'affichage
         }
 
-        renderTop(); // on affiche le topmap, quelque soit l'état de DEBUG_MAP
+        renderTop(); // on affiche le top
     }
 
     // Indice tuile => Coordonées pixels
@@ -315,9 +304,6 @@ public class Map {
         }
     }
 
-
-    HashMap<String, Rectangle> spawnAreas;
-
     // Charge les rectangles TRIGGERS
     private void retrieveTriggerObjects() {
         // si le calque TRIGGERS n'existe pas , ça plante !!!
@@ -331,7 +317,7 @@ public class Map {
 //            System.out.println("retrieveTriggerObjects ############## rectTrigger=" + r.getName());
 
             String areaName = area.getName().trim().toUpperCase();
-            if (areaName.startsWith("SPAWN_")) {
+            if (areaName.startsWith("SPAWN_") || areaName.startsWith("START") || areaName.startsWith("EXIT")) {
                 spawnAreas.put(areaName, area.getRectangle());
             }
 
@@ -350,17 +336,45 @@ public class Map {
     // Renvoie la position du centre d'un spawnArea
     //---------------------------------------------------------------------------------------------
     public Vector2int centerPointAtSpawnArea(String spawnArea) {
-        Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
-        if (area != null)
-            return new Vector2int(area.x + area.width / 2, area.y + area.height / 2);
 
-        return new Vector2int(0, 0);
+
+        Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
+        if (area != null) {
+            // System.out.println("centerPointAtSpawnArea =============== " + spawnArea);
+
+            return new Vector2int(area.x + area.width / 2, area.y + area.height / 2);
+        }
+
+        return new Vector2int(100, 100);
     }
 
-    // Renvoie une position aléatoire à l'intérieur d'un spawnArea
+    // Renvoie une position aléatoire à l'intérieur d'un rectangle spawnArea
     //---------------------------------------------------------------------------------------------
     public Vector2int randomPointAtSpawnArea(String spawnArea) {
+        Rectangle area = spawnAreas.get(spawnArea.toUpperCase());
+        if (area != null)
+            return new Vector2int((int) (Math.random() * area.width + area.x),
+                    (int) (Math.random() * area.height + area.y));
+
         return new Vector2int(0, 0);
     }
+
+    // imprime dans la console le layer OBSTACLES
+    private void printLayer(TiledMapTileLayer layer) {
+        int layerHeight = layer.getHeight();
+        int layerWidth = layer.getWidth();
+
+        String temp = "";
+        for (int cellY = layerHeight; cellY >= 0; cellY--) {
+            for (int cellX = 0; cellX < layerWidth; cellX++) {
+
+                temp += (layer.getCell(cellX, cellY) == null ? " " : "#");
+
+            }
+            temp += "\n";
+        }
+        System.out.println(temp);
+    }
+
 }
 

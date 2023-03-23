@@ -13,6 +13,7 @@ public class Player {
 	private String findRegion;
 	private String textureAtlasPath;
 	private String numLobby = "";
+	private String life;
 
 	private long lastUpdate;
 	private boolean isMaster;
@@ -130,6 +131,14 @@ public class Player {
 
 	public void setMaster(String master) {
 		this.isMaster = master.trim().toUpperCase().equalsIgnoreCase("true");
+	}
+
+	public String getLife() {
+		return life;
+	}
+
+	public void setLife(String life) {
+		this.life = life;
 	}
 
 }

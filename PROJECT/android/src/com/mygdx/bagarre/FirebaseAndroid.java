@@ -2,17 +2,24 @@ package com.mygdx.bagarre;
 
 import android.util.Log;
 import com.badlogic.gdx.backends.android.AndroidFiles;
-import com.badlogic.gdx.files.FileHandle;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mygdx.firebase.Firebase;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirebaseAndroid {
 
     FirebaseDatabase db;
     DatabaseReference refPseudo;
+    LobbyAdapter adapter;
 
     public FirebaseAndroid() {
         db = FirebaseDatabase.getInstance("https://test-e782f-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -54,4 +61,87 @@ public class FirebaseAndroid {
         });
     }
 
+    public interface OnListReadyListener {
+        void onListReady(List<String> listPseudo);
+    }
+
+    public void getListRecycler(OnListReadyListener listener) {
+        final List<String> listPseudo = new ArrayList<>();
+        refPseudo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    String pseudoPlayers = (String) snap.getValue(Object.class);
+                    Log.i("PSEUDO", pseudoPlayers);
+                    listPseudo.add(pseudoPlayers);
+                    Log.i("PSEUDO_IN_LIST", listPseudo.get(0));
+                }
+                listener.onListReady(listPseudo);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    public String majLobbyPseudo(String pseudo, int NumLobby) {
+
+        DatabaseReference refLobby = db.getReference("Lobby" + NumLobby);
+        String childRef = refLobby.push().getKey();
+
+        refLobby.child(childRef).setValue(pseudo, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                Log.i("LOBBY_LIST", pseudo + " ajouté dans le Lobby N°"+NumLobby);
+            }
+        });
+
+        return childRef;
+    }
+
+    public List<String> recyclerPseudo(int NumLobby) {
+
+        List<String> listPseudo = null;
+        DatabaseReference refLobby = db.getReference("Lobby" + NumLobby);
+
+        refLobby.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String nomJoueur = snapshot.getValue(String.class);
+                listPseudo.add(nomJoueur);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                Log.e("LIST_FAILED", "Erreur de lecture des données");
+            }
+        });
+
+         return listPseudo;
+
+    }
+
 }
+
+

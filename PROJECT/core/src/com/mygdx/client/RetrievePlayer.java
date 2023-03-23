@@ -45,16 +45,16 @@ public class RetrievePlayer {
 
     private static void updatePlayer(Player player, String[] tempString) {
         if (tempString[0] != null && !tempString[0].isEmpty()) {
-            player.setHitbox(new Rectangle());
             player.setSprite(new Sprite());
             player.setX(Float.parseFloat(tempString[0]));
             player.setY(Float.parseFloat(tempString[1]));
             player.initializeSprite();
-            player.getHitbox().setWidth(Float.parseFloat(tempString[2]));
-            player.getHitbox().setHeight(Float.parseFloat(tempString[3]));
-            player.setUniqueID(tempString[4]);
-            player.setServerUniqueID(tempString[5]);
-            player.setFindRegion(tempString[6]);
+            player.setUniqueID(tempString[2]);
+            player.setServerUniqueID(tempString[3]);
+            player.setFindRegion(tempString[4]);
+            player.setNumLobby(tempString[5]);
+            player.setCurrentLife(Integer.parseInt( tempString[6]));
+            // isMaster => 9
         }
     }
 

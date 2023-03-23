@@ -9,14 +9,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import com.mygdx.client.RetrieveLobbies;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+import android.view.WindowManager;
+import android.widget.Button;
 
 public class ListLobbyActivity extends AppCompatActivity {
 
@@ -27,6 +26,11 @@ public class ListLobbyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_lobby_view);
+
+        setListenerForRetour();
+        setListenerForJoinLobby();
         setContentView(R.layout.activity_lobby_view);
 
         new HttpTask(new HttpTask.OnHttpResultListener() {
@@ -48,10 +52,7 @@ public class ListLobbyActivity extends AppCompatActivity {
         setListenerForRetour();
         setListenerForJoinLobby();
 
-
     }
-
-
 
     private void setListenerForJoinLobby() {
         Button btnJoinLobby = findViewById(R.id.btnJoinLobbyGame);
@@ -64,9 +65,6 @@ public class ListLobbyActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
 
@@ -82,8 +80,7 @@ public class ListLobbyActivity extends AppCompatActivity {
 
 
     }
-
-
+	
     private void initRecyclerView(String[] ListLobby){
 
         numLobby = ListLobby;

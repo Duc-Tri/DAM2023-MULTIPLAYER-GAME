@@ -74,9 +74,8 @@ public class UpdatePlayer implements Runnable {
         param = param + "&serverUniqueID=" + player.getServerUniqueID();
         param = param + "&findRegion=" + player.getFindRegion();
         param = param + "&numLobby=" + player.getNumLobby();
+        param = param + "&life=" + player.getCurrentLife();
 
         return param;
     }
-
-
 }

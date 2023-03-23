@@ -1,8 +1,6 @@
 package com.mygdx.client;
 
 import com.mygdx.bagarre.MainGame;
-import com.mygdx.entity.Mates;
-import com.mygdx.entity.Mob;
 import com.mygdx.entity.Monsters;
 import com.mygdx.entity.Player;
 
@@ -12,18 +10,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class RetrieveMonsters implements Runnable {
     private static final String GET_URL = MainGame.URLServer + "RetrieveMonsters";
     private static final String USER_AGENT = "Mozilla/5.0";
     private final static long RUNNING_TIME = 100000000L;
     private static Player player;
+    private ArrayList<String> updatedMonsters; // pour savoir quels sont les vieux monstres à éliminer
 
     private Monsters monsters;
 
     public RetrieveMonsters(Player p, Monsters mobs) {
         player = p;
         monsters = mobs;
+        updatedMonsters = new ArrayList<>();
     }
 
     @Override
@@ -34,11 +35,12 @@ public class RetrieveMonsters implements Runnable {
 
             String[] tempMobs = requestServer();
 
-//            System.out.println("RetrieveMonsters:run ++++++++++++++++++++++ ");
+            System.out.println("RetrieveMonsters:run +++ tempMobs=" +tempMobs);
 
             if (tempMobs != null && tempMobs.length > 0) {
-                monsters.createNewMobs(tempMobs);
-                monsters.removeOldMobs(tempMobs);
+                updatedMonsters.clear();
+                monsters.updateOrCreateNewMobs(tempMobs, updatedMonsters);
+                ///////monsters.removeOldMobs0000000000(updatedMonsters);
             } else {
                 monsters.removeAllMobs(tempMobs);
             }
@@ -48,7 +50,6 @@ public class RetrieveMonsters implements Runnable {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 
@@ -56,6 +57,7 @@ public class RetrieveMonsters implements Runnable {
         String paramString = buildParam();
 
         URL url = null;
+
         try {
             url = new URL(GET_URL + paramString);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -74,7 +76,8 @@ public class RetrieveMonsters implements Runnable {
                 String res = String.valueOf(response);
                 if (res != null && !res.isEmpty()) {
 
-//                    System.out.println("RetrieveMonsters:requestServer " + res);
+                    // FLOOD !
+                    System.out.println("RetrieveMonsters:requestServer " + res);
 
                     String[] monsters = res.split("!");
                     return monsters;
@@ -86,6 +89,8 @@ public class RetrieveMonsters implements Runnable {
         } catch (MalformedURLException e) {
         } catch (IOException e) {
         }
+
+
         return null;
     }
 
