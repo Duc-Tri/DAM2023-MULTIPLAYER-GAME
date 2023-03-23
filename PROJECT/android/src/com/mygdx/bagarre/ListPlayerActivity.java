@@ -43,7 +43,7 @@ public class ListPlayerActivity extends AppCompatActivity implements FirebaseAnd
         btnRetour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ListPlayerActivity.this,MultiJoueurActivity.class);
+                Intent intent = new Intent(ListPlayerActivity.this, MultiJoueurActivity.class);
                 startActivity(intent);
             }
         });
@@ -53,7 +53,7 @@ public class ListPlayerActivity extends AppCompatActivity implements FirebaseAnd
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity( new Intent(ListPlayerActivity.this,MultiJoueurActivity.class));
+        startActivity( new Intent(ListPlayerActivity.this, MultiJoueurActivity.class));
     }
 
     private void setListenerForStartGame() {

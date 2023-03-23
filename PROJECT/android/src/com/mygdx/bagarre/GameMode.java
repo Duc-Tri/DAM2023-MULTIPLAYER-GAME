@@ -164,7 +164,7 @@ public class GameMode extends AppCompatActivity {
         });
 
         buttonOnLine.setOnClickListener(v -> {
-            Intent intent = new Intent(GameMode.this,MultiJoueurActivity.class);
+            Intent intent = new Intent(GameMode.this, MultiJoueurActivity.class);
             startActivity(intent);
         });
 
@@ -191,7 +191,7 @@ public class GameMode extends AppCompatActivity {
         }
     }
 
-    public void alertOptions(View v) {
+    public void alertOptions() {
         //Création de l'alerte builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 

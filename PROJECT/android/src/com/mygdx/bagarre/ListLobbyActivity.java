@@ -67,7 +67,7 @@ public class ListLobbyActivity extends AppCompatActivity {
         btnRetour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ListLobbyActivity.this,MultiJoueurActivity.class);
+                Intent intent = new Intent(ListLobbyActivity.this, MultiJoueurActivity.class);
                 startActivity(intent);
             }
         });
