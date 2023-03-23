@@ -143,4 +143,53 @@
     <url-pattern>/AttackMonsters</url-pattern>
   </servlet-mapping>
 
+
+  <servlet>
+    <description></description>
+    <display-name>CancelGame</display-name>
+    <servlet-name>CancelGame</servlet-name>
+    <servlet-class>servlet.CancelGame</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>CancelGame</servlet-name>
+    <url-pattern>/CancelGame</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>RemovePlayers</display-name>
+    <servlet-name>RemovePlayers</servlet-name>
+    <servlet-class>servlet.RemovePlayers</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>RemovePlayers</servlet-name>
+    <url-pattern>/RemovePlayers</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>RetrieveMaster</display-name>
+    <servlet-name>RetrieveMaster</servlet-name>
+    <servlet-class>servlet.RetrieveMaster</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>RetrieveMaster</servlet-name>
+    <url-pattern>/RetrieveMaster</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>RetreiveLobbies</display-name>
+    <servlet-name>RetreiveLobbies</servlet-name>
+    <servlet-class>servlet.RetreiveLobbies</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>RetreiveLobbies</servlet-name>
+    <url-pattern>/RetreiveLobbies</url-pattern>
+</servlet-mapping>
+
 </web-app>
