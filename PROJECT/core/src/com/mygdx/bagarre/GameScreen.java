@@ -263,18 +263,35 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     private void updateInput(float deltaTime) {
+
+
         if (Gdx.input.isTouched(0)) {
-            int touchX = Gdx.input.getX();
-            int touchY = SCREEN_HEIGHT - Gdx.input.getY();
-
-            if (touchX < SCREEN_HALF_WIDTH) {
-                displayJoystick(touchX, touchY);
-                movePlayer(joystick.getDirectionInput(), deltaTime);
-            }
-
+            int touchX = Gdx.input.getX(0);
+            int touchY = SCREEN_HEIGHT - Gdx.input.getY(0);
+            updateJoystickAndButton(deltaTime, touchX, touchY);
         } else {
             showJoystick = false;
             movePlayer(lastKeyCode, deltaTime);
+        }
+
+
+        if (Gdx.input.isTouched(1)) {
+            int touchX = Gdx.input.getX(1);
+            int touchY = SCREEN_HEIGHT - Gdx.input.getY(1);
+            updateJoystickAndButton(deltaTime, touchX, touchY);
+        }
+    }
+
+    private void updateJoystickAndButton(float deltaTime, int touchX, int touchY) {
+        // tiers DROITE de l'écran: bouton =================================
+        if (touchX > 2 * SCREEN_WIDTH / 3) {
+            joystick.renderButton(shapeRenderer, touchX, touchY);
+            player.attack();
+        } else if (touchX < SCREEN_WIDTH / 3) {
+            // tiers GAUCHE de l'écran: joystick =================================
+
+            displayJoystick(touchX, touchY);
+            movePlayer(joystick.getDirectionInput(), deltaTime);
         }
     }
 
@@ -286,7 +303,7 @@ public class GameScreen implements Screen, InputProcessor {
         }
         showJoystick = true;
         joystick.update(touchX, touchY); // updateJoystick(touchX, touchY);
-        
+
     }
 
     private void movePlayer(int keycode, float deltaTime) {
