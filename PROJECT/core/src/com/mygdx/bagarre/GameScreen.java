@@ -95,7 +95,9 @@ public class GameScreen implements Screen, InputProcessor {
 
         //debugOS = DebugOnScreen.getInstance();
 
-        monsters = new Monsters(map, player);
+//        monsters = new Monsters(map, player);
+
+
         debugOS = DebugOnScreen.getInstance();
         hudManager = HUDManager.getInstance();
 

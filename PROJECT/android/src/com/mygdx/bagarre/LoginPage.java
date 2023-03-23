@@ -66,19 +66,6 @@ public class LoginPage extends AppCompatActivity {
         ivBackground = findViewById(R.id.ivBackground);
         horizontalScrollView = findViewById(R.id.hsvBackground);
     }
-
-    public void playMusic() {
-        //Création de l'audio lancher
-        audioLauncher = MediaPlayer.create(this, R.raw.connexion_theme);
-        audioLauncher.setLooping(true);
-        audioLauncher.start();
-        volumeBtn.setImageResource(R.drawable.volume_on);
-
-        //Création de l'audio manager
-        audioPlayer = (AudioManager) getSystemService(AUDIO_SERVICE);
-//        audioPlayer.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (audioPlayer.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.5f), 0);
-    }
-	
     public void connectBase() {
         db = new FirebaseAndroid();
     }
