@@ -1,3 +1,4 @@
+
 buttons.png
 size: 420, 180
 format: RGBA8888
@@ -5,22 +6,22 @@ filter: Nearest, Nearest
 repeat: none
 checked-button
   rotate: false
-  xy: 0, 60
-  size: 420, 60
-  orig: 420, 60
+  xy: 0, 120
+  size: 840, 120
+  orig: 840, 120
   offset: 0, 0
   index: -1
 down-button
   rotate: false
-  xy: 0, 120
-  size: 420, 60
-  orig: 420, 60
+  xy: 0, 240
+  size: 840, 120
+  orig: 840, 120
   offset: 0, 0
   index: -1
 up-button
   rotate: false
   xy: 0, 0
-  size: 420, 60
-  orig: 420, 60
+  size: 840, 120
+  orig: 840, 120
   offset: 0, 0
   index: -1
