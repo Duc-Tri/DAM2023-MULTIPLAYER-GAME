@@ -74,7 +74,6 @@ public class Joystick {
         return directionInput;
     }
 
-
     private Circle getCircle0() {
         return circle0;
     }

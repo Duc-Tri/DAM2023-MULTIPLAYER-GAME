@@ -41,7 +41,7 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean showJoystick = false;
     private static Map map;
     private static ClampedCamera clampedCamera;
-    public static int SCREEN_WIDTH = 0;
+    public static int SCREEN_WIDTH, SCREEN_HALF_WIDTH;
     public static int SCREEN_HEIGHT = 0;
     private boolean showDebugTexts = true;
 
@@ -74,6 +74,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     public GameScreen(String mapFilename, MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
+        SCREEN_HALF_WIDTH = SCREEN_WIDTH / 2;
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
         mainGame = game;
@@ -116,7 +117,6 @@ public class GameScreen implements Screen, InputProcessor {
         updatePlayer = new UpdatePlayer(player);
         threadPoolUpdatePlayer.submit(updatePlayer);
 
-
         retrieveMate = new RetrieveMate(player);
         threadPoolRetrieveMate.submit(retrieveMate);
 
@@ -151,15 +151,7 @@ public class GameScreen implements Screen, InputProcessor {
         if (mainGame.isMultiplayerGameMode())
             submitThreadJobs();
 
-        displayJoystick();
-
-
-        if (Gdx.input.isTouched(0))
-            movePlayer(joystick.getDirectionInput(), deltaTime);
-        else {
-            showJoystick = false;
-            movePlayer(lastKeyCode, deltaTime);
-        }
+        updateInput(deltaTime);
 
         monstersInstance.update(deltaTime);
 
@@ -270,24 +262,31 @@ public class GameScreen implements Screen, InputProcessor {
         return clampedCamera;
     }
 
-    private void displayJoystick() {
+    private void updateInput(float deltaTime) {
         if (Gdx.input.isTouched(0)) {
-            if (!showJoystick) {
-                if (!joystick.isPositionFixe()) {
-                    joystick.setPosition(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY());
-                }
+            int touchX = Gdx.input.getX();
+            int touchY = SCREEN_HEIGHT - Gdx.input.getY();
+
+            if (touchX < SCREEN_HALF_WIDTH) {
+                displayJoystick(touchX, touchY);
+                movePlayer(joystick.getDirectionInput(), deltaTime);
             }
-            showJoystick = true;
+
+        } else {
+            showJoystick = false;
+            movePlayer(lastKeyCode, deltaTime);
         }
-        updateJoystick();
     }
 
-    public void updateJoystick() {
-        //Vector3 vector = new Vector3();
-        //camera.unproject(vector.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        //joystick.update(vector.x, vector.y);
-
-        joystick.update(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY());
+    private void displayJoystick(int touchX, int touchY) {
+        if (!showJoystick) {
+            if (!joystick.isPositionFixe()) {
+                joystick.setPosition(touchX, touchY);
+            }
+        }
+        showJoystick = true;
+        joystick.update(touchX, touchY); // updateJoystick(touchX, touchY);
+        
     }
 
     private void movePlayer(int keycode, float deltaTime) {
@@ -387,13 +386,3 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 }
-
-/*
-    public static boolean isLockOnListReadFromDB() {
-        return lockOnListReadFromDB;
-    }
-
-    public static void setLockOnListReadFromDB(boolean lockOnListReadFromDB) {
-        MainGame.lockOnListReadFromDB = lockOnListReadFromDB;
-    }
- */
