@@ -84,7 +84,7 @@ public class GameScreen implements Screen, InputProcessor {
         monstersInstance = Monsters.getInstance();
         monstersInstance.init(map, player);
 
-        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.5f);
+        clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
         batch.setProjectionMatrix(clampedCamera.combined);
 
         shapeRenderer = new ShapeRenderer();
