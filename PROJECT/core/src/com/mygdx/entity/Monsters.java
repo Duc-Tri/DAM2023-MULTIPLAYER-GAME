@@ -179,7 +179,7 @@ public class Monsters {
                             type.toString() + " === " + num + " @@@ " + spawnArea);
 
                     for (int i = 0; i < num; i++) {
-                        Mob m = new Mob(type);
+                        Mob m = new Mob(type, System.currentTimeMillis() + i*4000);
                         Vector2int pos = map.centerPointAtSpawnArea(spawnArea);
                         m.setX(pos.x);
                         m.setY(pos.y);
@@ -211,6 +211,8 @@ public class Monsters {
 
     public void update(float deltaTime) {
         //moveToPlayer(deltaTime);
+
+
         switch (gameMode) {
             case SOLO_MODE:
                 moveToPlayer(deltaTime);
@@ -263,8 +265,7 @@ public class Monsters {
                         if (oneMobId.equalsIgnoreCase(drawMob.uniqueID)) {
                             found = true;
 
-                            if (life != 999999)
-                            {
+                            if (life != 999999) {
                                 drawMob.setFootX(Float.parseFloat(oneMob[1]));
                                 drawMob.setY(Float.parseFloat(oneMob[2]));
                                 drawMob.setFindRegion(oneMob[3]);
@@ -342,8 +343,8 @@ public class Monsters {
             Mob mob = listMobs.get(m);
 
             if (mob.isAlive()) {
-                DebugOnScreen.getInstance().setText(21, weapon.hitbox.toString());
-                DebugOnScreen.getInstance().setText(22, mob.uniqueID + " / " + mob.hitbox.toString());
+//                DebugOnScreen.getInstance().setText(21, weapon.hitbox.toString());
+//                DebugOnScreen.getInstance().setText(22, mob.uniqueID + " / " + mob.hitbox.toString());
 
                 // attention aux hitbox negatifs !!!
                 if (mob.hitbox.overlaps(weapon.hitbox)) {
@@ -415,13 +416,46 @@ public class Monsters {
         for (int i = attackedMobs.size() - 1; i >= 0; i--) {
             AttackedMob mob = attackedMobs.get(i);
 
-            sbMonsters.append(mob.buildHttpParam()+"!");
+            sbMonsters.append(mob.buildHttpParam() + "!");
 
             attackedMobs.remove(i);
         }
         attackedMobs.clear(); // ceinture, bretelles ....
 
         return sbMonsters.toString();
+    }
+
+    public boolean allMonstersKilled() {
+        switch (gameMode) {
+
+            case SOLO_MODE:
+            case SLAVE_MODE:
+                for (Mob m : drawMobs) if (m.currentLife > 0) return false;
+
+                break;
+
+            case MASTER_MODE:
+
+                for (int i = simulationMobs.size() - 1; i >= 0; i--) {
+                    Mob m = simulationMobs.get(i);
+
+                    if (m.getCurrentLife() > 0) {
+                        System.out.println(m.uniqueID + " simulationMobs/Mob:" + m.getCurrentLife());
+                        return false;
+                    }
+                }
+
+                for (Mob m : drawMobs) {
+                    if (m.getCurrentLife() > 0) {
+                        System.out.println(m.uniqueID + " drawMobs/Mob:" + m.getCurrentLife());
+                        return false;
+                    }
+                }
+
+                break;
+        }
+
+        return true;
     }
 
 }

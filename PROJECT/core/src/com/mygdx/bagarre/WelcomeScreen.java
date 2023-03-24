@@ -4,22 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.mygdx.hud.DebugOnScreen;
-import com.mygdx.hud.HUDManager;
 
 //#################################################################################################
 // GameScreen (Screen, InputProcessor)
@@ -28,7 +24,7 @@ import com.mygdx.hud.HUDManager;
 //
 // - gère les inputs (tactile & clavier)
 //#################################################################################################
-public class LobbiesScreen implements Screen, InputProcessor {
+public class WelcomeScreen implements Screen, InputProcessor {
     private final MainGame mainGame;
     public static int SCREEN_WIDTH = 0;
     public static int SCREEN_HEIGHT = 0;
@@ -36,14 +32,8 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
     private SpriteBatch batch;
 
-    private Texture testImage = new Texture("misc/bckgrnd_online.png");
-//    private StretchViewport viewport = new StretchViewport(testImage.getWidth(), testImage.getHeight());
+    private Texture background = new Texture("misc/ecran_accueil.png");
 
-    FreeTypeFontGenerator genFont = new FreeTypeFontGenerator((Gdx.files.internal("misc/minecraft.ttf")));
-    FreeTypeFontGenerator.FreeTypeFontParameter paramFont = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-
-    //===========================================================================================
     Stage stage;
     TextButton buttonSolo;
     TextButton buttonMulti;
@@ -57,7 +47,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
     TextureAtlas buttonAtlas;
 
 
-    public LobbiesScreen(MainGame game) {
+    public WelcomeScreen(MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
@@ -65,22 +55,23 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
 
-
         initStageButtons();
-
     }
 
     private void initStageButtons() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        paramFont.size = 42;
-//        font = new BitmapFont(Gdx.files.internal("misc/minecraft.tff"));
-//        font.getData().setScale(2);
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("misc/jack_input.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 30;
+        fontParameter.borderWidth = 2.6f;
+        fontParameter.color = Color.WHITE;
+        fontParameter.borderColor = new Color(0, 0, 0, 0.8f);
+        fontParameter.spaceX = 1;
 
-        font = new BitmapFont();
-        font = genFont.generateFont(paramFont);
-        genFont.dispose();
+        font = fontGenerator.generateFont(fontParameter);
+
         skin = new Skin();
         buttonAtlas = new TextureAtlas(Gdx.files.internal("misc/buttons.atlas"));
         skin.addRegions(buttonAtlas);
@@ -91,10 +82,10 @@ public class LobbiesScreen implements Screen, InputProcessor {
         textButtonStyle.checked = skin.getDrawable("checked-button");
 
         buttonSolo = new TextButton("JEU SOLO", textButtonStyle);
-        buttonSolo.setPosition(SCREEN_WIDTH / 2 - buttonSolo.getWidth() / 2, SCREEN_HEIGHT / 2);
+        buttonSolo.setPosition(SCREEN_WIDTH / 2 - buttonSolo.getWidth() / 2, SCREEN_HEIGHT / 2 - 150);
 
         buttonMulti = new TextButton("JEU MULTIJOUEUR", textButtonStyle);
-        buttonMulti.setPosition(buttonSolo.getX(), buttonSolo.getY() + 200);
+        buttonMulti.setPosition(buttonSolo.getX(), buttonSolo.getY() - 150);
 
         stage.addActor(buttonSolo);
         stage.addActor(buttonMulti);
@@ -121,6 +112,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
             }
         });
 
+
     }
 
     @Override
@@ -133,9 +125,13 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
         batch.begin(); //======================================================
 
-        //if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
-        batch.draw(testImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        float backWidthRatioed = background.getWidth() * (SCREEN_HEIGHT / background.getHeight());
+        float backgX = (SCREEN_WIDTH - backWidthRatioed) / 2;
 
+        //batch.draw(background, backgX, 0, backWidthRatioed, SCREEN_HEIGHT);
+        batch.draw(background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        //if (showDebugTexts) debugOnScreen(); // TOUT A LA FIN !!!
         //hudManager.drawHUD(batch);
 
         batch.end(); //========================================================
@@ -173,7 +169,6 @@ public class LobbiesScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         batch.dispose();
-        testImage.dispose();
 //        shapeRenderer.dispose();
     }
 
@@ -227,7 +222,7 @@ public class LobbiesScreen implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-//        viewport.update(width, height, true);
+        //viewport.update(width, height);
     }
 
 

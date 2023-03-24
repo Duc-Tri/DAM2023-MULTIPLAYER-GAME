@@ -35,7 +35,7 @@ public class RetrieveMonsters implements Runnable {
 
             String[] tempMobs = requestServer();
 
-            System.out.println("RetrieveMonsters:run +++ tempMobs=" +tempMobs);
+            //System.out.println("RetrieveMonsters:run +++ tempMobs=" +tempMobs);
 
             if (tempMobs != null && tempMobs.length > 0) {
                 updatedMonsters.clear();
@@ -77,14 +77,14 @@ public class RetrieveMonsters implements Runnable {
                 if (res != null && !res.isEmpty()) {
 
                     // FLOOD !
-                    System.out.println("RetrieveMonsters:requestServer " + res);
+//                    System.out.println("RetrieveMonsters:requestServer " + res);
 
                     String[] monsters = res.split("!");
                     return monsters;
                 }
 
             } else {
-                System.out.println("RetrieveMonsters:requestServer did not work.");
+//                System.out.println("RetrieveMonsters:requestServer did not work.");
             }
         } catch (MalformedURLException e) {
         } catch (IOException e) {

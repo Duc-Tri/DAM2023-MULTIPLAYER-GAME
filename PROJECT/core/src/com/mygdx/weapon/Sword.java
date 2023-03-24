@@ -34,12 +34,12 @@ public final class Sword extends Weapon {
 
     // POINTS DE DOMMAGES DES ÉPÉES ===============================================================
     final static HashMap<SwordType, Integer> SwordsDamage = new HashMap() {{
-        put(SwordType.EVIL_SWORD, 20);
-        put(SwordType.BROADSWORD, 16);
-        put(SwordType.SCIMITAR, 8);
-        put(SwordType.CLAYMORE, 4);
-        put(SwordType.BASTARD, 2);
-        put(SwordType.GLADIUS, 1);
+        put(SwordType.EVIL_SWORD, 10);
+        put(SwordType.BROADSWORD, 10);
+        put(SwordType.SCIMITAR, 10);
+        put(SwordType.CLAYMORE, 10);
+        put(SwordType.BASTARD, 10);
+        put(SwordType.GLADIUS, 10);
     }};
 
     public Sword(LivingEntity owner) {

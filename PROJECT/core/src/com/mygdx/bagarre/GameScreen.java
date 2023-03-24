@@ -41,7 +41,7 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean showJoystick = false;
     private static Map map;
     private static ClampedCamera clampedCamera;
-    public static int SCREEN_WIDTH = 0;
+    public static int SCREEN_WIDTH, SCREEN_HALF_WIDTH;
     public static int SCREEN_HEIGHT = 0;
     private boolean showDebugTexts = true;
 
@@ -76,6 +76,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     public GameScreen(String mapFilename, MainGame game) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
+        SCREEN_HALF_WIDTH = SCREEN_WIDTH / 2;
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
         mainGame = game;
@@ -85,7 +86,7 @@ public class GameScreen implements Screen, InputProcessor {
         createPlayer();
         monstersInstance = Monsters.getInstance();
         monstersInstance.init(map, player);
-
+		
         clampedCamera = new ClampedCamera(player, map, MainGame.getInstance().runOnDesktop() ? 1f : 0.25f);
         batch.setProjectionMatrix(clampedCamera.combined);
 
@@ -123,7 +124,6 @@ public class GameScreen implements Screen, InputProcessor {
         updatePlayer = new UpdatePlayer(player);
         threadPoolUpdatePlayer.submit(updatePlayer);
 
-
         retrieveMate = new RetrieveMate(player);
         threadPoolRetrieveMate.submit(retrieveMate);
 
@@ -141,8 +141,7 @@ public class GameScreen implements Screen, InputProcessor {
         retrieveMonsters = new RetrieveMonsters(player, monstersInstance);
         threadPoolRetrieveMonsters.submit(retrieveMonsters);
 
-        if(mainGame.isMultiplayerGameMode())
-        {
+        if (mainGame.isMultiplayerGameMode()) {
             attackMonsters = new AttackMonsters(player, monstersInstance);
             threadPoolAttackMonsters.submit(attackMonsters);
         }
@@ -156,20 +155,14 @@ public class GameScreen implements Screen, InputProcessor {
     // deltaTime = temps depuis la dernière frame
     public void render(float deltaTime) {
 
-        if (mainGame.isMultiplayerGameMode())
-            submitThreadJobs();
+        if (player.isAlive() && !monstersInstance.allMonstersKilled()) {
+            if (mainGame.isMultiplayerGameMode())
+                submitThreadJobs();
 
-        displayJoystick();
+            updateInput(deltaTime);
 
-
-        if (Gdx.input.isTouched(0))
-            movePlayer(joystick.getDirectionInput(), deltaTime);
-        else {
-            showJoystick = false;
-            movePlayer(lastKeyCode, deltaTime);
+            monstersInstance.update(deltaTime);
         }
-
-        monstersInstance.update(deltaTime);
 
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -198,13 +191,17 @@ public class GameScreen implements Screen, InputProcessor {
 //        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
 //        debugOS.setText(25, "" + System.currentTimeMillis());
         debugOS.setText(0, mainGame.getGameMode() + " / " + monstersInstance.getMonstersMode());
-        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby() + " / " + player.getLobbyPlayerId());
+		
+        debugOS.setText(1, player.getUniqueID() + " / " + player.getNumLobby()); // + " / " + player.getLobbyPlayerId());
+
 
         //        debugOS.setText(25, "" + System.currentTimeMillis());
 //        for (int i = 2; i < DebugOnScreen.MAX_TEXTS; i++)
 //            debugOS.setText(i, i + "/" + System.currentTimeMillis());
 
-//        debugOS.drawTexts(batch);
+
+        //debugOS.drawTexts(batch);
+		
     }
 
     private void submitThreadJobs() {
@@ -282,24 +279,47 @@ public class GameScreen implements Screen, InputProcessor {
         return clampedCamera;
     }
 
-    private void displayJoystick() {
+    private void updateInput(float deltaTime) {
+
         if (Gdx.input.isTouched(0)) {
-            if (!showJoystick) {
-                if (!joystick.isPositionFixe()) {
-                    joystick.setPosition(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY());
-                }
-            }
-            showJoystick = true;
+            int touchX = Gdx.input.getX(0);
+            int touchY = SCREEN_HEIGHT - Gdx.input.getY(0);
+            updateJoystickAndButton(deltaTime, touchX, touchY);
+        } else {
+            showJoystick = false;
+            movePlayer(lastKeyCode, deltaTime);
         }
-        updateJoystick();
+
+
+        if (Gdx.input.isTouched(1)) {
+            int touchX = Gdx.input.getX(1);
+            int touchY = SCREEN_HEIGHT - Gdx.input.getY(1);
+            updateJoystickAndButton(deltaTime, touchX, touchY);
+        }
     }
 
-    public void updateJoystick() {
-        //Vector3 vector = new Vector3();
-        //camera.unproject(vector.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        //joystick.update(vector.x, vector.y);
+    private void updateJoystickAndButton(float deltaTime, int touchX, int touchY) {
+        // tiers DROITE de l'écran: bouton =================================
+        if (touchX > 2 * SCREEN_WIDTH / 3) {
+            joystick.renderButton(shapeRenderer, touchX, touchY);
+            player.attack();
+        } else if (touchX < SCREEN_WIDTH / 3) {
+            // tiers GAUCHE de l'écran: joystick =================================
 
-        joystick.update(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY());
+            displayJoystick(touchX, touchY);
+            movePlayer(joystick.getDirectionInput(), deltaTime);
+        }
+    }
+
+    private void displayJoystick(int touchX, int touchY) {
+        if (!showJoystick) {
+            if (!joystick.isPositionFixe()) {
+                joystick.setPosition(touchX, touchY);
+            }
+        }
+        showJoystick = true;
+        joystick.update(touchX, touchY); // updateJoystick(touchX, touchY);
+
     }
 
     private void movePlayer(int keycode, float deltaTime) {
@@ -330,6 +350,7 @@ public class GameScreen implements Screen, InputProcessor {
             case Input.Keys.ESCAPE:
                 showDebugTexts = !showDebugTexts;
                 break;
+            case Input.Keys.SPACE:
             case Input.Keys.CONTROL_LEFT:
                 player.attack();
                 break;
@@ -398,13 +419,3 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 }
-
-/*
-    public static boolean isLockOnListReadFromDB() {
-        return lockOnListReadFromDB;
-    }
-
-    public static void setLockOnListReadFromDB(boolean lockOnListReadFromDB) {
-        MainGame.lockOnListReadFromDB = lockOnListReadFromDB;
-    }
- */

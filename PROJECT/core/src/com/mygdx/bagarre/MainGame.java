@@ -3,7 +3,6 @@ package com.mygdx.bagarre;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.mygdx.client.NewPlayer;
 import com.mygdx.entity.Mob;
 import com.mygdx.entity.Player;
 import com.mygdx.map.Map;
@@ -31,7 +30,7 @@ public class MainGame extends Game {
     private String config; // "android" or "desktop";
     private GameMode gameMode;
     private GameScreen gameScreen;
-    private LobbiesScreen lobbiesScreen;
+    private WelcomeScreen welcomeScreen;
     private static MainGame instance;
 
     public static MainGame getInstance() {
@@ -44,28 +43,26 @@ public class MainGame extends Game {
     private MainGame() {
 //        gameMode = GameMode.SOLO;
         gameMode = GameMode.MULTIPLAYER;
-
-        System.out.println("MainGame #######################################################");
+//        gameMode = null;
     }
 
     @Override
     public void create() {
+		
+        //FirebaseHelper firebaseHelper = new FirebaseHelper(firebaseURL);
 
         // chargement des atlas ici, ce qui évite certains bugs par la suite...
         Mob.allMonstersAtlas = new TextureAtlas(Gdx.files.internal(Mob.MONSTERS_ATLAS));
         Player.allPlayersAtlas = new TextureAtlas(Gdx.files.internal(Player.PLAYERS_ATLAS));
 
-
-        if (gameMode == GameMode.SOLO) {
-            gameScreen = new GameScreen(mapFilename, this);
-            setScreen(gameScreen);
-            Gdx.input.setInputProcessor(gameScreen);
-        } else if (gameMode == GameMode.MULTIPLAYER) {
-            lobbiesScreen = new LobbiesScreen(this);
-            setScreen(lobbiesScreen);
-            //Gdx.input.setInputProcessor(lobbiesScreen); // NON !
+        if (runOnDesktop()) {
+            showGameScreen(GameMode.MULTIPLAYER);
+        } else {
+            welcomeScreen = new WelcomeScreen(this);
+            setScreen(welcomeScreen);
         }
 
+        //Gdx.input.setInputProcessor(lobbiesScreen); // NON !
     }
 
     public void setConfig(String c) {
@@ -116,17 +113,15 @@ public class MainGame extends Game {
     }
 
     public void showGameScreen(GameMode mode) {
+		
+        if (welcomeScreen != null)
+            welcomeScreen.dispose();
+		
 
         gameMode = mode;
-
-
         gameScreen = new GameScreen(mapFilename, this);
         setScreen(gameScreen);
         Gdx.input.setInputProcessor(gameScreen);
-
-//        if(lobbiesScreen!=null)
-//            lobbiesScreen.dispose();
-
     }
 
 }

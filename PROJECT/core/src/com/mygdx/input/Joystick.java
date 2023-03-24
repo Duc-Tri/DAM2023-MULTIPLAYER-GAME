@@ -29,21 +29,18 @@ public class Joystick {
         int tmpDirection;
         double deltaX = circle1.x - circle0.x;
         double deltaY = circle1.y - circle0.y;
-        double distDeuxcentre = Math.pow(Math.pow(deltaX,2.0)+Math.pow(deltaY,2.0),1.0/2.0);
+        double distDeuxcentre = Math.pow(Math.pow(deltaX, 2.0) + Math.pow(deltaY, 2.0), 1.0 / 2.0);
         double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
-        if(distDeuxcentre < 50){
-            directionInput=-1;
-        }else {
+        if (distDeuxcentre < 50) {
+            directionInput = -1;
+        } else {
             if (-45 < angle && angle < 45) {
                 directionInput = Input.Keys.RIGHT;
-            }
-            else if (45 < angle && angle < 135) {
+            } else if (45 < angle && angle < 135) {
                 directionInput = Input.Keys.UP;
-            }
-            else if (angle < -135 || angle > 135) {
+            } else if (angle < -135 || angle > 135) {
                 directionInput = Input.Keys.LEFT;
-            }
-            else if (-135 < angle && angle < -45) {
+            } else if (-135 < angle && angle < -45) {
                 directionInput = Input.Keys.DOWN;
             }
         }
@@ -74,7 +71,6 @@ public class Joystick {
         return directionInput;
     }
 
-
     private Circle getCircle0() {
         return circle0;
     }
@@ -97,5 +93,16 @@ public class Joystick {
 
     private void setDirectionInput(int directionInput) {
         this.directionInput = directionInput;
+    }
+
+    public void renderButton(ShapeRenderer renderer, int touchX, int touchY) {
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.WHITE);
+        renderer.circle(touchX, touchY, 100);
+        renderer.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.circle(touchX, touchY, 50);
+        renderer.end();
     }
 }
